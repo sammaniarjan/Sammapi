@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIV Transmissie Risico Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0f0d;
+            color: #e8f0ec;
+            min-height: 100vh;
+            padding: 24px;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #2dd4a0;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 24px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #243029;
+            background: #111916;
+        }
+        .back-link:hover {
+            background: #1a2420;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        h1 {
+            font-size: 28px;
+            color: #2dd4a0;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            color: #8b9d94;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+        .card {
+            background: #151d19;
+            border: 1px solid #243029;
+            border-radius: 12px;
+            padding: 24px;
+        }
+        .card h2 {
+            font-size: 16px;
+            color: #e8f0ec;
+            margin-bottom: 16px;
+        }
+        label {
+            display: block;
+            font-size: 14px;
+            color: #8b9d94;
+            margin-bottom: 8px;
+        }
+        label span {
+            color: #2dd4a0;
+            font-weight: bold;
+        }
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #243029;
+            outline: none;
+            margin-bottom: 8px;
+            -webkit-appearance: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #2dd4a0;
+            cursor: pointer;
+        }
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #5a6b62;
+            margin-bottom: 24px;
+        }
+        .milestones {
+            background: #111916;
+            border-radius: 8px;
+            padding: 16px;
+        }
+        .milestones h3 {
+            font-size: 14px;
+            color: #8b9d94;
+            margin-bottom: 12px;
+        }
+        .milestone-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .milestone-row:last-child {
+            margin-bottom: 0;
+        }
+        .milestone-label {
+            color: #8b9d94;
+        }
+        .milestone-value {
+            font-family: monospace;
+        }
+        .yellow { color: #fbbf24; }
+        .red { color: #f87171; }
+        .green { color: #2dd4a0; }
+
+        /* Chart */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-bottom: 16px;
+        }
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        .chart-formula {
+            text-align: center;
+            font-size: 12px;
+            color: #5a6b62;
+        }
+
+        /* Presets */
+        .presets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
+        }
+        .preset-btn {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: #111916;
+            border: 1px solid #243029;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+        .preset-btn:hover {
+            background: #1a2420;
+            border-color: #2dd4a0;
+        }
+        .preset-btn.active {
+            border-color: #2dd4a0;
+            background: #1a2420;
+        }
+        .preset-name {
+            font-size: 14px;
+            color: #e8f0ec;
+        }
+        .preset-risk {
+            font-size: 14px;
+            font-family: monospace;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        @media (max-width: 600px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        .stat-card {
+            background: #151d19;
+            border: 1px solid #243029;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #f87171;
+        }
+        .stat-label {
+            font-size: 14px;
+            color: #8b9d94;
+        }
+
+        /* Info */
+        .info-box {
+            background: rgba(21, 29, 25, 0.5);
+            border: 1px solid #243029;
+            border-radius: 12px;
+            padding: 24px;
+        }
+        .info-box h2 {
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+        .info-box p {
+            font-size: 14px;
+            color: #8b9d94;
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+        .warning {
+            color: #fbbf24;
+            margin-top: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../../index.html#hiv" class="back-link">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+            Terug naar HIV
+        </a>
+
+        <header>
+            <h1>HIV Transmissie Risico Calculator</h1>
+            <p class="subtitle">
+                Zelfs kleine per-contact risico's cumuleren significant over meerdere blootstellingen.
+                Deze tool visualiseert hoe cumulatieve waarschijnlijkheid groeit.
+            </p>
+        </header>
+
+        <div class="grid">
+            <div class="card">
+                <h2>Parameters</h2>
+
+                <label>
+                    Risico per contact: <span id="riskDisplay">0.10%</span>
+                </label>
+                <input type="range" id="riskSlider" min="0.01" max="10" step="0.01" value="0.1">
+                <div class="range-labels">
+                    <span>0.01%</span>
+                    <span>10%</span>
+                </div>
+
+                <label>
+                    Max contacten: <span id="contactsDisplay">100</span>
+                </label>
+                <input type="range" id="contactsSlider" min="10" max="2000" step="10" value="100">
+                <div class="range-labels">
+                    <span>10</span>
+                    <span>2000</span>
+                </div>
+
+                <div class="milestones" style="margin-bottom: 16px;">
+                    <h3>Effectief risico per contact</h3>
+                    <div class="milestone-row">
+                        <span class="milestone-label">Blootstelling × Bronrisico:</span>
+                        <span class="milestone-value green" id="effectiveRisk">0.10%</span>
+                    </div>
+                    <p style="font-size: 11px; color: #5a6b62; margin-top: 8px;">
+                        = <span id="calcExplanation">0.10% × 100%</span>
+                    </p>
+                </div>
+
+                <div class="milestones">
+                    <h3>Belangrijke mijlpalen</h3>
+                    <div class="milestone-row">
+                        <span class="milestone-label">50% risico bereikt:</span>
+                        <span class="milestone-value yellow" id="milestone50">693 contacten</span>
+                    </div>
+                    <div class="milestone-row">
+                        <span class="milestone-label">90% risico bereikt:</span>
+                        <span class="milestone-value red" id="milestone90">2302 contacten</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Cumulatief Risico over Blootstellingen</h2>
+                <div class="chart-container">
+                    <canvas id="chart"></canvas>
+                </div>
+                <p class="chart-formula">Formule: Cumulatief Risico = 1 - (1 - per-contact risico)<sup>n</sup></p>
+            </div>
+        </div>
+
+        <div class="grid" style="margin-bottom: 24px;">
+            <div class="card">
+                <h2>Blootstellingstype (per-contact risico)</h2>
+                <p style="font-size: 13px; color: #8b9d94; margin-bottom: 16px;">
+                    Risico per contact <strong>als bron HIV+ is</strong>. Gebaseerd op CDC/meta-analyses.
+                </p>
+                <div class="presets-grid" id="presets"></div>
+            </div>
+
+            <div class="card">
+                <h2>Bronrisico (kans dat bron HIV+ is)</h2>
+                <p style="font-size: 13px; color: #8b9d94; margin-bottom: 12px;">
+                    Selecteer de geschatte HIV-prevalentie van de bronpopulatie.
+                </p>
+                <label>
+                    Bronrisico: <span id="sourceDisplay">100%</span>
+                </label>
+                <input type="range" id="sourceSlider" min="0" max="100" step="0.1" value="100">
+                <div class="range-labels" style="margin-bottom: 16px;">
+                    <span>0%</span>
+                    <span>100%</span>
+                </div>
+                <div class="presets-grid" id="sourcePresets"></div>
+            </div>
+        </div>
+
+        <div class="stats-grid" id="stats"></div>
+
+        <div class="info-box">
+            <h2>De wiskunde begrijpen</h2>
+            <p>
+                <strong>Effectief risico per contact</strong> = Blootstellingsrisico × Bronrisico
+            </p>
+            <p>
+                Het blootstellingsrisico is de kans op transmissie <em>als</em> de bron HIV+ is. Het bronrisico is de kans dat de bron daadwerkelijk HIV+ is (prevalentie in die populatie).
+            </p>
+            <p>
+                De kans om <em>niet</em> geïnfecteerd te raken na n blootstellingen is (1 - p)<sup>n</sup>, waarbij p het effectieve per-contact risico is.
+                Daarom is het cumulatieve risico op infectie = 1 - (1 - p)<sup>n</sup>.
+            </p>
+            <p style="margin-top: 12px;">
+                <strong>Voorbeeld:</strong> Receptief vaginaal contact (0.08%) met iemand uit algemene bevolking Nederland (0.2% HIV+):<br>
+                Effectief risico = 0.08% × 0.2% = 0.00016% per contact.
+            </p>
+            <p class="warning">
+                ⚠️ <strong>U=U:</strong> Ondetecteerbaar = Niet-overdraagbaar. Bij effectieve behandeling (viral load ondetecteerbaar) is transmissierisico 0%.
+                Andere factoren: PrEP-gebruik, condoomgebruik, besnijdenisstatus, co-infecties. Raadpleeg altijd zorgverleners.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const exposureTypes = [
+            { name: 'Bloedtransfusie (besmet)', risk: 92.5, color: '#dc2626' },
+            { name: 'Naalden delen (IDU)', risk: 0.63, color: '#ea580c' },
+            { name: 'Receptief anaal', risk: 1.38, color: '#d97706' },
+            { name: 'Prikaccident', risk: 0.23, color: '#ca8a04' },
+            { name: 'Insertief anaal', risk: 0.11, color: '#65a30d' },
+            { name: 'Receptief vaginaal', risk: 0.08, color: '#16a34a' },
+            { name: 'Insertief vaginaal', risk: 0.04, color: '#0d9488' },
+            { name: 'Orale seks (ontvangend)', risk: 0.04, color: '#0891b2' },
+            { name: 'Orale seks (actief)', risk: 0.01, color: '#2563eb' },
+        ];
+
+        let riskPerContact = 0.1;
+        let sourceRisk = 100; // Probability source is HIV+
+        let maxContacts = 100;
+        let selectedPreset = null;
+        let selectedSource = null;
+        let chart = null;
+
+        const sourceTypes = [
+            { name: 'Bevestigd HIV+', risk: 100, color: '#dc2626' },
+            { name: 'HIV+ onbehandeld', risk: 100, color: '#dc2626' },
+            { name: 'HIV+ behandeld (viral load ondetecteerbaar)', risk: 0, color: '#22c55e', note: 'U=U' },
+            { name: 'MSM (NL)', risk: 5, color: '#f97316' },
+            { name: 'IDU (injectie druggebruiker)', risk: 10, color: '#ea580c' },
+            { name: 'Sekswerker (Sub-Sahara Afrika)', risk: 25, color: '#ef4444' },
+            { name: 'Algemene bevolking Sub-Sahara Afrika', risk: 8, color: '#f59e0b' },
+            { name: 'Algemene bevolking Zuid/ZO-Azië', risk: 0.3, color: '#eab308' },
+            { name: 'Algemene bevolking West-Europa', risk: 0.2, color: '#84cc16' },
+            { name: 'Algemene bevolking Nederland', risk: 0.2, color: '#22c55e' },
+            { name: 'Onbekende status (hoog-risico gedrag)', risk: 15, color: '#f97316' },
+            { name: 'Onbekende status (laag-risico)', risk: 1, color: '#a3e635' },
+        ];
+
+        // DOM elements
+        const riskSlider = document.getElementById('riskSlider');
+        const contactsSlider = document.getElementById('contactsSlider');
+        const sourceSlider = document.getElementById('sourceSlider');
+        const riskDisplay = document.getElementById('riskDisplay');
+        const contactsDisplay = document.getElementById('contactsDisplay');
+        const sourceDisplay = document.getElementById('sourceDisplay');
+        const effectiveRiskDisplay = document.getElementById('effectiveRisk');
+        const calcExplanation = document.getElementById('calcExplanation');
+        const milestone50 = document.getElementById('milestone50');
+        const milestone90 = document.getElementById('milestone90');
+        const presetsContainer = document.getElementById('presets');
+        const sourcePresetsContainer = document.getElementById('sourcePresets');
+        const statsContainer = document.getElementById('stats');
+        const canvas = document.getElementById('chart');
+        const ctx = canvas.getContext('2d');
+
+        function getEffectiveRisk() {
+            return (riskPerContact * sourceRisk) / 100;
+        }
+
+        function calculateCumulativeRisk(effectiveRiskPercent, contacts) {
+            const p = effectiveRiskPercent / 100;
+            return (1 - Math.pow(1 - p, contacts)) * 100;
+        }
+
+        function calculateMilestone(targetRisk, perContactRisk) {
+            const p = perContactRisk / 100;
+            if (p <= 0) return Infinity;
+            return Math.ceil(Math.log(1 - targetRisk) / Math.log(1 - p));
+        }
+
+        function drawChart() {
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * window.devicePixelRatio;
+            canvas.height = rect.height * window.devicePixelRatio;
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+            const width = rect.width;
+            const height = rect.height;
+            const padding = { top: 20, right: 20, bottom: 40, left: 50 };
+            const chartWidth = width - padding.left - padding.right;
+            const chartHeight = height - padding.top - padding.bottom;
+
+            ctx.clearRect(0, 0, width, height);
+
+            // Draw grid
+            ctx.strokeStyle = '#243029';
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= 10; i++) {
+                const y = padding.top + (chartHeight * i / 10);
+                ctx.beginPath();
+                ctx.moveTo(padding.left, y);
+                ctx.lineTo(width - padding.right, y);
+                ctx.stroke();
+            }
+
+            // Y-axis labels
+            ctx.fillStyle = '#8b9d94';
+            ctx.font = '12px -apple-system, sans-serif';
+            ctx.textAlign = 'right';
+            for (let i = 0; i <= 10; i++) {
+                const y = padding.top + (chartHeight * (10 - i) / 10);
+                ctx.fillText((i * 10) + '%', padding.left - 8, y + 4);
+            }
+
+            // X-axis labels
+            ctx.textAlign = 'center';
+            const xSteps = 5;
+            for (let i = 0; i <= xSteps; i++) {
+                const x = padding.left + (chartWidth * i / xSteps);
+                const contacts = Math.round(maxContacts * i / xSteps);
+                ctx.fillText(contacts.toString(), x, height - padding.bottom + 20);
+            }
+
+            // Reference lines at 50% and 90%
+            ctx.setLineDash([5, 5]);
+            ctx.strokeStyle = '#fbbf24';
+            ctx.beginPath();
+            const y50 = padding.top + chartHeight * 0.5;
+            ctx.moveTo(padding.left, y50);
+            ctx.lineTo(width - padding.right, y50);
+            ctx.stroke();
+
+            ctx.strokeStyle = '#ef4444';
+            const y90 = padding.top + chartHeight * 0.1;
+            ctx.beginPath();
+            ctx.moveTo(padding.left, y90);
+            ctx.lineTo(width - padding.right, y90);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Draw curve
+            ctx.beginPath();
+            ctx.strokeStyle = '#2dd4a0';
+            ctx.lineWidth = 2;
+
+            const effectiveRisk = getEffectiveRisk();
+            const points = [];
+            for (let i = 0; i <= 100; i++) {
+                const contacts = (maxContacts * i) / 100;
+                const risk = calculateCumulativeRisk(effectiveRisk, contacts);
+                const x = padding.left + (chartWidth * i / 100);
+                const y = padding.top + chartHeight * (1 - risk / 100);
+                points.push({ x, y });
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            ctx.stroke();
+
+            // Fill under curve
+            ctx.lineTo(padding.left + chartWidth, padding.top + chartHeight);
+            ctx.lineTo(padding.left, padding.top + chartHeight);
+            ctx.closePath();
+            const gradient = ctx.createLinearGradient(0, padding.top, 0, padding.top + chartHeight);
+            gradient.addColorStop(0, 'rgba(45, 212, 160, 0.3)');
+            gradient.addColorStop(1, 'rgba(45, 212, 160, 0)');
+            ctx.fillStyle = gradient;
+            ctx.fill();
+
+            // Axis labels
+            ctx.fillStyle = '#8b9d94';
+            ctx.font = '12px -apple-system, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Aantal contacten', width / 2, height - 5);
+        }
+
+        function updateDisplay() {
+            const effectiveRisk = getEffectiveRisk();
+
+            riskDisplay.textContent = riskPerContact.toFixed(2) + '%';
+            contactsDisplay.textContent = maxContacts;
+            sourceDisplay.textContent = sourceRisk.toFixed(1) + '%';
+
+            // Show effective risk
+            if (effectiveRisk < 0.001) {
+                effectiveRiskDisplay.textContent = effectiveRisk.toExponential(2) + '%';
+            } else {
+                effectiveRiskDisplay.textContent = effectiveRisk.toFixed(4) + '%';
+            }
+            calcExplanation.textContent = riskPerContact.toFixed(2) + '% × ' + sourceRisk.toFixed(1) + '%';
+
+            const contacts50 = calculateMilestone(0.5, effectiveRisk);
+            const contacts90 = calculateMilestone(0.9, effectiveRisk);
+
+            milestone50.textContent = contacts50 === Infinity ? '∞' : contacts50.toLocaleString() + ' contacten';
+            milestone90.textContent = contacts90 === Infinity ? '∞' : contacts90.toLocaleString() + ' contacten';
+
+            // Update stats
+            const statNumbers = [10, 50, 100, 500];
+            statsContainer.innerHTML = statNumbers.map(n => {
+                const risk = calculateCumulativeRisk(effectiveRisk, n);
+                return `
+                    <div class="stat-card">
+                        <div class="stat-value">${risk.toFixed(risk < 0.01 ? 4 : 2)}%</div>
+                        <div class="stat-label">na ${n} contacten</div>
+                    </div>
+                `;
+            }).join('');
+
+            drawChart();
+        }
+
+        function renderPresets() {
+            presetsContainer.innerHTML = exposureTypes.map(type => `
+                <button class="preset-btn ${selectedPreset === type.name ? 'active' : ''}" data-risk="${type.risk}" data-name="${type.name}">
+                    <span class="preset-name">${type.name}</span>
+                    <span class="preset-risk" style="background: ${type.color}20; color: ${type.color}">${type.risk}%</span>
+                </button>
+            `).join('');
+
+            document.querySelectorAll('.preset-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const risk = parseFloat(btn.dataset.risk);
+                    const name = btn.dataset.name;
+
+                    riskPerContact = risk;
+                    selectedPreset = name;
+                    riskSlider.value = Math.min(risk, 10);
+
+                    // Adjust max contacts based on risk
+                    if (risk > 10) {
+                        maxContacts = 20;
+                    } else if (risk > 1) {
+                        maxContacts = 200;
+                    } else if (risk > 0.1) {
+                        maxContacts = 500;
+                    } else {
+                        maxContacts = 1000;
+                    }
+                    contactsSlider.value = maxContacts;
+
+                    renderPresets();
+                    updateDisplay();
+                });
+            });
+        }
+
+        function renderSourcePresets() {
+            sourcePresetsContainer.innerHTML = sourceTypes.map(type => `
+                <button class="preset-btn ${selectedSource === type.name ? 'active' : ''}" data-risk="${type.risk}" data-name="${type.name}">
+                    <span class="preset-name">${type.name}</span>
+                    <span class="preset-risk" style="background: ${type.color}20; color: ${type.color}">${type.risk}%</span>
+                </button>
+            `).join('');
+
+            document.querySelectorAll('#sourcePresets .preset-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const risk = parseFloat(btn.dataset.risk);
+                    const name = btn.dataset.name;
+
+                    sourceRisk = risk;
+                    selectedSource = name;
+                    sourceSlider.value = risk;
+
+                    renderSourcePresets();
+                    updateDisplay();
+                });
+            });
+        }
+
+        // Event listeners
+        riskSlider.addEventListener('input', (e) => {
+            riskPerContact = parseFloat(e.target.value);
+            selectedPreset = null;
+            renderPresets();
+            updateDisplay();
+        });
+
+        contactsSlider.addEventListener('input', (e) => {
+            maxContacts = parseInt(e.target.value);
+            updateDisplay();
+        });
+
+        sourceSlider.addEventListener('input', (e) => {
+            sourceRisk = parseFloat(e.target.value);
+            selectedSource = null;
+            renderSourcePresets();
+            updateDisplay();
+        });
+
+        window.addEventListener('resize', () => {
+            drawChart();
+        });
+
+        // Initialize
+        renderPresets();
+        renderSourcePresets();
+        updateDisplay();
+    </script>
+</body>
+</html>

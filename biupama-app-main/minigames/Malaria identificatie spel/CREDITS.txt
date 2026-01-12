@@ -1,0 +1,109 @@
+================================================================================
+                           BRONVERMELDING / IMAGE CREDITS
+================================================================================
+
+Alle microscopie-afbeeldingen in deze educatieve applicatie zijn afkomstig van:
+
+    CDC DPDx - Laboratory Identification of Parasites of Public Health Concern
+    Division of Parasitic Diseases and Malaria (DPDM)
+    Centers for Disease Control and Prevention (CDC)
+
+    Website: https://www.cdc.gov/dpdx/malaria/index.html
+
+--------------------------------------------------------------------------------
+LICENTIE / LICENSE
+--------------------------------------------------------------------------------
+
+Deze afbeeldingen zijn PUBLIC DOMAIN (openbaar domein).
+
+Als werk van de Amerikaanse federale overheid vallen deze afbeeldingen onder
+17 U.S.C. § 105 en zijn ze niet onderhevig aan auteursrechtelijke bescherming
+in de Verenigde Staten.
+
+"As a work of the U.S. federal government, the images are in the public domain."
+
+--------------------------------------------------------------------------------
+GEBRUIK / USAGE
+--------------------------------------------------------------------------------
+
+Deze afbeeldingen worden gebruikt voor EDUCATIEVE DOELEINDEN in het kader van
+medisch onderwijs (tropengeneeskunde / BIUPAMA programma).
+
+De afbeeldingen tonen Giemsa-gekleurde dunne bloeduitstrijkjes met de volgende
+Plasmodium-soorten:
+
+  - Plasmodium falciparum (Malaria tropica)
+  - Plasmodium vivax (Malaria tertiana)
+  - Plasmodium ovale (Malaria tertiana)
+  - Plasmodium malariae (Malaria quartana)
+
+--------------------------------------------------------------------------------
+AFBEELDINGSLIJST / IMAGE LIST
+--------------------------------------------------------------------------------
+
+/images/falciparum/
+  - Pf_rings_thinA.jpg    - Ring-stadium trofozoieten
+  - Pf_rings_thinB.jpg    - Ring-stadium trofozoieten
+  - Pf_rings_thinC.jpg    - Ring-stadium trofozoieten
+  - Pf_rings_thinD.jpg    - Ring-stadium trofozoieten
+  - Pf_MaurersA.jpg       - Ring met Maurer's clefts
+  - Pf_MaurersB.jpg       - Ring met Maurer's clefts
+  - Pf_MaurersC.jpg       - Ring met Maurer's clefts
+  - Pf_gametocyte_thinA.jpg - Gametocyten (sikkelvorm)
+  - Pf_gametocyte_thinB.jpg - Gametocyten (sikkelvorm)
+  - Pf_gametocyte_thinC.jpg - Gametocyten (sikkelvorm)
+  - Pf_troph_thinA.jpg    - Trofozoieten
+  - Pf_troph_thinB.jpg    - Trofozoieten
+  - Pf_schizont_thinA.jpg - Schizonten
+  - Pf_schizont_thinB.jpg - Schizonten
+
+/images/vivax/
+  - Pv_rings_thinA.jpg    - Ring-stadium trofozoieten
+  - Pv_rings_thinB.jpg    - Ring-stadium trofozoieten
+  - Pv_rings_thinC.jpg    - Ring-stadium trofozoieten
+  - Pv_troph_thinA.jpg    - Amoeboide trofozoieten
+  - Pv_troph_thinB.jpg    - Amoeboide trofozoieten
+  - Pv_troph_thinC.jpg    - Amoeboide trofozoieten
+  - Pv_troph_thinD.jpg    - Amoeboide trofozoieten
+  - Pv_gametocyte_thinA.jpg - Gametocyten
+  - Pv_gametocyte_thinB.jpg - Gametocyten
+  - Pv_schizont_thinA.jpg - Schizonten
+  - Pv_schizont_thinB.jpg - Schizonten
+
+/images/ovale/
+  - Po_rings_thinA.jpg    - Ring-stadium trofozoieten
+  - Po_rings_thinB.jpg    - Ring-stadium trofozoieten
+  - Po_rings_thinC.jpg    - Ring-stadium trofozoieten
+  - Po_troph_thinA.jpg    - Trofozoieten met fimbriatie
+  - Po_troph_thinB.jpg    - Trofozoieten met fimbriatie
+  - Po_troph_thinC.jpg    - Trofozoieten met fimbriatie
+  - Po_gametocyte_thinA.jpg - Gametocyten
+  - Po_gametocyte_thinB.jpg - Gametocyten
+  - Po_gametocyte_thinC.jpg - Gametocyten
+  - Po_schizont_thinA.jpg - Schizonten
+  - Po_schizont_thinB.jpg - Schizonten
+
+/images/malariae/
+  - Pm_ring_thinA.jpg     - Ring-stadium trofozoieten
+  - Pm_ring_thinB.jpg     - Ring-stadium trofozoieten
+  - Pm_ring_thinC.jpg     - Ring-stadium trofozoieten
+  - Pm_bandA.jpg          - Bandvorm trofozoieten
+  - Pm_bandB.jpg          - Bandvorm trofozoieten
+  - Pm_bandC.jpg          - Bandvorm trofozoieten
+  - Pm_bandD.jpg          - Bandvorm trofozoieten
+  - Pm_basketA.jpg        - Basket-vorm trofozoieten
+  - Pm_basketB.jpg        - Basket-vorm trofozoieten
+  - Pm_gametocyte_thinA.jpg - Gametocyten
+  - Pm_gametocyte_thinB.jpg - Gametocyten
+  - Pm_schizont_thinA.jpg - Schizonten (rozet)
+  - Pm_schizont_thinB.jpg - Schizonten (rozet)
+
+--------------------------------------------------------------------------------
+AANBEVOLEN CITATIE / RECOMMENDED CITATION
+--------------------------------------------------------------------------------
+
+CDC. DPDx - Laboratory Identification of Parasites of Public Health Concern:
+Malaria. Centers for Disease Control and Prevention.
+Available at: https://www.cdc.gov/dpdx/malaria/index.html
+
+================================================================================

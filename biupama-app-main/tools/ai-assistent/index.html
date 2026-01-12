@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistent - Tropengeneeskunde</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0f0d;
+            --bg-secondary: #111916;
+            --bg-card: #151d19;
+            --bg-card-hover: #1a2420;
+            --accent-green: #2dd4a0;
+            --accent-green-dim: #1a7a5c;
+            --accent-yellow: #fbbf24;
+            --accent-red: #f87171;
+            --accent-blue: #60a5fa;
+            --text-primary: #e8f0ec;
+            --text-secondary: #8b9d94;
+            --text-muted: #5a6b62;
+            --border: #243029;
+            --border-light: #2d3d34;
+            --shadow: 0 4px 24px rgba(0,0,0,0.4);
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--bg-secondary);
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 24px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--accent-green);
+        }
+
+        .header-title {
+            flex: 1;
+            text-align: center;
+        }
+
+        .header-title h1 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: var(--accent-green);
+        }
+
+        .header-title span {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Chat Container */
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .chat-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-container::-webkit-scrollbar-thumb {
+            background: var(--border-light);
+            border-radius: 3px;
+        }
+
+        /* Welcome Message */
+        .welcome-message {
+            text-align: center;
+            padding: 48px 24px;
+            color: var(--text-secondary);
+        }
+
+        .welcome-message h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .welcome-message p {
+            font-size: 0.9rem;
+            max-width: 400px;
+            margin: 0 auto 24px;
+        }
+
+        .example-questions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .example-btn {
+            padding: 8px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .example-btn:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--accent-green-dim);
+            color: var(--text-primary);
+        }
+
+        /* Messages */
+        .message {
+            display: flex;
+            gap: 12px;
+            animation: messageIn 0.3s ease;
+        }
+
+        @keyframes messageIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .message.user .message-avatar {
+            background: var(--accent-green-dim);
+        }
+
+        .message.assistant .message-avatar {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+        }
+
+        .message-content {
+            max-width: 75%;
+            padding: 12px 16px;
+            border-radius: var(--radius);
+        }
+
+        .message.user .message-content {
+            background: var(--accent-green-dim);
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.assistant .message-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-text {
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+        }
+
+        .message-text h2, .message-text h3, .message-text h4 {
+            color: var(--accent-green);
+            margin: 16px 0 8px;
+            font-size: 1rem;
+        }
+
+        .message-text h2:first-child,
+        .message-text h3:first-child,
+        .message-text h4:first-child {
+            margin-top: 0;
+        }
+
+        .message-text ul, .message-text ol {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+
+        .message-text li {
+            margin: 4px 0;
+        }
+
+        .message-text table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 0.85rem;
+        }
+
+        .message-text th, .message-text td {
+            padding: 8px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .message-text th {
+            background: var(--bg-primary);
+            color: var(--accent-green);
+        }
+
+        .message-text strong {
+            color: var(--accent-green);
+        }
+
+        .message-text code {
+            background: var(--bg-primary);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85em;
+        }
+
+        /* Sources */
+        .message-sources {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        .source-tag {
+            padding: 4px 10px;
+            background: var(--accent-green-dim);
+            color: var(--accent-green);
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .source-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-right: 4px;
+        }
+
+        /* Loading indicator */
+        .loading {
+            display: flex;
+            gap: 4px;
+            padding: 8px 0;
+        }
+
+        .loading span {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .loading span:nth-child(1) { animation-delay: -0.32s; }
+        .loading span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        /* Input Area */
+        .input-area {
+            padding: 16px 24px 24px;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+        }
+
+        .input-container {
+            display: flex;
+            gap: 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 12px 16px;
+            transition: border-color 0.2s;
+        }
+
+        .input-container:focus-within {
+            border-color: var(--accent-green-dim);
+        }
+
+        .input-container input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .input-container input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .send-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--accent-green);
+            border: none;
+            border-radius: var(--radius-sm);
+            color: var(--bg-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .send-btn:hover {
+            background: #3ae8b0;
+            transform: scale(1.05);
+        }
+
+        .send-btn:disabled {
+            background: var(--border);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .input-hint {
+            margin-top: 8px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .header {
+                padding: 12px 16px;
+            }
+
+            .chat-container {
+                padding: 16px;
+            }
+
+            .message-content {
+                max-width: 85%;
+            }
+
+            .input-area {
+                padding: 12px 16px 16px;
+            }
+
+            .example-questions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <a href="../../index.html" class="back-link">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+                Terug
+            </a>
+            <div class="header-title">
+                <h1>AI Assistent</h1>
+                <span>Tropengeneeskunde</span>
+            </div>
+            <div style="width: 60px;"></div>
+        </header>
+
+        <div class="chat-container" id="chatContainer">
+            <div class="welcome-message" id="welcomeMessage">
+                <h2>Hoe kan ik helpen?</h2>
+                <p>Stel een vraag over tropengeneeskunde. Ik doorzoek de studieinhoud en geef je relevante informatie.</p>
+                <div class="example-questions">
+                    <button class="example-btn" onclick="askQuestion('Wat is de behandeling van malaria?')">Behandeling malaria</button>
+                    <button class="example-btn" onclick="askQuestion('Wat zijn de symptomen van dengue?')">Symptomen dengue</button>
+                    <button class="example-btn" onclick="askQuestion('Hoe herken ik Katayama syndroom?')">Katayama syndroom</button>
+                    <button class="example-btn" onclick="askQuestion('Welke vaccins voor Afrika?')">Vaccinaties Afrika</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-area">
+            <div class="input-container">
+                <input
+                    type="text"
+                    id="userInput"
+                    placeholder="Stel een vraag over tropengeneeskunde..."
+                    autocomplete="off"
+                >
+                <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="input-hint">MVP versie - mock responses. LLM integratie volgt.</div>
+        </div>
+    </div>
+
+    <script src="knowledge.js"></script>
+    <script>
+        const chatContainer = document.getElementById('chatContainer');
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+
+        // Enter key to send
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        function askQuestion(question) {
+            userInput.value = question;
+            sendMessage();
+        }
+
+        function sendMessage() {
+            const query = userInput.value.trim();
+            if (!query) return;
+
+            // Hide welcome message
+            if (welcomeMessage) {
+                welcomeMessage.style.display = 'none';
+            }
+
+            // Add user message
+            addMessage(query, 'user');
+            userInput.value = '';
+
+            // Show loading
+            const loadingId = showLoading();
+
+            // Simulate processing delay
+            setTimeout(() => {
+                removeLoading(loadingId);
+
+                // Find relevant sections
+                const relevantSections = findRelevantSections(query);
+
+                // Generate response
+                const response = generateResponse(query, relevantSections);
+
+                // Add assistant message
+                addMessage(response.answer, 'assistant', response.sources);
+            }, 800);
+        }
+
+        function addMessage(content, type, sources = []) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+
+            const avatar = type === 'user' ? '👤' : '🤖';
+
+            let sourcesHtml = '';
+            if (sources.length > 0) {
+                sourcesHtml = `
+                    <div class="message-sources">
+                        <span class="source-label">Bronnen:</span>
+                        ${sources.map(s => `<span class="source-tag">${s.title}</span>`).join('')}
+                    </div>
+                `;
+            }
+
+            messageDiv.innerHTML = `
+                <div class="message-avatar">${avatar}</div>
+                <div class="message-content">
+                    <div class="message-text">${formatContent(content)}</div>
+                    ${sourcesHtml}
+                </div>
+            `;
+
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function formatContent(content) {
+            // Basic markdown-like formatting
+            return content
+                // Headers
+                .replace(/^### (.+)$/gm, '<h4>$1</h4>')
+                .replace(/^## (.+)$/gm, '<h3>$1</h3>')
+                // Bold
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                // Tables (simple)
+                .replace(/\|(.+)\|/g, (match) => {
+                    const cells = match.split('|').filter(c => c.trim());
+                    if (cells.every(c => c.trim() === '---' || c.trim().match(/^-+$/))) {
+                        return ''; // Skip separator rows
+                    }
+                    const isHeader = cells.some(c => c.includes('**'));
+                    const tag = isHeader ? 'th' : 'td';
+                    return `<tr>${cells.map(c => `<${tag}>${c.trim().replace(/\*\*/g, '')}</${tag}>`).join('')}</tr>`;
+                })
+                // Wrap table rows
+                .replace(/(<tr>.*<\/tr>\n?)+/gs, '<table>$&</table>')
+                // Lists
+                .replace(/^- (.+)$/gm, '<li>$1</li>')
+                .replace(/(<li>.*<\/li>\n?)+/gs, '<ul>$&</ul>')
+                // Line breaks
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n/g, '<br>');
+        }
+
+        function showLoading() {
+            const id = 'loading-' + Date.now();
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'message assistant';
+            loadingDiv.id = id;
+            loadingDiv.innerHTML = `
+                <div class="message-avatar">🤖</div>
+                <div class="message-content">
+                    <div class="loading">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            `;
+            chatContainer.appendChild(loadingDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            return id;
+        }
+
+        function removeLoading(id) {
+            const loadingDiv = document.getElementById(id);
+            if (loadingDiv) {
+                loadingDiv.remove();
+            }
+        }
+
+        // ============================================
+        // RETRIEVAL ENGINE
+        // ============================================
+
+        function findRelevantSections(query) {
+            const q = normalizeQuery(query);
+            const queryWords = q.split(/\s+/).filter(w => w.length > 2);
+
+            return knowledgeBase
+                .map(section => ({
+                    ...section,
+                    score: calculateRelevance(queryWords, section)
+                }))
+                .filter(s => s.score > 0)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 3);
+        }
+
+        function normalizeQuery(query) {
+            return query
+                .toLowerCase()
+                .replace(/[?!.,;:]/g, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function calculateRelevance(queryWords, section) {
+            let score = 0;
+
+            queryWords.forEach(word => {
+                // Title match (highest weight)
+                if (section.title.toLowerCase().includes(word)) {
+                    score += 10;
+                }
+
+                // Keyword match (high weight)
+                if (section.keywords.some(k => k.includes(word) || word.includes(k))) {
+                    score += 5;
+                }
+
+                // Summary match (medium weight)
+                if (section.summary.toLowerCase().includes(word)) {
+                    score += 3;
+                }
+
+                // Content match (lower weight)
+                if (section.content.toLowerCase().includes(word)) {
+                    score += 1;
+                }
+            });
+
+            return score;
+        }
+
+        // ============================================
+        // RESPONSE GENERATOR
+        // ============================================
+
+        function generateResponse(query, relevantSections) {
+            if (relevantSections.length === 0) {
+                return {
+                    sources: [],
+                    answer: `Ik heb geen specifieke informatie gevonden over "${query}".
+
+Probeer:
+- Andere zoektermen te gebruiken
+- Meer specifieke medische termen
+- Een vraag over een specifiek ziektebeeld of symptoom
+
+**Beschikbare onderwerpen:**
+Koorts, Diarree, Malaria, Dengue, Schistosomiasis, Strongyloidiasis, TBC, HIV, Vaccinaties, Malariapreventie, en meer.`
+                };
+            }
+
+            // Get the most relevant section's content
+            const primarySection = relevantSections[0];
+
+            // Format the response
+            let answer = `## ${primarySection.title}\n\n`;
+            answer += primarySection.content;
+
+            // Add note about additional sources if multiple found
+            if (relevantSections.length > 1) {
+                answer += `\n\n---\n*Gerelateerde onderwerpen: ${relevantSections.slice(1).map(s => s.title).join(', ')}*`;
+            }
+
+            return {
+                sources: relevantSections.map(s => ({ title: s.title, id: s.id })),
+                answer: answer
+            };
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malaria Microscopie Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --accent-red: #c41e3a;
+            --accent-gold: #d4a373;
+            --text-primary: #e8e6e3;
+            --text-secondary: #8a8a8a;
+            --border: #2a2a35;
+            --correct: #2d5a27;
+            --incorrect: #5a2727;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Source Serif 4', Georgia, serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h1 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent-red), var(--accent-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle { font-size: 0.95rem; color: var(--text-secondary); font-style: italic; }
+
+        .score-bar {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        .score-item { display: flex; align-items: center; gap: 0.5rem; }
+        .score-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .score-dot.correct { background: var(--correct); }
+        .score-dot.incorrect { background: var(--incorrect); }
+        .score-dot.total { background: var(--accent-gold); }
+
+        .microscope-view {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .microscope-view::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-red), var(--accent-gold));
+        }
+
+        .view-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .slide-container {
+            width: 100%;
+            aspect-ratio: 4/3;
+            background: #1a1a24;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .slide-image { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .loading { color: var(--text-secondary); font-style: italic; }
+
+        .image-credit {
+            margin-top: 0.75rem;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-align: right;
+        }
+        .image-credit a { color: var(--accent-gold); text-decoration: none; }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .option-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            color: var(--text-primary);
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--accent-gold);
+            transform: translateY(-2px);
+        }
+
+        .option-btn:disabled { cursor: not-allowed; }
+        .option-btn.correct { background: var(--correct); border-color: #4a8a44; }
+        .option-btn.incorrect { background: var(--incorrect); border-color: #8a4444; }
+        .option-btn.reveal { border-color: #4a8a44; }
+
+        .option-name {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        .option-latin { font-style: italic; font-size: 0.85rem; color: var(--text-secondary); }
+
+        .explanation-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            display: none;
+        }
+        .explanation-panel.visible { display: block; animation: slideIn 0.3s ease; }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .explanation-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent-gold);
+            margin-bottom: 1rem;
+        }
+
+        .explanation-content h3 { font-size: 1.1rem; margin-bottom: 0.75rem; }
+        .explanation-content p { margin-bottom: 0.75rem; color: var(--text-secondary); }
+        .explanation-content strong { color: var(--text-primary); }
+
+        .feature-list { margin: 1rem 0; padding-left: 1.5rem; }
+        .feature-list li { margin-bottom: 0.5rem; color: var(--text-secondary); }
+
+        .clinical-note {
+            background: rgba(196, 30, 58, 0.1);
+            border-left: 3px solid var(--accent-red);
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .clinical-note-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent-red);
+            margin-bottom: 0.5rem;
+        }
+
+        .next-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-red), #8b1428);
+            border: none;
+            border-radius: 8px;
+            padding: 1rem;
+            color: white;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: none;
+        }
+        .next-btn.visible { display: block; }
+        .next-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(196, 30, 58, 0.3); }
+
+        .legend {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(212, 163, 115, 0.05);
+            border-radius: 8px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .legend-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent-gold);
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 600px) {
+            .options-grid { grid-template-columns: 1fr; }
+            .container { padding: 1rem; }
+            h1 { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔬 Malaria Microscopie Quiz</h1>
+            <p class="subtitle">Identificeer de Plasmodium-soort in de dunne bloeduitstrijk</p>
+            <div class="score-bar">
+                <div class="score-item">
+                    <span class="score-dot correct"></span>
+                    <span>Correct: <span id="correct-count">0</span></span>
+                </div>
+                <div class="score-item">
+                    <span class="score-dot incorrect"></span>
+                    <span>Fout: <span id="incorrect-count">0</span></span>
+                </div>
+                <div class="score-item">
+                    <span class="score-dot total"></span>
+                    <span>Vraag: <span id="question-num">1</span>/10</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="microscope-view">
+            <div class="view-header">
+                <span>Dunne uitstrijk • Giemsa kleuring</span>
+                <span id="stage-info">Ring-stadium</span>
+            </div>
+            <div class="slide-container">
+                <img id="slide-image" class="slide-image" src="" alt="Malaria bloeduitstrijk">
+                <span class="loading" id="loading">Afbeelding laden...</span>
+            </div>
+            <div class="image-credit">
+                Bron: <a href="https://www.cdc.gov/dpdx/malaria/index.html" target="_blank">CDC DPDx</a> - Public Domain (zie CREDITS.txt)
+            </div>
+        </div>
+
+        <div class="options-grid" id="options-grid"></div>
+
+        <div class="explanation-panel" id="explanation-panel">
+            <div class="explanation-title">Uitleg</div>
+            <div class="explanation-content" id="explanation-content"></div>
+        </div>
+
+        <button class="next-btn" id="next-btn">Volgende vraag →</button>
+
+        <div class="legend">
+            <div class="legend-title">Tip</div>
+            <p>Let op: erytrocytgrootte, parasietmorfologie, aanwezigheid van stippling (Schüffner's dots, Maurer's clefts), en specifieke kenmerken zoals bandvormen of sikkelvormen.</p>
+        </div>
+    </div>
+
+    <script>
+        const malariaData = {
+            falciparum: {
+                id: 'falciparum',
+                name: 'P. falciparum',
+                latin: 'Plasmodium falciparum',
+                images: [
+                    { url: 'images/falciparum/Pf_rings_thinA.jpg', stage: 'Ring-stadium' },
+                    { url: 'images/falciparum/Pf_rings_thinB.jpg', stage: 'Ring-stadium' },
+                    { url: 'images/falciparum/Pf_rings_thinC.jpg', stage: 'Ring-stadium' },
+                    { url: 'images/falciparum/Pf_rings_thinD.jpg', stage: 'Ring-stadium' },
+                    { url: 'images/falciparum/Pf_MaurersA.jpg', stage: "Ring met Maurer's clefts" },
+                    { url: 'images/falciparum/Pf_MaurersB.jpg', stage: "Ring met Maurer's clefts" },
+                    { url: 'images/falciparum/Pf_MaurersC.jpg', stage: "Ring met Maurer's clefts" },
+                    { url: 'images/falciparum/Pf_gametocyte_thinA.jpg', stage: 'Gametocyt (sikkel)' },
+                    { url: 'images/falciparum/Pf_gametocyte_thinB.jpg', stage: 'Gametocyt (sikkel)' },
+                    { url: 'images/falciparum/Pf_gametocyte_thinC.jpg', stage: 'Gametocyt (sikkel)' },
+                    { url: 'images/falciparum/Pf_troph_thinA.jpg', stage: 'Trofozoïet' },
+                    { url: 'images/falciparum/Pf_troph_thinB.jpg', stage: 'Trofozoïet' },
+                    { url: 'images/falciparum/Pf_schizont_thinA.jpg', stage: 'Schizont' },
+                    { url: 'images/falciparum/Pf_schizont_thinB.jpg', stage: 'Schizont' }
+                ],
+                explanation: {
+                    title: 'Plasmodium falciparum - Malaria tropica',
+                    description: 'De gevaarlijkste vorm van malaria, verantwoordelijk voor de meeste malaria-gerelateerde sterfgevallen.',
+                    keyFeatures: [
+                        '<strong>Normale erytrocytgrootte</strong> - geïnfecteerde RBCs zijn niet vergroot',
+                        '<strong>Delicate, kleine ringvormen</strong> - vaak met dubbele chromatine stippen ("headphone forms")',
+                        '<strong>Meerdere ringen per cel</strong> - pathognomonisch voor P. falciparum',
+                        '<strong>Appliqué/accolé vormen</strong> - ringen aan de rand van de cel',
+                        "<strong>Maurer's clefts</strong> - grove, onregelmatige roze-rode vlekken",
+                        '<strong>Sikkel-/banaanvormige gametocyten</strong> - zeer karakteristiek!',
+                        '<strong>Meestal alleen ringvormen</strong> in perifeer bloed'
+                    ],
+                    clinical: 'Kan leiden tot cerebrale malaria, ernstige anemie, en multi-orgaanfalen. Directe behandeling is essentieel. Parasitemie kan zeer hoog oplopen (>5%).'
+                }
+            },
+            vivax: {
+                id: 'vivax',
+                name: 'P. vivax',
+                latin: 'Plasmodium vivax',
+                images: [
+                    { url: 'images/vivax/Pv_rings_thinA.jpg', stage: 'Ring-stadium' },
+                    { url: 'images/vivax/Pv_rings_thinB.jpg', stage: 'Ring-stadium' },
+                    { url: 'images/vivax/Pv_rings_thinC.jpg', stage: 'Ring-stadium' },
+                    { url: 'images/vivax/Pv_troph_thinA.jpg', stage: 'Amoeboïde trofozoïet' },
+                    { url: 'images/vivax/Pv_troph_thinB.jpg', stage: 'Amoeboïde trofozoïet' },
+                    { url: 'images/vivax/Pv_troph_thinC.jpg', stage: 'Amoeboïde trofozoïet' },
+                    { url: 'images/vivax/Pv_troph_thinD.jpg', stage: 'Amoeboïde trofozoïet' },
+                    { url: 'images/vivax/Pv_schizont_thinA.jpg', stage: 'Schizont' },
+                    { url: 'images/vivax/Pv_schizont_thinB.jpg', stage: 'Schizont' },
+                    { url: 'images/vivax/Pv_gametocyte_thinA.jpg', stage: 'Gametocyt' },
+                    { url: 'images/vivax/Pv_gametocyte_thinB.jpg', stage: 'Gametocyt' }
+                ],
+                explanation: {
+                    title: 'Plasmodium vivax - Malaria tertiana',
+                    description: 'De meest voorkomende malariasoort buiten Afrika. Kan recidieven veroorzaken door hypnozoïeten in de lever.',
+                    keyFeatures: [
+                        '<strong>Vergrote erytrocyten</strong> - geïnfecteerde cellen zijn 1.5-2× normaal',
+                        "<strong>Schüffner's stippling</strong> - fijne, abundante roze stippen over hele cel",
+                        '<strong>Grote, dikke ringvormen</strong> - met enkele chromatine stip',
+                        '<strong>Amoeboïde trofozoïeten</strong> - onregelmatige, uitgebreide vorm',
+                        '<strong>Alle stadia zichtbaar</strong> in perifeer bloed',
+                        '<strong>12-24 merozoïeten</strong> per schizont',
+                        '<strong>Fijn, geelbruin pigment</strong>'
+                    ],
+                    clinical: 'Veroorzaakt tertiaire koorts (om de 48 uur). Behandeling vereist primaquine voor radicale genezing (eliminatie hypnozoïeten). Let op G6PD-deficiëntie!'
+                }
+            },
+            ovale: {
+                id: 'ovale',
+                name: 'P. ovale',
+                latin: 'Plasmodium ovale',
+                images: [
+                    { url: 'images/ovale/Po_rings_thinA.jpg', stage: 'Ring-stadium' },
+                    { url: 'images/ovale/Po_rings_thinB.jpg', stage: 'Ring-stadium' },
+                    { url: 'images/ovale/Po_rings_thinC.jpg', stage: 'Ring-stadium' },
+                    { url: 'images/ovale/Po_troph_thinA.jpg', stage: 'Trofozoïet met fimbriatie' },
+                    { url: 'images/ovale/Po_troph_thinB.jpg', stage: 'Trofozoïet met fimbriatie' },
+                    { url: 'images/ovale/Po_troph_thinC.jpg', stage: 'Trofozoïet met fimbriatie' },
+                    { url: 'images/ovale/Po_schizont_thinA.jpg', stage: 'Schizont' },
+                    { url: 'images/ovale/Po_schizont_thinB.jpg', stage: 'Schizont' },
+                    { url: 'images/ovale/Po_gametocyte_thinA.jpg', stage: 'Gametocyt' },
+                    { url: 'images/ovale/Po_gametocyte_thinB.jpg', stage: 'Gametocyt' },
+                    { url: 'images/ovale/Po_gametocyte_thinC.jpg', stage: 'Gametocyt' }
+                ],
+                explanation: {
+                    title: 'Plasmodium ovale - Malaria tertiana',
+                    description: 'Relatief zeldzame malariasoort, voornamelijk in West-Afrika. Mildere ziekte dan P. vivax.',
+                    keyFeatures: [
+                        '<strong>Ovale erytrocyten</strong> - karakteristieke ovale/elliptische vorm',
+                        '<strong>Gerafelde celranden (fimbriated edges)</strong> - pathognomonisch!',
+                        '<strong>Licht vergrote cellen</strong> - minder dan bij P. vivax',
+                        "<strong>Schüffner's stippling</strong> - vroeg zichtbaar, prominent",
+                        '<strong>Compacte trofozoïeten</strong> - minder amoeboïd dan P. vivax',
+                        '<strong>6-14 merozoïeten</strong> per schizont (gemiddeld 8)',
+                        '<strong>Donkerbruin pigment</strong>'
+                    ],
+                    clinical: 'Mildere koorts dan P. vivax. Ook hypnozoïeten aanwezig, dus primaquine nodig. Komt vooral voor in West-Afrika.'
+                }
+            },
+            malariae: {
+                id: 'malariae',
+                name: 'P. malariae',
+                latin: 'Plasmodium malariae',
+                images: [
+                    { url: 'images/malariae/Pm_ring_thinA.jpg', stage: 'Ring-stadium' },
+                    { url: 'images/malariae/Pm_ring_thinB.jpg', stage: 'Ring-stadium' },
+                    { url: 'images/malariae/Pm_ring_thinC.jpg', stage: 'Ring-stadium' },
+                    { url: 'images/malariae/Pm_bandA.jpg', stage: 'Bandvorm trofozoïet' },
+                    { url: 'images/malariae/Pm_bandB.jpg', stage: 'Bandvorm trofozoïet' },
+                    { url: 'images/malariae/Pm_bandC.jpg', stage: 'Bandvorm trofozoïet' },
+                    { url: 'images/malariae/Pm_bandD.jpg', stage: 'Bandvorm trofozoïet' },
+                    { url: 'images/malariae/Pm_basketA.jpg', stage: 'Basket-vorm trofozoïet' },
+                    { url: 'images/malariae/Pm_basketB.jpg', stage: 'Basket-vorm trofozoïet' },
+                    { url: 'images/malariae/Pm_schizont_thinA.jpg', stage: 'Schizont (rozet)' },
+                    { url: 'images/malariae/Pm_schizont_thinB.jpg', stage: 'Schizont (rozet)' },
+                    { url: 'images/malariae/Pm_gametocyte_thinA.jpg', stage: 'Gametocyt' },
+                    { url: 'images/malariae/Pm_gametocyte_thinB.jpg', stage: 'Gametocyt' }
+                ],
+                explanation: {
+                    title: 'Plasmodium malariae - Malaria quartana',
+                    description: 'Minst voorkomende van de vier grote soorten. Langzame vermenigvuldiging en milde symptomen.',
+                    keyFeatures: [
+                        '<strong>Normale of kleinere erytrocytgrootte</strong> - cellen niet vergroot',
+                        '<strong>Geen stippling</strong> - belangrijk onderscheid met P. vivax/ovale!',
+                        '<strong>Bandvormen</strong> - trofozoïeten strekken zich uit als band over de cel',
+                        '<strong>Rozet-schizonten</strong> - 6-12 merozoïeten in karakteristiek rozet-patroon',
+                        '<strong>Compacte, regelmatige vormen</strong> - geen amoeboïde beweging',
+                        '<strong>Grof, donkerbruin pigment</strong> - perifeer in de cel',
+                        '<strong>Lage parasitemie</strong> - zelden >1%'
+                    ],
+                    clinical: 'Veroorzaakt quartane koorts (om de 72 uur). Geen hypnozoïeten, maar kan jarenlang persisteren. Geassocieerd met nefrotisch syndroom.'
+                }
+            }
+        };
+
+        const speciesOrder = ['falciparum', 'vivax', 'ovale', 'malariae'];
+        let currentQuestion = 0, correctCount = 0, incorrectCount = 0;
+        let currentSpecies = null, currentImage = null, answered = false, questionOrder = [];
+
+        function shuffle(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        function generateQuestionOrder() {
+            const questions = [];
+            speciesOrder.forEach(species => {
+                const data = malariaData[species];
+                const imgs = shuffle([...data.images]);
+                const count = 2 + Math.floor(Math.random() * 2);
+                for (let i = 0; i < count && i < imgs.length; i++) {
+                    questions.push({ species, image: imgs[i] });
+                }
+            });
+            return shuffle(questions).slice(0, 10);
+        }
+
+        function loadQuestion() {
+            const q = questionOrder[currentQuestion];
+            currentSpecies = malariaData[q.species];
+            currentImage = q.image;
+            document.getElementById('stage-info').textContent = currentImage.stage;
+            const img = document.getElementById('slide-image');
+            const loading = document.getElementById('loading');
+            img.style.display = 'none';
+            loading.style.display = 'block';
+            loading.textContent = 'Afbeelding laden...';
+            img.onload = () => { loading.style.display = 'none'; img.style.display = 'block'; };
+            img.onerror = () => { loading.textContent = 'Afbeelding kon niet worden geladen'; };
+            img.src = currentImage.url;
+        }
+
+        function generateOptions() {
+            const grid = document.getElementById('options-grid');
+            grid.innerHTML = '';
+            shuffle(speciesOrder).forEach(id => {
+                const s = malariaData[id];
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.dataset.id = s.id;
+                btn.innerHTML = `<div class="option-name">${s.name}</div><div class="option-latin">${s.latin}</div>`;
+                btn.onclick = () => selectAnswer(s.id);
+                grid.appendChild(btn);
+            });
+        }
+
+        function selectAnswer(id) {
+            if (answered) return;
+            answered = true;
+            const correct = id === currentSpecies.id;
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.disabled = true;
+                if (btn.dataset.id === id) btn.classList.add(correct ? 'correct' : 'incorrect');
+                if (btn.dataset.id === currentSpecies.id) { btn.classList.add('reveal'); if (!correct) btn.classList.add('correct'); }
+            });
+            if (correct) { correctCount++; document.getElementById('correct-count').textContent = correctCount; }
+            else { incorrectCount++; document.getElementById('incorrect-count').textContent = incorrectCount; }
+            showExplanation(correct);
+            document.getElementById('next-btn').classList.add('visible');
+        }
+
+        function showExplanation(wasCorrect) {
+            const exp = currentSpecies.explanation;
+            document.getElementById('explanation-content').innerHTML = `
+                <h3>${wasCorrect ? '✓ Correct! ' : '✗ Helaas. '}${exp.title}</h3>
+                <p>${exp.description}</p>
+                <div class="explanation-title" style="margin-top:1rem;">Kenmerkende bevindingen</div>
+                <ul class="feature-list">${exp.keyFeatures.map(f => `<li>${f}</li>`).join('')}</ul>
+                <div class="clinical-note">
+                    <div class="clinical-note-title">Klinische relevantie</div>
+                    <p style="margin:0;color:var(--text-secondary);">${exp.clinical}</p>
+                </div>`;
+            document.getElementById('explanation-panel').classList.add('visible');
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion >= 10) { showFinalScore(); return; }
+            answered = false;
+            document.getElementById('question-num').textContent = currentQuestion + 1;
+            document.getElementById('explanation-panel').classList.remove('visible');
+            document.getElementById('next-btn').classList.remove('visible');
+            loadQuestion();
+            generateOptions();
+        }
+
+        function showFinalScore() {
+            const pct = Math.round((correctCount / 10) * 100);
+            let msg = pct >= 90 ? 'Uitstekend! Je bent klaar voor de tropenkliniek! 🎉' :
+                      pct >= 70 ? 'Goed gedaan! Met wat meer oefening word je een expert.' :
+                      pct >= 50 ? 'Niet slecht, maar er is ruimte voor verbetering.' :
+                      'Blijf oefenen! De verschillen worden duidelijker met ervaring.';
+            document.querySelector('.container').innerHTML = `
+                <header style="margin-bottom:2rem;"><h1>🔬 Quiz Voltooid!</h1></header>
+                <div class="microscope-view" style="text-align:center;padding:3rem;">
+                    <h2 style="font-size:3rem;margin-bottom:1rem;">${correctCount}/10</h2>
+                    <p style="font-size:1.2rem;color:var(--text-secondary);margin-bottom:1.5rem;">${pct}% correct</p>
+                    <p style="color:var(--accent-gold);">${msg}</p>
+                </div>
+                <button class="next-btn visible" onclick="location.reload()" style="margin-top:1rem;">Opnieuw spelen</button>
+                <div class="legend" style="margin-top:2rem;">
+                    <div class="legend-title">Samenvatting onderscheidende kenmerken</div>
+                    <p style="margin-top:0.75rem;"><strong style="color:var(--text-primary);">P. falciparum:</strong> Normale RBC, kleine delicate ringen, meerdere parasieten/cel, Maurer's clefts, sikkel-gametocyten</p>
+                    <p style="margin-top:0.5rem;"><strong style="color:var(--text-primary);">P. vivax:</strong> Vergrote RBC (1.5-2×), Schüffner's dots, amoeboïde trofozoïeten, alle stadia zichtbaar</p>
+                    <p style="margin-top:0.5rem;"><strong style="color:var(--text-primary);">P. ovale:</strong> Ovale RBC met gerafelde rand (fimbriatie), Schüffner's dots, compacte parasieten</p>
+                    <p style="margin-top:0.5rem;"><strong style="color:var(--text-primary);">P. malariae:</strong> Normale/kleine RBC, géén stippling, bandvormen, rozet-schizonten</p>
+                </div>
+                <div class="legend" style="margin-top:1rem;">
+                    <div class="legend-title">Bronvermelding</div>
+                    <p>Alle afbeeldingen: <a href="https://www.cdc.gov/dpdx/malaria/index.html" target="_blank" style="color:var(--accent-gold);">CDC DPDx database</a> (public domain)</p>
+                </div>`;
+        }
+
+        questionOrder = generateQuestionOrder();
+        loadQuestion();
+        generateOptions();
+        document.getElementById('next-btn').onclick = nextQuestion;
+    </script>
+</body>
+</html>
