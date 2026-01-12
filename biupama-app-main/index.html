@@ -106,6 +106,29 @@
             border-radius: 3px;
         }
 
+        .home-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 8px;
+        }
+
+        .home-btn:hover {
+            color: var(--accent-green);
+            background: var(--bg-card);
+        }
+
+        .home-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
         .logo {
             padding: 0 24px 24px;
             border-bottom: 1px solid var(--border);
@@ -842,6 +865,13 @@
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
     <div class="app-container">
         <nav class="sidebar" id="sidebar">
+            <a href="../index.html" class="home-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                AMA Hub
+            </a>
             <div class="logo">
                 <h1>Tropengeneeskunde</h1>
                 <span>Naslagwerk dd 12-1-2026</span>
@@ -2277,6 +2307,10 @@
                                     <li>Koorts, malaise (systemische symptomen)</li>
                                     <li>Porte d'entrée: wond, tinea pedis, ulcus</li>
                                 </ul>
+
+                                <div class="alert alert-info" style="margin-top: 16px;">
+                                    <strong>Diagnostische overweging:</strong> Bij een huidontsteking die <em>niet</em> bij een haarzakje zit (geen folliculitis/furunkel), moet je denken aan bacteriëmie als oorzaak. De bacteriën kunnen via de bloedbaan de huid hebben bereikt.
+                                </div>
 
                                 <div class="alert alert-danger" style="margin-top: 16px;">
                                     <strong>Rode vlaggen - overweeg necrotiserende fasciitis:</strong>
@@ -10082,13 +10116,13 @@
                                         <td><strong>Gonorroe</strong></td>
                                         <td>Neisseria gonorrhoeae (diplocok)</td>
                                         <td>♂: urethrale fluor, dysurie<br>♀: vaak asymptomatisch, cervicitis<br>Extra-genitaal: faryngitis, proctitis<br>Gedissemineerd: artritis, dermatitis</td>
-                                        <td>Ceftriaxon 500mg IM eenmalig<br>(+ azitromycine 1g vanwege co-infectie)</td>
+                                        <td>Ceftriaxon 1g IM eenmalig<br>(+ azitromycine 1g vanwege co-infectie)</td>
                                         <td>2-7 dagen</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Chlamydia</strong></td>
                                         <td>Chlamydia trachomatis (serotype D-K)</td>
-                                        <td>♂: urethritis (>50% asymptomatisch)<br>♀: cervicitis, PID<br>Complicaties: epididymitis, Reiter syndroom</td>
+                                        <td>♂: urethritis (>50% asymptomatisch)<br>♀: cervicitis, PID<br>Complicaties: epididymitis, SARA (Sexually Acquired Reactive Arthritis: reactieve artritis na SOA, klassieke trias van artritis, urethritis en conjunctivitis)</td>
                                         <td>Azitromycine 1g eenmalig<br>OF doxycycline 100mg 2dd 7d</td>
                                         <td>7-21 dagen</td>
                                     </tr>
@@ -10187,7 +10221,7 @@
                                     <tr>
                                         <td>Urethritis</td>
                                         <td>Chlamydia, Gonorroe</td>
-                                        <td>Ceftriaxon 500mg IM + Azitromycine 1g</td>
+                                        <td>Ceftriaxon 1g IM + Azitromycine 1g</td>
                                     </tr>
                                     <tr>
                                         <td>Genitale ulcera</td>
@@ -10204,8 +10238,17 @@
                                         <td>LGV, Chancroid</td>
                                         <td></td>
                                     </tr>
+                                    <tr>
+                                        <td>Epididymitis</td>
+                                        <td>Chlamydia, Gonorroe</td>
+                                        <td>Ceftriaxon 1g IM + Doxycycline 100mg 2dd 14 dagen</td>
+                                    </tr>
                                 </tbody>
                             </table>
+
+                            <div class="alert alert-warning" style="margin-top: 16px;">
+                                <strong>Recidiverende urethritiden:</strong> Verwijs naar uroloog. Overweeg metronidazol 2g p.o. eenmalig (Trichomonas) of valaciclovir (HSV). Laagdrempelig overleg.
+                            </div>
                         </div>
                     </div>
                 </div>

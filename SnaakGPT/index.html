@@ -91,6 +91,26 @@
             font-size: 0.9rem;
         }
 
+        .home-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border: 2px solid var(--terminal-green);
+            background: transparent;
+            color: var(--terminal-green);
+            text-decoration: none;
+            margin-right: 15px;
+            transition: all 0.1s;
+        }
+
+        .home-btn:hover {
+            background: var(--terminal-green);
+            color: var(--terminal-bg);
+            box-shadow: 0 0 15px var(--glow);
+        }
+
         .hud-title {
             font-size: 1.5rem;
             letter-spacing: 3px;
@@ -620,7 +640,15 @@
     <div class="terminal-container">
         <!-- HUD Header -->
         <div class="hud-header">
-            <div class="hud-title">⬛ SNAAK COMMAND CENTER</div>
+            <div style="display: flex; align-items: center;">
+                <a href="../index.html" class="home-btn" title="Terug naar AMA Hub">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                        <polyline points="9 22 9 12 15 12 15 22"/>
+                    </svg>
+                </a>
+                <div class="hud-title">⬛ SNAAK COMMAND CENTER</div>
+            </div>
             <div class="hud-stats">
                 <div class="stat">
                     <div class="stat-label">SCORE</div>
