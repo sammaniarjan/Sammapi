@@ -708,7 +708,7 @@
     </div>
 
     <!-- Info section -->
-    <div class="info-section">
+    <div class="info-section" id="infoSection">
       <h3>Hoe werkt het?</h3>
       <div class="info-grid">
         <div class="info-item">
@@ -1260,6 +1260,7 @@
 
           // Show calendar
           document.getElementById('emptyState').style.display = 'none';
+          document.getElementById('infoSection').style.display = 'none';
           document.getElementById('calendarSection').style.display = 'block';
 
           // Update status
@@ -1298,6 +1299,7 @@
       currentDate = new Date(events[0].start);
 
       document.getElementById('emptyState').style.display = 'none';
+      document.getElementById('infoSection').style.display = 'none';
       document.getElementById('calendarSection').style.display = 'block';
       document.getElementById('totalEvents').textContent = events.length;
 
