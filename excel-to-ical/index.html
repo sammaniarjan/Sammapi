@@ -122,7 +122,24 @@
 
     .empty-state p {
       color: #64748b;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
+    }
+
+    .empty-state .upload-btn {
+      display: inline-flex;
+      padding: 14px 28px;
+      font-size: 1rem;
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .empty-state .upload-btn:hover {
+      box-shadow: 0 6px 24px rgba(16, 185, 129, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .empty-state .upload-btn svg {
+      width: 22px;
+      height: 22px;
     }
 
     /* Calendar Navigation */
@@ -473,6 +490,58 @@
       color: #fff;
     }
 
+    .clear-btn:hover {
+      border-color: #ef4444;
+      color: #ef4444;
+      background: rgba(239, 68, 68, 0.1);
+    }
+
+    /* Drop overlay */
+    .drop-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(16, 185, 129, 0.1);
+      border: 3px dashed #10b981;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .drop-overlay.active {
+      display: flex;
+    }
+
+    .drop-overlay-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      padding: 40px;
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: 16px;
+      color: #10b981;
+    }
+
+    .drop-overlay-content span {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .disclaimer {
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: rgba(251, 191, 36, 0.1);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      border-radius: 8px;
+      font-size: 0.8rem;
+      color: #fbbf24;
+    }
+
     /* Mobile */
     @media (max-width: 640px) {
       .app-header {
@@ -517,6 +586,18 @@
   </style>
 </head>
 <body>
+  <!-- Drop overlay -->
+  <div id="dropOverlay" class="drop-overlay">
+    <div class="drop-overlay-content">
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="17 8 12 3 7 8"/>
+        <line x1="12" y1="3" x2="12" y2="15"/>
+      </svg>
+      <span>Laat los om te uploaden</span>
+    </div>
+  </div>
+
   <div class="app">
     <!-- Header -->
     <header class="app-header">
@@ -528,7 +609,6 @@
       </a>
       <div class="app-title">
         <h1>AMA Rooster</h1>
-        <span class="badge">DGOTC</span>
       </div>
       <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -597,15 +677,29 @@
             <span id="modifiedEvents">0</span> gewijzigd
           </span>
         </div>
-        <button class="export-btn" onclick="exportIcal()">
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-            <polyline points="7 10 12 15 17 10"/>
-            <line x1="12" y1="15" x2="12" y2="3"/>
-          </svg>
-          Export iCal
-        </button>
+        <div style="display: flex; gap: 8px;">
+          <button class="export-btn" onclick="exportIcal()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Export iCal
+          </button>
+          <button class="export-btn clear-btn" onclick="clearRooster()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+            </svg>
+            Wis rooster
+          </button>
+        </div>
       </div>
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="disclaimer">
+      <strong>Let op:</strong> Je bent zelf verantwoordelijk voor het controleren van je rooster. Check regelmatig de officiële bron, aangezien roosters frequent wijzigen.
     </div>
   </div>
 
@@ -988,6 +1082,14 @@
       setView('week');
     }
 
+    // Clear rooster
+    function clearRooster() {
+      if (confirm('Weet je zeker dat je het rooster wilt wissen? Dit kan niet ongedaan worden gemaakt.')) {
+        localStorage.removeItem(STORAGE_KEY);
+        location.reload();
+      }
+    }
+
     // Export iCal
     function exportIcal() {
       const lines = [
@@ -1103,6 +1205,44 @@
 
       renderCalendar();
     }
+
+    // Drag and drop anywhere on page
+    let dragCounter = 0;
+    const dropOverlay = document.getElementById('dropOverlay');
+
+    document.addEventListener('dragenter', e => {
+      e.preventDefault();
+      dragCounter++;
+      dropOverlay.classList.add('active');
+    });
+
+    document.addEventListener('dragleave', e => {
+      e.preventDefault();
+      dragCounter--;
+      if (dragCounter === 0) {
+        dropOverlay.classList.remove('active');
+      }
+    });
+
+    document.addEventListener('dragover', e => {
+      e.preventDefault();
+    });
+
+    document.addEventListener('drop', e => {
+      e.preventDefault();
+      dragCounter = 0;
+      dropOverlay.classList.remove('active');
+
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        const file = files[0];
+        if (file.name.match(/\.xlsx?$/i)) {
+          processFile(file);
+        } else {
+          alert('Upload alleen Excel bestanden (.xlsx of .xls)');
+        }
+      }
+    });
   </script>
 </body>
 </html>
