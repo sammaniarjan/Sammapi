@@ -254,6 +254,16 @@
             color: var(--accent);
         }
 
+        .footer-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--accent);
+        }
+
         /* Mobile */
         @media (max-width: 640px) {
             .container {
@@ -397,7 +407,10 @@
         </div>
 
         <footer class="footer">
-            <p class="footer-text"><span>//</span> AMA Hub v1.0</p>
+            <p class="footer-text">
+                <span>&copy;</span> Arjan Sammani ·
+                <a href="https://www.linkedin.com/in/arjan-sammani/" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+            </p>
         </footer>
     </div>
 </body>
