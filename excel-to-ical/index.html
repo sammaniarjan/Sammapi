@@ -175,6 +175,25 @@
       color: #fff;
     }
 
+    .today-btn {
+      padding: 8px 12px;
+      background: transparent;
+      border: 1px solid rgba(71, 85, 105, 0.5);
+      border-radius: 6px;
+      color: #94a3b8;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-left: 8px;
+    }
+
+    .today-btn:hover {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: #10b981;
+      color: #10b981;
+    }
+
     .nav-title {
       font-size: 1.1rem;
       font-weight: 600;
@@ -724,6 +743,7 @@
               <polyline points="9 18 15 12 9 6"/>
             </svg>
           </button>
+          <button class="today-btn" onclick="goToToday()">Vandaag</button>
         </div>
         <div class="view-toggle">
           <button class="view-btn active" id="weekBtn" onclick="setView('week')">Week</button>
@@ -1153,6 +1173,11 @@
     function goToDay(timestamp) {
       currentDate = new Date(timestamp);
       setView('week');
+    }
+
+    function goToToday() {
+      currentDate = new Date();
+      renderCalendar();
     }
 
     // Clear rooster
