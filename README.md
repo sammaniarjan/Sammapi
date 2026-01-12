@@ -1,6 +1,6 @@
 # AMA Hub
 
-Centrale portal voor drie applicaties gebruikt tijdens de BIUPAMA opleiding (militaire tropengeneeskunde).
+Centrale portal voor drie applicaties. Made for fun. Op eigen initiatief. 
 
 ## Apps
 
@@ -12,7 +12,7 @@ Centrale portal voor drie applicaties gebruikt tijdens de BIUPAMA opleiding (mil
 
 ## Gebruik
 
-Open `index.html` in je browser of bezoek de [live versie](https://arjansammani.github.io/ama-hub/).
+Open `index.html` in je browser of bezoek de [live versie](https://ama-app.pages.dev).
 
 ## Lokaal draaien
 
