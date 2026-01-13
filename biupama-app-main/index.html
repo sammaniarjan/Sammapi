@@ -860,6 +860,70 @@
             font-size: 0.75rem;
             color: var(--text-muted);
         }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            .sidebar, .mobile-header, .section-controls, .modal-overlay, .card-toggle {
+                display: none !important;
+            }
+            .app-container {
+                display: block !important;
+            }
+            .main-content {
+                padding: 0 !important;
+            }
+            .section:not(.print-section) {
+                display: none !important;
+            }
+            .section.print-section {
+                display: block !important;
+            }
+            .section.print-section .card-content {
+                display: block !important;
+                max-height: none !important;
+            }
+            .card {
+                background: white !important;
+                border: 1px solid #ccc !important;
+                break-inside: avoid;
+                margin-bottom: 1rem !important;
+            }
+            .card-header {
+                background: #f5f5f5 !important;
+                color: black !important;
+            }
+            .card-title, .card-subtitle {
+                color: black !important;
+            }
+            .section-title {
+                color: black !important;
+            }
+            table {
+                border-collapse: collapse !important;
+            }
+            th, td {
+                border: 1px solid #ccc !important;
+                padding: 4px 8px !important;
+                color: black !important;
+            }
+            th {
+                background: #eee !important;
+            }
+            .alert {
+                border: 1px solid #999 !important;
+                background: #f9f9f9 !important;
+                color: black !important;
+            }
+            .badge {
+                border: 1px solid #666 !important;
+                color: black !important;
+                background: #eee !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -6305,6 +6369,97 @@
                                         <li>Gemiddeld 1-3 sterfgevallen per jaar (vaak door vertraagde diagnose)</li>
                                     </ul>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" data-card>
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Species Vergelijking</div>
+                                <div class="card-subtitle">P. falciparum, vivax, ovale, malariae, knowlesi</div>
+                            </div>
+                            <svg class="card-toggle" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <div class="table-wrapper">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>P. falciparum</th>
+                                                <th>P. vivax</th>
+                                                <th>P. ovale</th>
+                                                <th>P. malariae</th>
+                                                <th>P. knowlesi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Koortscyclus</strong></td>
+                                                <td>48u (tertiana)</td>
+                                                <td>48u (tertiana)</td>
+                                                <td>48u (tertiana)</td>
+                                                <td>72u (quartana)</td>
+                                                <td>24u (quotidiana)</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Hypnozoïeten</strong></td>
+                                                <td>Nee</td>
+                                                <td>Ja</td>
+                                                <td>Ja</td>
+                                                <td>Nee</td>
+                                                <td>Nee</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Relaps mogelijk</strong></td>
+                                                <td>Nee</td>
+                                                <td>Ja (mnd-jaren)</td>
+                                                <td>Ja (mnd-jaren)</td>
+                                                <td>Recrudescence (jaren)</td>
+                                                <td>Nee</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Primaquine nodig</strong></td>
+                                                <td>Nee*</td>
+                                                <td>Ja (radicale cure)</td>
+                                                <td>Ja (radicale cure)</td>
+                                                <td>Nee</td>
+                                                <td>Nee</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Ernst</strong></td>
+                                                <td>Ernstig/lethaal</td>
+                                                <td>Mild-matig</td>
+                                                <td>Mild</td>
+                                                <td>Mild, chronisch</td>
+                                                <td>Kan ernstig zijn</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Parasitemie</strong></td>
+                                                <td>Alle stadia RBC</td>
+                                                <td>Reticulocyten</td>
+                                                <td>Reticulocyten</td>
+                                                <td>Oudere RBC</td>
+                                                <td>Alle stadia RBC</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Max parasitemie</strong></td>
+                                                <td>Onbeperkt, >10%</td>
+                                                <td>Zelden >2%</td>
+                                                <td>Zelden >2%</td>
+                                                <td><1%</td>
+                                                <td>Kan hoog zijn</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 12px;">
+                                    *Primaquine bij P. falciparum alleen als gametocytocide.<br>
+                                    <strong>Relaps</strong> = uit hypnozoïeten (lever). <strong>Recrudescence</strong> = uit persisterende bloedparasieten.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -13803,6 +13958,141 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="card" data-card>
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Scorpioenen</div>
+                            <div class="card-subtitle">Neurotoxische vs cytotoxische vergiftiging</div>
+                        </div>
+                        <svg class="card-toggle" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-body">
+                            <p>Circa 1500 soorten wereldwijd, waarvan ~25 potentieel lethaal voor mensen. Gevaar vooral bij kinderen.</p>
+
+                            <div class="table-wrapper">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Kenmerk</th>
+                                            <th><span class="badge badge-protozoa">Neurotoxisch</span></th>
+                                            <th><span class="badge badge-helminth">Cytotoxisch</span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Families</strong></td>
+                                            <td>Buthidae (dikstaartschorpioenen)</td>
+                                            <td>Scorpionidae, Hemiscorpiidae</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Soorten</strong></td>
+                                            <td>Androctonus, Leiurus, Centruroides, Tityus</td>
+                                            <td>Pandinus, Heterometrus, Hemiscorpius</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Kliniek</strong></td>
+                                            <td>Autonome storm, hypertensie, tachycardie, longoedeem, myocarditis</td>
+                                            <td>Lokale necrose, hematurie, nierinsufficiëntie</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Ernst</strong></td>
+                                            <td>Potentieel lethaal</td>
+                                            <td>Zelden lethaal, wel mutilerend</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Regio</strong></td>
+                                            <td>Midden-Oosten, Noord-Afrika, Mexico, Zuid-Amerika</td>
+                                            <td>Afrika, Azië</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h4 style="margin-top: 1rem;">Behandeling</h4>
+                            <ul class="content-list">
+                                <li><strong>Lokale pijnstilling:</strong> Pijnstiller, koeling, lokale anesthesie</li>
+                                <li><strong>Observatie:</strong> Minimaal 4-6 uur (kinderen 24 uur)</li>
+                                <li><strong>Antiserum:</strong> Bij ernstige systemische verschijnselen (beschikbaar in endemische gebieden)</li>
+                                <li><strong>Symptomatisch:</strong> Hypertensie → prazosin; convulsies → benzodiazepinen</li>
+                            </ul>
+
+                            <div class="alert alert-warning" style="margin-top: 12px;">
+                                <strong>Vuistregel:</strong> Kleine scharen + dikke staart = neurotoxisch en gevaarlijk. Grote scharen + dunne staart = cytotoxisch, minder gevaarlijk.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-card>
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Kwallen</div>
+                            <div class="card-subtitle">Cnidaria: box jellyfish, Portuguese man-of-war, Irukandji</div>
+                        </div>
+                        <svg class="card-toggle" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-body">
+                            <div class="table-wrapper">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Soort</th>
+                                            <th>Regio</th>
+                                            <th>Kliniek</th>
+                                            <th>Ernst</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Box jellyfish</strong><br><em>Chironex fleckeri</em></td>
+                                            <td>Noord-Australië, Indo-Pacific</td>
+                                            <td>Extreme pijn, striemen, cardiotoxiciteit, hypotensie, hartstilstand</td>
+                                            <td><span class="badge badge-protozoa">Potentieel lethaal</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Irukandji</strong><br><em>Carukia barnesi</em></td>
+                                            <td>Australië, Hawaii</td>
+                                            <td>Minimale lokale reactie, na 20-30 min: Irukandji-syndroom (ernstige rugpijn, hoofdpijn, misselijkheid, hypertensie, hartritmestoornissen)</td>
+                                            <td><span class="badge badge-protozoa">Potentieel lethaal</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Portuguese man-of-war</strong><br><em>Physalia physalis</em></td>
+                                            <td>Atlantisch, Indische Oceaan, Middellandse Zee</td>
+                                            <td>Intense brandende pijn, striemen, systemische reacties mogelijk</td>
+                                            <td><span class="badge badge-helminth">Zelden lethaal</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Oorkwal</strong><br><em>Aurelia aurita</em></td>
+                                            <td>Wereldwijd, ook Noordzee</td>
+                                            <td>Milde irritatie, lokale roodheid</td>
+                                            <td>Onschuldig</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h4 style="margin-top: 1rem;">Eerste hulp</h4>
+                            <ul class="content-list">
+                                <li><strong>Tentakels verwijderen</strong> met pincet of beschermde hand (niet wrijven!)</li>
+                                <li><strong>Azijn (5% azijnzuur)</strong> bij box jellyfish → inactiveert nematocysten</li>
+                                <li><strong>Geen azijn</strong> bij Portuguese man-of-war (verergert)</li>
+                                <li><strong>Zout water spoelen</strong> (geen zoet water, activeert nematocysten)</li>
+                                <li><strong>Warmte</strong> (40-45°C) kan helpen bij pijnverlichting</li>
+                            </ul>
+
+                            <div class="alert alert-danger" style="margin-top: 12px;">
+                                <strong>Box jellyfish:</strong> Antiserum bestaat (CSL Box Jellyfish Antivenom) en kan levensreddend zijn. Geef bij hartstilstand AED/CPR en roep hulp.
+                            </div>
+
+                            <div class="alert alert-warning" style="margin-top: 12px;">
+                                <strong>Irukandji-syndroom:</strong> Initiële steek is vaak mild. Systemische symptomen beginnen 20-40 min later. Patiënt beschrijft vaak een "sense of impending doom". Behandeling is symptomatisch + monitoring.
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 </div>
             </section>
 
@@ -14382,6 +14672,27 @@
                     });
                 }
             });
+        });
+
+        // Print section functionality - add print buttons dynamically
+        document.querySelectorAll('[data-section-expand]').forEach(expandBtn => {
+            const sectionId = expandBtn.getAttribute('data-section-expand');
+            const printBtn = document.createElement('button');
+            printBtn.className = 'section-control-btn';
+            printBtn.innerHTML = `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg> Print sectie`;
+            printBtn.addEventListener('click', () => {
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    section.querySelectorAll('[data-card]').forEach(card => {
+                        card.classList.remove('collapsed');
+                        card.classList.add('expanded');
+                    });
+                    section.classList.add('print-section');
+                    window.print();
+                    section.classList.remove('print-section');
+                }
+            });
+            expandBtn.parentNode.appendChild(printBtn);
         });
 
         document.querySelectorAll('.nav-item').forEach(item => {
