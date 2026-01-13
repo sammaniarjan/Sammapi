@@ -123,6 +123,22 @@
             50% { opacity: 0.7; }
         }
 
+        .live-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #ff0000;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: liveBlink 1s infinite;
+            box-shadow: 0 0 10px #ff0000;
+        }
+
+        @keyframes liveBlink {
+            0%, 100% { opacity: 1; box-shadow: 0 0 10px #ff0000; }
+            50% { opacity: 0.3; box-shadow: 0 0 5px #ff0000; }
+        }
+
         .hud-stats {
             display: flex;
             gap: 30px;
@@ -571,7 +587,7 @@
                         <polyline points="9 22 9 12 15 12 15 22"/>
                     </svg>
                 </a>
-                <div class="hud-title">⬛ SNAAK COMMAND CENTER</div>
+                <div class="hud-title"><span class="live-dot"></span> SNAAK COMMAND CENTER</div>
             </div>
             <div class="hud-stats">
                 <div class="stat">
@@ -589,10 +605,9 @@
         <!-- Mode Selector -->
         <div class="mode-selector">
             <button class="mode-btn active" onclick="switchMode('quote', this)">📋 QUOTES</button>
-            <button class="mode-btn" onclick="switchMode('pong', this)">🏓 PONG</button>
             <button class="mode-btn" onclick="switchMode('roast', this)">🔥 ROAST GEN</button>
-            <button class="mode-btn" onclick="switchMode('invaders', this)">👾 INVADERS</button>
-            <button class="mode-btn" onclick="switchMode('snake', this)">🐍 SNAKE</button>
+            <button class="mode-btn" onclick="switchMode('minigames', this)">🎮 MINI-GAMES</button>
+            <button class="mode-btn" onclick="switchMode('adventure', this)">📖 MISSIE</button>
             <button class="mode-btn" onclick="switchMode('leaderboard', this)">🏆 RANKS</button>
         </div>
 
@@ -622,6 +637,7 @@
         let pongState = null;
         let invadersState = null;
         let snakeState = null;
+        let adventureState = null;
 
         // Audio system
         const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -676,10 +692,17 @@
             }
         }, { once: true });
 
-        // Clock
+        // Clock - Military DTG format
         function updateClock() {
             const now = new Date();
-            document.getElementById('system-time').textContent = now.toLocaleTimeString('nl-NL');
+            const months = ['JAN', 'FEB', 'MAR', 'APR', 'MEI', 'JUN', 'JUL', 'AUG', 'SEP', 'OKT', 'NOV', 'DEC'];
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const mins = String(now.getMinutes()).padStart(2, '0');
+            const month = months[now.getMonth()];
+            const year = String(now.getFullYear()).slice(-2);
+            // DTG format: DDHHmmZ MMM YY
+            document.getElementById('system-time').textContent = `${day}${hours}${mins}Z ${month} ${year}`;
         }
         setInterval(updateClock, 1000);
 
@@ -765,13 +788,21 @@
                     actionBtn.textContent = '🔥 GENERATE';
                     showRoastMode();
                     break;
+                case 'minigames':
+                    actionBtn.textContent = '🎮 KIES GAME';
+                    showMinigamesMode();
+                    break;
                 case 'invaders':
                     actionBtn.textContent = '👾 START GAME';
                     showInvadersMode();
                     break;
                 case 'snake':
-                    actionBtn.textContent = '🐍 START GAME';
+                    actionBtn.textContent = '📦 START WOL';
                     showSnakeMode();
+                    break;
+                case 'adventure':
+                    actionBtn.textContent = '📖 START MISSIE';
+                    showAdventureMode();
                     break;
                 case 'leaderboard':
                     actionBtn.textContent = '🔄 REFRESH';
@@ -792,11 +823,17 @@
                 case 'roast':
                     generateRoast();
                     break;
+                case 'minigames':
+                    showMinigamesMode();
+                    break;
                 case 'invaders':
                     startInvadersGame();
                     break;
                 case 'snake':
                     startSnakeGame();
+                    break;
+                case 'adventure':
+                    startAdventure();
                     break;
                 case 'leaderboard':
                     showLeaderboard();
@@ -825,6 +862,33 @@
 
             addPoints(snaakConfig.points.quoteView, 'quote view');
             playSound('click');
+        }
+
+        // MINI-GAMES MODE
+        function showMinigamesMode() {
+            const screen = document.getElementById('terminal-screen');
+            screen.innerHTML = `
+                <div class="pong-container">
+                    <div class="mode-header">
+                        <h2>MINI-GAMES</h2>
+                        <p>KIES JE GEVECHT</p>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 30px; max-width: 400px; margin-left: auto; margin-right: auto;">
+                        <button onclick="switchMode('pong')" style="padding: 20px; font-size: 1.1rem;">
+                            🏓 PONG - 2 Spelers op 1 Keyboard
+                        </button>
+                        <button onclick="switchMode('invaders')" style="padding: 20px; font-size: 1.1rem;">
+                            👾 SPACE INVADERS - Verdedig de Basis
+                        </button>
+                        <button onclick="switchMode('snake')" style="padding: 20px; font-size: 1.1rem;">
+                            📦 WOL PAKETTEN - Verzamel Bepakking
+                        </button>
+                    </div>
+                    <div style="margin-top: 30px; color: var(--terminal-dim); font-size: 0.9rem;">
+                        Alle games geven punten voor je rank!
+                    </div>
+                </div>
+            `;
         }
 
         // PONG MODE
@@ -1418,20 +1482,37 @@
             }
         }
 
-        // SNAKE MODE
+        // WOL PAKETTEN MODE (Snake)
+        const wolComments = [
+            { length: 5, text: "Je begint op te bouwen, soldaat!" },
+            { length: 8, text: "Dat begint ergens op te lijken!" },
+            { length: 12, text: "Gaat u voor een TRIPLE VETJE?!" },
+            { length: 15, text: "TRIPLE VETJE GEHAALD! U bent een tank!" },
+            { length: 20, text: "U bent nu officieel een logistieke nachtmerrie!" },
+            { length: 25, text: "De kwartiermaker krijgt een hartaanval!" },
+            { length: 30, text: "ABSOLUTE UNIT! De bepakking is groter dan u!" },
+            { length: 35, text: "U bent een wandelend magazijn geworden!" },
+            { length: 40, text: "Zelfs de sergeant is onder de indruk... of bang." }
+        ];
+
         function showSnakeMode() {
             const screen = document.getElementById('terminal-screen');
             screen.innerHTML = `
                 <div class="pong-container">
                     <div class="mode-header">
-                        <h2>SNAKE ATTACK</h2>
-                        <p>VERZAMEL RANTSOEN, VERMIJD JE STAART!</p>
+                        <h2>WOL PAKETTEN</h2>
+                        <p>VERZAMEL BEPAKKING, VERMIJD JE EIGEN ROMMEL!</p>
                     </div>
                     <div class="pong-controls">
                         <div>← ↑ → ↓ BEWEGEN</div>
                     </div>
+                    <div style="margin-top: 20px; padding: 15px; border: 2px solid var(--terminal-dim); font-size: 0.9rem;">
+                        <p>WOL = Warm Ontbijt Lunch</p>
+                        <p style="color: var(--terminal-yellow); margin-top: 10px;">Doel: Verzamel zoveel mogelijk paketten!</p>
+                        <p style="color: var(--terminal-dim); margin-top: 5px;">Pas op voor het TRIPLE VETJE...</p>
+                    </div>
                     <div style="margin-top: 20px; font-size: 1.2rem;">
-                        Klik op START GAME om te beginnen
+                        Klik op START WOL om te beginnen
                     </div>
                 </div>
             `;
@@ -1451,10 +1532,11 @@
                             <div id="snake-score">0</div>
                         </div>
                         <div class="pong-score">
-                            <div class="pong-score-label">LENGTE</div>
+                            <div class="pong-score-label">PAKETTEN</div>
                             <div id="snake-length">3</div>
                         </div>
                     </div>
+                    <div id="wol-comment" style="color: var(--terminal-yellow); font-size: 0.9rem; min-height: 1.5rem; margin-bottom: 10px;"></div>
                     <canvas id="snake-canvas" class="pong-canvas" width="600" height="400"></canvas>
                     <div class="pong-controls">
                         <div>← ↑ → ↓ BEWEGEN</div>
@@ -1549,6 +1631,13 @@
                         placeFood();
                         // Speed up slightly
                         snakeState.speed = Math.max(50, snakeState.speed - 2);
+                        // Check for WOL comments
+                        const len = snakeState.snake.length;
+                        const comment = wolComments.find(c => c.length === len);
+                        if (comment) {
+                            document.getElementById('wol-comment').textContent = comment.text;
+                            showNotification(comment.text);
+                        }
                     } else {
                         snakeState.snake.pop();
                     }
@@ -1652,6 +1741,472 @@
                     document.removeEventListener('keydown', snakeState.keyDownHandler);
                 }
             }
+        }
+
+        // TEXT ADVENTURE MODE
+        const adventureScenes = {
+            start: {
+                text: `Het is 05:30. Je wekker gaat af met het geluid van een stervende walvis.
+
+Je bent een Pax. Een klote ongemotiveerde jankende Pax. Vandaag begint je reis naar de KMA. Of was het de KMS? Je weet het niet meer. Je weet eigenlijk helemaal niks meer.
+
+Je voelt je: SIP. Heel erg sip.
+
+Je moeder heeft je broodtrommeltje ingepakt met een briefje: "Succes schat! Mama is trots!"
+
+Een sergeant kijkt je aan alsof je een mislukte loempia bent.`,
+                roast: "Goedemorgen zonnestraaltje! Heb je lekker geslapen in je Spider-Man pyjamaatje?",
+                choices: [
+                    { text: "Stoer doen en terugkijken", next: "stoer" },
+                    { text: "Huilen (intern)", next: "huilen" },
+                    { text: "Briefje van mama verstoppen", next: "briefje" }
+                ]
+            },
+            stoer: {
+                text: `Je probeert stoer terug te kijken. Je gezicht vormt iets wat je denkt dat een "harde blik" is.
+
+De sergeant barst in lachen uit. "KIJK DIT JOCH! Hij doet alsof hij in een Fast & Furious film zit!"
+
+De hele groep lacht. Je voelt je nog zieligerder dan eerst. Is dat een woord? Nu wel.
+
+Maar wacht... één andere recruut lacht niet. Hij knikt naar je. Kameraadschap?`,
+                roast: "Die blik! Net alsof een chihuahua probeert een pitbull te zijn!",
+                choices: [
+                    { text: "Naar de recruut lopen", next: "kameraad1" },
+                    { text: "Doorgaan met stoer doen", next: "fail1" },
+                    { text: "Tactisch naar de WC vluchten", next: "wc" }
+                ]
+            },
+            huilen: {
+                text: `Je huilt intern. Extern ook een beetje. Oké, best veel eigenlijk.
+
+"WAT IS DIT?!" schreeuwt de sergeant. "Regent het hier binnen of ben jij aan het janken?!"
+
+Een andere recruut geeft je stiekem een tissue. "Hey, hou vol gap," fluistert hij. "We komen er wel doorheen."
+
+Kameraadschap. Het bestaat echt.`,
+                roast: "Ik heb drogere woestijnen gezien dan jouw ogen, waterballet!",
+                choices: [
+                    { text: "Tissue aannemen en doorgaan", next: "kameraad1" },
+                    { text: "Nog harder huilen", next: "fail1" },
+                    { text: "Doen alsof het allergieën zijn", next: "allergie" }
+                ]
+            },
+            briefje: {
+                text: `Je probeert het briefje van mama te verstoppen. Te laat.
+
+"WAT HEB JE DAAR, SOLDAAT?!"
+
+De sergeant grist het briefje uit je handen en leest het hardop voor. "Mama is trots..."
+
+De hele groep is stil. Dan zegt iemand: "Mijn ma heeft hetzelfde geschreven eigenlijk."
+
+Plotseling heeft iedereen een mama-briefje. Kameraadschap door gedeelde schaamte.`,
+                roast: "Heeft mama ook je veters gestrikt vanmorgen? Of kun je dat WEL zelf?",
+                choices: [
+                    { text: "Groepsbond vormen", next: "kameraad2" },
+                    { text: "Je briefje terugeisen", next: "fail1" }
+                ]
+            },
+            wc: {
+                text: `Je vlucht tactisch naar de WC. Strategische terugtrekking, noem je het.
+
+Op de WC zit al iemand te huilen. Het is een ANDERE recruut.
+
+"Jij ook?" vraagt hij.
+"Ja," zeg je.
+"Kut hè?"
+"Ja."
+
+Dit is het begin van een mooie vriendschap. Of in ieder geval gedeeld leed.`,
+                roast: "Ah, de tactische terugtrekking! Net als Rusland uit... oh wacht, slechte vergelijking.",
+                choices: [
+                    { text: "Samen terugkeren naar de groep", next: "kameraad2" },
+                    { text: "Op de WC blijven wonen", next: "fail1" }
+                ]
+            },
+            allergie: {
+                text: `"Het zijn allergieën, sergeant!"
+
+"ALLERGIEËN?! Waarvoor, discipline?! Hard werken?! Verantwoordelijkheid?!"
+
+Eerlijk gezegd... ja. Precies dat.
+
+Maar een andere recruut springt in: "Ik heb ook last van allergieën, sergeant!" En nog een. En nog een.
+
+Solidariteit. Allemaal "allergisch" samen.`,
+                roast: "Allergisch voor succes! Dat verklaart alles!",
+                choices: [
+                    { text: "De groep bedanken", next: "kameraad2" }
+                ]
+            },
+            kameraad1: {
+                text: `Je hebt een maat gevonden. Hij heet Dennis. Of Kevin. Of Mohammed. Een van die drie.
+
+"Luister," zegt hij, "mijn neef heeft dit ook gedaan. Het trucje is: IK-TEAM-TAAK-CONTEXT. Onthoud dat."
+
+"Wat betekent dat?"
+
+"Geen idee. Maar als je het zegt kijken de sergeanten verward en laten ze je met rust."
+
+Dit is waardevolle informatie.`,
+                roast: "Oh, twee zielige loempiaatjes hebben elkaar gevonden. Schattig. Walgelijk, maar schattig.",
+                choices: [
+                    { text: "Naar de eerste oefening", next: "oefening1" }
+                ]
+            },
+            kameraad2: {
+                text: `Je hebt een groepje gevormd. Jullie zijn nu de "Achterblijvers". Geen officiële naam, maar het voelt passend.
+
+Iemand heeft ontdekt dat de koffieautomaat op de 2e verdieping GRATIS is als je op een specifieke combinatie drukt.
+
+Dit is de meest waardevolle militaire intelligence die jullie ooit zullen verzamelen.
+
+De sergeant kijkt argwanend. "Wat zijn jullie aan het bekokstoven?"`,
+                roast: "Een clubje gevormd? Wat is dit, de Efteling? Ga je ook nog vriendschapsbandjes maken?",
+                choices: [
+                    { text: "Naar de eerste oefening", next: "oefening1" }
+                ]
+            },
+            fail1: {
+                text: `Je hebt de verkeerde keuze gemaakt. De sergeant heeft dit gezien.
+
+"JIJ DAAR! 50 PUSH-UPS! NU!"
+
+Na push-up 3 geef je op. De sergeant zucht diep.
+
+"Weet je wat, ga maar gewoon... ga maar gewoon staan. Dit is te zielig om naar te kijken."
+
+Maar je geeft niet op. Je staat op. Je gaat door. Want opgeven is geen optie.`,
+                roast: "Die push-ups waren net als de Nederlandse economie: veel beloofd, niks van terecht gekomen.",
+                choices: [
+                    { text: "Doorzetten!", next: "kameraad1" }
+                ]
+            },
+            oefening1: {
+                text: `EERSTE OEFENING: De Stormbaan
+
+Het ziet eruit als iets uit Takeshi's Castle, maar dan gemaakt door iemand die plezier HAAT.
+
+"Dit noemen we de Stormbaan," zegt de sergeant. "Net als Mario, maar zonder power-ups en zonder fun."
+
+Een recruut vraagt: "Is er een princess aan het einde?"
+
+"JA. EN ZE IS IN EEN ANDER KASTEEL. NET ALS JE ZELFRESPECT."
+
+Klassiek.`,
+                roast: "Ik heb bejaarden sneller door de Efteling zien gaan dan jullie door deze baan!",
+                choices: [
+                    { text: "Als eerste gaan", next: "stormbaan_eerste" },
+                    { text: "Wachten en observeren", next: "stormbaan_wacht" },
+                    { text: "Doen alsof je je enkel verzwikt", next: "stormbaan_fake" }
+                ]
+            },
+            stormbaan_eerste: {
+                text: `Je gaat als eerste. Dapper. Dom, maar dapper.
+
+Je rent naar het eerste obstakel. Het is een muur. Je rent er tegenaan. De muur wint.
+
+"HIJ RENDE GEWOON TEGEN DE MUUR AAN!" schreeuwt de sergeant. "NET ALS DE ECONOMISCHE PLANNEN VAN DE OVERHEID!"
+
+Je groepje moedigt je aan. "DOORGAAN! JE KUNT HET!"
+
+Je klimt over de muur. Je valt. Je staat op. Je valt weer. Je staat weer op.
+
+Dit is discipline. Of domheid. Het verschil is vaag.`,
+                roast: "Je beweegt als een NPC die tegen een onzichtbare muur aanloopt! Ga naar links! LINKS!",
+                choices: [
+                    { text: "Doorzetten en finishen", next: "stormbaan_finish" }
+                ]
+            },
+            stormbaan_wacht: {
+                text: `Je wacht en observeert. Slim. De eerste 5 recruten falen spectaculair.
+
+Een van hen blijft hangen aan het touwnet. Hij hangt daar nog steeds. Niemand helpt hem.
+
+"DIT IS NATUURLIJKE SELECTIE!" roept de sergeant.
+
+Je hebt nu de route in kaart gebracht. Links bij de muur, rechts bij de modder, en ABSOLUUT NIET door het midden.
+
+Je groepje vormt een plan. IK-TEAM-TAAK-CONTEXT in actie.`,
+                roast: "Ah, de observant! Net als Rutte bij een persconferentie - veel kijken, niks onthouden!",
+                choices: [
+                    { text: "Het plan uitvoeren", next: "stormbaan_finish" }
+                ]
+            },
+            stormbaan_fake: {
+                text: `Je doet alsof je je enkel verzwikt. Oscar-waardig acteerwerk.
+
+"Auw! Mijn enkel! Ik kan niet-"
+
+"Welke enkel?" vraagt de sergeant.
+
+Je wijst naar je linkerenkel. De sergeant noteert iets.
+
+"Vreemd, want gisteren had je last van je RECHTER enkel."
+
+Je bent gepakt. De sergeant is eigenlijk een geheugenolifant.
+
+"100 push-ups. Nu. Op je 'verzwikte' enkel."`,
+                roast: "Teflon Rutte zou trots zijn op die draai! Helaas werk ik niet bij de Tweede Kamer!",
+                choices: [
+                    { text: "Push-ups doen en dan alsnog de stormbaan", next: "stormbaan_finish" }
+                ]
+            },
+            stormbaan_finish: {
+                text: `Je finisht de stormbaan. Bedekt in modder. Half huilend. Volledig kapot.
+
+Maar je hebt het gehaald.
+
+Je groepje staat aan de finish te juichen. Zelfs de sergeant lijkt onder de indruk. Of hij heeft gas. Moeilijk te zeggen.
+
+"Niet slecht voor een stelletje loempiaatjes," mompelt hij.
+
+Dit is het dichtste bij een compliment dat je ooit zult krijgen.
+
+KAMERAADSCHAP LEVEL: +10`,
+                roast: "Je finishte! Net als Nederland op het songfestival - technisch gezien meegedaan!",
+                choices: [
+                    { text: "Door naar week 2", next: "week2" }
+                ]
+            },
+            week2: {
+                text: `WEEK 2: De Theorie
+
+Je zit in een klaslokaal. Er wordt iets uitgelegd over tactiek. Of logistiek. Of iets met letters.
+
+Je maat stoot je aan. "Psst. Die instructeur lijkt op die ene van die meme."
+
+Je kijkt. Hij heeft gelijk.
+
+"IK ZIE DAT JULLIE AANDACHT HEBBEN!" schreeuwt de instructeur. "Vertel de klas wat ik net zei!"
+
+Oh nee.`,
+                roast: "Je ogen zijn open maar je brein is op screensaver! Net als een Teams meeting!",
+                choices: [
+                    { text: "IK-TEAM-TAAK-CONTEXT zeggen", next: "ittc_save" },
+                    { text: "Eerlijk toegeven dat je niet oplet", next: "eerlijk" },
+                    { text: "Iets verzinnen", next: "verzin" }
+                ]
+            },
+            ittc_save: {
+                text: `"U had het over... IK-TEAM-TAAK-CONTEXT, sergeant!"
+
+Stilte.
+
+De instructeur knippert. "Dat... dat klopt eigenlijk."
+
+HET WERKTE. Je maat had gelijk. Dit is de cheat code van het leger.
+
+De rest van de klas kijkt naar je alsof je water in wijn hebt veranderd. Je bent nu een legende.`,
+                roast: "Zelfs een blind paard vindt soms een appel! Of in jouw geval: een kapotte appel!",
+                choices: [
+                    { text: "Cool doen", next: "week3" }
+                ]
+            },
+            eerlijk: {
+                text: `"Eerlijk, sergeant? Ik heb geen idee. Ik lette niet op."
+
+Stilte. De instructeur staart.
+
+"Weet je wat? Ik waardeer je eerlijkheid. Dat is zeldzaam hier."
+
+Wacht. Dit is... positief?
+
+"Je bent nog steeds een absolute loempia, maar een EERLIJKE loempia."
+
+Dit voelt als een overwinning.`,
+                roast: "Eerlijkheid! Verfrissend! Net als een koude douche - niemand wil het maar het is goed voor je!",
+                choices: [
+                    { text: "Vanaf nu opletten", next: "week3" }
+                ]
+            },
+            verzin: {
+                text: `"U had het over... de tactische implicaties van de geopolitieke situatie in relatie tot de logistieke infrastructuur?"
+
+De instructeur staart.
+
+"Dit is een les over hoe je je bed opmaakt."
+
+De klas barst in lachen uit. Zelfs de instructeur grinnikt.
+
+"Punten voor creativiteit. Nul punten voor relevantie. Net als de Nederlandse defensiebegroting."
+
+Politieke humor. In het leger. Wie had dat gedacht.`,
+                roast: "Die bullshit! Je zou zo bij een ministerie kunnen werken! Misschien heb je toch potentie!",
+                choices: [
+                    { text: "Meelachen", next: "week3" }
+                ]
+            },
+            week3: {
+                text: `WEEK 3: De Nachtmars
+
+Het is 02:00. Jullie moeten 20km marcheren. In het donker. Met volle bepakking.
+
+"Dit is net als Deliveroo," zegt je maat, "maar dan zonder betaling en met meer lijden."
+
+Na 5km wil je opgeven. Na 10km wil je sterven. Na 15km voel je niks meer.
+
+En dan zie je het: de finish. En daar staat... koffie. Warme koffie.
+
+Je loopt nu sneller dan je ooit hebt gelopen.`,
+                roast: "Jullie marcheren als een groep NPC's met een pathfinding bug! Waarom loopt iedereen zigzag?!",
+                choices: [
+                    { text: "Doorduwen voor de koffie", next: "finish_mars" }
+                ]
+            },
+            finish_mars: {
+                text: `Je haalt de finish. Je groepje haalt de finish. IEDEREEN haalt de finish.
+
+De koffie is lauw en smaakt naar teleurstelling, maar het is de beste koffie die je ooit hebt gehad.
+
+De sergeant staat bij de finish. Hij zegt niks. Hij knikt alleen maar.
+
+Dat is het. Een knik. En het voelt als een medaille.
+
+"Jullie zijn nog steeds loempiaatjes," zegt hij uiteindelijk. "Maar nu SNELLE loempiaatjes."
+
+DISCIPLINE LEVEL: +20`,
+                roast: "20km in 6 uur! Mijn oma doet dat met haar rollator! Maar goed... ze is wel heel fit.",
+                choices: [
+                    { text: "Door naar de finale", next: "finale" }
+                ]
+            },
+            finale: {
+                text: `WEEK 10: De Laatste Dag
+
+Je staat in formatie. Schone uniform. Gepoetste schoenen. Rechte rug.
+
+Je bent niet meer de KOJP van dag één. Je bent nu... iets anders. Nog steeds een beetje een loempia, maar een MILITAIRE loempia.
+
+Je maten staan naast je. De jongen die je tissue gaf. De groep met de mama-briefjes. De WC-huilers.
+
+Jullie hebben het gehaald. Samen.
+
+De commandant houdt een speech. Iets over eer. Iets over plicht. Iets over Nederland.
+
+Je luistert niet echt. Je denkt aan de reis.`,
+                roast: null,
+                choices: [
+                    { text: "Terugdenken aan het begin", next: "einde" }
+                ]
+            },
+            einde: {
+                text: `Je denkt aan dag één. De huilende recruut op de WC. Het briefje van mama. De sergeant die je een loempia noemde.
+
+Je bent nog steeds die persoon. Maar ook niet.
+
+Je kijkt naar je maten. Ze kijken terug. Iemand glimlacht.
+
+De sergeant stapt naar voren. "Recruten... nee. SOLDATEN. Jullie hebben het gehaald."
+
+Hij kijkt naar jou. "Zelfs jij, loempia. Zelfs jij."
+
+En voor het eerst in 10 weken... voel je je niet meer sip.
+
+█▀▀ █▀▀ █░░ █ █▀▀ █ ▀█▀ █▀▀ █▀█ ▀█▀
+█▀░ ██▄ █▄▄ █ █▄▄ █ ░█░ ██▄ █▀▄ ░█░
+
+IK-TEAM-TAAK-CONTEXT
+KAMERAADSCHAP
+DISCIPLINE
+TIJD = TIJD (5 minuten voor tijd is op tijd)
+
+Je bent een soldaat. Een echte snaak.`,
+                roast: null,
+                choices: [
+                    { text: "🎖️ MISSIE VOLTOOID - +50 PUNTEN", next: "complete" }
+                ]
+            },
+            complete: {
+                text: "MISSIE_COMPLETE",
+                roast: null,
+                choices: []
+            }
+        };
+
+        function showAdventureMode() {
+            const screen = document.getElementById('terminal-screen');
+            screen.innerHTML = `
+                <div class="pong-container">
+                    <div class="mode-header">
+                        <h2>DE MISSIE: PAX WORDT SOLDAAT</h2>
+                        <p>EEN TEXT ADVENTURE VOL ROASTS EN KAMERAADSCHAP</p>
+                    </div>
+                    <div style="margin-top: 20px; padding: 20px; border: 2px solid var(--terminal-green); text-align: left; line-height: 1.8;">
+                        <p>Je bent een Pax. Een klote ongemotiveerde jankende Pax.</p>
+                        <p>Je voelt je: <span style="color: var(--terminal-cyan);">SIP</span></p>
+                        <p>Je missie: Overleven op de KMA/KMS</p>
+                        <br>
+                        <p>Features:</p>
+                        <p style="color: var(--terminal-dim);">• Keuzes die er toe doen (soms)</p>
+                        <p style="color: var(--terminal-dim);">• Roasts van sergeanten</p>
+                        <p style="color: var(--terminal-dim);">• Kameraadschap en tranen</p>
+                        <p style="color: var(--terminal-dim);">• Culturele referenties</p>
+                        <p style="color: var(--terminal-dim);">• IK-TEAM-TAAK-CONTEXT</p>
+                    </div>
+                    <div style="margin-top: 20px; font-size: 1.2rem;">
+                        Klik op START MISSIE om te beginnen
+                    </div>
+                </div>
+            `;
+        }
+
+        function startAdventure() {
+            adventureState = { currentScene: 'start', points: 0 };
+            showAdventureScene('start');
+        }
+
+        function showAdventureScene(sceneId) {
+            const scene = adventureScenes[sceneId];
+            if (!scene) return;
+
+            if (sceneId === 'complete') {
+                playSound('levelup');
+                addPoints(50, 'adventure complete');
+                showAdventureMode();
+                showNotification('🎖️ MISSIE VOLTOOID! +50 PUNTEN!');
+                return;
+            }
+
+            const screen = document.getElementById('terminal-screen');
+
+            let roastHtml = '';
+            if (scene.roast) {
+                roastHtml = `
+                    <div style="margin-top: 20px; padding: 15px; border: 2px solid var(--terminal-yellow); background: rgba(255,255,0,0.05);">
+                        <div style="color: var(--terminal-yellow); margin-bottom: 5px; font-size: 0.8rem;">SERGEANT:</div>
+                        <div style="font-style: italic;">"${scene.roast}"</div>
+                    </div>
+                `;
+            }
+
+            let choicesHtml = scene.choices.map((choice, index) => `
+                <button onclick="adventureChoice('${choice.next}')" style="display: block; width: 100%; margin-top: 10px; text-align: left; padding: 15px;">
+                    ${index + 1}. ${choice.text}
+                </button>
+            `).join('');
+
+            screen.innerHTML = `
+                <div style="padding: 20px; max-width: 800px; margin: 0 auto;">
+                    <div style="line-height: 1.8; white-space: pre-line; font-size: 1.1rem;">
+${scene.text}
+                    </div>
+                    ${roastHtml}
+                    <div style="margin-top: 30px;">
+                        ${choicesHtml}
+                    </div>
+                </div>
+            `;
+
+            playSound('click');
+            addPoints(2, 'adventure progress');
+        }
+
+        function adventureChoice(nextScene) {
+            playSound('click');
+            adventureState.currentScene = nextScene;
+            showAdventureScene(nextScene);
         }
 
         // LEADERBOARD
