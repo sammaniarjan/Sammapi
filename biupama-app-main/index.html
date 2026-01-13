@@ -12458,25 +12458,8 @@
                     <div class="card" data-card>
                     <div class="card-header">
                         <div>
-                            <div class="card-title">Verplichte Vaccinatie</div>
-                            <div class="card-subtitle">Gele koorts</div>
-                        </div>
-                        <svg class="card-toggle" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-body">
-                            <div class="alert alert-danger">
-                                <strong>Gele koorts:</strong> Endemische gebieden Afrika/Zuid-Amerika, soms entry requirement
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card" data-card>
-                    <div class="card-header">
-                        <div>
-                            <div class="card-title">Aanbevolen Vaccinaties</div>
-                            <div class="card-subtitle">Afhankelijk van reisdoel</div>
+                            <div class="card-title">Vaccintypen</div>
+                            <div class="card-subtitle">Geïnactiveerd vs levend verzwakt</div>
                         </div>
                         <svg class="card-toggle" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </div>
@@ -12485,46 +12468,195 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Vaccin</th>
-                                        <th>Schema</th>
-                                        <th>Bescherming</th>
+                                        <th></th>
+                                        <th>Geïnactiveerd</th>
+                                        <th>Levend verzwakt</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
+                                        <td><strong>Principe</strong></td>
+                                        <td>Dood pathogeen of onderdelen (subunit, toxoïd, geconjugeerd)</td>
+                                        <td>Verzwakt maar levend pathogeen dat zich kan vermenigvuldigen</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Immuunrespons</strong></td>
+                                        <td>Voornamelijk humoraal (antilichamen)</td>
+                                        <td>Humoraal én cellulair, vaak sterkere respons</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Boosters</strong></td>
+                                        <td>Vaak nodig</td>
+                                        <td>Vaak niet nodig (levenslange immuniteit)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Immunosuppressie</strong></td>
+                                        <td>Veilig (kan minder effectief zijn)</td>
+                                        <td>Gecontra-indiceerd</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Zwangerschap</strong></td>
+                                        <td>Meestal veilig</td>
+                                        <td>Gecontra-indiceerd</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="alert alert-danger" style="margin-top: 16px;">
+                                <strong>Levend verzwakte vaccins zijn gecontra-indiceerd bij:</strong>
+                                <ul style="margin: 8px 0 0 0; padding-left: 20px;">
+                                    <li>Immuungecompromitteerden (HIV met lage CD4, chemotherapie, biologicals)</li>
+                                    <li>Zwangerschap</li>
+                                    <li>Recent ontvangen van bloedproducten/immunoglobulines</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-card>
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Overzicht Vaccins per Type</div>
+                            <div class="card-subtitle">LCR richtlijn</div>
+                        </div>
+                        <svg class="card-toggle" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-body">
+                            <h4>Levend verzwakte vaccins</h4>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Vaccin</th>
+                                        <th>Toelichting</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>BMR</strong></td>
+                                        <td>Bof, mazelen, rodehond</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Varicella</strong></td>
+                                        <td>Waterpokken</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Gele koorts</strong></td>
+                                        <td>Verplicht voor endemische gebieden Afrika/Zuid-Amerika</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Rotavirus</strong></td>
+                                        <td>Oraal vaccin, zuigelingen</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Buiktyfus oraal</strong></td>
+                                        <td>Ty21a (Vivotif)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Polio oraal (OPV)</strong></td>
+                                        <td>Niet meer in NL (risico VAPP), wel in sommige landen</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>BCG</strong></td>
+                                        <td>Tuberculose, niet in NL RVP</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Dengue (Qdenga)</strong></td>
+                                        <td>Levend verzwakt, 2 doses</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <h4 style="margin-top: 20px;">Geïnactiveerde vaccins</h4>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Vaccin</th>
+                                        <th>Type</th>
+                                        <th>Toelichting</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>DTP/DaKTP</strong></td>
+                                        <td>Toxoïd/geïnactiveerd</td>
+                                        <td>Difterie, kinkhoest, tetanus (± polio)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Polio (IPV)</strong></td>
+                                        <td>Geïnactiveerd</td>
+                                        <td>Injectie, standaard in NL</td>
+                                    </tr>
+                                    <tr>
                                         <td><strong>Hepatitis A</strong></td>
-                                        <td>0, 6 maanden</td>
-                                        <td>Levenslang</td>
+                                        <td>Geïnactiveerd</td>
+                                        <td>Reizigersvaccin</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Hepatitis B</strong></td>
-                                        <td>0, 1, 6 maanden (of versneld)</td>
-                                        <td>>20 jaar</td>
+                                        <td>Subunit (recombinant)</td>
+                                        <td>RVP + reizigers/risicogroepen</td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Buiktyfus (Vi)</strong></td>
-                                        <td>Eenmalig</td>
-                                        <td>2-3 jaar</td>
+                                        <td><strong>Buiktyfus Vi</strong></td>
+                                        <td>Polysacharide</td>
+                                        <td>Typhim Vi, injectie</td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Buiktyfus (oraal)</strong></td>
-                                        <td>Dag 1, 3, 5</td>
-                                        <td>3 jaar</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Rabiës (pre)</strong></td>
-                                        <td>0, 7 dagen (of 0, 3, 7)</td>
-                                        <td>Jaren (titers!)</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Japanse encefalitis</strong></td>
-                                        <td>0, 7/28 dagen</td>
-                                        <td>1-2 jaar</td>
+                                        <td><strong>Pneumokokken</strong></td>
+                                        <td>Geconjugeerd/polysacharide</td>
+                                        <td>PCV13/15/20 (geconj), PPSV23 (polysach)</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Meningokokken ACWY</strong></td>
-                                        <td>Eenmalig</td>
-                                        <td>5 jaar</td>
+                                        <td>Geconjugeerd</td>
+                                        <td>RVP + reizigers (meningitisgordel Afrika)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Meningokokken B</strong></td>
+                                        <td>Recombinant</td>
+                                        <td>RVP sinds 2024</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Hib</strong></td>
+                                        <td>Geconjugeerd</td>
+                                        <td>Haemophilus influenzae type b</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Rabiës</strong></td>
+                                        <td>Geïnactiveerd</td>
+                                        <td>Pre- en postexpositie</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Japanse encefalitis</strong></td>
+                                        <td>Geïnactiveerd</td>
+                                        <td>Ixiaro, ZO-Azië</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Tekenencefalitis (TBE)</strong></td>
+                                        <td>Geïnactiveerd</td>
+                                        <td>FSME-Immun, Midden/Oost-Europa</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>HPV</strong></td>
+                                        <td>Subunit (VLP)</td>
+                                        <td>RVP, 9-valent</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Influenza</strong></td>
+                                        <td>Geïnactiveerd/subunit</td>
+                                        <td>Jaarlijks, risicogroepen</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>COVID-19</strong></td>
+                                        <td>mRNA/vector/subunit</td>
+                                        <td>Diverse types beschikbaar</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Cholera</strong></td>
+                                        <td>Geïnactiveerd (oraal)</td>
+                                        <td>Dukoral, beperkte indicatie</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -12535,22 +12667,204 @@
                 <div class="card" data-card>
                     <div class="card-header">
                         <div>
+                            <div class="card-title">Reizigersvaccinaties</div>
+                            <div class="card-subtitle">Schema's en beschermingsduur (LCR)</div>
+                        </div>
+                        <svg class="card-toggle" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-body">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Vaccin</th>
+                                        <th>Type</th>
+                                        <th>Schema</th>
+                                        <th>Bescherming</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="background-color: rgba(239, 68, 68, 0.1);">
+                                        <td><strong>Gele koorts</strong></td>
+                                        <td><span class="badge badge-virus">Levend</span></td>
+                                        <td>Eenmalig</td>
+                                        <td>Levenslang</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Hepatitis A</strong></td>
+                                        <td><span class="badge badge-bacteria">Geïnact.</span></td>
+                                        <td>0, 6-12 mnd</td>
+                                        <td>Levenslang</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Hepatitis B</strong></td>
+                                        <td><span class="badge badge-bacteria">Geïnact.</span></td>
+                                        <td>0, 1, 6 mnd (of versneld)</td>
+                                        <td>>20 jaar</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Hepatitis A+B combi</strong></td>
+                                        <td><span class="badge badge-bacteria">Geïnact.</span></td>
+                                        <td>0, 1, 6 mnd</td>
+                                        <td>Levenslang/20+ jr</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Buiktyfus Vi</strong></td>
+                                        <td><span class="badge badge-bacteria">Geïnact.</span></td>
+                                        <td>Eenmalig</td>
+                                        <td>3 jaar</td>
+                                    </tr>
+                                    <tr style="background-color: rgba(239, 68, 68, 0.1);">
+                                        <td><strong>Buiktyfus oraal</strong></td>
+                                        <td><span class="badge badge-virus">Levend</span></td>
+                                        <td>Dag 1, 3, 5</td>
+                                        <td>3 jaar</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Rabiës (pre-expositie)</strong></td>
+                                        <td><span class="badge badge-bacteria">Geïnact.</span></td>
+                                        <td>0, 7 dagen</td>
+                                        <td>Jaren (titers!)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Japanse encefalitis</strong></td>
+                                        <td><span class="badge badge-bacteria">Geïnact.</span></td>
+                                        <td>0, 7-28 dagen</td>
+                                        <td>1-2 jaar, booster</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Tekenencefalitis</strong></td>
+                                        <td><span class="badge badge-bacteria">Geïnact.</span></td>
+                                        <td>0, 1-3 mnd, 5-12 mnd</td>
+                                        <td>3-5 jaar, boosters</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Meningokokken ACWY</strong></td>
+                                        <td><span class="badge badge-bacteria">Geïnact.</span></td>
+                                        <td>Eenmalig</td>
+                                        <td>5 jaar</td>
+                                    </tr>
+                                    <tr style="background-color: rgba(239, 68, 68, 0.1);">
+                                        <td><strong>Dengue (Qdenga)</strong></td>
+                                        <td><span class="badge badge-virus">Levend</span></td>
+                                        <td>0, 3 mnd</td>
+                                        <td>Nog onduidelijk</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Cholera</strong></td>
+                                        <td><span class="badge badge-bacteria">Geïnact.</span></td>
+                                        <td>2 doses oraal</td>
+                                        <td>2 jaar</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="alert alert-danger" style="margin-top: 16px;">
+                                <strong>Gele koorts:</strong> Enige vaccin dat verplicht kan zijn (entry requirement). Certificaat geldig 10 dagen na vaccinatie.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-card>
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Rijksvaccinatieprogramma (RVP)</div>
+                            <div class="card-subtitle">Nederlandse standaard vaccinaties</div>
+                        </div>
+                        <svg class="card-toggle" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-body">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Vaccin</th>
+                                        <th>Type</th>
+                                        <th>Leeftijd</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>DKTP-Hib-HepB</strong></td>
+                                        <td><span class="badge badge-bacteria">Geïnact.</span></td>
+                                        <td>6-8 wk, 3, 5, 11 mnd</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Pneumokokken (PCV)</strong></td>
+                                        <td><span class="badge badge-bacteria">Geïnact.</span></td>
+                                        <td>3, 5, 11 mnd</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Meningokokken B</strong></td>
+                                        <td><span class="badge badge-bacteria">Geïnact.</span></td>
+                                        <td>3, 5, 11 mnd</td>
+                                    </tr>
+                                    <tr style="background-color: rgba(239, 68, 68, 0.1);">
+                                        <td><strong>BMR</strong></td>
+                                        <td><span class="badge badge-virus">Levend</span></td>
+                                        <td>14 mnd, 9 jaar</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Meningokokken ACWY</strong></td>
+                                        <td><span class="badge badge-bacteria">Geïnact.</span></td>
+                                        <td>14 mnd</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>DTP</strong></td>
+                                        <td><span class="badge badge-bacteria">Geïnact.</span></td>
+                                        <td>4 jaar, 9 jaar</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>HPV</strong></td>
+                                        <td><span class="badge badge-bacteria">Geïnact.</span></td>
+                                        <td>10 jaar (2 doses)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="alert alert-info" style="margin-top: 16px;">
+                                <strong>Let op:</strong> Immigranten uit niet-westerse landen kunnen onvolledig gevaccineerd zijn. Controleer vaccinatiestatus.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" data-card>
+                    <div class="card-header">
+                        <div>
                             <div class="card-title">Vaccinaties bij Immunosuppressie</div>
-                            <div class="card-subtitle">Contra-indicaties</div>
+                            <div class="card-subtitle">Contra-indicaties en aandachtspunten</div>
                         </div>
                         <svg class="card-toggle" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </div>
                     <div class="card-content">
                         <div class="card-body">
                             <div class="alert alert-danger">
-                                <strong>Geen levende vaccins:</strong> gele koorts, orale tyfus, BCG
+                                <strong>Geen levend verzwakte vaccins:</strong>
+                                <ul style="margin: 8px 0 0 0; padding-left: 20px;">
+                                    <li>Gele koorts</li>
+                                    <li>BMR</li>
+                                    <li>Varicella</li>
+                                    <li>Rotavirus</li>
+                                    <li>Buiktyfus oraal</li>
+                                    <li>BCG</li>
+                                    <li>Dengue (Qdenga)</li>
+                                    <li>Polio oraal (OPV)</li>
+                                </ul>
                             </div>
 
-                            <div class="alert alert-info">
-                                <strong>Extra aandacht:</strong> Pneumokokken, influenza
+                            <div class="alert alert-info" style="margin-top: 12px;">
+                                <strong>Extra aanbevolen (geïnactiveerd):</strong>
+                                <ul style="margin: 8px 0 0 0; padding-left: 20px;">
+                                    <li>Pneumokokken</li>
+                                    <li>Influenza (jaarlijks)</li>
+                                    <li>COVID-19</li>
+                                    <li>Hepatitis B (titercontrole)</li>
+                                </ul>
                             </div>
 
-                            <p style="margin-top: 12px;"><strong>→ Zie <a href="#afweerstoornis" class="internal-link">Afweerstoornis & Preventie</a></strong> voor uitgebreide informatie over immunologische stoornissen, LCR-protocol, asplenie en vaccinatiebeleid.</p>
+                            <p style="margin-top: 12px;"><strong>→ Zie <a href="#afweerstoornis" class="internal-link">Afweerstoornis & Preventie</a></strong> voor uitgebreide informatie over immunologische stoornissen, asplenie en vaccinatiebeleid.</p>
                         </div>
                     </div>
                 </div>

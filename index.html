@@ -316,6 +316,29 @@
         .app-card:focus:not(:focus-visible) {
             outline: none;
         }
+
+        /* SNAAK easter egg pulse */
+        @keyframes pulse-glow {
+            0%, 100% {
+                opacity: 0.6;
+                text-shadow: 0 0 4px rgba(0, 255, 0, 0.3);
+            }
+            50% {
+                opacity: 1;
+                text-shadow: 0 0 12px rgba(0, 255, 0, 0.8), 0 0 20px rgba(0, 255, 0, 0.4);
+            }
+        }
+
+        .snaak-link {
+            animation: pulse-glow 2.5s ease-in-out infinite;
+            font-size: 1rem;
+        }
+
+        .snaak-link:hover {
+            animation: none;
+            opacity: 1;
+            text-shadow: 0 0 16px rgba(0, 255, 0, 1), 0 0 30px rgba(0, 255, 0, 0.6);
+        }
     </style>
 </head>
 <body>
@@ -382,34 +405,13 @@
                 </svg>
             </a>
 
-            <!-- SnaakGPT App -->
-            <a href="SnaakGPT/index.html" class="app-card snaak">
-                <div class="app-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00ff00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
-                        <line x1="8" y1="21" x2="16" y2="21"/>
-                        <line x1="12" y1="17" x2="12" y2="21"/>
-                        <path d="M6 8h.01"/>
-                        <path d="M10 8h8"/>
-                    </svg>
-                </div>
-                <div class="app-content">
-                    <div class="app-title">
-                        SNAAK Command Center
-                        <span class="app-badge">Protocol Loempia</span>
-                    </div>
-                    <p class="app-description">Terminal-style quote app met militaire quotes. Battle mode, roast generator, quiz en chaos mode.</p>
-                </div>
-                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-            </a>
         </div>
 
         <footer class="footer">
             <p class="footer-text">
                 <a href="README.md" class="footer-link">Code <span>&copy;</span> Arjan Sammani</a> ·
-                <a href="https://www.linkedin.com/in/arjan-sammani/" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+                <a href="https://www.linkedin.com/in/arjan-sammani/" target="_blank" rel="noopener" class="footer-link">LinkedIn</a> ·
+                <a href="SnaakGPT/index.html" class="footer-link snaak-link" title="SNAAK Command Center">🎮</a>
             </p>
         </footer>
     </div>
