@@ -14307,39 +14307,41 @@
     <script>
         const searchData = [
             // Klachtgestuurd
-            { title: 'Koorts', category: 'Klacht', section: 'koorts', keywords: 'temperatuur incubatie tropisch anamnese lichamelijk onderzoek' },
+            { title: 'Koorts', category: 'Klacht', section: 'koorts', keywords: 'temperatuur incubatie tropisch anamnese lichamelijk onderzoek who' },
             { title: 'Diarree', category: 'Klacht', section: 'diarree', keywords: 'reizigersdiarree giardia amoebe waterig bloederig azitromycine' },
             { title: 'Huidafwijkingen', category: 'Klacht', section: 'huid', keywords: 'clm larva currens leishmaniasis myiasis' },
             { title: 'Eosinofilie', category: 'Klacht', section: 'eosinofilie', keywords: 'helminthen wormen strongyloides schistosoma katayama' },
             { title: 'Geelzucht', category: 'Klacht', section: 'icterus', keywords: 'icterus bilirubine hepatitis hemolyse malaria' },
-            { title: 'Hepatosplenomegalie', category: 'Klacht', section: 'hepatosplenomegalie', keywords: 'lever milt kala-azar leishmaniasis malaria' },
+            { title: 'Hepatosplenomegalie', category: 'Klacht', section: 'hepatosplenomegalie', keywords: 'lever milt kala-azar leishmaniasis malaria lymfadenopathie splenomegalie' },
             { title: 'Neurologisch', category: 'Klacht', section: 'neurologisch', keywords: 'meningitis encefalitis cerebrale malaria neurocysticercose' },
 
             // Ziektebeelden
-            { title: 'Malaria', category: 'Ziektebeeld', section: 'malaria', keywords: 'koorts plasmodium falciparum vivax knowlesi riamet artesunaat' },
+            { title: 'Malaria', category: 'Ziektebeeld', section: 'malaria', keywords: 'koorts plasmodium falciparum vivax knowlesi riamet artesunaat anopheles splenomegalie pancytopenie coartem who trombocytopenie' },
             { title: 'P. knowlesi', category: 'Malaria', section: 'malaria', keywords: 'borneo maleisie primaten dagelijks' },
-            { title: 'Buiktyfus', category: 'Ziektebeeld', section: 'buiktyfus', keywords: 'salmonella typhi stepladder bradycardie roseolae azitromycine' },
-            { title: 'Dengue', category: 'Ziektebeeld', section: 'dengue', keywords: 'breakbone aedes koorts trombopenie ns1 arbovirus' },
+            { title: 'Buiktyfus', category: 'Ziektebeeld', section: 'buiktyfus', keywords: 'salmonella typhi stepladder bradycardie roseolae azitromycine ciprofloxacine fluoroquinolone resistentie' },
+            { title: 'Dengue', category: 'Ziektebeeld', section: 'dengue', keywords: 'breakbone aedes koorts trombopenie ns1 arbovirus dss shock qdenga chikungunya zika flavivirus trombocytopenie' },
             { title: 'Schistosomiasis', category: 'Ziektebeeld', section: 'schistosomiasis', keywords: 'bilharzia lake malawi zoetwater praziquantel katayama' },
             { title: 'Strongyloidiasis', category: 'Ziektebeeld', section: 'strongyloidiasis', keywords: 'larva currens hyperinfectie ivermectine auto-infectie' },
-            { title: 'Darmparasieten', category: 'Ziektebeeld', section: 'darmparasieten', keywords: 'giardia amoebe ascaris hookworm albendazol' },
+            { title: 'Darmparasieten', category: 'Ziektebeeld', section: 'darmparasieten', keywords: 'giardia amoebe ascaris hookworm albendazol tinidazol metronidazol' },
             { title: 'Filariasis', category: 'Ziektebeeld', section: 'filariasis', keywords: 'lymfatisch elephantiasis onchocerciasis loiasis dec ivermectine' },
-            { title: 'Overige Parasieten', category: 'Ziektebeeld', section: 'overige-parasieten', keywords: 'toxoplasmose trypanosomiasis slaapziekte chagas echinococcose hydatid toxocariasis luizen pediculosis' },
-            { title: 'TBC', category: 'Ziektebeeld', section: 'tbc', keywords: 'tuberculose mycobacterium rifampicine rhze sputum' },
-            { title: 'HIV/AIDS', category: 'Ziektebeeld', section: 'hiv', keywords: 'cd4 opportunistisch pep art antiretroviral' },
+            { title: 'Overige Parasieten', category: 'Ziektebeeld', section: 'overige-parasieten', keywords: 'toxoplasmose trypanosomiasis slaapziekte chagas echinococcose hydatid toxocariasis luizen pediculosis tse-tse' },
+            { title: 'TBC', category: 'Ziektebeeld', section: 'tbc', keywords: 'tuberculose mycobacterium rifampicine rhze sputum mdr xdr igra mantoux tbi latent who' },
+            { title: 'HIV/AIDS', category: 'Ziektebeeld', section: 'hiv', keywords: 'cd4 opportunistisch pep prep art antiretroviral' },
             { title: 'SOA', category: 'Ziektebeeld', section: 'soa', keywords: 'syfilis chancroid lgv urethritis gonorroe chlamydia' },
             { title: 'Leptospirose', category: 'Ziektebeeld', section: 'leptospirose', keywords: 'leptospira weil ziekte icterus nierinsufficiëntie ratten water' },
 
             // Endemisch
-            { title: 'Lake Malawi', category: 'Endemisch', section: 'endemic', keywords: 'schistosoma africa zoetwater haematobium' },
-            { title: 'Zuid-Azië', category: 'Endemisch', section: 'endemic', keywords: 'india pakistan bangladesh buiktyfus kala-azar' },
-            { title: 'Zuidoost-Azië', category: 'Endemisch', section: 'endemic', keywords: 'thailand vietnam borneo knowlesi dengue' },
+            { title: 'Lake Malawi', category: 'Endemisch', section: 'endemic', keywords: 'schistosoma africa zoetwater haematobium subsahara afrika' },
+            { title: 'Zuid-Azië', category: 'Endemisch', section: 'endemic', keywords: 'india pakistan bangladesh buiktyfus kala-azar midden-oosten' },
+            { title: 'Zuidoost-Azië', category: 'Endemisch', section: 'endemic', keywords: 'thailand vietnam borneo knowlesi dengue aedes anopheles' },
+            { title: 'Afrika', category: 'Endemisch', section: 'endemic', keywords: 'subsahara afrika meningitisgordel malaria anopheles tse-tse' },
+            { title: 'Vectoren', category: 'Endemisch', section: 'endemic', keywords: 'aedes anopheles teek tick tse-tse mug vector' },
 
             // Praktisch
-            { title: 'Labdiagnostiek', category: 'Praktisch', section: 'labdiagnostiek', keywords: 'parasitologisch feces malaria serologie diagnostiek' },
-            { title: 'Antibiotica', category: 'Praktisch', section: 'antibiotica', keywords: 'azitromycine doxycycline albendazol ivermectine praziquantel' },
-            { title: 'Malariapreventie', category: 'Praktisch', section: 'malariapreventie', keywords: 'abcd malarone lariam doxycycline profylaxe deet' },
-            { title: 'Vaccinaties', category: 'Praktisch', section: 'vaccinaties', keywords: 'gele koorts hepatitis buiktyfus rabies japanse encefalitis' },
+            { title: 'Labdiagnostiek', category: 'Praktisch', section: 'labdiagnostiek', keywords: 'parasitologisch feces malaria serologie diagnostiek trombocytopenie pancytopenie' },
+            { title: 'Antibiotica', category: 'Praktisch', section: 'antibiotica', keywords: 'azitromycine doxycycline albendazol ivermectine praziquantel resistentie ecdc ciprofloxacine fluoroquinolone' },
+            { title: 'Malariapreventie', category: 'Praktisch', section: 'malariapreventie', keywords: 'abcd malarone lariam doxycycline profylaxe deet lcr mefloquine atovaquon proguanil' },
+            { title: 'Vaccinaties', category: 'Praktisch', section: 'vaccinaties', keywords: 'gele koorts hepatitis buiktyfus rabies japanse encefalitis lcr rivm qdenga meningitisgordel dengue' },
             { title: 'Afweerstoornis', category: 'Praktisch', section: 'afweerstoornis', keywords: 'immuun immuniteit immunosuppressie asplenie hiv cd4 b-cel t-cel immunoglobuline rituximab lcr' },
             { title: 'Keuring', category: 'Praktisch', section: 'keuring', keywords: 'screening strongyloides schistosoma feces bloedbeeld' },
         ];
