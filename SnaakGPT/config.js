@@ -10,11 +10,11 @@ const snaakConfig = {
 
     // Rank progression - earn it through action
     ranks: {
-        0: { name: "KOJP", title: "Klote Ongemotiveerde Jankende Pax", color: "#666" },
-        100: { name: "RECRUUT", title: "Verse Pax", color: "#888" },
+        0: { name: "KOJP", title: "Kusje Op Je P...", color: "#666" },
+        100: { name: "RECRUUT", title: "Klote Ongemotiveerde Jankende Pax", color: "#888" },
         250: { name: "SOLDAAT", title: "Kan Mee", color: "#999" },
         500: { name: "KORPORAAL", title: "Begint Erop Te Lijken", color: "#aaa" },
-        1000: { name: "SERGEANT", title: "Echte Snaak", color: "#5a7f3e" },
+        1000: { name: "SERGEANT", title: "Beetje Peppi", color: "#5a7f3e" },
         2000: { name: "SERGEANT-MAJOOR", title: "Harde Jongen", color: "#6b9449" },
         3500: { name: "VAANDRIG", title: "Respect", color: "#7ba55a" },
         5000: { name: "LUITENANT", title: "Command Material", color: "#8cb66b" },

@@ -29,7 +29,8 @@ const snaakQuotes = {
         "Dat is geen uniform, dat is een verkleedpartij",
         "U marcheert als een pingpongballetje in een wasmachine",
         "U heeft het IQ van een beschuitje",
-        "U bent zo nuttig als een asbak op een motor"
+        "U bent zo nuttig als een asbak op een motor",
+        "Klote Ongemotiveerde Jankende Pax!"
     ],
     oefeningen: [
         "Ik denk dat u dit priiima Zulu11 zult regelen",

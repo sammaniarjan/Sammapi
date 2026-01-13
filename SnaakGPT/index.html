@@ -229,6 +229,12 @@
             padding: 40px;
             text-shadow: 0 0 10px var(--glow);
             animation: fadeIn 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
+            height: 100%;
         }
 
         @keyframes fadeIn {
@@ -244,62 +250,56 @@
             letter-spacing: 2px;
         }
 
-        /* Battle Arena */
-        .battle-arena {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            height: 100%;
-        }
-
-        .battle-quote {
-            border: 3px solid var(--terminal-green);
-            padding: 30px;
+        /* Pong Game */
+        .pong-container {
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            background: rgba(0, 255, 0, 0.05);
-            position: relative;
-            touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent;
+            justify-content: center;
+            height: 100%;
+            gap: 20px;
         }
 
-        .battle-quote:hover {
-            background: rgba(0, 255, 0, 0.15);
+        .pong-canvas {
+            border: 3px solid var(--terminal-green);
             box-shadow: 0 0 30px var(--glow);
-            transform: scale(1.05);
+            background: #001100;
         }
 
-        .battle-quote.winner {
-            border-color: var(--terminal-yellow);
-            box-shadow: 0 0 40px rgba(255, 255, 0, 0.5);
-            background: rgba(255, 255, 0, 0.1);
+        .pong-scores {
+            display: flex;
+            gap: 60px;
+            font-size: 2rem;
+            color: var(--terminal-yellow);
+            text-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
         }
 
-        .battle-label {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 0.8rem;
+        .pong-score {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .pong-score-label {
+            font-size: 0.9rem;
             color: var(--terminal-cyan);
             letter-spacing: 1px;
         }
 
-        .battle-text {
-            font-size: 1.5rem;
+        .pong-controls {
+            display: flex;
+            gap: 40px;
+            font-size: 0.8rem;
+            color: var(--terminal-dim);
             text-align: center;
-            line-height: 1.5;
         }
 
-        .battle-timer {
-            margin-top: 30px;
-            font-size: 3rem;
-            color: var(--terminal-red);
-            font-weight: bold;
-            text-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+        .pong-winner {
+            font-size: 2rem;
+            color: var(--terminal-yellow);
+            text-shadow: 0 0 20px rgba(255, 255, 0, 0.7);
+            animation: pulse 1s infinite;
         }
 
         /* Roast Generator */
@@ -348,93 +348,6 @@
             transform: scale(0.95);
         }
 
-        /* Quiz Mode */
-        .quiz-container {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
-
-        .quiz-question {
-            font-size: 1.8rem;
-            text-align: center;
-            padding: 30px;
-            border: 2px solid var(--terminal-cyan);
-            background: rgba(0, 255, 255, 0.05);
-        }
-
-        .quiz-options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .quiz-option {
-            padding: 20px;
-            border: 2px solid var(--terminal-green);
-            text-align: center;
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: all 0.1s;
-            touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .quiz-option:hover {
-            background: rgba(0, 255, 0, 0.2);
-            box-shadow: 0 0 15px var(--glow);
-        }
-
-        .quiz-option.correct {
-            border-color: var(--terminal-yellow);
-            background: rgba(255, 255, 0, 0.2);
-        }
-
-        .quiz-option.wrong {
-            border-color: var(--terminal-red);
-            background: rgba(255, 0, 0, 0.2);
-        }
-
-        /* Chaos Mode */
-        .chaos-mode {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .chaos-quote {
-            font-size: 2.5rem;
-            text-align: center;
-            animation: chaosFlash 0.1s;
-        }
-
-        @keyframes chaosFlash {
-            0% { color: var(--terminal-red); transform: scale(1.2); }
-            100% { color: var(--terminal-green); transform: scale(1); }
-        }
-
-        .chaos-counter {
-            font-size: 4rem;
-            color: var(--terminal-yellow);
-            font-weight: bold;
-            text-shadow: 0 0 30px rgba(255, 255, 0, 0.7);
-        }
-
-        .chaos-progress {
-            width: 80%;
-            height: 30px;
-            border: 2px solid var(--terminal-green);
-            position: relative;
-        }
-
-        .chaos-progress-bar {
-            height: 100%;
-            background: var(--terminal-green);
-            transition: width 0.3s;
-            box-shadow: 0 0 20px var(--glow);
-        }
 
         /* Leaderboard */
         .leaderboard {
@@ -490,14 +403,37 @@
             box-shadow: 0 0 15px var(--glow);
         }
 
-        /* ASCII Art */
-        .ascii-art {
-            font-size: 0.5rem;
-            line-height: 0.5rem;
-            color: var(--terminal-dim);
-            white-space: pre;
+        /* Mode Header */
+        .mode-header {
             text-align: center;
             margin: 20px 0;
+            padding: 15px 20px;
+            border: 2px solid var(--terminal-green);
+            background: rgba(0, 255, 0, 0.05);
+        }
+
+        .mode-header h2 {
+            font-size: 1.5rem;
+            color: var(--terminal-green);
+            text-shadow: 0 0 10px var(--glow);
+            margin: 0 0 5px 0;
+            letter-spacing: 2px;
+        }
+
+        .mode-header p {
+            font-size: 0.9rem;
+            color: var(--terminal-dim);
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 768px) {
+            .mode-header h2 {
+                font-size: 1.2rem;
+            }
+            .mode-header p {
+                font-size: 0.8rem;
+            }
         }
 
         /* Glitch effect */
@@ -536,18 +472,6 @@
                 letter-spacing: 1px;
             }
 
-            .battle-arena {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .battle-text {
-                font-size: 1.2rem;
-            }
-
-            .quiz-options {
-                grid-template-columns: 1fr;
-            }
 
             .mode-btn {
                 min-width: 90px;
@@ -665,10 +589,10 @@
         <!-- Mode Selector -->
         <div class="mode-selector">
             <button class="mode-btn active" onclick="switchMode('quote', this)">📋 QUOTES</button>
-            <button class="mode-btn" onclick="switchMode('battle', this)">⚔️ BATTLE</button>
+            <button class="mode-btn" onclick="switchMode('pong', this)">🏓 PONG</button>
             <button class="mode-btn" onclick="switchMode('roast', this)">🔥 ROAST GEN</button>
-            <button class="mode-btn" onclick="switchMode('quiz', this)">❓ QUIZ</button>
-            <button class="mode-btn" onclick="switchMode('chaos', this)">💀 CHAOS</button>
+            <button class="mode-btn" onclick="switchMode('invaders', this)">👾 INVADERS</button>
+            <button class="mode-btn" onclick="switchMode('snake', this)">🐍 SNAKE</button>
             <button class="mode-btn" onclick="switchMode('leaderboard', this)">🏆 RANKS</button>
         </div>
 
@@ -695,9 +619,9 @@
         // --- GLOBAL STATE ---
         let currentMode = 'quote';
         let playerStats = JSON.parse(localStorage.getItem('playerStats') || '{"score": 0, "streak": 0, "battles": 0, "quizzes": 0}');
-        let battleState = null;
-        let quizState = null;
-        let chaosState = null;
+        let pongState = null;
+        let invadersState = null;
+        let snakeState = null;
 
         // Audio system
         const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -833,21 +757,21 @@
                     actionBtn.textContent = '▶ NEXT QUOTE';
                     showQuoteMode();
                     break;
-                case 'battle':
-                    actionBtn.textContent = '▶ NEW BATTLE';
-                    showBattleMode();
+                case 'pong':
+                    actionBtn.textContent = '▶ START PONG';
+                    showPongMode();
                     break;
                 case 'roast':
                     actionBtn.textContent = '🔥 GENERATE';
                     showRoastMode();
                     break;
-                case 'quiz':
-                    actionBtn.textContent = '▶ START QUIZ';
-                    showQuizMode();
+                case 'invaders':
+                    actionBtn.textContent = '👾 START GAME';
+                    showInvadersMode();
                     break;
-                case 'chaos':
-                    actionBtn.textContent = '💀 START CHAOS';
-                    showChaosMode();
+                case 'snake':
+                    actionBtn.textContent = '🐍 START GAME';
+                    showSnakeMode();
                     break;
                 case 'leaderboard':
                     actionBtn.textContent = '🔄 REFRESH';
@@ -862,17 +786,17 @@
                 case 'quote':
                     showRandomQuote();
                     break;
-                case 'battle':
-                    startNewBattle();
+                case 'pong':
+                    startPongGame();
                     break;
                 case 'roast':
                     generateRoast();
                     break;
-                case 'quiz':
-                    startQuiz();
+                case 'invaders':
+                    startInvadersGame();
                     break;
-                case 'chaos':
-                    startChaos();
+                case 'snake':
+                    startSnakeGame();
                     break;
                 case 'leaderboard':
                     showLeaderboard();
@@ -903,74 +827,234 @@
             playSound('click');
         }
 
-        // BATTLE MODE
-        function showBattleMode() {
-            startNewBattle();
+        // PONG MODE
+        function showPongMode() {
+            const screen = document.getElementById('terminal-screen');
+            screen.innerHTML = `
+                <div class="pong-container">
+                    <div class="mode-header">
+                        <h2>SNAAK PONG - 2 SPELERS</h2>
+                        <p>EERSTE TOT 5 PUNTEN WINT!</p>
+                    </div>
+                    <div class="pong-controls">
+                        <div>SPELER 1<br>W = OMHOOG<br>S = OMLAAG</div>
+                        <div>SPELER 2<br>↑ = OMHOOG<br>↓ = OMLAAG</div>
+                    </div>
+                    <div style="margin-top: 20px; font-size: 1.2rem;">
+                        Klik op START PONG om te beginnen
+                    </div>
+                </div>
+            `;
         }
 
-        function startNewBattle() {
-            const quote1 = allQuotes[Math.floor(Math.random() * allQuotes.length)];
-            let quote2 = allQuotes[Math.floor(Math.random() * allQuotes.length)];
-            while (quote2 === quote1) {
-                quote2 = allQuotes[Math.floor(Math.random() * allQuotes.length)];
+        function startPongGame() {
+            if (pongState && pongState.running) {
+                stopPongGame();
             }
-
-            battleState = { quote1, quote2, timer: 8 };
 
             const screen = document.getElementById('terminal-screen');
             screen.innerHTML = `
-                <div class="ascii-art">
-╔═══════════════════════════════════════════════════════════════╗
-║           QUOTE BATTLE ARENA - KIES DE HARDSTE!               ║
-╚═══════════════════════════════════════════════════════════════╝
-                </div>
-                <div class="battle-arena">
-                    <div class="battle-quote" onclick="voteBattle(1)">
-                        <div class="battle-label">OPTION A</div>
-                        <div class="battle-text">"${quote1}"</div>
+                <div class="pong-container">
+                    <div class="pong-scores">
+                        <div class="pong-score">
+                            <div class="pong-score-label">SPELER 1</div>
+                            <div id="pong-score1">0</div>
+                        </div>
+                        <div class="pong-score">
+                            <div class="pong-score-label">SPELER 2</div>
+                            <div id="pong-score2">0</div>
+                        </div>
                     </div>
-                    <div class="battle-quote" onclick="voteBattle(2)">
-                        <div class="battle-label">OPTION B</div>
-                        <div class="battle-text">"${quote2}"</div>
+                    <canvas id="pong-canvas" class="pong-canvas" width="600" height="400"></canvas>
+                    <div class="pong-controls">
+                        <div>W/S</div>
+                        <div>↑/↓</div>
                     </div>
-                </div>
-                <div style="text-align: center; margin-top: 20px;">
-                    <div class="battle-timer" id="battle-timer">8</div>
-                    <div style="margin-top: 10px; color: var(--terminal-dim);">SECONDS REMAINING</div>
                 </div>
             `;
 
-            const timerInterval = setInterval(() => {
-                battleState.timer--;
-                const timerEl = document.getElementById('battle-timer');
-                if (timerEl) {
-                    timerEl.textContent = battleState.timer;
-                    if (battleState.timer <= 3) {
-                        timerEl.style.color = 'var(--terminal-red)';
-                        playSound('chaos');
-                    }
+            const canvas = document.getElementById('pong-canvas');
+            const ctx = canvas.getContext('2d');
+
+            pongState = {
+                running: true,
+                score1: 0,
+                score2: 0,
+                winScore: 5,
+                paddleHeight: 80,
+                paddleWidth: 10,
+                ballSize: 10,
+                paddle1Y: 160,
+                paddle2Y: 160,
+                ballX: 300,
+                ballY: 200,
+                ballSpeedX: 5,
+                ballSpeedY: 3,
+                paddleSpeed: 8,
+                keys: {}
+            };
+
+            // Keyboard handlers
+            pongState.keyDownHandler = (e) => {
+                pongState.keys[e.key] = true;
+                if (['w', 's', 'W', 'S', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
+                    e.preventDefault();
+                }
+            };
+            pongState.keyUpHandler = (e) => {
+                pongState.keys[e.key] = false;
+            };
+
+            document.addEventListener('keydown', pongState.keyDownHandler);
+            document.addEventListener('keyup', pongState.keyUpHandler);
+
+            function gameLoop() {
+                if (!pongState || !pongState.running) return;
+
+                // Move paddles
+                if (pongState.keys['w'] || pongState.keys['W']) {
+                    pongState.paddle1Y = Math.max(0, pongState.paddle1Y - pongState.paddleSpeed);
+                }
+                if (pongState.keys['s'] || pongState.keys['S']) {
+                    pongState.paddle1Y = Math.min(canvas.height - pongState.paddleHeight, pongState.paddle1Y + pongState.paddleSpeed);
+                }
+                if (pongState.keys['ArrowUp']) {
+                    pongState.paddle2Y = Math.max(0, pongState.paddle2Y - pongState.paddleSpeed);
+                }
+                if (pongState.keys['ArrowDown']) {
+                    pongState.paddle2Y = Math.min(canvas.height - pongState.paddleHeight, pongState.paddle2Y + pongState.paddleSpeed);
                 }
 
-                if (battleState.timer <= 0) {
-                    clearInterval(timerInterval);
-                    // Auto-pick random
-                    voteBattle(Math.random() > 0.5 ? 1 : 2);
+                // Move ball
+                pongState.ballX += pongState.ballSpeedX;
+                pongState.ballY += pongState.ballSpeedY;
+
+                // Ball collision with top/bottom
+                if (pongState.ballY <= 0 || pongState.ballY >= canvas.height - pongState.ballSize) {
+                    pongState.ballSpeedY = -pongState.ballSpeedY;
+                    playSound('click');
                 }
-            }, 1000);
+
+                // Ball collision with paddles
+                // Left paddle
+                if (pongState.ballX <= pongState.paddleWidth + 20 &&
+                    pongState.ballY + pongState.ballSize >= pongState.paddle1Y &&
+                    pongState.ballY <= pongState.paddle1Y + pongState.paddleHeight &&
+                    pongState.ballSpeedX < 0) {
+                    pongState.ballSpeedX = -pongState.ballSpeedX * 1.05;
+                    playSound('click');
+                }
+                // Right paddle
+                if (pongState.ballX >= canvas.width - pongState.paddleWidth - 20 - pongState.ballSize &&
+                    pongState.ballY + pongState.ballSize >= pongState.paddle2Y &&
+                    pongState.ballY <= pongState.paddle2Y + pongState.paddleHeight &&
+                    pongState.ballSpeedX > 0) {
+                    pongState.ballSpeedX = -pongState.ballSpeedX * 1.05;
+                    playSound('click');
+                }
+
+                // Score
+                if (pongState.ballX <= 0) {
+                    pongState.score2++;
+                    document.getElementById('pong-score2').textContent = pongState.score2;
+                    playSound('win');
+                    resetBall(1);
+                }
+                if (pongState.ballX >= canvas.width) {
+                    pongState.score1++;
+                    document.getElementById('pong-score1').textContent = pongState.score1;
+                    playSound('win');
+                    resetBall(-1);
+                }
+
+                // Check for winner
+                if (pongState.score1 >= pongState.winScore || pongState.score2 >= pongState.winScore) {
+                    endPongGame();
+                    return;
+                }
+
+                // Draw
+                ctx.fillStyle = '#001100';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Center line
+                ctx.strokeStyle = '#005500';
+                ctx.setLineDash([10, 10]);
+                ctx.beginPath();
+                ctx.moveTo(canvas.width / 2, 0);
+                ctx.lineTo(canvas.width / 2, canvas.height);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Paddles
+                ctx.fillStyle = '#00ff00';
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = '#00ff00';
+                ctx.fillRect(10, pongState.paddle1Y, pongState.paddleWidth, pongState.paddleHeight);
+                ctx.fillRect(canvas.width - pongState.paddleWidth - 10, pongState.paddle2Y, pongState.paddleWidth, pongState.paddleHeight);
+
+                // Ball
+                ctx.fillStyle = '#00ff00';
+                ctx.fillRect(pongState.ballX, pongState.ballY, pongState.ballSize, pongState.ballSize);
+
+                ctx.shadowBlur = 0;
+
+                pongState.animationFrame = requestAnimationFrame(gameLoop);
+            }
+
+            function resetBall(direction) {
+                pongState.ballX = canvas.width / 2;
+                pongState.ballY = canvas.height / 2;
+                pongState.ballSpeedX = 5 * direction;
+                pongState.ballSpeedY = (Math.random() - 0.5) * 6;
+            }
+
+            function endPongGame() {
+                pongState.running = false;
+                const winner = pongState.score1 >= pongState.winScore ? 1 : 2;
+                playSound('levelup');
+                addPoints(10, 'pong win');
+
+                screen.innerHTML = `
+                    <div class="pong-container">
+                        <div class="mode-header">
+                            <h2>GAME OVER!</h2>
+                        </div>
+                        <div class="pong-winner">
+                            SPELER ${winner} WINT!
+                        </div>
+                        <div style="margin-top: 20px; font-size: 1.5rem;">
+                            ${pongState.score1} - ${pongState.score2}
+                        </div>
+                        <div style="margin-top: 10px; color: var(--terminal-yellow);">
+                            +10 PUNTEN!
+                        </div>
+                        <div style="margin-top: 30px; color: var(--terminal-dim);">
+                            Klik op START PONG voor een nieuwe game
+                        </div>
+                    </div>
+                `;
+
+                document.removeEventListener('keydown', pongState.keyDownHandler);
+                document.removeEventListener('keyup', pongState.keyUpHandler);
+            }
+
+            gameLoop();
         }
 
-        function voteBattle(choice) {
-            if (!battleState) return;
-
-            const winner = choice === 1 ? battleState.quote1 : battleState.quote2;
-            playSound('win');
-            addPoints(snaakConfig.points.battleVote, 'battle vote');
-
-            showNotification(`✅ JE KEUZE: "${winner}"`);
-
-            setTimeout(() => {
-                startNewBattle();
-            }, 1500);
+        function stopPongGame() {
+            if (pongState) {
+                pongState.running = false;
+                if (pongState.animationFrame) {
+                    cancelAnimationFrame(pongState.animationFrame);
+                }
+                if (pongState.keyDownHandler) {
+                    document.removeEventListener('keydown', pongState.keyDownHandler);
+                }
+                if (pongState.keyUpHandler) {
+                    document.removeEventListener('keyup', pongState.keyUpHandler);
+                }
+            }
         }
 
         // ROAST GENERATOR
@@ -978,11 +1062,9 @@
             const screen = document.getElementById('terminal-screen');
             screen.innerHTML = `
                 <div class="roast-generator">
-                    <div class="ascii-art">
-╔════════════════════════════════════════════════════════════╗
-║              MILITAIRE ROAST GENERATOR 3000                ║
-║                GENEREER JE EIGEN ROAST                     ║
-╚════════════════════════════════════════════════════════════╝
+                    <div class="mode-header">
+                        <h2>MILITAIRE ROAST GENERATOR 3000</h2>
+                        <p>GENEREER JE EIGEN ROAST</p>
                     </div>
                     <div class="roast-output" id="roast-output">
                         Klik op GENERATE voor een verse roast
@@ -1018,143 +1100,558 @@
             return arr[Math.floor(Math.random() * arr.length)];
         }
 
-        // QUIZ MODE
-        function showQuizMode() {
+        // SPACE INVADERS MODE
+        function showInvadersMode() {
             const screen = document.getElementById('terminal-screen');
             screen.innerHTML = `
-                <div style="text-align: center; padding: 60px;">
-                    <div class="ascii-art">
-╔═══════════════════════════════════════════════════════════╗
-║                    SNAAK QUIZ MODE                        ║
-║            TEST JE KENNIS VAN MILITAIRE QUOTES            ║
-╚═══════════════════════════════════════════════════════════╝
+                <div class="pong-container">
+                    <div class="mode-header">
+                        <h2>SPACE INVADERS</h2>
+                        <p>VERDEDIG DE BASIS TEGEN DE VIJAND!</p>
                     </div>
-                    <div style="margin-top: 40px; font-size: 1.5rem;">
-                        Klik op START QUIZ om te beginnen
+                    <div class="pong-controls">
+                        <div>← → BEWEGEN</div>
+                        <div>SPATIE = SCHIETEN</div>
+                    </div>
+                    <div style="margin-top: 20px; font-size: 1.2rem;">
+                        Klik op START GAME om te beginnen
                     </div>
                 </div>
             `;
         }
 
-        function startQuiz() {
-            const correctQuote = allQuotes[Math.floor(Math.random() * allQuotes.length)];
-            const correctCategory = Object.keys(snaakQuotes).find(cat =>
-                snaakQuotes[cat].includes(correctQuote)
-            );
-
-            // Generate wrong categories
-            const categories = Object.keys(snaakQuotes).filter(cat => cat !== correctCategory);
-            const wrongCategories = [];
-            for (let i = 0; i < 3; i++) {
-                const idx = Math.floor(Math.random() * categories.length);
-                wrongCategories.push(categories[idx]);
-                categories.splice(idx, 1);
+        function startInvadersGame() {
+            if (invadersState && invadersState.running) {
+                stopInvadersGame();
             }
-
-            const options = [correctCategory, ...wrongCategories].sort(() => Math.random() - 0.5);
-
-            quizState = { correctCategory, correctAnswer: correctCategory };
 
             const screen = document.getElementById('terminal-screen');
             screen.innerHTML = `
-                <div class="quiz-container">
-                    <div class="quiz-question">
-                        Uit welke categorie komt deze quote?<br><br>
-                        "${correctQuote}"
-                    </div>
-                    <div class="quiz-options">
-                        ${options.map(opt => `
-                            <div class="quiz-option" onclick="answerQuiz('${opt}')">
-                                ${opt.toUpperCase()}
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-        }
-
-        function answerQuiz(answer) {
-            if (!quizState) return;
-
-            const correct = answer === quizState.correctAnswer;
-
-            const options = document.querySelectorAll('.quiz-option');
-            options.forEach(opt => {
-                opt.style.pointerEvents = 'none';
-                if (opt.textContent.trim().toLowerCase() === quizState.correctAnswer.toLowerCase()) {
-                    opt.classList.add('correct');
-                }
-                if (opt.textContent.trim().toLowerCase() === answer.toLowerCase() && !correct) {
-                    opt.classList.add('wrong');
-                }
-            });
-
-            if (correct) {
-                playSound('win');
-                addPoints(snaakConfig.points.quizCorrect, 'quiz correct');
-                showNotification('✅ CORRECT!');
-            } else {
-                playSound('lose');
-                showNotification('❌ FOUT!');
-            }
-
-            setTimeout(() => {
-                startQuiz();
-            }, 2000);
-        }
-
-        // CHAOS MODE
-        function showChaosMode() {
-            const screen = document.getElementById('terminal-screen');
-            screen.innerHTML = `
-                <div style="text-align: center; padding: 60px;">
-                    <div class="ascii-art">
-╔═══════════════════════════════════════════════════════════╗
-║                    ⚠️ CHAOS MODE ⚠️                       ║
-║          10 QUOTES IN 20 SECONDEN - OVERLEVEN!            ║
-╚═══════════════════════════════════════════════════════════╝
-                    </div>
-                    <div style="margin-top: 40px; font-size: 1.5rem; color: var(--terminal-red);">
-                        WAARSCHUWING: RAPID FIRE QUOTES<br>
-                        <div style="margin-top: 20px; color: var(--terminal-yellow);">
-                            +${snaakConfig.points.chaosComplete} PUNTEN BIJ COMPLETION
+                <div class="pong-container">
+                    <div class="pong-scores">
+                        <div class="pong-score">
+                            <div class="pong-score-label">SCORE</div>
+                            <div id="invaders-score">0</div>
+                        </div>
+                        <div class="pong-score">
+                            <div class="pong-score-label">LEVEL</div>
+                            <div id="invaders-level">1</div>
+                        </div>
+                        <div class="pong-score">
+                            <div class="pong-score-label">LEVENS</div>
+                            <div id="invaders-lives">3</div>
                         </div>
                     </div>
+                    <canvas id="invaders-canvas" class="pong-canvas" width="600" height="400"></canvas>
+                    <div class="pong-controls">
+                        <div>← → BEWEGEN | SPATIE SCHIETEN</div>
+                    </div>
+                </div>
+            `;
+
+            const canvas = document.getElementById('invaders-canvas');
+            const ctx = canvas.getContext('2d');
+
+            invadersState = {
+                running: true,
+                score: 0,
+                level: 1,
+                lives: 3,
+                player: { x: 280, y: 360, width: 40, height: 20, speed: 6 },
+                bullets: [],
+                enemies: [],
+                enemyBullets: [],
+                enemyDirection: 1,
+                enemySpeed: 1,
+                lastEnemyShot: 0,
+                keys: {}
+            };
+
+            // Create enemies
+            function createEnemies() {
+                invadersState.enemies = [];
+                for (let row = 0; row < 4; row++) {
+                    for (let col = 0; col < 8; col++) {
+                        invadersState.enemies.push({
+                            x: 60 + col * 60,
+                            y: 40 + row * 40,
+                            width: 30,
+                            height: 20,
+                            alive: true
+                        });
+                    }
+                }
+            }
+            createEnemies();
+
+            // Keyboard handlers
+            invadersState.keyDownHandler = (e) => {
+                invadersState.keys[e.key] = true;
+                if (['ArrowLeft', 'ArrowRight', ' '].includes(e.key)) {
+                    e.preventDefault();
+                }
+                // Shoot
+                if (e.key === ' ' && invadersState.running) {
+                    const now = Date.now();
+                    if (!invadersState.lastShot || now - invadersState.lastShot > 120) {
+                        invadersState.bullets.push({
+                            x: invadersState.player.x + invadersState.player.width / 2 - 2,
+                            y: invadersState.player.y,
+                            width: 4,
+                            height: 10,
+                            speed: 8
+                        });
+                        invadersState.lastShot = now;
+                        playSound('click');
+                    }
+                }
+            };
+            invadersState.keyUpHandler = (e) => {
+                invadersState.keys[e.key] = false;
+            };
+
+            document.addEventListener('keydown', invadersState.keyDownHandler);
+            document.addEventListener('keyup', invadersState.keyUpHandler);
+
+            function gameLoop() {
+                if (!invadersState || !invadersState.running) return;
+
+                // Move player
+                if (invadersState.keys['ArrowLeft']) {
+                    invadersState.player.x = Math.max(0, invadersState.player.x - invadersState.player.speed);
+                }
+                if (invadersState.keys['ArrowRight']) {
+                    invadersState.player.x = Math.min(canvas.width - invadersState.player.width, invadersState.player.x + invadersState.player.speed);
+                }
+
+                // Move bullets
+                invadersState.bullets = invadersState.bullets.filter(b => {
+                    b.y -= b.speed;
+                    return b.y > 0;
+                });
+
+                // Move enemy bullets
+                invadersState.enemyBullets = invadersState.enemyBullets.filter(b => {
+                    b.y += b.speed;
+                    return b.y < canvas.height;
+                });
+
+                // Move enemies
+                let hitEdge = false;
+                const aliveEnemies = invadersState.enemies.filter(e => e.alive);
+                aliveEnemies.forEach(enemy => {
+                    enemy.x += invadersState.enemyDirection * invadersState.enemySpeed;
+                    if (enemy.x <= 0 || enemy.x + enemy.width >= canvas.width) {
+                        hitEdge = true;
+                    }
+                });
+
+                if (hitEdge) {
+                    invadersState.enemyDirection *= -1;
+                    aliveEnemies.forEach(enemy => {
+                        enemy.y += 15;
+                    });
+                }
+
+                // Enemy shooting
+                const now = Date.now();
+                if (now - invadersState.lastEnemyShot > 1500 && aliveEnemies.length > 0) {
+                    const shooter = aliveEnemies[Math.floor(Math.random() * aliveEnemies.length)];
+                    invadersState.enemyBullets.push({
+                        x: shooter.x + shooter.width / 2 - 2,
+                        y: shooter.y + shooter.height,
+                        width: 4,
+                        height: 10,
+                        speed: 4
+                    });
+                    invadersState.lastEnemyShot = now;
+                }
+
+                // Check bullet-enemy collisions
+                invadersState.bullets.forEach(bullet => {
+                    invadersState.enemies.forEach(enemy => {
+                        if (enemy.alive &&
+                            bullet.x < enemy.x + enemy.width &&
+                            bullet.x + bullet.width > enemy.x &&
+                            bullet.y < enemy.y + enemy.height &&
+                            bullet.y + bullet.height > enemy.y) {
+                            enemy.alive = false;
+                            bullet.y = -100;
+                            invadersState.score += 10;
+                            document.getElementById('invaders-score').textContent = invadersState.score;
+                            playSound('win');
+                        }
+                    });
+                });
+
+                // Check enemy bullet-player collisions
+                invadersState.enemyBullets.forEach(bullet => {
+                    if (bullet.x < invadersState.player.x + invadersState.player.width &&
+                        bullet.x + bullet.width > invadersState.player.x &&
+                        bullet.y < invadersState.player.y + invadersState.player.height &&
+                        bullet.y + bullet.height > invadersState.player.y) {
+                        bullet.y = 1000;
+                        invadersState.lives--;
+                        document.getElementById('invaders-lives').textContent = invadersState.lives;
+                        playSound('lose');
+                        if (invadersState.lives <= 0) {
+                            endInvadersGame(false);
+                            return;
+                        }
+                    }
+                });
+
+                // Check if enemies reached bottom
+                aliveEnemies.forEach(enemy => {
+                    if (enemy.y + enemy.height >= invadersState.player.y) {
+                        endInvadersGame(false);
+                        return;
+                    }
+                });
+
+                // Check win condition
+                if (aliveEnemies.length === 0) {
+                    invadersState.level++;
+                    document.getElementById('invaders-level').textContent = invadersState.level;
+                    invadersState.enemySpeed += 0.5;
+                    createEnemies();
+                    playSound('levelup');
+                }
+
+                // Draw
+                ctx.fillStyle = '#001100';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Draw player
+                ctx.fillStyle = '#00ff00';
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = '#00ff00';
+                ctx.fillRect(invadersState.player.x, invadersState.player.y, invadersState.player.width, invadersState.player.height);
+                // Player cannon
+                ctx.fillRect(invadersState.player.x + invadersState.player.width/2 - 3, invadersState.player.y - 8, 6, 8);
+
+                // Draw enemies
+                ctx.fillStyle = '#ff0000';
+                ctx.shadowColor = '#ff0000';
+                invadersState.enemies.forEach(enemy => {
+                    if (enemy.alive) {
+                        ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+                        // Enemy eyes
+                        ctx.fillStyle = '#001100';
+                        ctx.fillRect(enemy.x + 5, enemy.y + 5, 6, 6);
+                        ctx.fillRect(enemy.x + enemy.width - 11, enemy.y + 5, 6, 6);
+                        ctx.fillStyle = '#ff0000';
+                    }
+                });
+
+                // Draw bullets
+                ctx.fillStyle = '#00ff00';
+                ctx.shadowColor = '#00ff00';
+                invadersState.bullets.forEach(bullet => {
+                    ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+                });
+
+                // Draw enemy bullets
+                ctx.fillStyle = '#ff0000';
+                ctx.shadowColor = '#ff0000';
+                invadersState.enemyBullets.forEach(bullet => {
+                    ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+                });
+
+                ctx.shadowBlur = 0;
+
+                invadersState.animationFrame = requestAnimationFrame(gameLoop);
+            }
+
+            function endInvadersGame(won) {
+                invadersState.running = false;
+                const finalScore = invadersState.score;
+
+                if (won || finalScore > 50) {
+                    playSound('levelup');
+                    addPoints(finalScore, 'invaders score');
+                }
+
+                // Get random roast for losing
+                const roast = allQuotes[Math.floor(Math.random() * allQuotes.length)];
+
+                screen.innerHTML = `
+                    <div class="pong-container">
+                        <div class="mode-header">
+                            <h2>GAME OVER!</h2>
+                        </div>
+                        <div class="pong-winner">
+                            SCORE: ${finalScore}
+                        </div>
+                        <div style="margin-top: 20px; font-size: 1rem; color: var(--terminal-yellow);">
+                            +${finalScore} PUNTEN!
+                        </div>
+                        <div style="margin-top: 30px; padding: 20px; border: 2px solid var(--terminal-red); background: rgba(255,0,0,0.1);">
+                            <div style="color: var(--terminal-red); margin-bottom: 10px;">ROAST:</div>
+                            <div style="font-size: 1.2rem;">"${roast}"</div>
+                        </div>
+                        <div style="margin-top: 20px; color: var(--terminal-dim);">
+                            Klik op START GAME voor een nieuwe poging
+                        </div>
+                    </div>
+                `;
+
+                document.removeEventListener('keydown', invadersState.keyDownHandler);
+                document.removeEventListener('keyup', invadersState.keyUpHandler);
+            }
+
+            gameLoop();
+        }
+
+        function stopInvadersGame() {
+            if (invadersState) {
+                invadersState.running = false;
+                if (invadersState.animationFrame) {
+                    cancelAnimationFrame(invadersState.animationFrame);
+                }
+                if (invadersState.keyDownHandler) {
+                    document.removeEventListener('keydown', invadersState.keyDownHandler);
+                }
+                if (invadersState.keyUpHandler) {
+                    document.removeEventListener('keyup', invadersState.keyUpHandler);
+                }
+            }
+        }
+
+        // SNAKE MODE
+        function showSnakeMode() {
+            const screen = document.getElementById('terminal-screen');
+            screen.innerHTML = `
+                <div class="pong-container">
+                    <div class="mode-header">
+                        <h2>SNAKE ATTACK</h2>
+                        <p>VERZAMEL RANTSOEN, VERMIJD JE STAART!</p>
+                    </div>
+                    <div class="pong-controls">
+                        <div>← ↑ → ↓ BEWEGEN</div>
+                    </div>
+                    <div style="margin-top: 20px; font-size: 1.2rem;">
+                        Klik op START GAME om te beginnen
+                    </div>
                 </div>
             `;
         }
 
-        function startChaos() {
-            chaosState = { count: 0, total: 10 };
-            showNextChaosQuote();
-        }
-
-        function showNextChaosQuote() {
-            if (chaosState.count >= chaosState.total) {
-                playSound('levelup');
-                addPoints(snaakConfig.points.chaosComplete, 'chaos survived');
-                showNotification('🎉 CHAOS OVERLEEFD! +' + snaakConfig.points.chaosComplete + ' PUNTEN');
-                setTimeout(() => showChaosMode(), 2000);
-                return;
+        function startSnakeGame() {
+            if (snakeState && snakeState.running) {
+                stopSnakeGame();
             }
-
-            const quote = allQuotes[Math.floor(Math.random() * allQuotes.length)];
-            chaosState.count++;
 
             const screen = document.getElementById('terminal-screen');
             screen.innerHTML = `
-                <div class="chaos-mode">
-                    <div class="chaos-counter">${chaosState.count}/${chaosState.total}</div>
-                    <div class="chaos-progress">
-                        <div class="chaos-progress-bar" style="width: ${(chaosState.count / chaosState.total) * 100}%"></div>
+                <div class="pong-container">
+                    <div class="pong-scores">
+                        <div class="pong-score">
+                            <div class="pong-score-label">SCORE</div>
+                            <div id="snake-score">0</div>
+                        </div>
+                        <div class="pong-score">
+                            <div class="pong-score-label">LENGTE</div>
+                            <div id="snake-length">3</div>
+                        </div>
                     </div>
-                    <div class="chaos-quote">"${quote}"</div>
+                    <canvas id="snake-canvas" class="pong-canvas" width="600" height="400"></canvas>
+                    <div class="pong-controls">
+                        <div>← ↑ → ↓ BEWEGEN</div>
+                    </div>
                 </div>
             `;
 
-            playSound('chaos');
+            const canvas = document.getElementById('snake-canvas');
+            const ctx = canvas.getContext('2d');
+            const gridSize = 20;
+            const gridWidth = canvas.width / gridSize;
+            const gridHeight = canvas.height / gridSize;
 
-            setTimeout(() => showNextChaosQuote(), snaakConfig.chaos.timeBetweenQuotes);
+            snakeState = {
+                running: true,
+                score: 0,
+                snake: [
+                    { x: 15, y: 10 },
+                    { x: 14, y: 10 },
+                    { x: 13, y: 10 }
+                ],
+                direction: { x: 1, y: 0 },
+                nextDirection: { x: 1, y: 0 },
+                food: { x: 20, y: 10 },
+                speed: 100,
+                lastMove: 0
+            };
+
+            // Place food
+            function placeFood() {
+                do {
+                    snakeState.food = {
+                        x: Math.floor(Math.random() * gridWidth),
+                        y: Math.floor(Math.random() * gridHeight)
+                    };
+                } while (snakeState.snake.some(s => s.x === snakeState.food.x && s.y === snakeState.food.y));
+            }
+            placeFood();
+
+            // Keyboard handler
+            snakeState.keyDownHandler = (e) => {
+                const key = e.key;
+                if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key)) {
+                    e.preventDefault();
+                }
+                if (key === 'ArrowUp' && snakeState.direction.y !== 1) {
+                    snakeState.nextDirection = { x: 0, y: -1 };
+                } else if (key === 'ArrowDown' && snakeState.direction.y !== -1) {
+                    snakeState.nextDirection = { x: 0, y: 1 };
+                } else if (key === 'ArrowLeft' && snakeState.direction.x !== 1) {
+                    snakeState.nextDirection = { x: -1, y: 0 };
+                } else if (key === 'ArrowRight' && snakeState.direction.x !== -1) {
+                    snakeState.nextDirection = { x: 1, y: 0 };
+                }
+            };
+
+            document.addEventListener('keydown', snakeState.keyDownHandler);
+
+            function gameLoop(timestamp) {
+                if (!snakeState || !snakeState.running) return;
+
+                if (timestamp - snakeState.lastMove >= snakeState.speed) {
+                    snakeState.lastMove = timestamp;
+                    snakeState.direction = snakeState.nextDirection;
+
+                    // Move snake
+                    const head = {
+                        x: snakeState.snake[0].x + snakeState.direction.x,
+                        y: snakeState.snake[0].y + snakeState.direction.y
+                    };
+
+                    // Check wall collision
+                    if (head.x < 0 || head.x >= gridWidth || head.y < 0 || head.y >= gridHeight) {
+                        endSnakeGame();
+                        return;
+                    }
+
+                    // Check self collision
+                    if (snakeState.snake.some(s => s.x === head.x && s.y === head.y)) {
+                        endSnakeGame();
+                        return;
+                    }
+
+                    snakeState.snake.unshift(head);
+
+                    // Check food
+                    if (head.x === snakeState.food.x && head.y === snakeState.food.y) {
+                        snakeState.score += 10;
+                        document.getElementById('snake-score').textContent = snakeState.score;
+                        document.getElementById('snake-length').textContent = snakeState.snake.length;
+                        playSound('win');
+                        placeFood();
+                        // Speed up slightly
+                        snakeState.speed = Math.max(50, snakeState.speed - 2);
+                    } else {
+                        snakeState.snake.pop();
+                    }
+                }
+
+                // Draw
+                ctx.fillStyle = '#001100';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Draw grid
+                ctx.strokeStyle = '#003300';
+                for (let x = 0; x < gridWidth; x++) {
+                    ctx.beginPath();
+                    ctx.moveTo(x * gridSize, 0);
+                    ctx.lineTo(x * gridSize, canvas.height);
+                    ctx.stroke();
+                }
+                for (let y = 0; y < gridHeight; y++) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, y * gridSize);
+                    ctx.lineTo(canvas.width, y * gridSize);
+                    ctx.stroke();
+                }
+
+                // Draw food
+                ctx.fillStyle = '#ffff00';
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = '#ffff00';
+                ctx.fillRect(snakeState.food.x * gridSize + 2, snakeState.food.y * gridSize + 2, gridSize - 4, gridSize - 4);
+
+                // Draw snake
+                ctx.fillStyle = '#00ff00';
+                ctx.shadowColor = '#00ff00';
+                snakeState.snake.forEach((segment, index) => {
+                    const brightness = Math.max(0.4, 1 - index * 0.05);
+                    ctx.fillStyle = `rgba(0, ${Math.floor(255 * brightness)}, 0, 1)`;
+                    ctx.fillRect(segment.x * gridSize + 1, segment.y * gridSize + 1, gridSize - 2, gridSize - 2);
+                });
+
+                // Draw head eyes
+                const head = snakeState.snake[0];
+                ctx.fillStyle = '#001100';
+                ctx.fillRect(head.x * gridSize + 4, head.y * gridSize + 4, 4, 4);
+                ctx.fillRect(head.x * gridSize + gridSize - 8, head.y * gridSize + 4, 4, 4);
+
+                ctx.shadowBlur = 0;
+
+                snakeState.animationFrame = requestAnimationFrame(gameLoop);
+            }
+
+            function endSnakeGame() {
+                snakeState.running = false;
+                const finalScore = snakeState.score;
+                const finalLength = snakeState.snake.length;
+
+                playSound('lose');
+                if (finalScore > 0) {
+                    addPoints(finalScore, 'snake score');
+                }
+
+                // Get random roast
+                const roast = allQuotes[Math.floor(Math.random() * allQuotes.length)];
+
+                screen.innerHTML = `
+                    <div class="pong-container">
+                        <div class="mode-header">
+                            <h2>GAME OVER!</h2>
+                        </div>
+                        <div class="pong-winner">
+                            SCORE: ${finalScore}
+                        </div>
+                        <div style="margin-top: 10px; font-size: 1.2rem; color: var(--terminal-cyan);">
+                            LENGTE: ${finalLength}
+                        </div>
+                        <div style="margin-top: 20px; font-size: 1rem; color: var(--terminal-yellow);">
+                            +${finalScore} PUNTEN!
+                        </div>
+                        <div style="margin-top: 30px; padding: 20px; border: 2px solid var(--terminal-red); background: rgba(255,0,0,0.1);">
+                            <div style="color: var(--terminal-red); margin-bottom: 10px;">ROAST:</div>
+                            <div style="font-size: 1.2rem;">"${roast}"</div>
+                        </div>
+                        <div style="margin-top: 20px; color: var(--terminal-dim);">
+                            Klik op START GAME voor een nieuwe poging
+                        </div>
+                    </div>
+                `;
+
+                document.removeEventListener('keydown', snakeState.keyDownHandler);
+            }
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        function stopSnakeGame() {
+            if (snakeState) {
+                snakeState.running = false;
+                if (snakeState.animationFrame) {
+                    cancelAnimationFrame(snakeState.animationFrame);
+                }
+                if (snakeState.keyDownHandler) {
+                    document.removeEventListener('keydown', snakeState.keyDownHandler);
+                }
+            }
         }
 
         // LEADERBOARD
@@ -1163,10 +1660,9 @@
 
             const screen = document.getElementById('terminal-screen');
             let html = `
-                <div class="ascii-art">
-╔════════════════════════════════════════════════════════════╗
-║                  RANK PROGRESSION TABLE                    ║
-╚════════════════════════════════════════════════════════════╝
+                <div class="mode-header">
+                    <h2>RANK PROGRESSION TABLE</h2>
+                    <p>KLIM OP IN DE RANGEN!</p>
                 </div>
                 <div class="leaderboard">
             `;
