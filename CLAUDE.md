@@ -4,14 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**AMA Hub** - A launcher/portal for three standalone web applications used for Dutch military medical education (BIUPAMA curriculum). All apps are static HTML/CSS/JS with no build process, no backend, and no dependencies.
+**Dashboard** - A launcher/portal for three standalone web applications used for Dutch military medical education (BIUPAMA curriculum). All apps are static HTML/CSS/JS with no build process, no backend, and no dependencies.
 
 ## Architecture
 
 ```
-AMA Hub (index.html)
+Dashboard (index.html)
 ├── biupama-app-main/     → Tropengeneeskunde studiegids
-├── excel-to-ical/        → AMA Rooster (Excel → iCal converter)
+├── excel-to-ical/        → Lesrooster (Excel → iCal converter)
 └── SnaakGPT/             → Military quotes game
 ```
 
