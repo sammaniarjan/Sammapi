@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Algoritme Checker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+
+    <!-- Back to Dashboard -->
+    <a href="../index.html" class="back-link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      Terug naar Dashboard
+    </a>
+
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="welcome-screen">
+      <h1>Algoritme Checker</h1>
+      <p>Ontdek wat er echt gebeurt wanneer algoritmes en tests beslissingen nemen. Begrijp PPV, NPV en de base rate fallacy.</p>
+      <ul>
+        <li>Begrijp sensitiviteit en specificiteit</li>
+        <li>Bereken PPV en NPV</li>
+        <li>Zie de impact op echte mensen</li>
+      </ul>
+      <button id="start-button" class="welcome-button">Start</button>
+      <div class="info-box">
+        <p>Gebaseerd op Bayesiaanse statistiek</p>
+      </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="main-app" class="main-app" style="display: none;">
+
+      <!-- Progress Steps -->
+      <div class="progress-bar">
+        <div class="progress-step active" data-step="1">
+          <div class="step-dot">1</div>
+          <span>Uitleg</span>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step" data-step="2">
+          <div class="step-dot">2</div>
+          <span>Invoer</span>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step" data-step="3">
+          <div class="step-dot">3</div>
+          <span>Resultaat</span>
+        </div>
+      </div>
+
+      <!-- STEP 1: Uitleg -->
+      <div id="step-1" class="step-content active">
+        <h1>Hoe werken diagnostische tests?</h1>
+        <p class="intro-text">Voordat we gaan rekenen, eerst de begrippen.</p>
+
+        <div class="concept-card">
+          <h3>Sensitiviteit</h3>
+          <p>Van alle <em>zieke</em> mensen: hoeveel vindt de test?</p>
+          <div class="formula">Sensitiviteit = Terecht Positief / Alle Zieken</div>
+          <p class="example">90% sensitiviteit = 10% van de zieken wordt gemist</p>
+        </div>
+
+        <div class="concept-card">
+          <h3>Specificiteit</h3>
+          <p>Van alle <em>gezonde</em> mensen: hoeveel krijgen terecht een negatieve uitslag?</p>
+          <div class="formula">Specificiteit = Terecht Negatief / Alle Gezonden</div>
+          <p class="example">95% specificiteit = 5% van de gezonden krijgt onterecht een positieve uitslag</p>
+        </div>
+
+        <div class="concept-card highlight">
+          <h3>PPV & NPV — wat je echt wilt weten</h3>
+          <p><strong>PPV (Positief Voorspellende Waarde):</strong><br>
+          Als de test positief is, hoe groot is de kans dat iemand echt ziek is?</p>
+          <p><strong>NPV (Negatief Voorspellende Waarde):</strong><br>
+          Als de test negatief is, hoe groot is de kans dat iemand echt gezond is?</p>
+          <p class="example">PPV en NPV hangen niet alleen af van de test, maar ook van hoe vaak de ziekte voorkomt (prevalentie)!</p>
+        </div>
+
+        <div class="nav-buttons">
+          <div></div>
+          <button class="btn-next" data-goto="2">Volgende →</button>
+        </div>
+      </div>
+
+      <!-- STEP 2: Invoer -->
+      <div id="step-2" class="step-content">
+        <h1>Voer de gegevens in</h1>
+        <p class="intro-text">Kies een voorbeeld of vul zelf de waarden in.</p>
+
+        <!-- Examples -->
+        <div class="examples-section">
+          <h3>Kies een voorbeeld</h3>
+          <div class="example-buttons">
+            <button class="example-btn" data-example="covid-high">
+              <strong>COVID antigeen</strong>
+              <span>Hoge prevalentie</span>
+            </button>
+            <button class="example-btn" data-example="covid-low">
+              <strong>COVID antigeen</strong>
+              <span>Lage prevalentie</span>
+            </button>
+            <button class="example-btn" data-example="ddimer">
+              <strong>D-dimeer</strong>
+              <span>Longembolie</span>
+            </button>
+            <button class="example-btn" data-example="mammografie">
+              <strong>Mammografie</strong>
+              <span>Screening</span>
+            </button>
+            <button class="example-btn" data-example="troponine">
+              <strong>hs-Troponine</strong>
+              <span>ACS</span>
+            </button>
+            <button class="example-btn" data-example="psa">
+              <strong>PSA</strong>
+              <span>Prostaatkanker</span>
+            </button>
+          </div>
+          <div id="example-info" class="example-info" style="display: none;">
+            <p id="example-description"></p>
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- Input Fields -->
+        <div class="input-grid">
+          <div class="input-group">
+            <label>Populatiegrootte</label>
+            <input type="number" id="population" value="10000" min="1">
+          </div>
+
+          <div class="input-group">
+            <label>Sensitiviteit</label>
+            <div class="slider-row">
+              <input type="range" id="sensitivity" min="50" max="100" step="1" value="90">
+              <span id="sensitivity-value" class="slider-value">90%</span>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label>Specificiteit</label>
+            <div class="slider-row">
+              <input type="range" id="specificity" min="50" max="100" step="0.1" value="95">
+              <span id="specificity-value" class="slider-value">95%</span>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label>Prevalentie</label>
+            <div class="slider-row">
+              <input type="range" id="prevalence" min="0.1" max="50" step="0.1" value="10">
+              <span id="prevalence-value" class="slider-value">10%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-buttons">
+          <button class="btn-back" data-goto="1">← Terug</button>
+          <button class="btn-next btn-primary" id="calculate-btn">Bereken →</button>
+        </div>
+      </div>
+
+      <!-- STEP 3: Resultaat -->
+      <div id="step-3" class="step-content">
+        <h1>Resultaat</h1>
+
+        <!-- Main Results -->
+        <div class="results-cards">
+          <div class="result-card large">
+            <div class="label">PPV</div>
+            <div class="value" id="result-ppv">--</div>
+            <div class="sublabel">Positief Voorspellende Waarde</div>
+          </div>
+          <div class="result-card large">
+            <div class="label">NPV</div>
+            <div class="value" id="result-npv">--</div>
+            <div class="sublabel">Negatief Voorspellende Waarde</div>
+          </div>
+        </div>
+
+        <div class="results-cards small">
+          <div class="result-card success">
+            <div class="label">Terecht +</div>
+            <div class="value" id="result-tp">--</div>
+          </div>
+          <div class="result-card danger">
+            <div class="label">Vals +</div>
+            <div class="value" id="result-fp">--</div>
+          </div>
+          <div class="result-card">
+            <div class="label">Terecht −</div>
+            <div class="value" id="result-tn">--</div>
+          </div>
+          <div class="result-card warning">
+            <div class="label">Vals −</div>
+            <div class="value" id="result-fn">--</div>
+          </div>
+        </div>
+
+        <!-- Visualization -->
+        <div class="viz-section">
+          <h3>Alle positieve uitslagen</h3>
+          <p class="subtitle">Groen = terecht, Rood = vals alarm</p>
+          <div class="people-grid" id="people-grid"></div>
+          <div class="legend">
+            <div class="legend-item">
+              <div class="legend-dot true-positive"></div>
+              <span>Terecht positief</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot false-positive"></div>
+              <span>Vals positief</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interpretation -->
+        <div class="interpretation" id="interpretation">
+          <h3>Interpretatie</h3>
+          <p id="eli5-text"></p>
+        </div>
+
+        <!-- Impact -->
+        <div class="impact-message" id="impact-message">
+          <h4 id="impact-title">--</h4>
+          <p id="impact-text">--</p>
+        </div>
+
+        <!-- Bayes -->
+        <details class="bayes-details">
+          <summary>Waarom is dit zo? (Bayes' theorema)</summary>
+          <div class="bayes-content">
+            <p>De PPV hangt niet alleen af van de testkwaliteit, maar ook van de prevalentie. Dit is de <strong>base rate fallacy</strong>.</p>
+            <div class="bayes-formula">
+              P(Ziek | Pos) = P(Pos | Ziek) × P(Ziek) / P(Pos)
+            </div>
+            <p>Bij een zeldzame ziekte zijn er veel meer gezonden dan zieken. Zelfs een kleine foutmarge bij gezonden levert dan veel vals-positieven op.</p>
+          </div>
+        </details>
+
+        <div class="nav-buttons">
+          <button class="btn-back" data-goto="2">← Aanpassen</button>
+          <button class="btn-next" id="reset-btn">Opnieuw</button>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <span>Algoritme Checker</span>
+      </div>
+
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

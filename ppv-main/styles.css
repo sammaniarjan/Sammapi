@@ -1,0 +1,839 @@
+/* ===================================
+   Algoritme Checker - Wizard Style
+   =================================== */
+
+:root {
+  --bg-primary: #0a0f0d;
+  --bg-secondary: #111916;
+  --bg-card: #151d19;
+  --bg-card-hover: #1a2420;
+  --accent: #3b82f6;
+  --accent-dim: #1d4ed8;
+  --accent-glow: rgba(59, 130, 246, 0.2);
+  --success: #10b981;
+  --success-bg: rgba(16, 185, 129, 0.15);
+  --danger: #ef4444;
+  --danger-bg: rgba(239, 68, 68, 0.15);
+  --warning: #f59e0b;
+  --warning-bg: rgba(245, 158, 11, 0.15);
+  --text-primary: #e8f0ec;
+  --text-secondary: #8b9d94;
+  --text-muted: #5a6b62;
+  --border: #243029;
+  --border-light: #2d3d34;
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  min-height: 500px;
+}
+
+/* ===================================
+   Welcome Screen
+   =================================== */
+.welcome-screen {
+  padding: 50px 30px;
+  text-align: center;
+}
+
+.welcome-screen h1 {
+  color: var(--text-primary);
+  font-size: 1.75rem;
+  margin: 0 0 15px;
+  font-weight: 600;
+}
+
+.welcome-screen > p {
+  color: var(--text-secondary);
+  max-width: 400px;
+  margin: 0 auto 25px;
+  font-size: 0.95rem;
+}
+
+.welcome-screen ul {
+  text-align: left;
+  max-width: 300px;
+  margin: 0 auto 30px;
+  padding-left: 0;
+  list-style: none;
+}
+
+.welcome-screen li {
+  margin-bottom: 10px;
+  color: var(--text-secondary);
+  padding-left: 24px;
+  position: relative;
+  font-size: 0.9rem;
+}
+
+.welcome-screen li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+.welcome-button {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 14px 40px;
+  font-size: 1rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.welcome-button:hover {
+  background: var(--accent-dim);
+  transform: translateY(-2px);
+}
+
+.info-box {
+  background: var(--bg-card);
+  padding: 15px 20px;
+  border-radius: var(--radius-sm);
+  margin-top: 30px;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid var(--border);
+}
+
+.info-box p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.info-box a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.info-box hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 10px 0;
+}
+
+/* ===================================
+   Main App & Progress Bar
+   =================================== */
+.main-app {
+  display: flex;
+  flex-direction: column;
+  min-height: 500px;
+}
+
+.progress-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 30px;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  gap: 0;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.progress-step span {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.step-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: all 0.2s;
+}
+
+.progress-step.active .step-dot {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+.progress-step.active span {
+  color: var(--accent);
+}
+
+.progress-step.completed .step-dot {
+  background: var(--success);
+  border-color: var(--success);
+  color: white;
+}
+
+.progress-line {
+  width: 40px;
+  height: 2px;
+  background: var(--border);
+  margin: 0 8px;
+  margin-bottom: 20px;
+}
+
+/* ===================================
+   Step Content
+   =================================== */
+.step-content {
+  display: none;
+  padding: 30px;
+  flex: 1;
+  animation: fadeIn 0.3s ease;
+}
+
+.step-content.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.step-content h1 {
+  font-size: 1.3rem;
+  color: var(--text-primary);
+  margin: 0 0 8px;
+  font-weight: 600;
+}
+
+.intro-text {
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+  font-size: 0.9rem;
+}
+
+/* ===================================
+   Concept Cards (Step 1)
+   =================================== */
+.concept-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.concept-card.highlight {
+  border-color: var(--accent);
+  background: var(--accent-glow);
+}
+
+.concept-card h3 {
+  margin: 0 0 10px;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.concept-card p {
+  margin: 0 0 10px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.concept-card .formula {
+  background: var(--bg-primary);
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--accent);
+  border: 1px solid var(--border);
+  margin: 12px 0;
+}
+
+.concept-card .example {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin: 0;
+}
+
+/* ===================================
+   Examples Section (Step 2)
+   =================================== */
+.examples-section {
+  margin-bottom: 20px;
+}
+
+.examples-section h3 {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0 0 12px;
+  font-weight: 500;
+}
+
+.example-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.example-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.example-btn:hover {
+  border-color: var(--accent);
+}
+
+.example-btn.active {
+  border-color: var(--accent);
+  background: var(--accent-glow);
+}
+
+.example-btn strong {
+  display: block;
+  color: var(--text-primary);
+  font-size: 0.8rem;
+  margin-bottom: 2px;
+}
+
+.example-btn span {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+}
+
+.example-info {
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--accent);
+}
+
+.example-info p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.divider {
+  border: none;
+  height: 1px;
+  background: var(--border);
+  margin: 20px 0;
+}
+
+/* ===================================
+   Input Grid (Step 2)
+   =================================== */
+.input-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.input-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.input-group input[type="number"] {
+  width: 100%;
+  max-width: 150px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.input-group input[type="number"]:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.slider-row input[type="range"] {
+  flex: 1;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.slider-row input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  background: var(--accent);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.slider-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent);
+  min-width: 50px;
+  text-align: right;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ===================================
+   Navigation Buttons
+   =================================== */
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.btn-back, .btn-next {
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-back {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+.btn-back:hover {
+  border-color: var(--text-muted);
+  color: var(--text-primary);
+}
+
+.btn-next {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+}
+
+.btn-next:hover {
+  border-color: var(--accent);
+}
+
+.btn-next.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+.btn-next.btn-primary:hover {
+  background: var(--accent-dim);
+}
+
+/* ===================================
+   Results (Step 3)
+   =================================== */
+.results-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.results-cards.small {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.result-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  text-align: center;
+}
+
+.result-card.large {
+  padding: 24px 16px;
+}
+
+.result-card .label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.result-card .value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.result-card.large .value {
+  font-size: 2.2rem;
+}
+
+.result-card .sublabel {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.results-cards.small .result-card {
+  padding: 12px 8px;
+}
+
+.results-cards.small .result-card .value {
+  font-size: 1.1rem;
+}
+
+.result-card.success {
+  border-color: var(--success);
+  background: var(--success-bg);
+}
+.result-card.success .value { color: var(--success); }
+
+.result-card.danger {
+  border-color: var(--danger);
+  background: var(--danger-bg);
+}
+.result-card.danger .value { color: var(--danger); }
+
+.result-card.warning {
+  border-color: var(--warning);
+  background: var(--warning-bg);
+}
+.result-card.warning .value { color: var(--warning); }
+
+/* ===================================
+   Visualization
+   =================================== */
+.viz-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.viz-section h3 {
+  margin: 0 0 4px;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.viz-section .subtitle {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.people-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  padding: 16px;
+  background: var(--bg-primary);
+  border-radius: var(--radius-sm);
+  min-height: 50px;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.person-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.person-dot.true-positive { background: var(--success); }
+.person-dot.false-positive { background: var(--danger); }
+
+.legend {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.legend-dot.true-positive { background: var(--success); }
+.legend-dot.false-positive { background: var(--danger); }
+
+/* ===================================
+   Interpretation
+   =================================== */
+.interpretation {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.interpretation h3 {
+  margin: 0 0 12px;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.interpretation p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.highlight {
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.highlight.good {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.highlight.bad {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+/* ===================================
+   Impact Message
+   =================================== */
+.impact-message {
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  background: var(--warning-bg);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.impact-message.good {
+  background: var(--success-bg);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.impact-message.bad {
+  background: var(--danger-bg);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.impact-message h4 {
+  margin: 0 0 6px;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.impact-message p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+/* ===================================
+   Bayes Details
+   =================================== */
+.bayes-details {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 16px;
+}
+
+.bayes-details summary {
+  padding: 14px 18px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.bayes-details summary:hover {
+  color: var(--text-primary);
+}
+
+.bayes-content {
+  padding: 0 18px 18px;
+}
+
+.bayes-content p {
+  margin: 0 0 12px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.bayes-formula {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  text-align: center;
+  color: var(--accent);
+  margin: 12px 0;
+}
+
+/* ===================================
+   Footer
+   =================================== */
+.footer {
+  text-align: center;
+  padding: 16px;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+.footer a {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.footer a:hover {
+  color: var(--accent);
+}
+
+/* ===================================
+   Responsive
+   =================================== */
+@media (max-width: 500px) {
+  body {
+    padding: 10px;
+  }
+
+  .step-content {
+    padding: 20px;
+  }
+
+  .example-buttons {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .results-cards.small {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .progress-line {
+    width: 20px;
+  }
+
+  .slider-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .slider-row input[type="range"] {
+    width: 100%;
+  }
+
+  .slider-value {
+    text-align: left;
+  }
+}
+
+/* ===================================
+   Back to Dashboard Button
+   =================================== */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  padding: 12px 20px;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.back-link:hover {
+  color: var(--accent);
+  background: var(--bg-card);
+}
+
+.back-link svg {
+  width: 18px;
+  height: 18px;
+}
