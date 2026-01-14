@@ -1068,6 +1068,10 @@
                     <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/></svg>
                     Infecties aan het Front
                 </a>
+                <a class="nav-item" data-section="outbreak">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    Outbreak Analyse
+                </a>
             </div>
 
             <div class="nav-section">
@@ -15065,6 +15069,148 @@
                                         <li>Nieuwe antimicrobiële strategieën</li>
                                     </ul>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- OUTBREAK ANALYSE -->
+            <section class="section" id="outbreak">
+                <div class="section-header">
+                    <div class="section-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    </div>
+                    <h2 class="section-title">Outbreak Analyse</h2>
+                </div>
+
+                <div class="section-controls">
+                    <button class="section-control-btn" data-section-collapse="outbreak">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        Alles inklappen
+                    </button>
+                    <button class="section-control-btn" data-section-expand="outbreak">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+                        Alles uitklappen
+                    </button>
+                </div>
+
+                <div class="card-grid">
+                    <div class="card" data-card>
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Outbreak Investigation</div>
+                                <div class="card-subtitle">Systematische aanpak nieuw ziektebeeld</div>
+                            </div>
+                            <svg class="card-toggle" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <div class="alert alert-info">
+                                    <strong>Kern:</strong> Identify disease/toxin → Understand transmission → Block transmission
+                                </div>
+
+                                <h4>Nieuw ziektebeeld? Denk aan:</h4>
+
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                                    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem;">
+                                        <h5 style="color: var(--accent-green); margin-bottom: 0.5rem;">🔬 Oorzaak</h5>
+                                        <ul class="content-list" style="margin: 0;">
+                                            <li>Infectieus? → Welke verwekker?</li>
+                                            <li>Toxine? → Welk type?</li>
+                                            <li>Nieuw pathogeen?</li>
+                                            <li>Genetische sequentie?</li>
+                                            <li>Welke medicatie werkt?</li>
+                                        </ul>
+                                    </div>
+
+                                    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem;">
+                                        <h5 style="color: var(--accent-green); margin-bottom: 0.5rem;">🔄 Overdracht</h5>
+                                        <ul class="content-list" style="margin: 0;">
+                                            <li>Route: aerogeen, vector, faeco-oraal?</li>
+                                            <li>Mens-op-mens transmissie?</li>
+                                            <li>Vanaf wanneer infectieus?</li>
+                                            <li>Duur van infectieuze periode?</li>
+                                        </ul>
+                                    </div>
+
+                                    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem;">
+                                        <h5 style="color: var(--accent-green); margin-bottom: 0.5rem;">📋 Klinische karakteristieken</h5>
+                                        <ul class="content-list" style="margin: 0;">
+                                            <li>Pathologie</li>
+                                            <li>CFR / mortaliteit</li>
+                                            <li>Incubatietijd</li>
+                                            <li>Klinische vs. subklinische gevallen</li>
+                                            <li>Defining symptoms?</li>
+                                        </ul>
+                                    </div>
+
+                                    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem;">
+                                        <h5 style="color: var(--accent-green); margin-bottom: 0.5rem;">⚠️ Risicofactoren</h5>
+                                        <ul class="content-list" style="margin: 0;">
+                                            <li>Om geïnfecteerd te raken</li>
+                                            <li>Om ziek te worden</li>
+                                            <li>Om te overlijden</li>
+                                            <li>Complicaties (laat)</li>
+                                            <li>Voor transmissie</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="alert alert-warning" style="margin-top: 1.5rem;">
+                                    <strong>Balans:</strong> Overdracht vs. Immuniteit bepaalt het verloop van een outbreak.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" data-card>
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Epicurves</div>
+                                <div class="card-subtitle">Outbreak-grafieken interpreteren</div>
+                            </div>
+                            <svg class="card-toggle" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <p>Wanneer cases gedefinieerd en geteld zijn (case definitie + tijdstip), ontstaat een <strong>outbreak-grafiek (epicurve)</strong>. De vorm van de curve geeft informatie over de bron.</p>
+
+                                <div style="margin: 1.5rem 0; text-align: center;">
+                                    <img src="images/huidafwijkingen/Epicurves_Figure_2.png" alt="Epicurves - Point source, Continuous source, Propagated source, Intermittent source" style="max-width: 100%; border-radius: var(--radius-sm); border: 1px solid var(--border);" onclick="openModal(this)">
+                                </div>
+
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Type</th>
+                                            <th>Patroon</th>
+                                            <th>Interpretatie</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Point source</strong></td>
+                                            <td>Eén piek, stijgt snel, daalt snel</td>
+                                            <td>Eenmalige blootstelling (bijv. besmet voedsel op feest)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Continuous source</strong></td>
+                                            <td>Langgerekt plateau</td>
+                                            <td>Aanhoudende bron (bijv. besmet drinkwater)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Propagated source</strong></td>
+                                            <td>Meerdere golven, elke golf groter</td>
+                                            <td>Mens-op-mens transmissie (bijv. mazelen)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Intermittent source</strong></td>
+                                            <td>Gescheiden pieken</td>
+                                            <td>Periodieke blootstelling (bijv. wekelijkse markt)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
