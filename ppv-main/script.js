@@ -430,10 +430,12 @@ function updateLiveVisualization() {
   livePpv.textContent = (ppv * 100).toFixed(0) + '%';
   liveNpv.textContent = (npv * 100).toFixed(0) + '%';
 
-  // Update meter arcs (arc length is ~110 for full semicircle)
-  const arcLength = 110;
-  ppvMeterArc.setAttribute('stroke-dasharray', `${ppv * arcLength} ${arcLength}`);
-  npvMeterArc.setAttribute('stroke-dasharray', `${npv * arcLength} ${arcLength}`);
+  // Update meter arcs (arc length is π * radius = π * 40 ≈ 126)
+  const arcLength = 126;
+  const ppvArc = ppv * arcLength;
+  const npvArc = npv * arcLength;
+  ppvMeterArc.setAttribute('stroke-dasharray', `${ppvArc} ${arcLength}`);
+  npvMeterArc.setAttribute('stroke-dasharray', `${npvArc} ${arcLength}`);
 
   // Update icon array - show ratio of TP to FP out of 100 positive results
   const totalPositive = results.truePositives + results.falsePositives;

@@ -34,7 +34,7 @@
             background: #1a2420;
         }
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
         }
         header {
@@ -48,14 +48,49 @@
         }
         .subtitle {
             color: #8b9d94;
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto;
         }
+
+        /* U=U Banner */
+        .uu-banner {
+            background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+            border: 2px solid #10b981;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .uu-banner svg {
+            flex-shrink: 0;
+            color: #34d399;
+        }
+        .uu-banner h3 {
+            color: #ecfdf5;
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+        .uu-banner p {
+            color: #a7f3d0;
+            font-size: 14px;
+        }
+
         .grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 24px;
             margin-bottom: 24px;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        @media (max-width: 1024px) {
+            .grid-3 { grid-template-columns: 1fr; }
         }
         @media (max-width: 768px) {
             .grid { grid-template-columns: 1fr; }
@@ -70,6 +105,21 @@
             font-size: 16px;
             color: #e8f0ec;
             margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card h2 .step-number {
+            background: #2dd4a0;
+            color: #0a0f0d;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
         }
         label {
             display: block;
@@ -103,15 +153,309 @@
             justify-content: space-between;
             font-size: 12px;
             color: #5a6b62;
+            margin-bottom: 16px;
+        }
+
+        /* Checkboxes */
+        .modifier-group {
+            margin-bottom: 16px;
+        }
+        .modifier-group h4 {
+            font-size: 13px;
+            color: #8b9d94;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: #111916;
+            border: 1px solid #243029;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .checkbox-item:hover {
+            border-color: #2dd4a0;
+        }
+        .checkbox-item.active {
+            border-color: #2dd4a0;
+            background: #1a2420;
+        }
+        .checkbox-item input {
+            display: none;
+        }
+        .checkbox-box {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #3d4f47;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .checkbox-item.active .checkbox-box {
+            background: #2dd4a0;
+            border-color: #2dd4a0;
+        }
+        .checkbox-box svg {
+            display: none;
+            color: #0a0f0d;
+        }
+        .checkbox-item.active .checkbox-box svg {
+            display: block;
+        }
+        .checkbox-label {
+            flex: 1;
+        }
+        .checkbox-label .name {
+            font-size: 14px;
+            color: #e8f0ec;
+        }
+        .checkbox-label .effect {
+            font-size: 12px;
+            color: #5a6b62;
+        }
+        .effect-green { color: #22c55e !important; }
+        .effect-red { color: #ef4444 !important; }
+
+        /* Presets */
+        .presets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 8px;
+        }
+        .preset-btn {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            background: #111916;
+            border: 1px solid #243029;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+        .preset-btn:hover {
+            background: #1a2420;
+            border-color: #2dd4a0;
+        }
+        .preset-btn.active {
+            border-color: #2dd4a0;
+            background: #1a2420;
+        }
+        .preset-name {
+            font-size: 13px;
+            color: #e8f0ec;
+        }
+        .preset-risk {
+            font-size: 12px;
+            font-family: monospace;
+            font-weight: bold;
+            padding: 3px 6px;
+            border-radius: 4px;
+        }
+
+        /* Result Panel */
+        .result-panel {
+            background: linear-gradient(135deg, #151d19 0%, #1a2420 100%);
+            border: 2px solid #243029;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+        }
+        .result-panel h2 {
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .risk-thermometer {
+            position: relative;
+            height: 24px;
+            background: linear-gradient(to right, #22c55e 0%, #eab308 50%, #ef4444 100%);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            overflow: visible;
+        }
+        .risk-marker {
+            position: absolute;
+            top: -8px;
+            width: 4px;
+            height: 40px;
+            background: #fff;
+            border-radius: 2px;
+            transform: translateX(-50%);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            transition: left 0.3s ease;
+        }
+        .risk-marker::after {
+            content: attr(data-risk);
+            position: absolute;
+            bottom: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            font-weight: bold;
+            color: #fff;
+            white-space: nowrap;
+        }
+        .thermometer-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #5a6b62;
             margin-bottom: 24px;
         }
+
+        .big-number {
+            font-size: 56px;
+            font-weight: bold;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+        .big-number.green { color: #22c55e; }
+        .big-number.yellow { color: #eab308; }
+        .big-number.orange { color: #f97316; }
+        .big-number.red { color: #ef4444; }
+        .result-label {
+            font-size: 14px;
+            color: #8b9d94;
+            margin-bottom: 24px;
+        }
+
+        .comparison-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .comparison-box {
+            background: #111916;
+            border-radius: 12px;
+            padding: 16px;
+        }
+        .comparison-box.protected {
+            border: 1px solid #22c55e;
+        }
+        .comparison-box.unprotected {
+            border: 1px solid #ef4444;
+        }
+        .comparison-box h4 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        .comparison-box.protected h4 { color: #22c55e; }
+        .comparison-box.unprotected h4 { color: #ef4444; }
+        .comparison-box .value {
+            font-size: 28px;
+            font-weight: bold;
+            font-family: monospace;
+        }
+        .comparison-box.protected .value { color: #22c55e; }
+        .comparison-box.unprotected .value { color: #ef4444; }
+
+        /* PEP Alert */
+        .pep-alert {
+            background: #7c2d12;
+            border: 1px solid #c2410c;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+            display: none;
+        }
+        .pep-alert.show {
+            display: block;
+        }
+        .pep-alert h4 {
+            color: #fed7aa;
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .pep-alert p {
+            color: #fdba74;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .pep-not-needed {
+            background: #14532d;
+            border: 1px solid #16a34a;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+            display: none;
+        }
+        .pep-not-needed.show {
+            display: block;
+        }
+        .pep-not-needed h4 {
+            color: #bbf7d0;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .pep-not-needed p {
+            color: #86efac;
+            font-size: 13px;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+        @media (max-width: 600px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .comparison-row { grid-template-columns: 1fr; }
+        }
+        .stat-card {
+            background: #111916;
+            border: 1px solid #243029;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 20px;
+            font-weight: bold;
+            font-family: monospace;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #8b9d94;
+        }
+
+        /* Chart */
+        .chart-container {
+            position: relative;
+            height: 250px;
+            margin: 16px 0;
+        }
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* Milestones */
         .milestones {
             background: #111916;
             border-radius: 8px;
             padding: 16px;
+            margin-top: 16px;
         }
         .milestones h3 {
-            font-size: 14px;
+            font-size: 13px;
             color: #8b9d94;
             margin-bottom: 12px;
         }
@@ -129,112 +473,45 @@
         }
         .milestone-value {
             font-family: monospace;
-        }
-        .yellow { color: #fbbf24; }
-        .red { color: #f87171; }
-        .green { color: #2dd4a0; }
-
-        /* Chart */
-        .chart-container {
-            position: relative;
-            height: 300px;
-            margin-bottom: 16px;
-        }
-        canvas {
-            width: 100% !important;
-            height: 100% !important;
-        }
-        .chart-formula {
-            text-align: center;
-            font-size: 12px;
-            color: #5a6b62;
-        }
-
-        /* Presets */
-        .presets-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 12px;
-        }
-        .preset-btn {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 16px;
-            background: #111916;
-            border: 1px solid #243029;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: left;
-        }
-        .preset-btn:hover {
-            background: #1a2420;
-            border-color: #2dd4a0;
-        }
-        .preset-btn.active {
-            border-color: #2dd4a0;
-            background: #1a2420;
-        }
-        .preset-name {
-            font-size: 14px;
-            color: #e8f0ec;
-        }
-        .preset-risk {
-            font-size: 14px;
-            font-family: monospace;
             font-weight: bold;
-            padding: 4px 8px;
-            border-radius: 4px;
         }
+        .yellow { color: #eab308; }
+        .red { color: #ef4444; }
+        .green { color: #22c55e; }
 
-        /* Stats */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-        @media (max-width: 600px) {
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-        .stat-card {
-            background: #151d19;
-            border: 1px solid #243029;
-            border-radius: 8px;
-            padding: 16px;
-            text-align: center;
-        }
-        .stat-value {
-            font-size: 28px;
-            font-weight: bold;
-            color: #f87171;
-        }
-        .stat-label {
-            font-size: 14px;
-            color: #8b9d94;
-        }
-
-        /* Info */
+        /* Info box */
         .info-box {
             background: rgba(21, 29, 25, 0.5);
             border: 1px solid #243029;
             border-radius: 12px;
             padding: 24px;
+            margin-top: 24px;
         }
         .info-box h2 {
             font-size: 16px;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
         .info-box p {
             font-size: 14px;
             color: #8b9d94;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             line-height: 1.6;
         }
-        .warning {
-            color: #fbbf24;
-            margin-top: 16px;
+        .formula-box {
+            background: #111916;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+            font-family: monospace;
+            font-size: 14px;
+            color: #2dd4a0;
+        }
+        .source-link {
+            color: #2dd4a0;
+            text-decoration: none;
+        }
+        .source-link:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -250,171 +527,312 @@
         <header>
             <h1>HIV Transmissie Risico Calculator</h1>
             <p class="subtitle">
-                Zelfs kleine per-contact risico's cumuleren significant over meerdere blootstellingen.
-                Deze tool visualiseert hoe cumulatieve waarschijnlijkheid groeit.
+                Bereken het cumulatieve HIV-transmissierisico op basis van blootstellingstype, risico-modificerende factoren en bronprevalentie. Gebaseerd op CDC-richtlijnen (2024).
             </p>
         </header>
 
-        <div class="grid">
-            <div class="card">
-                <h2>Parameters</h2>
-
-                <label>
-                    Risico per contact: <span id="riskDisplay">0.10%</span>
-                </label>
-                <input type="range" id="riskSlider" min="0.01" max="10" step="0.01" value="0.1">
-                <div class="range-labels">
-                    <span>0.01%</span>
-                    <span>10%</span>
-                </div>
-
-                <label>
-                    Max contacten: <span id="contactsDisplay">100</span>
-                </label>
-                <input type="range" id="contactsSlider" min="10" max="2000" step="10" value="100">
-                <div class="range-labels">
-                    <span>10</span>
-                    <span>2000</span>
-                </div>
-
-                <div class="milestones" style="margin-bottom: 16px;">
-                    <h3>Effectief risico per contact</h3>
-                    <div class="milestone-row">
-                        <span class="milestone-label">Blootstelling × Bronrisico:</span>
-                        <span class="milestone-value green" id="effectiveRisk">0.10%</span>
-                    </div>
-                    <p style="font-size: 11px; color: #5a6b62; margin-top: 8px;">
-                        = <span id="calcExplanation">0.10% × 100%</span>
-                    </p>
-                </div>
-
-                <div class="milestones">
-                    <h3>Belangrijke mijlpalen</h3>
-                    <div class="milestone-row">
-                        <span class="milestone-label">50% risico bereikt:</span>
-                        <span class="milestone-value yellow" id="milestone50">693 contacten</span>
-                    </div>
-                    <div class="milestone-row">
-                        <span class="milestone-label">90% risico bereikt:</span>
-                        <span class="milestone-value red" id="milestone90">2302 contacten</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <h2>Cumulatief Risico over Blootstellingen</h2>
-                <div class="chart-container">
-                    <canvas id="chart"></canvas>
-                </div>
-                <p class="chart-formula">Formule: Cumulatief Risico = 1 - (1 - per-contact risico)<sup>n</sup></p>
+        <!-- U=U Banner -->
+        <div class="uu-banner">
+            <svg width="48" height="48" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <div>
+                <h3>U = U (Undetectable = Untransmittable)</h3>
+                <p>Bij effectieve HIV-behandeling met ondetecteerbare viral load is het transmissierisico <strong>0%</strong>. Dit is wetenschappelijk bewezen in grote studies (PARTNER, PARTNER2, Opposites Attract).</p>
             </div>
         </div>
 
-        <div class="grid" style="margin-bottom: 24px;">
+        <div class="grid-3">
+            <!-- Step 1: Exposure Type -->
             <div class="card">
-                <h2>Blootstellingstype (per-contact risico)</h2>
+                <h2><span class="step-number">1</span> Blootstellingstype</h2>
                 <p style="font-size: 13px; color: #8b9d94; margin-bottom: 16px;">
-                    Risico per contact <strong>als bron HIV+ is</strong>. Gebaseerd op CDC/meta-analyses.
+                    Selecteer het type blootstelling. Risico's zijn per contact <strong>als bron HIV+ is</strong>.
                 </p>
                 <div class="presets-grid" id="presets"></div>
             </div>
 
+            <!-- Step 2: Source Risk -->
             <div class="card">
-                <h2>Bronrisico (kans dat bron HIV+ is)</h2>
+                <h2><span class="step-number">2</span> Bronrisico (HIV-status)</h2>
                 <p style="font-size: 13px; color: #8b9d94; margin-bottom: 12px;">
-                    Selecteer de geschatte HIV-prevalentie van de bronpopulatie.
+                    Geschatte kans dat de bron HIV-positief is.
                 </p>
                 <label>
                     Bronrisico: <span id="sourceDisplay">100%</span>
                 </label>
                 <input type="range" id="sourceSlider" min="0" max="100" step="0.1" value="100">
-                <div class="range-labels" style="margin-bottom: 16px;">
+                <div class="range-labels">
                     <span>0%</span>
                     <span>100%</span>
                 </div>
                 <div class="presets-grid" id="sourcePresets"></div>
             </div>
+
+            <!-- Step 3: Risk Modifiers -->
+            <div class="card">
+                <h2><span class="step-number">3</span> Risico-modifiers</h2>
+                <p style="font-size: 13px; color: #8b9d94; margin-bottom: 12px;">
+                    Selecteer factoren die het risico beïnvloeden.
+                </p>
+
+                <div class="modifier-group">
+                    <h4>Beschermende factoren</h4>
+                    <div class="checkbox-item" data-modifier="prep">
+                        <div class="checkbox-box">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                            </svg>
+                        </div>
+                        <div class="checkbox-label">
+                            <div class="name">PrEP-gebruik (optimaal)</div>
+                            <div class="effect effect-green">↓ 99% risicoreductie</div>
+                        </div>
+                    </div>
+                    <div class="checkbox-item" data-modifier="condom">
+                        <div class="checkbox-box">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                            </svg>
+                        </div>
+                        <div class="checkbox-label">
+                            <div class="name">Condoomgebruik</div>
+                            <div class="effect effect-green">↓ 80% risicoreductie</div>
+                        </div>
+                    </div>
+                    <div class="checkbox-item" data-modifier="circumcision">
+                        <div class="checkbox-box">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                            </svg>
+                        </div>
+                        <div class="checkbox-label">
+                            <div class="name">Besnijdenis (insertief)</div>
+                            <div class="effect effect-green">↓ 50% risicoreductie</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modifier-group">
+                    <h4>Risicoverhogende factoren</h4>
+                    <div class="checkbox-item" data-modifier="sti">
+                        <div class="checkbox-box">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                            </svg>
+                        </div>
+                        <div class="checkbox-label">
+                            <div class="name">SOA aanwezig</div>
+                            <div class="effect effect-red">↑ 3x risicoverhoging</div>
+                        </div>
+                    </div>
+                    <div class="checkbox-item" data-modifier="acute">
+                        <div class="checkbox-box">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                            </svg>
+                        </div>
+                        <div class="checkbox-label">
+                            <div class="name">Acute HIV bron</div>
+                            <div class="effect effect-red">↑ 10x risicoverhoging</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="stats-grid" id="stats"></div>
+        <!-- Results Panel -->
+        <div class="result-panel">
+            <h2>Resultaat</h2>
 
+            <!-- Risk Thermometer -->
+            <div class="risk-thermometer">
+                <div class="risk-marker" id="riskMarker" data-risk="0%"></div>
+            </div>
+            <div class="thermometer-labels">
+                <span>Laag risico</span>
+                <span>Matig risico</span>
+                <span>Hoog risico</span>
+            </div>
+
+            <!-- Big Number -->
+            <div class="big-number green" id="mainRisk">0.00%</div>
+            <div class="result-label">Effectief risico per contact</div>
+
+            <!-- Comparison -->
+            <div class="comparison-row">
+                <div class="comparison-box protected">
+                    <h4>Met huidige modifiers</h4>
+                    <div class="value" id="protectedRisk">0.00%</div>
+                </div>
+                <div class="comparison-box unprotected">
+                    <h4>Zonder bescherming</h4>
+                    <div class="value" id="unprotectedRisk">0.00%</div>
+                </div>
+            </div>
+
+            <!-- PEP Alert -->
+            <div class="pep-alert" id="pepAlert">
+                <h4>
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                    Overweeg PEP (Post-Expositie Profylaxe)
+                </h4>
+                <p>Bij dit risiconiveau is PEP geïndiceerd indien blootstelling &lt;72 uur geleden. Start zo snel mogelijk (liefst &lt;24 uur). Neem contact op met huisarts, SEH of GGD.</p>
+            </div>
+
+            <div class="pep-not-needed" id="pepNotNeeded">
+                <h4>PEP waarschijnlijk niet geïndiceerd</h4>
+                <p>Het risico is laag. PEP is bij dit risiconiveau doorgaans niet nodig, maar raadpleeg bij twijfel altijd een zorgverlener.</p>
+            </div>
+
+            <!-- Cumulative Stats -->
+            <div class="stats-grid" id="stats"></div>
+
+            <!-- Milestones -->
+            <div class="milestones">
+                <h3>Cumulatief risico mijlpalen</h3>
+                <div class="milestone-row">
+                    <span class="milestone-label">50% risico bereikt na:</span>
+                    <span class="milestone-value yellow" id="milestone50">- contacten</span>
+                </div>
+                <div class="milestone-row">
+                    <span class="milestone-label">90% risico bereikt na:</span>
+                    <span class="milestone-value red" id="milestone90">- contacten</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart -->
+        <div class="card" style="margin-top: 24px;">
+            <h2>Cumulatief Risico Curve</h2>
+            <label>
+                Aantal contacten: <span id="contactsDisplay">100</span>
+            </label>
+            <input type="range" id="contactsSlider" min="10" max="2000" step="10" value="100">
+            <div class="range-labels">
+                <span>10</span>
+                <span>2000</span>
+            </div>
+            <div class="chart-container">
+                <canvas id="chart"></canvas>
+            </div>
+            <p style="text-align: center; font-size: 12px; color: #5a6b62;">
+                Formule: Cumulatief Risico = 1 - (1 - p)<sup>n</sup>
+            </p>
+        </div>
+
+        <!-- Info Box -->
         <div class="info-box">
-            <h2>De wiskunde begrijpen</h2>
+            <h2>Methodologie & Bronnen</h2>
+
+            <p><strong>Transmissierisico's</strong> zijn gebaseerd op CDC-data (bijgewerkt november 2024) en meta-analyses van Patel et al.</p>
+
+            <div class="formula-box">
+                Effectief risico = Blootstellingsrisico × Bronrisico × Modifiers<br>
+                Cumulatief risico = 1 - (1 - effectief risico)<sup>aantal contacten</sup>
+            </div>
+
+            <p><strong>Risico-modifiers:</strong></p>
+            <ul style="color: #8b9d94; font-size: 14px; margin-left: 20px; margin-bottom: 16px;">
+                <li>PrEP (99% reductie): Grant RM et al., iPrEx study, NEJM 2010</li>
+                <li>Condoom (80% reductie): Weller & Davis, Cochrane 2002</li>
+                <li>Besnijdenis (50% reductie): RCTs in Kenia, Oeganda, Zuid-Afrika</li>
+                <li>SOA (3x verhoging): meta-analyses ulceratieve en non-ulceratieve SOA's</li>
+                <li>Acute HIV (10x verhoging): hoge viral load tijdens seroconversie</li>
+            </ul>
+
+            <p><strong>Bronnen:</strong></p>
             <p>
-                <strong>Effectief risico per contact</strong> = Blootstellingsrisico × Bronrisico
+                <a href="https://www.cdc.gov/hivpartners/php/riskandprevention/index.html" target="_blank" class="source-link">CDC HIV Risk and Prevention Estimates (2024)</a><br>
+                <a href="https://www.rivm.nl/hiv" target="_blank" class="source-link">RIVM HIV Nederland</a><br>
+                <a href="https://www.hiv-monitoring.nl" target="_blank" class="source-link">Stichting HIV Monitoring</a>
             </p>
-            <p>
-                Het blootstellingsrisico is de kans op transmissie <em>als</em> de bron HIV+ is. Het bronrisico is de kans dat de bron daadwerkelijk HIV+ is (prevalentie in die populatie).
-            </p>
-            <p>
-                De kans om <em>niet</em> geïnfecteerd te raken na n blootstellingen is (1 - p)<sup>n</sup>, waarbij p het effectieve per-contact risico is.
-                Daarom is het cumulatieve risico op infectie = 1 - (1 - p)<sup>n</sup>.
-            </p>
-            <p style="margin-top: 12px;">
-                <strong>Voorbeeld:</strong> Receptief vaginaal contact (0.08%) met iemand uit algemene bevolking Nederland (0.2% HIV+):<br>
-                Effectief risico = 0.08% × 0.2% = 0.00016% per contact.
-            </p>
-            <p class="warning">
-                ⚠️ <strong>U=U:</strong> Ondetecteerbaar = Niet-overdraagbaar. Bij effectieve behandeling (viral load ondetecteerbaar) is transmissierisico 0%.
-                Andere factoren: PrEP-gebruik, condoomgebruik, besnijdenisstatus, co-infecties. Raadpleeg altijd zorgverleners.
+
+            <p style="color: #fbbf24; margin-top: 16px;">
+                <strong>Disclaimer:</strong> Deze calculator is bedoeld voor educatieve doeleinden. Raadpleeg altijd een zorgverlener voor persoonlijk advies. Bij recente risicovolle blootstelling (&lt;72 uur): neem direct contact op voor PEP-beoordeling.
             </p>
         </div>
     </div>
 
     <script>
+        // Exposure types with CDC-based risks (per 10,000 exposures converted to %)
         const exposureTypes = [
             { name: 'Bloedtransfusie (besmet)', risk: 92.5, color: '#dc2626' },
-            { name: 'Naalden delen (IDU)', risk: 0.63, color: '#ea580c' },
-            { name: 'Receptief anaal', risk: 1.38, color: '#d97706' },
-            { name: 'Prikaccident', risk: 0.23, color: '#ca8a04' },
-            { name: 'Insertief anaal', risk: 0.11, color: '#65a30d' },
-            { name: 'Receptief vaginaal', risk: 0.08, color: '#16a34a' },
-            { name: 'Insertief vaginaal', risk: 0.04, color: '#0d9488' },
-            { name: 'Orale seks (ontvangend)', risk: 0.04, color: '#0891b2' },
-            { name: 'Orale seks (actief)', risk: 0.01, color: '#2563eb' },
+            { name: 'Receptief anaal', risk: 1.38, color: '#ea580c' },
+            { name: 'Naalden delen (IDU)', risk: 0.63, color: '#f97316' },
+            { name: 'Prikaccident', risk: 0.23, color: '#eab308' },
+            { name: 'Insertief anaal', risk: 0.11, color: '#84cc16' },
+            { name: 'Receptief vaginaal', risk: 0.08, color: '#22c55e' },
+            { name: 'Insertief vaginaal', risk: 0.04, color: '#16a34a' },
+            { name: 'Bijten (met bloed)', risk: 0.01, color: '#0d9488' },
+            { name: 'Orale seks', risk: 0.005, color: '#0891b2', note: 'verwaarloosbaar' },
         ];
 
-        let riskPerContact = 0.1;
-        let sourceRisk = 100; // Probability source is HIV+
+        // Source risk presets (updated with 2024 data)
+        const sourceTypes = [
+            { name: 'HIV+ onbehandeld', risk: 100, color: '#dc2626' },
+            { name: 'HIV+ behandeld (U=U)', risk: 0, color: '#22c55e', note: 'ondetecteerbaar' },
+            { name: 'Onbekend - hoog-risico gedrag', risk: 10, color: '#f97316' },
+            { name: 'MSM (NL, 2024)', risk: 3, color: '#f59e0b' },
+            { name: 'IDU (NL)', risk: 5, color: '#ef4444' },
+            { name: 'Sekswerker (Sub-Sahara Afrika)', risk: 20, color: '#dc2626' },
+            { name: 'Algemene bevolking Sub-Sahara Afrika', risk: 7, color: '#f97316' },
+            { name: 'Algemene bevolking NL', risk: 0.15, color: '#22c55e' },
+            { name: 'Algemene bevolking West-Europa', risk: 0.2, color: '#22c55e' },
+            { name: 'Onbekend - laag-risico', risk: 0.5, color: '#84cc16' },
+        ];
+
+        // State
+        let baseRisk = 0.08; // Default: receptive vaginal
+        let sourceRisk = 100;
         let maxContacts = 100;
         let selectedPreset = null;
         let selectedSource = null;
-        let chart = null;
 
-        const sourceTypes = [
-            { name: 'Bevestigd HIV+', risk: 100, color: '#dc2626' },
-            { name: 'HIV+ onbehandeld', risk: 100, color: '#dc2626' },
-            { name: 'HIV+ behandeld (viral load ondetecteerbaar)', risk: 0, color: '#22c55e', note: 'U=U' },
-            { name: 'MSM (NL)', risk: 5, color: '#f97316' },
-            { name: 'IDU (injectie druggebruiker)', risk: 10, color: '#ea580c' },
-            { name: 'Sekswerker (Sub-Sahara Afrika)', risk: 25, color: '#ef4444' },
-            { name: 'Algemene bevolking Sub-Sahara Afrika', risk: 8, color: '#f59e0b' },
-            { name: 'Algemene bevolking Zuid/ZO-Azië', risk: 0.3, color: '#eab308' },
-            { name: 'Algemene bevolking West-Europa', risk: 0.2, color: '#84cc16' },
-            { name: 'Algemene bevolking Nederland', risk: 0.2, color: '#22c55e' },
-            { name: 'Onbekende status (hoog-risico gedrag)', risk: 15, color: '#f97316' },
-            { name: 'Onbekende status (laag-risico)', risk: 1, color: '#a3e635' },
-        ];
+        // Modifiers
+        let modifiers = {
+            prep: false,      // 99% reduction
+            condom: false,    // 80% reduction
+            circumcision: false, // 50% reduction
+            sti: false,       // 3x increase
+            acute: false      // 10x increase
+        };
 
         // DOM elements
-        const riskSlider = document.getElementById('riskSlider');
         const contactsSlider = document.getElementById('contactsSlider');
         const sourceSlider = document.getElementById('sourceSlider');
-        const riskDisplay = document.getElementById('riskDisplay');
         const contactsDisplay = document.getElementById('contactsDisplay');
         const sourceDisplay = document.getElementById('sourceDisplay');
-        const effectiveRiskDisplay = document.getElementById('effectiveRisk');
-        const calcExplanation = document.getElementById('calcExplanation');
-        const milestone50 = document.getElementById('milestone50');
-        const milestone90 = document.getElementById('milestone90');
         const presetsContainer = document.getElementById('presets');
         const sourcePresetsContainer = document.getElementById('sourcePresets');
         const statsContainer = document.getElementById('stats');
         const canvas = document.getElementById('chart');
         const ctx = canvas.getContext('2d');
 
+        function calculateModifiedRisk(base) {
+            let risk = base;
+
+            // Apply reductions (multiplicative)
+            if (modifiers.prep) risk *= 0.01;      // 99% reduction
+            if (modifiers.condom) risk *= 0.20;   // 80% reduction
+            if (modifiers.circumcision) risk *= 0.50; // 50% reduction
+
+            // Apply increases (multiplicative)
+            if (modifiers.sti) risk *= 3;          // 3x increase
+            if (modifiers.acute) risk *= 10;       // 10x increase
+
+            return risk;
+        }
+
         function getEffectiveRisk() {
-            return (riskPerContact * sourceRisk) / 100;
+            const modifiedBase = calculateModifiedRisk(baseRisk);
+            return (modifiedBase * sourceRisk) / 100;
+        }
+
+        function getUnprotectedRisk() {
+            return (baseRisk * sourceRisk) / 100;
         }
 
         function calculateCumulativeRisk(effectiveRiskPercent, contacts) {
@@ -426,6 +844,80 @@
             const p = perContactRisk / 100;
             if (p <= 0) return Infinity;
             return Math.ceil(Math.log(1 - targetRisk) / Math.log(1 - p));
+        }
+
+        function formatRisk(risk) {
+            if (risk === 0) return '0%';
+            if (risk < 0.0001) return risk.toExponential(1) + '%';
+            if (risk < 0.01) return risk.toFixed(4) + '%';
+            if (risk < 1) return risk.toFixed(3) + '%';
+            return risk.toFixed(2) + '%';
+        }
+
+        function getRiskColor(risk) {
+            if (risk < 0.01) return 'green';
+            if (risk < 0.1) return 'yellow';
+            if (risk < 1) return 'orange';
+            return 'red';
+        }
+
+        function updateDisplay() {
+            const effectiveRisk = getEffectiveRisk();
+            const unprotectedRisk = getUnprotectedRisk();
+
+            contactsDisplay.textContent = maxContacts;
+            sourceDisplay.textContent = sourceRisk.toFixed(1) + '%';
+
+            // Main risk display
+            const mainRiskEl = document.getElementById('mainRisk');
+            mainRiskEl.textContent = formatRisk(effectiveRisk);
+            mainRiskEl.className = 'big-number ' + getRiskColor(effectiveRisk);
+
+            // Risk thermometer
+            const marker = document.getElementById('riskMarker');
+            const position = Math.min(Math.log10(effectiveRisk + 0.001) / 2 + 1, 1) * 100;
+            marker.style.left = Math.max(0, Math.min(100, position)) + '%';
+            marker.dataset.risk = formatRisk(effectiveRisk);
+
+            // Comparison
+            document.getElementById('protectedRisk').textContent = formatRisk(effectiveRisk);
+            document.getElementById('unprotectedRisk').textContent = formatRisk(unprotectedRisk);
+
+            // PEP recommendation (threshold ~0.1% for consideration)
+            const pepAlert = document.getElementById('pepAlert');
+            const pepNotNeeded = document.getElementById('pepNotNeeded');
+
+            if (effectiveRisk >= 0.1) {
+                pepAlert.classList.add('show');
+                pepNotNeeded.classList.remove('show');
+            } else if (effectiveRisk > 0 && effectiveRisk < 0.1) {
+                pepAlert.classList.remove('show');
+                pepNotNeeded.classList.add('show');
+            } else {
+                pepAlert.classList.remove('show');
+                pepNotNeeded.classList.remove('show');
+            }
+
+            // Milestones
+            const contacts50 = calculateMilestone(0.5, effectiveRisk);
+            const contacts90 = calculateMilestone(0.9, effectiveRisk);
+            document.getElementById('milestone50').textContent = contacts50 === Infinity ? '∞' : contacts50.toLocaleString() + ' contacten';
+            document.getElementById('milestone90').textContent = contacts90 === Infinity ? '∞' : contacts90.toLocaleString() + ' contacten';
+
+            // Stats
+            const statNumbers = [1, 10, 50, 100];
+            statsContainer.innerHTML = statNumbers.map(n => {
+                const risk = calculateCumulativeRisk(effectiveRisk, n);
+                const color = getRiskColor(risk);
+                return `
+                    <div class="stat-card">
+                        <div class="stat-value ${color}">${formatRisk(risk)}</div>
+                        <div class="stat-label">na ${n} contact${n > 1 ? 'en' : ''}</div>
+                    </div>
+                `;
+            }).join('');
+
+            drawChart();
         }
 
         function drawChart() {
@@ -471,41 +963,53 @@
                 ctx.fillText(contacts.toString(), x, height - padding.bottom + 20);
             }
 
-            // Reference lines at 50% and 90%
+            // Reference lines
             ctx.setLineDash([5, 5]);
-            ctx.strokeStyle = '#fbbf24';
+            ctx.strokeStyle = '#eab308';
             ctx.beginPath();
-            const y50 = padding.top + chartHeight * 0.5;
-            ctx.moveTo(padding.left, y50);
-            ctx.lineTo(width - padding.right, y50);
+            ctx.moveTo(padding.left, padding.top + chartHeight * 0.5);
+            ctx.lineTo(width - padding.right, padding.top + chartHeight * 0.5);
             ctx.stroke();
 
             ctx.strokeStyle = '#ef4444';
-            const y90 = padding.top + chartHeight * 0.1;
             ctx.beginPath();
-            ctx.moveTo(padding.left, y90);
-            ctx.lineTo(width - padding.right, y90);
+            ctx.moveTo(padding.left, padding.top + chartHeight * 0.1);
+            ctx.lineTo(width - padding.right, padding.top + chartHeight * 0.1);
             ctx.stroke();
             ctx.setLineDash([]);
 
-            // Draw curve
+            const effectiveRisk = getEffectiveRisk();
+            const unprotectedRisk = getUnprotectedRisk();
+
+            // Draw unprotected curve (if different)
+            if (Math.abs(effectiveRisk - unprotectedRisk) > 0.0001) {
+                ctx.beginPath();
+                ctx.strokeStyle = 'rgba(239, 68, 68, 0.5)';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([4, 4]);
+                for (let i = 0; i <= 100; i++) {
+                    const contacts = (maxContacts * i) / 100;
+                    const risk = calculateCumulativeRisk(unprotectedRisk, contacts);
+                    const x = padding.left + (chartWidth * i / 100);
+                    const y = padding.top + chartHeight * (1 - risk / 100);
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+
+            // Draw protected/current curve
             ctx.beginPath();
             ctx.strokeStyle = '#2dd4a0';
             ctx.lineWidth = 2;
-
-            const effectiveRisk = getEffectiveRisk();
-            const points = [];
             for (let i = 0; i <= 100; i++) {
                 const contacts = (maxContacts * i) / 100;
                 const risk = calculateCumulativeRisk(effectiveRisk, contacts);
                 const x = padding.left + (chartWidth * i / 100);
                 const y = padding.top + chartHeight * (1 - risk / 100);
-                points.push({ x, y });
-                if (i === 0) {
-                    ctx.moveTo(x, y);
-                } else {
-                    ctx.lineTo(x, y);
-                }
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
             }
             ctx.stroke();
 
@@ -519,78 +1023,27 @@
             ctx.fillStyle = gradient;
             ctx.fill();
 
-            // Axis labels
+            // Axis label
             ctx.fillStyle = '#8b9d94';
-            ctx.font = '12px -apple-system, sans-serif';
             ctx.textAlign = 'center';
             ctx.fillText('Aantal contacten', width / 2, height - 5);
         }
 
-        function updateDisplay() {
-            const effectiveRisk = getEffectiveRisk();
-
-            riskDisplay.textContent = riskPerContact.toFixed(2) + '%';
-            contactsDisplay.textContent = maxContacts;
-            sourceDisplay.textContent = sourceRisk.toFixed(1) + '%';
-
-            // Show effective risk
-            if (effectiveRisk < 0.001) {
-                effectiveRiskDisplay.textContent = effectiveRisk.toExponential(2) + '%';
-            } else {
-                effectiveRiskDisplay.textContent = effectiveRisk.toFixed(4) + '%';
-            }
-            calcExplanation.textContent = riskPerContact.toFixed(2) + '% × ' + sourceRisk.toFixed(1) + '%';
-
-            const contacts50 = calculateMilestone(0.5, effectiveRisk);
-            const contacts90 = calculateMilestone(0.9, effectiveRisk);
-
-            milestone50.textContent = contacts50 === Infinity ? '∞' : contacts50.toLocaleString() + ' contacten';
-            milestone90.textContent = contacts90 === Infinity ? '∞' : contacts90.toLocaleString() + ' contacten';
-
-            // Update stats
-            const statNumbers = [10, 50, 100, 500];
-            statsContainer.innerHTML = statNumbers.map(n => {
-                const risk = calculateCumulativeRisk(effectiveRisk, n);
-                return `
-                    <div class="stat-card">
-                        <div class="stat-value">${risk.toFixed(risk < 0.01 ? 4 : 2)}%</div>
-                        <div class="stat-label">na ${n} contacten</div>
-                    </div>
-                `;
-            }).join('');
-
-            drawChart();
-        }
-
         function renderPresets() {
             presetsContainer.innerHTML = exposureTypes.map(type => `
-                <button class="preset-btn ${selectedPreset === type.name ? 'active' : ''}" data-risk="${type.risk}" data-name="${type.name}">
+                <button class="preset-btn ${selectedPreset === type.name ? 'active' : ''}"
+                        data-risk="${type.risk}" data-name="${type.name}">
                     <span class="preset-name">${type.name}</span>
-                    <span class="preset-risk" style="background: ${type.color}20; color: ${type.color}">${type.risk}%</span>
+                    <span class="preset-risk" style="background: ${type.color}20; color: ${type.color}">
+                        ${type.risk < 0.01 ? '~0%' : type.risk + '%'}
+                    </span>
                 </button>
             `).join('');
 
-            document.querySelectorAll('.preset-btn').forEach(btn => {
+            document.querySelectorAll('#presets .preset-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
-                    const risk = parseFloat(btn.dataset.risk);
-                    const name = btn.dataset.name;
-
-                    riskPerContact = risk;
-                    selectedPreset = name;
-                    riskSlider.value = Math.min(risk, 10);
-
-                    // Adjust max contacts based on risk
-                    if (risk > 10) {
-                        maxContacts = 20;
-                    } else if (risk > 1) {
-                        maxContacts = 200;
-                    } else if (risk > 0.1) {
-                        maxContacts = 500;
-                    } else {
-                        maxContacts = 1000;
-                    }
-                    contactsSlider.value = maxContacts;
-
+                    baseRisk = parseFloat(btn.dataset.risk);
+                    selectedPreset = btn.dataset.name;
                     renderPresets();
                     updateDisplay();
                 });
@@ -599,35 +1052,40 @@
 
         function renderSourcePresets() {
             sourcePresetsContainer.innerHTML = sourceTypes.map(type => `
-                <button class="preset-btn ${selectedSource === type.name ? 'active' : ''}" data-risk="${type.risk}" data-name="${type.name}">
+                <button class="preset-btn ${selectedSource === type.name ? 'active' : ''}"
+                        data-risk="${type.risk}" data-name="${type.name}">
                     <span class="preset-name">${type.name}</span>
-                    <span class="preset-risk" style="background: ${type.color}20; color: ${type.color}">${type.risk}%</span>
+                    <span class="preset-risk" style="background: ${type.color}20; color: ${type.color}">
+                        ${type.risk}%
+                    </span>
                 </button>
             `).join('');
 
             document.querySelectorAll('#sourcePresets .preset-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
-                    const risk = parseFloat(btn.dataset.risk);
-                    const name = btn.dataset.name;
-
-                    sourceRisk = risk;
-                    selectedSource = name;
-                    sourceSlider.value = risk;
-
+                    sourceRisk = parseFloat(btn.dataset.risk);
+                    selectedSource = btn.dataset.name;
+                    sourceSlider.value = sourceRisk;
                     renderSourcePresets();
                     updateDisplay();
                 });
             });
         }
 
-        // Event listeners
-        riskSlider.addEventListener('input', (e) => {
-            riskPerContact = parseFloat(e.target.value);
-            selectedPreset = null;
-            renderPresets();
-            updateDisplay();
-        });
+        function setupModifiers() {
+            document.querySelectorAll('.checkbox-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const modifierName = item.dataset.modifier;
 
+                    modifiers[modifierName] = !modifiers[modifierName];
+                    item.classList.toggle('active', modifiers[modifierName]);
+
+                    updateDisplay();
+                });
+            });
+        }
+
+        // Event listeners
         contactsSlider.addEventListener('input', (e) => {
             maxContacts = parseInt(e.target.value);
             updateDisplay();
@@ -640,13 +1098,17 @@
             updateDisplay();
         });
 
-        window.addEventListener('resize', () => {
-            drawChart();
-        });
+        window.addEventListener('resize', drawChart);
 
         // Initialize
         renderPresets();
         renderSourcePresets();
+        setupModifiers();
+
+        // Select default
+        selectedPreset = 'Receptief vaginaal';
+        baseRisk = 0.08;
+        renderPresets();
         updateDisplay();
     </script>
 </body>
