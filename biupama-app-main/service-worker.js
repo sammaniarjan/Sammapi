@@ -1,56 +1,33 @@
-// BIUPAMA Service Worker for offline functionality
-const CACHE_NAME = 'biupama-v1';
+// BIUPAMA Service Worker - Offline First
+const CACHE_NAME = 'biupama-v2';
 
-// Files to cache for offline use
-const urlsToCache = [
+// Only cache the essential files on install
+const CORE_FILES = [
   './',
   './index.html',
-  './manifest.json',
-  // Images
-  './images/Different schistosoma eggs.png',
-  './images/Thin smear morphology plasmodium spp.png',
-  './images/schistosomiasis hotspots.jpg',
-  './images/malaria_LifeCycle.gif',
-  './images/malaria-world-map-2025.jpg',
-  './images/Five-different-human-malaria-Plasmodium-species-and-their-life-stages-in-thin-blood-film.jpg',
-  './images/AB coverage.png',
-  // Huidafwijkingen images
-  './images/huidafwijkingen/Strongyloides stercoralis.jpg',
-  './images/huidafwijkingen/Tungiasis.jpg',
-  './images/huidafwijkingen/Cutane leishmaniasis.jpg',
-  './images/huidafwijkingen/Cutane myiasis.jpg',
-  './images/huidafwijkingen/bed bug.webp',
-  './images/huidafwijkingen/persisterende insectenbeten.jpg',
-  './images/huidafwijkingen/Trench_foot.jpg',
-  './images/huidafwijkingen/scabies.jpg',
-  './images/huidafwijkingen/fotosensitiviteit.webp',
-  './images/huidafwijkingen/Kwallensteek.png',
-  './images/huidafwijkingen/Cutaneous-larva-migrans-669x1024.jpg',
-  './images/huidafwijkingen/miliaria.jpg',
-  './images/huidafwijkingen/cellulitis.jpeg',
-  './images/huidafwijkingen/Epicurves_Figure_2.png'
+  './manifest.json'
 ];
 
-// Install event - cache all files
+// Install - cache core files only
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('BIUPAMA: Caching files for offline use');
-        return cache.addAll(urlsToCache);
+        console.log('BIUPAMA: Caching core files');
+        return cache.addAll(CORE_FILES);
       })
       .then(() => self.skipWaiting())
+      .catch(err => console.log('BIUPAMA: Cache install failed', err))
   );
 });
 
-// Activate event - clean up old caches
+// Activate - clean old caches
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cacheName => {
           if (cacheName !== CACHE_NAME) {
-            console.log('BIUPAMA: Removing old cache', cacheName);
             return caches.delete(cacheName);
           }
         })
@@ -59,36 +36,47 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Fetch event - serve from cache, fallback to network
+// Fetch - Cache everything as you browse (runtime caching)
 self.addEventListener('fetch', event => {
+  // Only handle GET requests
+  if (event.request.method !== 'GET') return;
+
+  // Skip cross-origin requests (fonts, analytics, etc)
+  if (!event.request.url.startsWith(self.location.origin)) return;
+
   event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        // Return cached version or fetch from network
-        if (response) {
+    caches.match(event.request).then(cachedResponse => {
+      // Return cache if available
+      if (cachedResponse) {
+        // Update cache in background (stale-while-revalidate)
+        fetch(event.request).then(response => {
+          if (response && response.status === 200) {
+            caches.open(CACHE_NAME).then(cache => {
+              cache.put(event.request, response);
+            });
+          }
+        }).catch(() => {});
+
+        return cachedResponse;
+      }
+
+      // Not in cache - fetch and cache
+      return fetch(event.request).then(response => {
+        if (!response || response.status !== 200) {
           return response;
         }
 
-        return fetch(event.request).then(response => {
-          // Don't cache non-successful responses
-          if (!response || response.status !== 200 || response.type !== 'basic') {
-            return response;
-          }
-
-          // Clone the response for caching
-          const responseToCache = response.clone();
-
-          caches.open(CACHE_NAME)
-            .then(cache => {
-              cache.put(event.request, responseToCache);
-            });
-
-          return response;
+        // Cache the response
+        const responseToCache = response.clone();
+        caches.open(CACHE_NAME).then(cache => {
+          cache.put(event.request, responseToCache);
         });
-      })
-      .catch(() => {
-        // Return offline fallback if needed
-        console.log('BIUPAMA: Offline - serving from cache');
-      })
+
+        return response;
+      }).catch(() => {
+        // Offline and not in cache
+        console.log('BIUPAMA: Offline, resource not cached:', event.request.url);
+      });
+    })
   );
 });
