@@ -516,6 +516,144 @@
       background: rgba(239, 68, 68, 0.1);
     }
 
+    /* Changes dropdown */
+    .changes-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .changes-toggle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 6px;
+      color: #10b981;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .changes-toggle:hover {
+      background: rgba(16, 185, 129, 0.25);
+    }
+
+    .changes-toggle svg {
+      transition: transform 0.2s;
+    }
+
+    .changes-toggle.open svg {
+      transform: rotate(180deg);
+    }
+
+    .changes-panel {
+      position: absolute;
+      bottom: 100%;
+      left: 0;
+      margin-bottom: 8px;
+      min-width: 320px;
+      max-width: 400px;
+      max-height: 400px;
+      overflow-y: auto;
+      background: rgba(15, 23, 42, 0.98);
+      border: 1px solid rgba(71, 85, 105, 0.5);
+      border-radius: 10px;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+      display: none;
+      z-index: 100;
+    }
+
+    .changes-panel.open {
+      display: block;
+    }
+
+    .changes-section {
+      padding: 12px;
+      border-bottom: 1px solid rgba(71, 85, 105, 0.3);
+    }
+
+    .changes-section:last-child {
+      border-bottom: none;
+    }
+
+    .changes-section-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      color: #94a3b8;
+    }
+
+    .changes-section-header .count {
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+    }
+
+    .changes-section.new .changes-section-header .count {
+      background: rgba(34, 197, 94, 0.3);
+      color: #4ade80;
+    }
+
+    .changes-section.modified .changes-section-header .count {
+      background: rgba(251, 191, 36, 0.3);
+      color: #fbbf24;
+    }
+
+    .changes-section.deleted .changes-section-header .count {
+      background: rgba(239, 68, 68, 0.3);
+      color: #f87171;
+    }
+
+    .change-item {
+      padding: 8px 10px;
+      background: rgba(51, 65, 85, 0.3);
+      border-radius: 6px;
+      margin-bottom: 6px;
+      border-left: 3px solid transparent;
+    }
+
+    .change-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .changes-section.new .change-item {
+      border-left-color: #4ade80;
+    }
+
+    .changes-section.modified .change-item {
+      border-left-color: #fbbf24;
+    }
+
+    .changes-section.deleted .change-item {
+      border-left-color: #f87171;
+      opacity: 0.7;
+    }
+
+    .change-item-title {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #e2e8f0;
+      margin-bottom: 2px;
+    }
+
+    .change-item-meta {
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+
+    .changes-empty {
+      padding: 16px;
+      text-align: center;
+      color: #64748b;
+      font-size: 0.85rem;
+    }
+
     /* Drop overlay */
     .drop-overlay {
       position: fixed;
@@ -655,6 +793,19 @@
       .event-time {
         min-width: auto;
       }
+
+      .changes-panel {
+        min-width: 280px;
+        max-width: calc(100vw - 40px);
+        left: auto;
+        right: 0;
+      }
+
+      .status-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
     }
   </style>
 </head>
@@ -762,14 +913,15 @@
             <span class="status-dot total"></span>
             <span id="totalEvents">0</span> events
           </span>
-          <span class="status-item" id="newStatus" style="display: none;">
-            <span class="status-dot new"></span>
-            <span id="newEvents">0</span> nieuw
-          </span>
-          <span class="status-item" id="modifiedStatus" style="display: none;">
-            <span class="status-dot modified"></span>
-            <span id="modifiedEvents">0</span> gewijzigd
-          </span>
+          <div class="changes-dropdown" id="changesDropdown" style="display: none;">
+            <button class="changes-toggle" onclick="toggleChangesPanel()">
+              <span id="changesCount">0</span> wijzigingen
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </button>
+            <div class="changes-panel" id="changesPanel"></div>
+          </div>
         </div>
         <div style="display: flex; gap: 8px;">
           <button class="export-btn" onclick="exportIcal()">
@@ -1189,6 +1341,101 @@
       }
     }
 
+    // Changes dropdown
+    function toggleChangesPanel() {
+      const toggle = document.querySelector('.changes-toggle');
+      const panel = document.getElementById('changesPanel');
+      toggle.classList.toggle('open');
+      panel.classList.toggle('open');
+    }
+
+    function formatEventDate(event) {
+      const date = new Date(event.start);
+      const dayName = DAYS_NL[date.getDay()];
+      const day = date.getDate();
+      const month = MONTHS_NL[date.getMonth()].substring(0, 3);
+      const startTime = `${date.getHours().toString().padStart(2,'0')}:${date.getMinutes().toString().padStart(2,'0')}`;
+      return `${dayName} ${day} ${month}, ${startTime}`;
+    }
+
+    function renderChangesPanel() {
+      const panel = document.getElementById('changesPanel');
+      const totalChanges = changes.added.length + changes.modified.length + changes.deleted.length;
+
+      if (totalChanges === 0) {
+        panel.innerHTML = '<div class="changes-empty">Geen wijzigingen</div>';
+        return;
+      }
+
+      let html = '';
+
+      // New events
+      if (changes.added.length > 0) {
+        html += '<div class="changes-section new">';
+        html += `<div class="changes-section-header">Nieuw <span class="count">${changes.added.length}</span></div>`;
+        changes.added.forEach(event => {
+          html += `<div class="change-item">`;
+          html += `<div class="change-item-title">${event.title}</div>`;
+          html += `<div class="change-item-meta">${formatEventDate(event)}${event.location ? ' • ' + event.location : ''}</div>`;
+          html += `</div>`;
+        });
+        html += '</div>';
+      }
+
+      // Modified events
+      if (changes.modified.length > 0) {
+        html += '<div class="changes-section modified">';
+        html += `<div class="changes-section-header">Gewijzigd <span class="count">${changes.modified.length}</span></div>`;
+        changes.modified.forEach(event => {
+          html += `<div class="change-item">`;
+          html += `<div class="change-item-title">${event.title}</div>`;
+          html += `<div class="change-item-meta">${formatEventDate(event)}${event.location ? ' • ' + event.location : ''}</div>`;
+          html += `</div>`;
+        });
+        html += '</div>';
+      }
+
+      // Deleted events
+      if (changes.deleted.length > 0) {
+        html += '<div class="changes-section deleted">';
+        html += `<div class="changes-section-header">Verwijderd <span class="count">${changes.deleted.length}</span></div>`;
+        changes.deleted.forEach(event => {
+          html += `<div class="change-item">`;
+          html += `<div class="change-item-title">${event.title}</div>`;
+          html += `<div class="change-item-meta">${formatEventDate(event)}${event.location ? ' • ' + event.location : ''}</div>`;
+          html += `</div>`;
+        });
+        html += '</div>';
+      }
+
+      panel.innerHTML = html;
+    }
+
+    function updateChangesDropdown() {
+      const dropdown = document.getElementById('changesDropdown');
+      const countEl = document.getElementById('changesCount');
+      const totalChanges = changes.added.length + changes.modified.length + changes.deleted.length;
+
+      if (totalChanges > 0) {
+        dropdown.style.display = 'inline-block';
+        countEl.textContent = totalChanges;
+        renderChangesPanel();
+      } else {
+        dropdown.style.display = 'none';
+      }
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      const dropdown = document.getElementById('changesDropdown');
+      if (dropdown && !dropdown.contains(e.target)) {
+        const toggle = document.querySelector('.changes-toggle');
+        const panel = document.getElementById('changesPanel');
+        if (toggle) toggle.classList.remove('open');
+        if (panel) panel.classList.remove('open');
+      }
+    });
+
     // Export iCal
     function exportIcal() {
       const lines = [
@@ -1266,15 +1513,7 @@
 
           // Update status
           document.getElementById('totalEvents').textContent = events.length;
-
-          if (changes.added.length > 0) {
-            document.getElementById('newStatus').style.display = 'flex';
-            document.getElementById('newEvents').textContent = changes.added.length;
-          }
-          if (changes.modified.length > 0) {
-            document.getElementById('modifiedStatus').style.display = 'flex';
-            document.getElementById('modifiedEvents').textContent = changes.modified.length;
-          }
+          updateChangesDropdown();
 
           renderCalendar();
 

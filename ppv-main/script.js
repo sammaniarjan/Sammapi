@@ -132,42 +132,42 @@ const examples = {
     sensitivity: 75,
     specificity: 99,
     prevalence: 12,
-    description: 'COVID antigeen sneltest tijdens een golf. Sensitiviteit ~75%, specificiteit 99%. Bij 12% prevalentie werkt de test goed.'
+    description: 'COVID antigeen sneltest. Sensitiviteit ~75%, specificiteit 99%. Prevalentie 12% (tijdens golf).'
   },
   'covid-low': {
     population: 10000,
     sensitivity: 75,
     specificity: 99,
     prevalence: 0.5,
-    description: 'Dezelfde antigeen test in een rustige periode (0.5% prevalentie). Let op hoe de PPV dramatisch daalt!'
+    description: 'Zelfde antigeen test, maar bij 0.5% prevalentie (rustige periode). Vergelijk de PPV met het vorige voorbeeld.'
   },
   'ddimer': {
     population: 1000,
     sensitivity: 95,
     specificity: 40,
     prevalence: 20,
-    description: 'D-dimeer: zeer sensitief (95%), maar lage specificiteit (40%). Ideaal om longembolie uit te sluiten (hoge NPV).'
+    description: 'D-dimeer: hoge sensitiviteit (95%), lage specificiteit (40%). Resulteert in hoge NPV, lage PPV.'
   },
   'mammografie': {
     population: 100000,
     sensitivity: 85,
     specificity: 90,
     prevalence: 0.5,
-    description: 'Mammografie screening: goede test, maar bij 0.5% prevalentie toch veel vals-positieven.'
+    description: 'Mammografie screening: sensitiviteit 85%, specificiteit 90%. Prevalentie 0.5% bij screeningspopulatie.'
   },
   'troponine': {
     population: 1000,
     sensitivity: 99,
     specificity: 85,
     prevalence: 18,
-    description: 'hs-Troponine: extreem sensitief (99%). Een negatieve uitslag sluit infarct vrijwel uit.'
+    description: 'hs-Troponine: zeer hoge sensitiviteit (99%), specificiteit 85%. Prevalentie 18% op SEH met pijn op de borst.'
   },
   'psa': {
     population: 10000,
     sensitivity: 80,
     specificity: 35,
     prevalence: 10,
-    description: 'PSA: lage specificiteit (35%) door vele andere oorzaken. Leidt tot veel onnodige biopsieën.'
+    description: 'PSA: sensitiviteit 80%, lage specificiteit (35%) door diverse oorzaken van PSA-verhoging.'
   }
 };
 
@@ -293,40 +293,39 @@ function updateELI5(r) {
   const totalNeg = r.trueNegatives + r.falseNegatives;
   const prevPct = (r.prevalence * 100).toFixed(1);
 
-  const isRuleOut = r.npv >= 0.95 && r.ppv < 0.5;
-  const isRuleIn = r.ppv >= 0.8;
+  const highNpvLowPpv = r.npv >= 0.95 && r.ppv < 0.5;
+  const highPpv = r.ppv >= 0.8;
 
   let text = '';
 
-  if (isRuleOut) {
-    text = `<strong>Dit is een "rule-out" test.</strong><br><br>`;
-    text += `De PPV is laag (${ppvPct}%) — een positieve uitslag is vaak vals alarm. `;
-    text += `Maar de <span class="highlight good">NPV is ${npvPct}%</span>: een negatieve uitslag sluit de aandoening vrijwel uit.`;
-    text += `<br><br>Van ${fmt(totalNeg)} negatieve uitslagen zijn er ${fmt(r.trueNegatives)} terecht. Slechts ${fmt(r.falseNegatives)} worden gemist.`;
-    text += `<br><br><em>Klinisch:</em> Gebruik deze test om gerust te stellen. Bij positieve uitslag is aanvullend onderzoek nodig.`;
-  } else if (isRuleIn) {
-    text = `<strong>Goede "rule-in" test.</strong><br><br>`;
-    text += `Van elke 10 positieve uitslagen zijn er <span class="highlight good">${Math.round(r.ppv * 10)}</span> terecht. NPV is ${npvPct}%.`;
+  if (highNpvLowPpv) {
+    text = `<strong>Hoge NPV, lage PPV.</strong><br><br>`;
+    text += `De PPV is ${ppvPct}% — van alle positieve uitslagen is dit het percentage dat daadwerkelijk ziek is. `;
+    text += `De <span class="highlight good">NPV is ${npvPct}%</span> — van alle negatieve uitslagen is dit percentage daadwerkelijk gezond.`;
+    text += `<br><br>Van ${fmt(totalNeg)} negatieve uitslagen zijn er ${fmt(r.trueNegatives)} terecht negatief en ${fmt(r.falseNegatives)} vals negatief.`;
+  } else if (highPpv) {
+    text = `<strong>Hoge PPV (${ppvPct}%).</strong><br><br>`;
+    text += `Van elke 10 positieve uitslagen zijn er ${Math.round(r.ppv * 10)} terecht positief. De NPV is ${npvPct}%.`;
     text += `<br><br>Absoluut: ${fmt(r.truePositives)} terecht positief, ${fmt(r.falsePositives)} vals positief.`;
   } else if (r.ppv >= 0.5) {
     const wrong = Math.round((1 - r.ppv) * 10);
-    text = `Van elke 10 positieve uitslagen zijn er <span class="highlight bad">${wrong}</span> vals alarm. NPV is ${npvPct}%.`;
-    text += `<br><br>Absoluut: ${fmt(r.truePositives)} terecht, ${fmt(r.falsePositives)} onterecht.`;
+    text = `Van elke 10 positieve uitslagen zijn er ${wrong} vals positief. De NPV is ${npvPct}%.`;
+    text += `<br><br>Absoluut: ${fmt(r.truePositives)} terecht positief, ${fmt(r.falsePositives)} vals positief.`;
   } else if (r.ppv >= 0.2) {
-    text = `Van elke 10 positieve uitslagen zijn er maar <span class="highlight bad">${Math.round(r.ppv * 10)}</span> terecht.`;
+    text = `Van elke 10 positieve uitslagen zijn er ${Math.round(r.ppv * 10)} terecht positief.`;
     if (r.npv >= 0.9) {
-      text += ` Wel is de <span class="highlight good">NPV ${npvPct}%</span> — een negatieve uitslag is betrouwbaar.`;
+      text += ` De <span class="highlight good">NPV is ${npvPct}%</span>.`;
     }
-    text += `<br><br>Absoluut: ${fmt(r.truePositives)} terecht, ${fmt(r.falsePositives)} onterecht.`;
+    text += `<br><br>Absoluut: ${fmt(r.truePositives)} terecht positief, ${fmt(r.falsePositives)} vals positief.`;
   } else {
-    text = `Van elke 100 positieve uitslagen zijn er maar <span class="highlight bad">${Math.round(r.ppv * 100)}</span> terecht!`;
+    text = `Van elke 100 positieve uitslagen zijn er ${Math.round(r.ppv * 100)} terecht positief.`;
     if (r.npv >= 0.9) {
-      text += `<br><br>De <span class="highlight good">NPV is wel ${npvPct}%</span> — een negatieve uitslag sluit uit.`;
+      text += `<br><br>De <span class="highlight good">NPV is ${npvPct}%</span>.`;
     }
   }
 
-  if (r.prevalence < 0.05 && !isRuleOut) {
-    text += `<br><br><em>Let op:</em> Bij ${prevPct}% prevalentie zijn er zoveel gezonden dat zelfs een specifieke test veel vals-positieven geeft.`;
+  if (r.prevalence < 0.05 && !highNpvLowPpv) {
+    text += `<br><br><em>Opmerking:</em> Bij een prevalentie van ${prevPct}% is het aantal gezonden veel groter dan het aantal zieken, wat het absolute aantal vals-positieven verhoogt.`;
   }
 
   eli5Text.innerHTML = text;
@@ -342,32 +341,29 @@ function updateImpact(r) {
 
   impactMessage.classList.remove('good', 'bad');
 
-  const isRuleOut = r.npv >= 0.95 && r.ppv < 0.5;
+  const highNpvLowPpv = r.npv >= 0.95 && r.ppv < 0.5;
 
-  if (isRuleOut) {
-    impactMessage.classList.add('good');
-    impactTitle.textContent = 'Geschikt als uitsluitingstest';
-    impactText.textContent = `PPV ${ppvPct}% (veel vals alarm), maar NPV ${npvPct}%. Negatieve uitslag geeft zekerheid.`;
+  if (highNpvLowPpv) {
+    impactTitle.textContent = 'Hoge NPV, lage PPV';
+    impactText.textContent = `PPV ${ppvPct}%, NPV ${npvPct}%. Het percentage vals-positieven is hoger dan het percentage vals-negatieven.`;
   } else if (r.ppv >= 0.7) {
-    impactMessage.classList.add('good');
-    impactTitle.textContent = 'Test presteert goed';
-    impactText.textContent = `PPV ${ppvPct}%, NPV ${npvPct}%. De meeste voorspellingen kloppen.`;
+    impactTitle.textContent = 'Hoge PPV en NPV';
+    impactText.textContent = `PPV ${ppvPct}%, NPV ${npvPct}%.`;
   } else if (r.ppv >= 0.4) {
     if (r.npv >= 0.9) {
-      impactTitle.textContent = 'Beperkt voor bevestiging, goed voor uitsluiting';
-      impactText.textContent = `PPV ${ppvPct}% (matig), maar NPV ${npvPct}% — negatief is betrouwbaar.`;
+      impactTitle.textContent = 'Matige PPV, hoge NPV';
+      impactText.textContent = `PPV ${ppvPct}%, NPV ${npvPct}%.`;
     } else {
-      impactTitle.textContent = 'Wees voorzichtig';
-      impactText.textContent = `PPV ${ppvPct}%: bijna helft is vals alarm.`;
+      impactTitle.textContent = 'Matige PPV en NPV';
+      impactText.textContent = `PPV ${ppvPct}%, NPV ${npvPct}%.`;
     }
   } else {
     if (r.npv >= 0.95) {
-      impactTitle.textContent = 'Alleen bruikbaar om uit te sluiten';
-      impactText.textContent = `PPV slechts ${ppvPct}%, maar NPV ${npvPct}% — negatief sluit uit.`;
+      impactTitle.textContent = 'Lage PPV, hoge NPV';
+      impactText.textContent = `PPV ${ppvPct}%, NPV ${npvPct}%.`;
     } else {
-      impactMessage.classList.add('bad');
-      impactTitle.textContent = 'Test heeft beperkte waarde';
-      impactText.textContent = `PPV ${ppvPct}%, NPV ${npvPct}%. Beide onbetrouwbaar.`;
+      impactTitle.textContent = 'Lage PPV en NPV';
+      impactText.textContent = `PPV ${ppvPct}%, NPV ${npvPct}%.`;
     }
   }
 }
