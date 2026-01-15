@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BIUPAMA Icon Generator</title>
+    <style>
+        body {
+            font-family: system-ui;
+            background: #1a1a1a;
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        .icon-preview {
+            display: inline-block;
+            margin: 20px;
+            padding: 20px;
+            background: #2a2a2a;
+            border-radius: 12px;
+        }
+        canvas {
+            border-radius: 20%;
+            display: block;
+            margin: 10px auto;
+        }
+        button {
+            background: #2dd4a0;
+            color: #0a0f0d;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #25b88a;
+        }
+        h1 { color: #2dd4a0; }
+        p { color: #888; }
+    </style>
+</head>
+<body>
+    <h1>BIUPAMA PWA Icon Generator</h1>
+    <p>Klik op de knoppen om de iconen te downloaden, plaats ze daarna in de biupama-app-main folder.</p>
+
+    <div class="icon-preview">
+        <h3>192x192</h3>
+        <canvas id="canvas192" width="192" height="192"></canvas>
+        <button onclick="download(192)">Download icon-192.png</button>
+    </div>
+
+    <div class="icon-preview">
+        <h3>512x512</h3>
+        <canvas id="canvas512" width="512" height="512"></canvas>
+        <button onclick="download(512)">Download icon-512.png</button>
+    </div>
+
+    <script>
+        function drawIcon(ctx, size) {
+            const scale = size / 512;
+
+            // Background
+            ctx.fillStyle = '#0a0f0d';
+            ctx.beginPath();
+            ctx.roundRect(0, 0, size, size, 102 * scale);
+            ctx.fill();
+
+            ctx.save();
+            ctx.translate(size/2, size/2);
+
+            // Book base line
+            ctx.strokeStyle = '#2dd4a0';
+            ctx.lineWidth = 20 * scale;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(-154 * scale, 115 * scale);
+            ctx.lineTo(154 * scale, 115 * scale);
+            ctx.stroke();
+
+            // Book outline
+            ctx.lineWidth = 26 * scale;
+            ctx.beginPath();
+            ctx.moveTo(-128 * scale, 115 * scale);
+            ctx.lineTo(-128 * scale, -77 * scale);
+            ctx.quadraticCurveTo(-128 * scale, -103 * scale, -102 * scale, -103 * scale);
+            ctx.lineTo(102 * scale, -103 * scale);
+            ctx.quadraticCurveTo(128 * scale, -103 * scale, 128 * scale, -77 * scale);
+            ctx.lineTo(128 * scale, 115 * scale);
+            ctx.stroke();
+
+            // Text lines
+            ctx.lineWidth = 20 * scale;
+            ctx.beginPath();
+            ctx.moveTo(-77 * scale, -26 * scale);
+            ctx.lineTo(77 * scale, -26 * scale);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(-77 * scale, 26 * scale);
+            ctx.lineTo(51 * scale, 26 * scale);
+            ctx.stroke();
+
+            // Medical cross
+            ctx.globalAlpha = 0.6;
+            ctx.fillStyle = '#2dd4a0';
+            ctx.beginPath();
+            ctx.roundRect((90-15) * scale, (-60-40) * scale, 30 * scale, 80 * scale, 6 * scale);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.roundRect((90-40) * scale, (-60-15) * scale, 80 * scale, 30 * scale, 6 * scale);
+            ctx.fill();
+
+            ctx.restore();
+
+            // BIUPAMA text
+            ctx.globalAlpha = 1;
+            ctx.fillStyle = '#2dd4a0';
+            ctx.font = `600 ${64 * scale}px system-ui`;
+            ctx.textAlign = 'center';
+            ctx.fillText('BIUPAMA', size/2, 430 * scale);
+        }
+
+        // Draw both icons
+        const ctx192 = document.getElementById('canvas192').getContext('2d');
+        const ctx512 = document.getElementById('canvas512').getContext('2d');
+        drawIcon(ctx192, 192);
+        drawIcon(ctx512, 512);
+
+        function download(size) {
+            const canvas = document.getElementById('canvas' + size);
+            const link = document.createElement('a');
+            link.download = 'icon-' + size + '.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+    </script>
+</body>
+</html>

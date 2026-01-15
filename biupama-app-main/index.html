@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tropengeneeskunde - Studiegids</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230a0f0d'/><path d='M20 75h60' stroke='%232dd4a0' stroke-width='4'/><path d='M25 75V35a5 5 0 0 1 5-5h40a5 5 0 0 1 5 5v40' fill='none' stroke='%232dd4a0' stroke-width='5'/><line x1='35' y1='45' x2='65' y2='45' stroke='%232dd4a0' stroke-width='4'/><line x1='35' y1='55' x2='58' y2='55' stroke='%232dd4a0' stroke-width='4'/></svg>">
+
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="BIUPAMA">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <meta name="theme-color" content="#2dd4a0">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -17174,6 +17183,19 @@
         updateActiveNavOnScroll();
 
         performSearch('');
+
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(registration => {
+                        console.log('BIUPAMA PWA: Service Worker registered');
+                    })
+                    .catch(error => {
+                        console.log('BIUPAMA PWA: Service Worker registration failed:', error);
+                    });
+            });
+        }
     </script>
 </body>
 </html>
