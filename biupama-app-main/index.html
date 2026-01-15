@@ -1029,6 +1029,10 @@
 
             <div class="nav-section">
                 <div class="nav-section-title">Klachtgestuurd</div>
+                <a class="nav-item" data-section="syndromen">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+                    Syndroomgericht
+                </a>
                 <a class="nav-item active" data-section="koorts">
                     <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     Koorts
@@ -1195,6 +1199,713 @@
                     Alles inklappen
                 </button>
             </div>
+
+            <!-- SYNDROOMGERICHTE DIAGNOSTIEK SECTION -->
+            <section class="section" id="syndromen">
+                <div class="section-header">
+                    <div class="section-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+                    </div>
+                    <h2 class="section-title">Syndroomgerichte Diagnostiek</h2>
+                </div>
+
+                <div class="section-controls">
+                    <button class="section-control-btn" data-section-collapse="syndromen">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        Alles inklappen
+                    </button>
+                    <button class="section-control-btn" data-section-expand="syndromen">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+                        Alles uitklappen
+                    </button>
+                </div>
+
+                <div class="alert alert-info" style="margin-bottom: 24px;">
+                    <strong>Quick Reference:</strong> Deze sectie biedt een syndroomgerichte benadering voor de klinische praktijk. Per symptoomcombinatie vind je de differentiaaldiagnose, onderscheidende kenmerken en gerichte diagnostiek.
+                </div>
+
+                <div class="card-grid">
+                    <!-- KOORTS + SPECIFIEKE BEVINDINGEN -->
+                    <div class="card expanded" data-card>
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Koorts + Specifieke Bevindingen</div>
+                                <div class="card-subtitle">Pathognomonische combinaties</div>
+                            </div>
+                            <svg class="card-toggle" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <div class="table-wrapper">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 28%;">Syndroom</th>
+                                                <th style="width: 25%;">Uitvraag</th>
+                                                <th style="width: 25%;">Denk aan</th>
+                                                <th style="width: 22%;">Diagnostiek</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Koorts + rode ogen</strong><br><span style="font-size: 0.8em; color: var(--text-secondary);">(conjunctivale injectie, geen pus)</span></td>
+                                                <td>"Zijn uw ogen rood?"</td>
+                                                <td><strong style="color: var(--accent-green);">Leptospirose</strong>, Rickettsiose, Dengue</td>
+                                                <td>Leptospira PCR (wk1), MAT (wk2+)</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Koorts + relatieve bradycardie</strong><br><span style="font-size: 0.8em; color: var(--text-secondary);">(pols past niet bij koorts)</span></td>
+                                                <td>"Pols traag ondanks hoge koorts"</td>
+                                                <td><strong style="color: var(--accent-green);">Buiktyfus</strong> (Faget's sign), Brucellose, Dengue</td>
+                                                <td>Bloedkweek, Widal</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Koorts + kuitpijn</strong><br><span style="font-size: 0.8em; color: var(--text-secondary);">(ernstig, spontaan)</span></td>
+                                                <td>"Doen uw kuiten zeer bij aanraken?"</td>
+                                                <td><strong style="color: var(--accent-green);">Leptospirose</strong> (pathognomonisch!), Dengue</td>
+                                                <td>Leptospira PCR/MAT</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Koorts + obstipatie</strong><br><span style="font-size: 0.8em; color: var(--text-secondary);">(paradoxaal, geen diarree)</span></td>
+                                                <td>"Juist verstopt i.p.v. diarree?"</td>
+                                                <td><strong style="color: var(--accent-green);">Buiktyfus</strong> (DD-clue!)</td>
+                                                <td>Bloedkweek</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Koorts + nachtelijke rillingen</strong><br><span style="font-size: 0.8em; color: var(--text-secondary);">(piekkoorts met koude rillingen)</span></td>
+                                                <td>"Koude rillingen 's nachts?"</td>
+                                                <td><strong style="color: var(--accent-green);">Malaria</strong>, Abces, Endocarditis</td>
+                                                <td>Dikke druppel (3x), Echo</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KOORTSPATRONEN -->
+                    <div class="card" data-card>
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Koortspatronen</div>
+                                <div class="card-subtitle">Patroon wijst naar diagnose</div>
+                            </div>
+                            <svg class="card-toggle" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <div class="table-wrapper">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Patroon</th>
+                                                <th>Kenmerk</th>
+                                                <th>Uitvraag</th>
+                                                <th>Denk aan</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><span class="tag tag-warning">Bifasisch (zadeldak)</span></td>
+                                                <td>Koorts → afebriel 1-2d → koorts</td>
+                                                <td>"Eerst koorts, toen beter, nu weer koorts?"</td>
+                                                <td><strong>Dengue</strong>, Leptospirose</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="tag tag-danger">Stepladder</span></td>
+                                                <td>Dagelijks hoger wordend</td>
+                                                <td>"Elke dag een beetje zieker?"</td>
+                                                <td><strong>Buiktyfus</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="tag tag-info">Tertiana</span></td>
+                                                <td>Om de 48 uur</td>
+                                                <td>"Om de dag koorts?"</td>
+                                                <td><strong>P. vivax/ovale</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="tag tag-info">Quartana</span></td>
+                                                <td>Om de 72 uur</td>
+                                                <td>"Elke 3 dagen koorts?"</td>
+                                                <td><strong>P. malariae</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="tag tag-success">Intermitterend</span></td>
+                                                <td>Afgewisseld met normaal</td>
+                                                <td>"Tussendoor koortsvrij?"</td>
+                                                <td>Malaria, Abces, Brucellose</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KOORTS + ORGAANSPECIFIEK -->
+                    <div class="card" data-card>
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Koorts + Orgaanspecifiek</div>
+                                <div class="card-subtitle">Lever, nier, milt, blaas</div>
+                            </div>
+                            <svg class="card-toggle" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <div class="table-wrapper">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 28%;">Syndroom</th>
+                                                <th style="width: 25%;">Uitvraag</th>
+                                                <th style="width: 25%;">Denk aan</th>
+                                                <th style="width: 22%;">Diagnostiek</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Koorts + icterus + nierinsufficiëntie</strong></td>
+                                                <td>"Gele ogen? Minder plassen?"</td>
+                                                <td><strong style="color: var(--accent-red);">Leptospirose (Weil)</strong>, Malaria (ernstig)</td>
+                                                <td>Creat, Bili, LDH, PCR/MAT, Dikke druppel</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Koorts + pijn rechts + schouder</strong><br><span style="font-size: 0.8em; color: var(--text-secondary);">(referred pain)</span></td>
+                                                <td>"Pijn rechts onder ribbenboog, uitstralend naar schouder?"</td>
+                                                <td><strong style="color: var(--accent-green);">Amoebenabces</strong></td>
+                                                <td>Echo abdomen, Amoeben-serologie</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Koorts + hematurie (terminaal)</strong></td>
+                                                <td>"Bloed aan eind van plassen?"</td>
+                                                <td><strong style="color: var(--accent-green);">Schistosomiasis</strong> (S. haematobium)</td>
+                                                <td>Eieren in urine, serologie</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Koorts + splenomegalie + pancytopenie</strong></td>
+                                                <td>"Milt voelbaar + laag bloedbeeld"</td>
+                                                <td><strong style="color: var(--accent-red);">Viscerale leishmaniasis</strong> (Kala-azar), HMS, Malaria</td>
+                                                <td>rK39-test, Beenmergpunctie</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Koorts + hepatosplenomegalie + eosinofilie</strong></td>
+                                                <td>"Lever en milt vergroot + hoge eosinofielen?"</td>
+                                                <td><strong style="color: var(--accent-green);">Acute schistosomiasis</strong> (Katayama)</td>
+                                                <td>Serologie (eieren nog afwezig!)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KOORTS + HUID -->
+                    <div class="card" data-card>
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Koorts + Huidafwijkingen</div>
+                                <div class="card-subtitle">Type rash bepaalt diagnose</div>
+                            </div>
+                            <svg class="card-toggle" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <div class="table-wrapper">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 25%;">Type rash</th>
+                                                <th style="width: 25%;">Kenmerk</th>
+                                                <th style="width: 28%;">Denk aan</th>
+                                                <th style="width: 22%;">Diagnostiek</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Maculopapulair op romp</strong></td>
+                                                <td>Rode vlekjes buik/borst, niet jeukend</td>
+                                                <td><strong>Dengue</strong>, Zika, Chikungunya, HIV (acuut), Tyfus (roseolae)</td>
+                                                <td>NS1-Ag, HIV-test</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Petechiën/purpura</strong><br><span style="font-size: 0.8em; color: var(--text-secondary);">(drukken niet weg)</span></td>
+                                                <td>Puntbloedinkjes</td>
+                                                <td><strong style="color: var(--accent-red);">VHF, Meningokokken</strong>, Dengue (ernstig), Rickettsiose</td>
+                                                <td>Bloedkweek, PCR, Trombo's</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Eschar</strong><br><span style="font-size: 0.8em; color: var(--text-secondary);">(zwarte korst + rode rand)</span></td>
+                                                <td>Tache noire op beetplaats</td>
+                                                <td><strong style="color: var(--accent-green);">Rickettsiose</strong> (tekenbeet), Anthrax</td>
+                                                <td>Rickettsia-serologie</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Roseolae</strong><br><span style="font-size: 0.8em; color: var(--text-secondary);">(bleke vlekjes romp)</span></td>
+                                                <td>Kleine bleke maculae, lastig zichtbaar bij donkere huid</td>
+                                                <td><strong style="color: var(--accent-green);">Buiktyfus</strong></td>
+                                                <td>Bloedkweek</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Sjanker + lymfeklier</strong><br><span style="font-size: 0.8em; color: var(--text-secondary);">(pijnloze zweer)</span></td>
+                                                <td>Ulcus met opgezette klieren</td>
+                                                <td><strong>Trypanosomiasis</strong>, Cutane Leishmaniasis, Syfilis</td>
+                                                <td>Uitstrijkje, Serologie</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KOORTS + NEUROLOGISCH -->
+                    <div class="card" data-card>
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Koorts + Neurologisch</div>
+                                <div class="card-subtitle">Specifieke neurologische presentaties</div>
+                            </div>
+                            <svg class="card-toggle" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <div class="table-wrapper">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 28%;">Syndroom</th>
+                                                <th style="width: 25%;">Uitvraag</th>
+                                                <th style="width: 25%;">Denk aan</th>
+                                                <th style="width: 22%;">Diagnostiek</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Koorts + nekstijfheid + hoofdpijn + fotofobie</strong></td>
+                                                <td>"Kunt u kin op borst leggen? Licht pijnlijk?"</td>
+                                                <td><strong style="color: var(--accent-red);">Bacteriële meningitis</strong>, TBC-meningitis, Cryptococcen (HIV)</td>
+                                                <td>LP (celgetal, eiwit, glucose, kweek), PCR</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Koorts + bewustzijnsdaling (acuut)</strong></td>
+                                                <td>"Plotseling in de war? Reageert niet goed?"</td>
+                                                <td><strong style="color: var(--accent-red);">Cerebrale malaria</strong>, Meningitis, Hypoglycemie</td>
+                                                <td>Dikke druppel (SPOED!), Glucose, LP</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Koorts + slaapstoornissen + gedragsverandering</strong></td>
+                                                <td>"Overdag slaperig? 's Nachts wakker? Agressief/prikkelbaar?"</td>
+                                                <td><strong style="color: var(--accent-green);">Afrikaanse Trypanosomiasis</strong> (Slaapziekte)</td>
+                                                <td>Liquor, Bloeduitstrijkje (trypanosomen)</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Koorts + epileptische aanvallen</strong></td>
+                                                <td>"Insulten gehad?"</td>
+                                                <td><strong>Neurocysticercose</strong>, Cerebrale malaria, Meningitis</td>
+                                                <td>CT/MRI hersenen, LP</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Koorts + paraplegie/myelopathie</strong></td>
+                                                <td>"Krachtverlies benen? Tintelingen?"</td>
+                                                <td><strong style="color: var(--accent-green);">Neuroschistosomiasis</strong>, HTLV-1, TBC</td>
+                                                <td>MRI myelum, Schistosoma-serologie</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="alert alert-danger" style="margin-top: 16px;">
+                                    <strong>Cerebrale malaria:</strong> Bij ELKE bewustzijnsdaling na tropenverblijf → EERST malaria uitsluiten! Dikke druppel = SPOED.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KOORTS + GI -->
+                    <div class="card" data-card>
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Koorts + Gastro-intestinaal</div>
+                                <div class="card-subtitle">Diarree, dysenterie, buikpijn</div>
+                            </div>
+                            <svg class="card-toggle" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <div class="table-wrapper">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 28%;">Syndroom</th>
+                                                <th style="width: 25%;">Uitvraag</th>
+                                                <th style="width: 25%;">Denk aan</th>
+                                                <th style="width: 22%;">Diagnostiek</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Bloederige diarree + tenesmus</strong><br><span style="font-size: 0.8em; color: var(--text-secondary);">(dysenterie)</span></td>
+                                                <td>"Bloed/slijm bij ontlasting? Aandrang maar weinig productie?"</td>
+                                                <td><strong style="color: var(--accent-red);">Amoebendysenterie</strong>, Shigella, Campylobacter</td>
+                                                <td>Feces PCR, Microscopie (trofozoïeten)</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Waterige diarree + winderigheid</strong></td>
+                                                <td>"Opgeblazen buik? Veel winden? Stinkend?"</td>
+                                                <td><strong style="color: var(--accent-green);">Giardiasis</strong>, Cryptosporidium (HIV)</td>
+                                                <td>Feces PCR, Antigeen-test</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Koorts + diarree + eosinofilie</strong></td>
+                                                <td>"Diarree met hoge eosinofielen?"</td>
+                                                <td><strong>Strongyloides</strong>, Schistosomiasis (chronisch)</td>
+                                                <td>Feces O&P, Serologie</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Koorts + buikpijn + hoesten</strong><br><span style="font-size: 0.8em; color: var(--text-secondary);">(4-8 weken na zoetwater)</span></td>
+                                                <td>"Recent gezwommen in Afrika? Hoesten + buikpijn?"</td>
+                                                <td><strong style="color: var(--accent-green);">Katayama syndroom</strong> (acute schistosomiasis)</td>
+                                                <td>Eosinofielen, Serologie</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KOORTS + TIMING/CONTEXT -->
+                    <div class="card" data-card>
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Koorts + Timing & Reiscontext</div>
+                                <div class="card-subtitle">Incubatietijd en specifieke expositie</div>
+                            </div>
+                            <svg class="card-toggle" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <h4>Per incubatietijd</h4>
+                                <div class="table-wrapper">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Timing na terugkeer</th>
+                                                <th>Denk aan</th>
+                                                <th>Diagnostiek</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>&lt;10 dagen</strong></td>
+                                                <td>Dengue, Chikungunya, Zika, Rickettsiose</td>
+                                                <td>NS1-Ag, Serologieën</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>10-21 dagen</strong></td>
+                                                <td><strong style="color: var(--accent-red);">Malaria (P. falciparum)</strong>, Buiktyfus, Leptospirose</td>
+                                                <td>Dikke druppel (3x!), Bloedkweek</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>3-8 weken</strong></td>
+                                                <td>Malaria (vivax/ovale), <strong>Katayama</strong>, Hepatitis A/E</td>
+                                                <td>Dikke druppel, Eosinofielen, HAV-IgM</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>&gt;3 maanden</strong></td>
+                                                <td>Malaria (vivax/ovale relapse), TBC, Visceral leishmaniasis, Hepatitis B/C</td>
+                                                <td>Dikke druppel, Mantoux, rK39, HBsAg</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <h4 style="margin-top: 20px;">Per specifieke expositie</h4>
+                                <div class="table-wrapper">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Expositie</th>
+                                                <th>Denk aan</th>
+                                                <th>Diagnostiek</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Zoetwater contact</strong> (zwemmen, raften)</td>
+                                                <td><strong>Schistosomiasis</strong>, Leptospirose</td>
+                                                <td>Serologie, Eieren urine/feces</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Safari Oost-Afrika</strong></td>
+                                                <td><strong style="color: var(--accent-red);">T.b. rhodesiense</strong> (acuut, agressief!)</td>
+                                                <td>Bloeduitstrijkje (trypanosomen)</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Grottentocht</strong> (vleermuizen)</td>
+                                                <td><strong>Histoplasmose</strong>, Rabiës-expositie</td>
+                                                <td>X-thorax, Histoplasma-Ag</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Onbeschermd seksueel contact</strong></td>
+                                                <td><strong>Acute HIV</strong>, Hepatitis B, Syfilis</td>
+                                                <td>HIV-test (herhaal na 6 wk), HBsAg, TPHA</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Hondenbeet</strong></td>
+                                                <td><strong style="color: var(--accent-red);">Rabiës</strong> (PEP nodig!)</td>
+                                                <td>Geen test - behandel empirisch!</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NIET-KOORTS SYNDROMEN -->
+                    <div class="card" data-card>
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Niet-koorts Syndromen</div>
+                                <div class="card-subtitle">Huid, jeuk, zwellingen</div>
+                            </div>
+                            <svg class="card-toggle" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <div class="table-wrapper">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 28%;">Syndroom</th>
+                                                <th style="width: 25%;">Uitvraag</th>
+                                                <th style="width: 25%;">Denk aan</th>
+                                                <th style="width: 22%;">Diagnostiek</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Jeuk erger 's nachts + interdigitaal</strong></td>
+                                                <td>"Jeuk tussen vingers? Erger 's nachts? Anderen in huis ook?"</td>
+                                                <td><strong style="color: var(--accent-green);">Scabies</strong></td>
+                                                <td>Schraapsel, Dermatoscopie</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Snel migrerende urticaria</strong><br><span style="font-size: 0.8em; color: var(--text-secondary);">(cm/uur, perianaal)</span></td>
+                                                <td>"Bulten die snel verplaatsen? Rond anus?"</td>
+                                                <td><strong style="color: var(--accent-green);">Larva currens</strong> (Strongyloides)</td>
+                                                <td>Serologie, Baermann-test</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Calabar-zwelling</strong><br><span style="font-size: 0.8em; color: var(--text-secondary);">(migrerende subcutane zwelling)</span></td>
+                                                <td>"Zwellingen die migreren over dagen?"</td>
+                                                <td><strong style="color: var(--accent-green);">Loiasis</strong></td>
+                                                <td>Bloeduitstrijkje (middag!), Serologie</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Pijnloos ulcus + opgeworpen rand</strong></td>
+                                                <td>"Zweer die niet pijn doet? Rand omhoog?"</td>
+                                                <td><strong style="color: var(--accent-green);">Cutane leishmaniasis</strong>, Syfilis</td>
+                                                <td>Uitstrijkje (Giemsa), Biopt</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Serpigineus spoor + jeuk</strong><br><span style="font-size: 0.8em; color: var(--text-secondary);">(kronkelende lijn onder huid)</span></td>
+                                                <td>"Kronkelende lijn onder de huid die beweegt?"</td>
+                                                <td><strong style="color: var(--accent-green);">Larva migrans cutanea</strong> (hookworm)</td>
+                                                <td>Klinische diagnose</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Worm in oog</strong></td>
+                                                <td>"Ziet u iets bewegen in uw oog?"</td>
+                                                <td><strong style="color: var(--accent-green);">Loa loa</strong> (oogworm)</td>
+                                                <td>Spleetlamp, Bloeduitstrijkje</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DIAGNOSTISCH ALGORITME -->
+                    <div class="card" data-card>
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Diagnostisch Algoritme: Koorts na Tropen</div>
+                                <div class="card-subtitle">Stapsgewijze aanpak</div>
+                            </div>
+                            <svg class="card-toggle" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <div class="alert alert-danger">
+                                    <strong>STAP 1: Sluit malaria uit!</strong><br>
+                                    Dikke druppel/RDT bij ELKE patiënt met koorts na malariagebied. Herhaal 3x als negatief en klinische verdenking blijft.
+                                </div>
+
+                                <div class="treatment-box" style="margin-top: 16px;">
+                                    <h4>STAP 2: Basisonderzoek</h4>
+                                    <ul class="content-list">
+                                        <li><strong>Bloedbeeld:</strong> Trombopenie (Dengue, Malaria), Leukopenie (Tyfus), Eosinofilie (Helminthen)</li>
+                                        <li><strong>Leverenzymen:</strong> ALAT, ASAT, Bilirubine</li>
+                                        <li><strong>Nierfunctie:</strong> Creatinine (Leptospirose Weil)</li>
+                                        <li><strong>CRP/BSE:</strong> Infectie vs inflammatie</li>
+                                    </ul>
+                                </div>
+
+                                <div class="treatment-box" style="margin-top: 16px; border-left-color: var(--accent-yellow);">
+                                    <h4 style="color: var(--accent-yellow);">STAP 3: Gerichte diagnostiek o.b.v. kliniek</h4>
+                                    <div class="table-wrapper">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Bevinding</th>
+                                                    <th>Aanvullende diagnostiek</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Trombopenie</td>
+                                                    <td>Dengue NS1-Ag + IgM/IgG</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Rode ogen / kuitpijn / icterus+nier</td>
+                                                    <td>Leptospira PCR (wk1), MAT (wk2+)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Eosinofilie</td>
+                                                    <td>Schistosoma-, Strongyloides-, Filaria-serologie</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Leukopenie + koorts</td>
+                                                    <td>Bloedkweek (Tyfus), Dengue NS1</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Rash + koorts</td>
+                                                    <td>HIV-test, Dengue, Rickettsia-serologie</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Neurologisch</td>
+                                                    <td>LP, CT/MRI, Dikke druppel (herhalen!)</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="treatment-box" style="margin-top: 16px; border-left-color: var(--accent-blue);">
+                                    <h4 style="color: var(--accent-blue);">STAP 4: Overweeg empirische behandeling</h4>
+                                    <ul class="content-list">
+                                        <li><strong>Ernstig ziek + verdenking malaria:</strong> Start artemether-lumefantrine, wacht niet op uitslag</li>
+                                        <li><strong>Verdenking tyfus:</strong> Ceftriaxon of azitromycine</li>
+                                        <li><strong>Verdenking leptospirose:</strong> Doxycycline of penicilline</li>
+                                        <li><strong>Verdenking neuroschistosomiasis:</strong> Praziquantel + steroïden</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KRITIEKE ONDERSCHEIDINGEN -->
+                    <div class="card" data-card>
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Kritieke Onderscheidingen</div>
+                                <div class="card-subtitle">Veel voorkomende DD-dilemma's</div>
+                            </div>
+                            <svg class="card-toggle" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <h4>Malaria vs Dengue</h4>
+                                <div class="table-wrapper">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Kenmerk</th>
+                                                <th>Malaria</th>
+                                                <th>Dengue</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Koortspatroon</strong></td>
+                                                <td>Intermitterend, tertiana/quartana</td>
+                                                <td>Bifasisch (zadeldak)</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Splenomegalie</strong></td>
+                                                <td>Ja (frequent)</td>
+                                                <td>Nee</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Trombopenie</strong></td>
+                                                <td>Variabel</td>
+                                                <td><strong>Karakteristiek, uitgesproken</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Rash</strong></td>
+                                                <td>Zeldzaam</td>
+                                                <td>Maculopapulair (dag 3-5)</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Ernst</strong></td>
+                                                <td><strong style="color: var(--accent-red);">Potentieel fataal (P. falciparum)</strong></td>
+                                                <td>Meestal mild (DSS zeldzaam)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <h4 style="margin-top: 20px;">Leptospirose vs Malaria</h4>
+                                <div class="table-wrapper">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Kenmerk</th>
+                                                <th>Leptospirose</th>
+                                                <th>Malaria</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Rode ogen</strong></td>
+                                                <td><strong style="color: var(--accent-green);">Ja (karakteristiek!)</strong></td>
+                                                <td>Nee</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Kuitpijn</strong></td>
+                                                <td><strong style="color: var(--accent-green);">Ja (pathognomonisch)</strong></td>
+                                                <td>Nee (wel myalgie)</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Icterus + nierinsufficiëntie</strong></td>
+                                                <td><strong>Weil-syndroom (hepatorenaal)</strong></td>
+                                                <td>Alleen bij ernstige complicaties</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Waterexpositie</strong></td>
+                                                <td>Typisch (rivier, modder)</td>
+                                                <td>Niet relevant</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <h4 style="margin-top: 20px;">Eosinofilie: Protozoa vs Helminthen</h4>
+                                <div class="alert alert-warning">
+                                    <strong>Belangrijke regel:</strong> Protozoa (Malaria, Amoebe, Giardia, Leishmania) geven <strong>GEEN</strong> eosinofilie!<br>
+                                    Eosinofilie = denk aan <strong>helminthen</strong> (wormen): Schistosoma, Strongyloides, Filaria, Toxocara, Ascaris.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
 
             <!-- KOORTS SECTION -->
             <section class="section" id="koorts">
