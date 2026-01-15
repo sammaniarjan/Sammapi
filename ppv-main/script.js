@@ -34,6 +34,13 @@ const impactMessage = document.getElementById('impact-message');
 const impactTitle = document.getElementById('impact-title');
 const impactText = document.getElementById('impact-text');
 
+// Live visualization elements
+const liveIconArray = document.getElementById('live-icon-array');
+const livePpv = document.getElementById('live-ppv');
+const liveNpv = document.getElementById('live-npv');
+const ppvMeterArc = document.getElementById('ppv-meter-arc');
+const npvMeterArc = document.getElementById('npv-meter-arc');
+
 let currentStep = 1;
 
 // ===================================
@@ -112,14 +119,21 @@ resetBtn.addEventListener('click', () => {
 
 sensitivitySlider.addEventListener('input', () => {
   sensitivityValue.textContent = sensitivitySlider.value + '%';
+  updateLiveVisualization();
 });
 
 specificitySlider.addEventListener('input', () => {
   specificityValue.textContent = specificitySlider.value + '%';
+  updateLiveVisualization();
 });
 
 prevalenceSlider.addEventListener('input', () => {
   prevalenceValue.textContent = prevalenceSlider.value + '%';
+  updateLiveVisualization();
+});
+
+populationInput.addEventListener('input', () => {
+  updateLiveVisualization();
 });
 
 // ===================================
@@ -194,6 +208,9 @@ exampleButtons.forEach(btn => {
 
       exampleButtons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
+
+      // Update live visualization
+      updateLiveVisualization();
     }
   });
 });
@@ -382,3 +399,62 @@ function shuffle(arr) {
     [arr[i], arr[j]] = [arr[j], arr[i]];
   }
 }
+
+// ===================================
+// Live Visualization
+// ===================================
+
+function initLiveVisualization() {
+  // Create 100 dots for icon array
+  liveIconArray.innerHTML = '';
+  for (let i = 0; i < 100; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'icon-dot';
+    liveIconArray.appendChild(dot);
+  }
+  updateLiveVisualization();
+}
+
+function updateLiveVisualization() {
+  const population = parseInt(populationInput.value) || 10000;
+  const sensitivity = parseFloat(sensitivitySlider.value) / 100;
+  const specificity = parseFloat(specificitySlider.value) / 100;
+  const prevalence = parseFloat(prevalenceSlider.value) / 100;
+
+  // Calculate values
+  const results = calculate(population, sensitivity, specificity, prevalence);
+  const ppv = results.ppv;
+  const npv = results.npv;
+
+  // Update meter values
+  livePpv.textContent = (ppv * 100).toFixed(0) + '%';
+  liveNpv.textContent = (npv * 100).toFixed(0) + '%';
+
+  // Update meter arcs (arc length is ~110 for full semicircle)
+  const arcLength = 110;
+  ppvMeterArc.setAttribute('stroke-dasharray', `${ppv * arcLength} ${arcLength}`);
+  npvMeterArc.setAttribute('stroke-dasharray', `${npv * arcLength} ${arcLength}`);
+
+  // Update icon array - show ratio of TP to FP out of 100 positive results
+  const totalPositive = results.truePositives + results.falsePositives;
+  let tpCount = 0;
+  if (totalPositive > 0) {
+    tpCount = Math.round((results.truePositives / totalPositive) * 100);
+  }
+  const fpCount = 100 - tpCount;
+
+  const dots = liveIconArray.querySelectorAll('.icon-dot');
+  dots.forEach((dot, i) => {
+    dot.classList.remove('tp', 'fp');
+    if (i < tpCount) {
+      dot.classList.add('tp');
+    } else {
+      dot.classList.add('fp');
+    }
+  });
+}
+
+// Initialize live visualization when starting the app
+startButton.addEventListener('click', () => {
+  initLiveVisualization();
+});

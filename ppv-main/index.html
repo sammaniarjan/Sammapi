@@ -163,6 +163,45 @@
           </div>
         </div>
 
+        <!-- Live Visualization -->
+        <div class="live-viz-section">
+          <h3>Live preview</h3>
+
+          <!-- PPV/NPV Meters -->
+          <div class="meters-row">
+            <div class="meter-container">
+              <div class="meter-label">PPV</div>
+              <div class="meter">
+                <svg viewBox="0 0 100 50" class="meter-svg">
+                  <path d="M 10 45 A 35 35 0 0 1 90 45" fill="none" stroke="var(--border)" stroke-width="8" stroke-linecap="round"/>
+                  <path d="M 10 45 A 35 35 0 0 1 90 45" fill="none" stroke="var(--accent)" stroke-width="8" stroke-linecap="round" id="ppv-meter-arc" stroke-dasharray="0 110"/>
+                </svg>
+                <div class="meter-value" id="live-ppv">--</div>
+              </div>
+            </div>
+            <div class="meter-container">
+              <div class="meter-label">NPV</div>
+              <div class="meter">
+                <svg viewBox="0 0 100 50" class="meter-svg">
+                  <path d="M 10 45 A 35 35 0 0 1 90 45" fill="none" stroke="var(--border)" stroke-width="8" stroke-linecap="round"/>
+                  <path d="M 10 45 A 35 35 0 0 1 90 45" fill="none" stroke="var(--success)" stroke-width="8" stroke-linecap="round" id="npv-meter-arc" stroke-dasharray="0 110"/>
+                </svg>
+                <div class="meter-value" id="live-npv">--</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Icon Array -->
+          <div class="live-array-container">
+            <p class="array-title">Van 100 positieve uitslagen:</p>
+            <div class="live-icon-array" id="live-icon-array"></div>
+            <div class="array-legend">
+              <span class="legend-item"><span class="dot tp"></span> Terecht +</span>
+              <span class="legend-item"><span class="dot fp"></span> Vals +</span>
+            </div>
+          </div>
+        </div>
+
         <div class="nav-buttons">
           <button class="btn-back" data-goto="1">← Terug</button>
           <button class="btn-next btn-primary" id="calculate-btn">Bereken →</button>

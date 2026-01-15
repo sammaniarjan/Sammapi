@@ -516,6 +516,17 @@
       background: rgba(239, 68, 68, 0.1);
     }
 
+    .cancel-btn {
+      border-color: rgba(239, 68, 68, 0.5);
+      color: #f87171;
+    }
+
+    .cancel-btn:hover {
+      background: rgba(239, 68, 68, 0.1);
+      border-color: #ef4444;
+      color: #ef4444;
+    }
+
     /* Changes dropdown */
     .changes-dropdown {
       position: relative;
@@ -931,6 +942,14 @@
               <line x1="12" y1="15" x2="12" y2="3"/>
             </svg>
             Export iCal
+          </button>
+          <button class="export-btn cancel-btn" id="exportCancelBtn" onclick="exportCancellations()" style="display: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="15" y1="9" x2="9" y2="15"/>
+              <line x1="9" y1="9" x2="15" y2="15"/>
+            </svg>
+            Annuleringen
           </button>
           <button class="export-btn clear-btn" onclick="clearRooster()">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1414,6 +1433,7 @@
     function updateChangesDropdown() {
       const dropdown = document.getElementById('changesDropdown');
       const countEl = document.getElementById('changesCount');
+      const cancelBtn = document.getElementById('exportCancelBtn');
       const totalChanges = changes.added.length + changes.modified.length + changes.deleted.length;
 
       if (totalChanges > 0) {
@@ -1422,6 +1442,13 @@
         renderChangesPanel();
       } else {
         dropdown.style.display = 'none';
+      }
+
+      // Toon annuleringen-knop alleen als er verwijderde events zijn
+      if (changes.deleted.length > 0) {
+        cancelBtn.style.display = 'flex';
+      } else {
+        cancelBtn.style.display = 'none';
       }
     }
 
@@ -1459,6 +1486,19 @@
         lines.push('END:VEVENT');
       });
 
+      // Voeg verwijderde events toe als annuleringen
+      changes.deleted.forEach(event => {
+        lines.push('BEGIN:VEVENT');
+        lines.push(`UID:${event.uid}`);
+        lines.push(`DTSTAMP:${formatICalDate(new Date())}`);
+        lines.push(`DTSTART:${formatICalDate(new Date(event.start))}`);
+        lines.push(`DTEND:${formatICalDate(new Date(event.end))}`);
+        lines.push(`SUMMARY:${event.title}`);
+        lines.push('STATUS:CANCELLED');
+        if (event.location) lines.push(`LOCATION:${event.location}`);
+        lines.push('END:VEVENT');
+      });
+
       lines.push('END:VCALENDAR');
 
       const blob = new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
@@ -1466,6 +1506,48 @@
       const link = document.createElement('a');
       link.href = url;
       link.download = 'ama-rooster.ics';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+
+    // Export alleen annuleringen (verwijderde events)
+    function exportCancellations() {
+      if (changes.deleted.length === 0) {
+        alert('Geen verwijderde events om te exporteren');
+        return;
+      }
+
+      const lines = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Lesrooster//NL',
+        'CALSCALE:GREGORIAN',
+        'METHOD:CANCEL',
+        'X-WR-CALNAME:Lesrooster Annuleringen',
+        'X-WR-TIMEZONE:Europe/Amsterdam'
+      ];
+
+      changes.deleted.forEach(event => {
+        lines.push('BEGIN:VEVENT');
+        lines.push(`UID:${event.uid}`);
+        lines.push(`DTSTAMP:${formatICalDate(new Date())}`);
+        lines.push(`DTSTART:${formatICalDate(new Date(event.start))}`);
+        lines.push(`DTEND:${formatICalDate(new Date(event.end))}`);
+        lines.push(`SUMMARY:${event.title}`);
+        lines.push('STATUS:CANCELLED');
+        if (event.location) lines.push(`LOCATION:${event.location}`);
+        lines.push('END:VEVENT');
+      });
+
+      lines.push('END:VCALENDAR');
+
+      const blob = new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'ama-rooster-annuleringen.ics';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
