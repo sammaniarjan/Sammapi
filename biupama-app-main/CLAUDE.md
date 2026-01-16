@@ -6,13 +6,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a static web application for studying tropical medicine (Tropengeneeskunde). It presents medical study material in an interactive, single-page format with navigation and search capabilities.
 
-**Architecture**: Static HTML/CSS/JavaScript application - no build process, no dependencies, no backend.
+**Architecture**: Static HTML/CSS/JavaScript application - no build process, no dependencies, no backend. Includes PWA support for offline use.
 
 ## File Structure
 
 ```
 .
 ├── index.html           # Main application (HTML + inline CSS/JS)
+├── manifest.json        # PWA manifest for installable app
+├── service-worker.js    # Offline caching (stale-while-revalidate)
 ├── BIUPAMA.md          # Source study content (Dutch tropical medicine)
 ├── images/             # Medical diagrams and maps
 │   ├── huidafwijkingen/  # Skin condition images
@@ -115,9 +117,22 @@ Some sections contain interactive JavaScript elements:
 - **GCS Calculator** (neurology section): Radio button inputs with score calculation
 - **Search Modal**: Global search functionality (Cmd/Ctrl+K to open)
 - **Scroll Spy**: Automatically highlights current section in sidebar
+- **Image Modal**: Click images with `onclick="openModal(this)"` for lightbox view
 - Pattern: Use inline `<script>` tags within the card for component-specific JavaScript
 
-Note: Some images have `onclick="openModal(this)"` but the function is not yet implemented.
+### Search Keywords (searchData array)
+
+The search functionality uses a `searchData` array in the JavaScript. When adding new sections:
+```javascript
+{ title: 'Section Name', category: 'Ziektebeeld', section: 'section-id', keywords: 'keyword1 keyword2 keyword3' },
+```
+
+### Internal Links
+
+Use the `internal-link` class for hyperlinks within the app:
+```html
+<a href="#section-id" class="internal-link">Link text</a>
+```
 
 ## Working with Study Notes
 
