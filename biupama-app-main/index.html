@@ -1256,7 +1256,7 @@
                                 <ul class="content-list" style="margin-bottom: 16px;">
                                     <li><a href="#dengue" class="internal-link"><strong>Dengue</strong></a></li>
                                     <li><a href="#buiktyfus" class="internal-link"><strong>Buiktyfus</strong></a></li>
-                                    <li><strong>Rickettsiosen</strong></li>
+                                    <li><a href="#rickettsiose" class="internal-link"><strong>Rickettsiosen</strong></a></li>
                                     <li><a href="#leptospirose" class="internal-link"><strong>Leptospirose (met leverproefstoornis)</strong></a></li>
                                     <li>Luchtweginfecties (pneumonie)</li>
                                     <li>Urineweginfectie</li>
@@ -1344,7 +1344,7 @@
                                         <tbody>
                                             <tr>
                                                 <td><span class="tag tag-success">< 10 dagen</span></td>
-                                                <td>Dengue, Chikungunya, Rickettsiose, VHF</td>
+                                                <td>Dengue, Chikungunya, <a href="#rickettsiose" class="internal-link">Rickettsiose</a>, VHF</td>
                                             </tr>
                                             <tr>
                                                 <td><span class="tag tag-warning">10-21 dagen</span></td>
@@ -1428,8 +1428,8 @@
                                             <tr><td>Splenomegalie</td><td>Malaria, buiktyfus, leishmaniasis</td></tr>
                                             <tr><td>Icterus</td><td>Malaria, leptospirose, hepatitis</td></tr>
                                             <tr><td>Lymfadenopathie</td><td>HIV, TBC, filariasis</td></tr>
-                                            <tr><td>Eschar (zwarte korst)</td><td>Rickettsiose</td></tr>
-                                            <tr><td>Petechiën</td><td>Dengue, meningokokken, rickettsiose</td></tr>
+                                            <tr><td>Eschar (zwarte korst)</td><td><a href="#rickettsiose" class="internal-link">Rickettsiose</a></td></tr>
+                                            <tr><td>Petechiën</td><td>Dengue, meningokokken, <a href="#rickettsiose" class="internal-link">rickettsiose</a></td></tr>
                                             <tr><td>Roseolae (bleke vlekjes romp)</td><td>Buiktyfus</td></tr>
                                         </tbody>
                                     </table>
@@ -4417,7 +4417,7 @@
                         </div>
                     </div>
 
-                    <div class="card" data-card>
+                    <div class="card" data-card id="rickettsiose">
                         <div class="card-header">
                             <div>
                                 <div class="card-title">Rickettsiosis</div>
@@ -4428,7 +4428,31 @@
                         <div class="card-content">
                             <div class="card-body">
                                 <p><strong>Verwekkers:</strong> Rickettsia species (obligaat intracellulaire gram-negatieve bacteriën)</p>
-                                <p><strong>Transmissie:</strong> Tekenbe ten (diverse tekensoorten afhankelijk van species/regio)</p>
+                                <p><strong>Transmissie:</strong> Tekenbeten (diverse tekensoorten afhankelijk van species/regio)</p>
+
+                                <div class="alert alert-danger" style="margin: 16px 0;">
+                                    <strong>Pathofysiologie: Infectieuze Vasculitis</strong><br>
+                                    Rickettsiae infecteren <strong>endotheelcellen</strong> van bloedvaten → gegeneraliseerde vasculitis → orgaanschade door vasculaire lekkage en trombose.
+                                </div>
+
+                                <div style="background: linear-gradient(135deg, rgba(45,212,160,0.15), rgba(45,212,160,0.05)); border: 2px solid var(--accent-green); border-radius: 12px; padding: 20px; margin: 16px 0; text-align: center;">
+                                    <div style="font-size: 0.85em; color: var(--text-secondary); margin-bottom: 8px;">KLASSIEKE TRIAS</div>
+                                    <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                                        <div style="background: var(--bg-card); padding: 12px 20px; border-radius: 8px; min-width: 100px;">
+                                            <div style="font-size: 1.5em;">🌡️</div>
+                                            <div style="font-weight: 600; color: var(--accent-green);">Koorts</div>
+                                        </div>
+                                        <div style="background: var(--bg-card); padding: 12px 20px; border-radius: 8px; min-width: 100px;">
+                                            <div style="font-size: 1.5em;">🔴</div>
+                                            <div style="font-weight: 600; color: var(--accent-green);">Huiduitslag</div>
+                                        </div>
+                                        <div style="background: var(--bg-card); padding: 12px 20px; border-radius: 8px; min-width: 100px;">
+                                            <div style="font-size: 1.5em;">🤕</div>
+                                            <div style="font-weight: 600; color: var(--accent-green);">Hoofdpijn</div>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top: 12px; font-size: 0.9em; color: var(--text-secondary);">+ Eschar (tache noire) bij tekenbeetplaats</div>
+                                </div>
 
                                 <h4 style="margin-top: 20px;">Belangrijkste Rickettsia Species & Geografische Distributie</h4>
                                 <table style="margin-bottom: 20px;">
@@ -5707,7 +5731,7 @@
                                         <td>Sikkelcelziekte</td>
                                     </tr>
                                     <tr>
-                                        <td>Rickettsiose</td>
+                                        <td><a href="#rickettsiose" class="internal-link">Rickettsiose</a></td>
                                         <td>Hematologische maligniteiten</td>
                                     </tr>
                                 </tbody>
@@ -8743,7 +8767,7 @@
                             <p style="margin-top: 12px;"><strong>Alternatief:</strong> Amoxicilline</p>
 
                             <div class="alert alert-info" style="margin-top: 16px;">
-                                <strong>Tip:</strong> Doxycycline dekt bij onduidelijke tropenkoorts ook: rickettsiose, scrub typhus. Laagdrempelig starten bij ernstig zieke patiënt.
+                                <strong>Tip:</strong> Doxycycline dekt bij onduidelijke tropenkoorts ook: <a href="#rickettsiose" class="internal-link">rickettsiose</a>, scrub typhus. Laagdrempelig starten bij ernstig zieke patiënt.
                             </div>
                         </div>
                     </div>
@@ -11716,7 +11740,7 @@
                                         </tr>
                                         <tr>
                                             <td><strong>Koorts + trombopenie</strong></td>
-                                            <td>Malaria, dengue, rickettsiose, sepsis - allemaal potentieel ernstig</td>
+                                            <td><a href="#malaria" class="internal-link">Malaria</a>, <a href="#dengue" class="internal-link">dengue</a>, <a href="#rickettsiose" class="internal-link">rickettsiose</a>, sepsis - allemaal potentieel ernstig</td>
                                             <td>Dagelijkse controle of verwijzen</td>
                                         </tr>
                                         <tr>
@@ -11792,7 +11816,7 @@
                                         </tr>
                                         <tr>
                                             <td><strong>Koorts + eschar</strong></td>
-                                            <td>Rickettsiose - tache noire is pathognomonisch</td>
+                                            <td><a href="#rickettsiose" class="internal-link">Rickettsiose</a> - tache noire is pathognomonisch</td>
                                             <td>Start direct doxycycline, niet wachten op serologie</td>
                                         </tr>
                                         <tr>
@@ -11858,7 +11882,7 @@
                             </div>
 
                             <div class="alert alert-info" style="margin-top: 1rem;">
-                                <strong>Doxycycline-vuistregel:</strong> Bij onduidelijke tropenkoorts en geen malaria dekt doxycycline: rickettsiose, leptospirose, scrub typhus. Laagdrempelig starten bij ernstig zieke patiënt.
+                                <strong>Doxycycline-vuistregel:</strong> Bij onduidelijke tropenkoorts en geen malaria dekt doxycycline: <a href="#rickettsiose" class="internal-link">rickettsiose</a>, <a href="#leptospirose" class="internal-link">leptospirose</a>, scrub typhus. Laagdrempelig starten bij ernstig zieke patiënt.
                             </div>
                         </div>
                     </div>
@@ -12197,13 +12221,13 @@
                                             <tr>
                                                 <td><strong>Petechiën/purpura</strong><br><span style="font-size: 0.8em; color: var(--text-secondary);">(drukken niet weg)</span></td>
                                                 <td>Puntbloedinkjes</td>
-                                                <td><a href="#arbovirus-vhf" class="internal-link"><strong style="color: var(--accent-red);">VHF</strong></a>, Meningokokken, <a href="#dengue" class="internal-link">Dengue</a> (ernstig), Rickettsiose</td>
+                                                <td><a href="#arbovirus-vhf" class="internal-link"><strong style="color: var(--accent-red);">VHF</strong></a>, Meningokokken, <a href="#dengue" class="internal-link">Dengue</a> (ernstig), <a href="#rickettsiose" class="internal-link">Rickettsiose</a></td>
                                                 <td>Bloedkweek, PCR, Trombo's</td>
                                             </tr>
                                             <tr>
                                                 <td><strong>Eschar</strong><br><span style="font-size: 0.8em; color: var(--text-secondary);">(zwarte korst + rode rand)</span></td>
                                                 <td>Tache noire op beetplaats</td>
-                                                <td><strong style="color: var(--accent-green);">Rickettsiose</strong> (tekenbeet), Anthrax</td>
+                                                <td><a href="#rickettsiose" class="internal-link"><strong style="color: var(--accent-green);">Rickettsiose</strong></a> (tekenbeet), Anthrax</td>
                                                 <td>Rickettsia-serologie</td>
                                             </tr>
                                             <tr>
@@ -12491,7 +12515,7 @@
                                         <tbody>
                                             <tr>
                                                 <td><strong>&lt;10 dagen</strong></td>
-                                                <td><a href="#dengue" class="internal-link">Dengue</a>, <a href="#arbovirus-vhf" class="internal-link">Chikungunya, Zika</a>, Rickettsiose</td>
+                                                <td><a href="#dengue" class="internal-link">Dengue</a>, <a href="#arbovirus-vhf" class="internal-link">Chikungunya, Zika</a>, <a href="#rickettsiose" class="internal-link">Rickettsiose</a></td>
                                                 <td>NS1-Ag, Serologieën</td>
                                             </tr>
                                             <tr>
@@ -12885,7 +12909,7 @@
                         <div class="card-content">
                             <div class="card-body">
                                 <ul class="content-list">
-                                    <li><strong>Oost-Afrika safari's:</strong> T. rhodesiense (slaapziekte), rickettsiose</li>
+                                    <li><strong>Oost-Afrika safari's:</strong> T. rhodesiense (slaapziekte), <a href="#rickettsiose" class="internal-link">rickettsiose</a></li>
                                     <li><strong>West-Afrika regenwoud:</strong> Loiasis, Lassa koorts</li>
                                     <li><strong>Sahel (droog seizoen):</strong> Meningokokken meningitis belt</li>
                                     <li><strong>Madagaskar:</strong> Pest (bubonisch!)</li>
@@ -14021,7 +14045,7 @@
                                     </ul>
                                 </li>
                                 <li><strong>Contra-indicaties:</strong> Zwangerschap, kinderen <8 jaar (tandverkleuring), myasthenia gravis</li>
-                                <li><strong>Voordelen:</strong> Goedkoop, ook werkzaam tegen leptospirose, rickettsiose, en sommige SOA's</li>
+                                <li><strong>Voordelen:</strong> Goedkoop, ook werkzaam tegen <a href="#leptospirose" class="internal-link">leptospirose</a>, <a href="#rickettsiose" class="internal-link">rickettsiose</a>, en sommige SOA's</li>
                                 <li><strong>Inname instructie:</strong>
                                     <ul style="margin-left: 20px; margin-top: 8px;">
                                         <li>Neem met veel water</li>
@@ -16892,6 +16916,7 @@
             { title: 'HIV/AIDS', category: 'Ziektebeeld', section: 'hiv', keywords: 'cd4 opportunistisch pep prep art antiretroviral' },
             { title: 'SOA', category: 'Ziektebeeld', section: 'soa', keywords: 'syfilis chancroid lgv urethritis gonorroe chlamydia' },
             { title: 'Leptospirose', category: 'Ziektebeeld', section: 'leptospirose', keywords: 'leptospira weil ziekte icterus nierinsufficiëntie ratten water' },
+            { title: 'Rickettsiose', category: 'Ziektebeeld', section: 'rickettsiose', keywords: 'rickettsia teek tekenbeet eschar tache noire spotted fever rmsf afrika doxycycline' },
 
             // Endemisch
             { title: 'Lake Malawi', category: 'Endemisch', section: 'endemic', keywords: 'schistosoma africa zoetwater haematobium subsahara afrika' },
