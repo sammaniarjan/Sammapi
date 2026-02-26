@@ -182,6 +182,20 @@ const examples = {
     specificity: 35,
     prevalence: 10,
     description: 'PSA: sensitiviteit 80%, lage specificiteit (35%) door diverse oorzaken van PSA-verhoging.'
+  },
+  'drone-war': {
+    population: 10000,
+    sensitivity: 99,
+    specificity: 99,
+    prevalence: 10,
+    description: 'Drone-detectie in oorlogsgebied. "99% accuraat" bij 10% vijanden. PPV is hoog (~92%) — de meeste alarmen kloppen.'
+  },
+  'drone-peace': {
+    population: 100000,
+    sensitivity: 99,
+    specificity: 99,
+    prevalence: 0.1,
+    description: 'Zelfde drone bij routine surveillance (0,1% vijanden). PPV daalt naar ~9% — meer dan 90% van de alarmen is vals!'
   }
 };
 
@@ -460,3 +474,101 @@ function updateLiveVisualization() {
 startButton.addEventListener('click', () => {
   initLiveVisualization();
 });
+
+// ===================================
+// Defense Context
+// ===================================
+
+const defenseOverlay = document.getElementById('defense-overlay');
+const defenseButton = document.getElementById('defense-button');
+const defenseClose = document.getElementById('defense-close');
+const defenseToCalc = document.getElementById('defense-to-calc');
+const defenseProgressFill = document.getElementById('defense-progress-fill');
+const defenseStepLabels = document.querySelectorAll('.defense-step-labels span');
+const defenseSteps = document.querySelectorAll('.defense-step');
+
+let currentDefenseStep = 1;
+const totalDefenseSteps = 5;
+
+// Open defense context
+defenseButton.addEventListener('click', () => {
+  welcomeScreen.style.display = 'none';
+  defenseOverlay.style.display = 'flex';
+  goToDefenseStep(1);
+});
+
+// Close defense context
+defenseClose.addEventListener('click', () => {
+  defenseOverlay.style.display = 'none';
+  welcomeScreen.style.display = 'block';
+});
+
+// Defense-to-calculator transition
+defenseToCalc.addEventListener('click', () => {
+  defenseOverlay.style.display = 'none';
+  mainApp.style.display = 'flex';
+
+  // Pre-fill with war scenario (fits slider range)
+  populationInput.value = 10000;
+  sensitivitySlider.value = 99;
+  sensitivityValue.textContent = '99%';
+  specificitySlider.value = 99;
+  specificityValue.textContent = '99%';
+  prevalenceSlider.value = 10;
+  prevalenceValue.textContent = '10%';
+
+  initLiveVisualization();
+});
+
+// Defense step navigation
+function goToDefenseStep(step) {
+  currentDefenseStep = step;
+
+  // Update progress bar
+  const pct = (step / totalDefenseSteps) * 100;
+  defenseProgressFill.style.width = pct + '%';
+
+  // Update step labels
+  defenseStepLabels.forEach((label, i) => {
+    label.classList.toggle('active', i < step);
+  });
+
+  // Show/hide steps
+  defenseSteps.forEach(s => s.classList.remove('active'));
+  const target = document.getElementById('def-step-' + step);
+  if (target) target.classList.add('active');
+
+  // Render grids on demand
+  if (step === 3) renderDefenseGrid('defense-grid-war', 92, 8);
+  if (step === 4) renderDefenseGrid('defense-grid-peace', 9, 91);
+}
+
+// Defense navigation buttons
+document.querySelectorAll('[data-defgoto]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    goToDefenseStep(parseInt(btn.dataset.defgoto));
+  });
+});
+
+// Render a mini icon grid for defense scenarios
+function renderDefenseGrid(containerId, tpCount, fpCount) {
+  const container = document.getElementById(containerId);
+  if (!container || container.children.length > 0) return;
+
+  const total = tpCount + fpCount;
+  const dots = [];
+  for (let i = 0; i < tpCount; i++) dots.push('tp');
+  for (let i = 0; i < fpCount; i++) dots.push('fp');
+
+  // Shuffle for visual effect
+  for (let i = dots.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [dots[i], dots[j]] = [dots[j], dots[i]];
+  }
+
+  dots.forEach(type => {
+    const dot = document.createElement('div');
+    dot.className = 'icon-dot ' + type;
+    container.appendChild(dot);
+  });
+}
