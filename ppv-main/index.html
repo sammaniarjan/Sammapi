@@ -29,7 +29,15 @@
         <li>Berekening van PPV en NPV</li>
         <li>Visualisatie van absolute aantallen</li>
       </ul>
-      <button id="start-button" class="welcome-button">Start</button>
+      <div class="welcome-buttons">
+        <button id="start-button" class="welcome-button">Start</button>
+        <button id="defense-button" class="welcome-button defense-button">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          Defensie Context
+        </button>
+      </div>
       <div class="info-box">
         <p>Gebaseerd op Bayesiaanse statistiek</p>
       </div>
@@ -122,6 +130,14 @@
             <button class="example-btn" data-example="psa">
               <strong>PSA</strong>
               <span>Prostaatkanker</span>
+            </button>
+            <button class="example-btn defense-example" data-example="drone-war">
+              <strong>Drone detectie</strong>
+              <span>Oorlogsgebied</span>
+            </button>
+            <button class="example-btn defense-example" data-example="drone-peace">
+              <strong>Drone detectie</strong>
+              <span>Surveillance</span>
             </button>
           </div>
           <div id="example-info" class="example-info" style="display: none;">
@@ -298,6 +314,294 @@
       </div>
 
     </div>
+    <!-- Defense Context Overlay -->
+    <div id="defense-overlay" class="defense-overlay" style="display: none;">
+
+      <!-- Defense Progress Bar -->
+      <div class="defense-progress">
+        <div class="defense-progress-fill" id="defense-progress-fill"></div>
+        <div class="defense-step-labels">
+          <span class="active">Claim</span>
+          <span>Uitleg</span>
+          <span>Oorlog</span>
+          <span>Surveillance</span>
+          <span>Doorvragen</span>
+        </div>
+      </div>
+
+      <!-- Defense Step 1: De Pitch -->
+      <div id="def-step-1" class="defense-step active">
+        <div class="defense-badge">DEFENSIE CONTEXT</div>
+        <h1>Drone Detectie: "99% Accuraat"</h1>
+        <p class="intro-text">Een fabrikant presenteert hun drone-detectiesysteem...</p>
+
+        <div class="defense-quote">
+          <p>"Ons AI-detectiesysteem identificeert vijandelijke doelen met <strong>99% nauwkeurigheid</strong>."</p>
+          <span class="defense-quote-source">— Fabrikant X, verkooppresentatie</span>
+        </div>
+
+        <div class="concept-card">
+          <h3>Het probleem</h3>
+          <p>Dit klinkt indrukwekkend. Maar "99% accuraat" zegt <em>niets</em> zonder context.</p>
+          <p>Dezelfde drone, met exact dezelfde specificaties, kan in het ene scenario uitstekend werken — en in het andere scenario bijna nutteloos zijn.</p>
+          <p class="example">Het verschil? De omgeving waarin je hem inzet. Hoeveel van de gescande personen zijn daadwerkelijk vijanden?</p>
+        </div>
+
+        <div class="defense-nav">
+          <button class="btn-back" id="defense-close">← Terug</button>
+          <button class="btn-next" data-defgoto="2">Wat betekent 99%? →</button>
+        </div>
+      </div>
+
+      <!-- Defense Step 2: Uitleg -->
+      <div id="def-step-2" class="defense-step">
+        <div class="defense-badge">STAP 2 VAN 5</div>
+        <h1>Wat is "99% accuraat"?</h1>
+
+        <div class="concept-card">
+          <h3>Sensitiviteit: 99%</h3>
+          <p>Van alle <em>echte vijanden</em> detecteert het systeem er 99%.</p>
+          <div class="formula">Van 100 vijanden → 99 gedetecteerd, 1 gemist</div>
+          <p class="example">De drone mist bijna niemand — goed nieuws.</p>
+        </div>
+
+        <div class="concept-card">
+          <h3>Specificiteit: 99%</h3>
+          <p>Van alle <em>niet-vijanden</em> (burgers) laat het systeem er 99% correct met rust.</p>
+          <div class="formula">Van 100 burgers → 99 correct, 1 vals alarm</div>
+          <p class="example">Slechts 1% vals alarm bij burgers — klinkt acceptabel.</p>
+        </div>
+
+        <div class="concept-card highlight">
+          <h3>Maar... de echte vraag</h3>
+          <p>Als het systeem alarm slaat en zegt <strong>"VIJAND"</strong> —<br>
+          hoe groot is de kans dat het ook echt een vijand is?</p>
+          <p>Dat is de <strong>PPV</strong> (Positief Voorspellende Waarde).<br>
+          En die hangt af van hoe vaak er daadwerkelijk vijanden voorkomen in jouw operatiegebied.</p>
+        </div>
+
+        <div class="defense-nav">
+          <button class="btn-back" data-defgoto="1">← Terug</button>
+          <button class="btn-next" data-defgoto="3">Oorlogsgebied →</button>
+        </div>
+      </div>
+
+      <!-- Defense Step 3: Oorlogsgebied -->
+      <div id="def-step-3" class="defense-step">
+        <div class="defense-badge">SCENARIO 1</div>
+        <h1>Actief Conflict</h1>
+        <p class="intro-text">Oorlogsgebied — 10% van de gescande personen is vijandig.</p>
+
+        <div class="defense-scenario-box">
+          <div class="defense-scenario-params">
+            <div class="defense-param">
+              <span class="defense-param-label">Gescand</span>
+              <span class="defense-param-value">10.000 personen</span>
+            </div>
+            <div class="defense-param">
+              <span class="defense-param-label">Vijanden</span>
+              <span class="defense-param-value accent">1.000 (10%)</span>
+            </div>
+            <div class="defense-param">
+              <span class="defense-param-label">Burgers</span>
+              <span class="defense-param-value">9.000 (90%)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="defense-calc-steps">
+          <div class="defense-calc-step">
+            <div class="defense-calc-icon success">✓</div>
+            <div>
+              <strong>Vijanden gedetecteerd (terecht positief)</strong>
+              <p>99% van 1.000 = <span class="text-success">990</span></p>
+            </div>
+          </div>
+          <div class="defense-calc-step">
+            <div class="defense-calc-icon warning">!</div>
+            <div>
+              <strong>Vijanden gemist (vals negatief)</strong>
+              <p>1% van 1.000 = <span class="text-warning">10</span></p>
+            </div>
+          </div>
+          <div class="defense-calc-step">
+            <div class="defense-calc-icon danger">✕</div>
+            <div>
+              <strong>Burgers als vijand gemarkeerd (vals positief)</strong>
+              <p>1% van 9.000 = <span class="text-danger">90</span></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="defense-result-highlight good">
+          <div class="defense-result-big">PPV = 91,7%</div>
+          <p>Van alle 1.080 alarmen zijn er 990 terecht.<br>
+          <strong>9 van de 10 alarmen kloppen.</strong></p>
+        </div>
+
+        <div class="defense-mini-grid" id="defense-grid-war"></div>
+        <div class="array-legend">
+          <span class="legend-item"><span class="dot tp"></span> Echte vijand</span>
+          <span class="legend-item"><span class="dot fp"></span> Burger (vals alarm)</span>
+        </div>
+
+        <div class="defense-nav">
+          <button class="btn-back" data-defgoto="2">← Terug</button>
+          <button class="btn-next" data-defgoto="4">Normale surveillance →</button>
+        </div>
+      </div>
+
+      <!-- Defense Step 4: Surveillance -->
+      <div id="def-step-4" class="defense-step">
+        <div class="defense-badge">SCENARIO 2</div>
+        <h1>Routine Surveillance</h1>
+        <p class="intro-text">Vredesmissie — slechts 0,1% van de gescande personen is vijandig.</p>
+
+        <div class="defense-scenario-box">
+          <div class="defense-scenario-params">
+            <div class="defense-param">
+              <span class="defense-param-label">Gescand</span>
+              <span class="defense-param-value">100.000 personen</span>
+            </div>
+            <div class="defense-param">
+              <span class="defense-param-label">Vijanden</span>
+              <span class="defense-param-value accent">100 (0,1%)</span>
+            </div>
+            <div class="defense-param">
+              <span class="defense-param-label">Burgers</span>
+              <span class="defense-param-value">99.900 (99,9%)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="defense-calc-steps">
+          <div class="defense-calc-step">
+            <div class="defense-calc-icon success">✓</div>
+            <div>
+              <strong>Vijanden gedetecteerd</strong>
+              <p>99% van 100 = <span class="text-success">99</span></p>
+            </div>
+          </div>
+          <div class="defense-calc-step">
+            <div class="defense-calc-icon warning">!</div>
+            <div>
+              <strong>Vijanden gemist</strong>
+              <p>1% van 100 = <span class="text-warning">1</span></p>
+            </div>
+          </div>
+          <div class="defense-calc-step">
+            <div class="defense-calc-icon danger">✕</div>
+            <div>
+              <strong>Burgers als vijand gemarkeerd</strong>
+              <p>1% van 99.900 = <span class="text-danger">999</span></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="defense-result-highlight bad">
+          <div class="defense-result-big">PPV = 9,0%</div>
+          <p>Van alle 1.098 alarmen zijn er maar 99 terecht.<br>
+          <strong>Meer dan 9 van de 10 alarmen zijn vals!</strong></p>
+        </div>
+
+        <div class="defense-mini-grid" id="defense-grid-peace"></div>
+        <div class="array-legend">
+          <span class="legend-item"><span class="dot tp"></span> Echte vijand</span>
+          <span class="legend-item"><span class="dot fp"></span> Burger (vals alarm)</span>
+        </div>
+
+        <div class="defense-extreme-note">
+          <h4>En het wordt erger...</h4>
+          <p>Bij nog lagere prevalentie (bijv. 0,01% — 1 op 10.000):<br>
+          PPV daalt naar <strong>~1%</strong>. Dan is 99 van de 100 alarmen vals.<br>
+          Bij 0,001% is de PPV slechts <strong>~0,1%</strong>.</p>
+        </div>
+
+        <div class="defense-comparison">
+          <h3>Dezelfde drone. Dezelfde "99% accuraat."</h3>
+          <div class="defense-compare-row">
+            <div class="defense-compare-item good">
+              <div class="defense-compare-label">Oorlog (10%)</div>
+              <div class="defense-compare-ppv">PPV 91,7%</div>
+            </div>
+            <div class="defense-compare-vs">vs</div>
+            <div class="defense-compare-item bad">
+              <div class="defense-compare-label">Surveillance (0,1%)</div>
+              <div class="defense-compare-ppv">PPV 9,0%</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="defense-nav">
+          <button class="btn-back" data-defgoto="3">← Terug</button>
+          <button class="btn-next" data-defgoto="5">Doorvragen →</button>
+        </div>
+      </div>
+
+      <!-- Defense Step 5: Doorvragen -->
+      <div id="def-step-5" class="defense-step">
+        <div class="defense-badge">CONCLUSIE</div>
+        <h1>De Vragen Die Je Moet Stellen</h1>
+        <p class="intro-text">Als een fabrikant "99% accuraat" claimt — vraag dan door.</p>
+
+        <div class="defense-questions">
+          <div class="defense-question-card">
+            <div class="defense-q-number">1</div>
+            <div>
+              <h4>"Wat bedoelt u precies met 99%?"</h4>
+              <p>Is het de sensitiviteit? Specificiteit? Overall accuracy? Dit maakt enorm uit. "99% accuracy" op een testset met 50/50 vijand/burger zegt weinig over de echte wereld.</p>
+            </div>
+          </div>
+
+          <div class="defense-question-card">
+            <div class="defense-q-number">2</div>
+            <div>
+              <h4>"In welke omgeving is getest?"</h4>
+              <p>Een gecontroleerde lab-setting met duidelijke doelen? Of realistische operationele omstandigheden met variatie in weer, terrein en camouflage?</p>
+            </div>
+          </div>
+
+          <div class="defense-question-card">
+            <div class="defense-q-number">3</div>
+            <div>
+              <h4>"Wat was de prevalentie in de test?"</h4>
+              <p>Als de testset 50% vijand/50% burger bevatte, is "99% accuracy" misleidend voor een scenario met 0,1% vijanden. De PPV keldert van 99% naar 9%.</p>
+            </div>
+          </div>
+
+          <div class="defense-question-card">
+            <div class="defense-q-number">4</div>
+            <div>
+              <h4>"Wat is de PPV bij onze verwachte inzet?"</h4>
+              <p>Bereken de PPV voor jouw specifieke operatiegebied. Dat getal doet ertoe — niet de "nauwkeurigheid" uit de brochure.</p>
+            </div>
+          </div>
+
+          <div class="defense-question-card">
+            <div class="defense-q-number">5</div>
+            <div>
+              <h4>"Wat is de consequentie van vals alarm?"</h4>
+              <p>In de geneeskunde: een onnodige doorverwijzing.<br>
+              In defensie: een onschuldige burger als vijand behandeld.<br>
+              De ernst van vals-positieven bepaalt hoeveel je kunt accepteren.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="defense-takeaway">
+          <h3>Onthoud</h3>
+          <p><strong>"99% accuraat" kan 9% PPV opleveren.</strong><br>
+          De context — hoe vaak het doelwit daadwerkelijk voorkomt — bepaalt alles.</p>
+        </div>
+
+        <div class="defense-nav">
+          <button class="btn-back" data-defgoto="4">← Terug</button>
+          <button class="btn-next btn-primary" id="defense-to-calc">Zelf rekenen →</button>
+        </div>
+      </div>
+
+    </div>
+
   </div>
   <script src="script.js"></script>
 </body>
