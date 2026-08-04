@@ -7,7 +7,7 @@ Centrale portal voor drie applicaties. Made for fun. Op eigen initiatief.
 | App | Beschrijving |
 |-----|--------------|
 | **Tropengeneeskunde** | Interactieve studiegids met klachtgestuurde diagnostiek, ziektebeelden en praktische informatie |
-| **AMA Rooster** | Upload Excel rooster → bekijk als kalender → exporteer naar iCal |
+| **AMA Rooster** | Upload Excel rooster → bekijk als kalender → exporteer naar iCal. **Tot nader order uitgeschakeld.** Verwerking gebeurde overigens altijd al 100% lokaal in de browser — er wordt niets geüpload naar een server (zie `excel-to-ical/PRIVACY.md`) |
 | **SNAAK Command Center** | Militaire quotes game met battle mode, quiz en ranking systeem |
 
 ## Gebruik
