@@ -21,7 +21,9 @@ This isn't a gentle reflection app. It's for people who want to:
 
 ## Architecture
 
-### Three File Structure
+### File Structure
+
+Extra: **doom.html** — SNAAK DOOM, a standalone pseudo-3D raycasting shooter (canvas, DDA raycasting, sprite enemies, wave survival). Launched from the MINI-GAMES menu. Loads `quotes.js` (random quote toast on each kill) and `config.js` (rank lookup). Awards rank points directly to the shared `playerStats` localStorage key: 5/kill + 10/completed wave, granted on game over. Terminal aesthetic (green raycast walls, CRT scanlines, procedurally drawn enemy sprites). Desktop: WASD + mouse (pointer lock) + click/space to fire, R reload, ESC pause. Touch devices get on-screen controls.
 
 1. **index.html** - Complete single-page app
    - Terminal aesthetic with scanlines, CRT effects, monospace font

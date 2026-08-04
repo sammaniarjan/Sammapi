@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>SNAAK DOOM</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='black'/><text x='50' y='68' font-size='55' text-anchor='middle'>☠️</text></svg>">
+<style>
+    :root {
+        --green: #00ff00;
+        --dim: #00aa00;
+        --dark: #003300;
+        --yellow: #ffff00;
+        --red: #ff2222;
+        --cyan: #00ffff;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+        background: #000;
+        color: var(--green);
+        font-family: 'Share Tech Mono', 'Courier New', monospace;
+        height: 100%;
+        overflow: hidden;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+    #wrap {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #000;
+    }
+    canvas#game {
+        display: block;
+        width: 100%;
+        height: 100%;
+        image-rendering: pixelated;
+        cursor: crosshair;
+    }
+    /* CRT scanlines over alles */
+    .scanlines {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 50;
+        background: repeating-linear-gradient(0deg, rgba(0,0,0,0.25) 0px, rgba(0,0,0,0.25) 1px, transparent 2px, transparent 4px);
+    }
+    /* HUD */
+    #hud {
+        position: fixed;
+        left: 0; right: 0; bottom: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        padding: 10px 16px;
+        z-index: 10;
+        pointer-events: none;
+        font-size: clamp(0.8rem, 2.2vw, 1.15rem);
+        text-shadow: 0 0 6px var(--green);
+    }
+    .hud-box {
+        border: 1px solid var(--dim);
+        background: rgba(0, 20, 0, 0.65);
+        padding: 6px 12px;
+        box-shadow: 0 0 10px rgba(0,255,0,0.2);
+    }
+    .hud-label { color: var(--cyan); font-size: 0.7em; }
+    #hp { color: var(--green); }
+    #hp.low { color: var(--red); text-shadow: 0 0 8px var(--red); }
+    #ammo { color: var(--yellow); text-shadow: 0 0 6px var(--yellow); }
+    #topbar {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 16px;
+        z-index: 10;
+        pointer-events: none;
+        font-size: clamp(0.75rem, 2vw, 1rem);
+        text-shadow: 0 0 6px var(--green);
+    }
+    /* Kill quote toast */
+    #quoteToast {
+        position: fixed;
+        bottom: 18%;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 80vw;
+        text-align: center;
+        color: var(--yellow);
+        text-shadow: 0 0 10px var(--yellow);
+        font-size: clamp(0.85rem, 2.4vw, 1.2rem);
+        z-index: 20;
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
+    }
+    /* Center announcements (wave, reload) */
+    #announce {
+        position: fixed;
+        top: 32%;
+        left: 50%;
+        transform: translateX(-50%);
+        color: var(--red);
+        text-shadow: 0 0 14px var(--red);
+        font-size: clamp(1.2rem, 4.5vw, 2.4rem);
+        letter-spacing: 0.2em;
+        z-index: 20;
+        opacity: 0;
+        transition: opacity 0.2s;
+        pointer-events: none;
+        text-align: center;
+    }
+    /* Overlays: start / game over / pauze */
+    .overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 40;
+        background: rgba(0, 5, 0, 0.92);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 20px;
+    }
+    .overlay h1 {
+        font-size: clamp(2rem, 8vw, 4.5rem);
+        letter-spacing: 0.15em;
+        color: var(--green);
+        text-shadow: 0 0 20px var(--green);
+        margin-bottom: 8px;
+    }
+    .overlay h1 .skull { color: var(--red); text-shadow: 0 0 20px var(--red); }
+    .overlay .sub { color: var(--cyan); margin-bottom: 28px; letter-spacing: 0.3em; font-size: clamp(0.7rem, 2vw, 1rem); }
+    .overlay .instr {
+        color: var(--dim);
+        line-height: 2;
+        margin-bottom: 30px;
+        font-size: clamp(0.75rem, 2.2vw, 1rem);
+    }
+    .overlay .instr b { color: var(--green); }
+    .overlay button {
+        background: transparent;
+        border: 2px solid var(--green);
+        color: var(--green);
+        font-family: inherit;
+        font-size: clamp(1rem, 3vw, 1.4rem);
+        padding: 14px 40px;
+        cursor: pointer;
+        letter-spacing: 0.2em;
+        text-shadow: 0 0 8px var(--green);
+        box-shadow: 0 0 16px rgba(0,255,0,0.25), inset 0 0 16px rgba(0,255,0,0.08);
+        animation: blink 1.6s infinite;
+    }
+    .overlay button:hover { background: rgba(0,255,0,0.12); animation: none; }
+    @keyframes blink { 50% { opacity: 0.55; } }
+    .overlay .stats { color: var(--yellow); font-size: clamp(0.9rem, 2.6vw, 1.3rem); line-height: 2; margin-bottom: 26px; }
+    .overlay a { color: var(--dim); margin-top: 26px; font-size: 0.85rem; text-decoration: none; }
+    .overlay a:hover { color: var(--green); }
+    /* Damage flash */
+    #dmgFlash {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(ellipse at center, transparent 40%, rgba(255,0,0,0.55) 100%);
+        z-index: 15;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.35s;
+    }
+    /* Touch controls */
+    #touchControls { display: none; }
+    body.touch #touchControls {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 30;
+        pointer-events: none;
+    }
+    .tbtn {
+        position: absolute;
+        width: 64px;
+        height: 64px;
+        border: 2px solid var(--dim);
+        background: rgba(0, 40, 0, 0.4);
+        color: var(--green);
+        font-size: 1.6rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        pointer-events: auto;
+        touch-action: none;
+    }
+    #tFwd  { left: 84px;  bottom: 150px; }
+    #tBack { left: 84px;  bottom: 70px; }
+    #tLeft { left: 12px;  bottom: 110px; }
+    #tRight{ left: 156px; bottom: 110px; }
+    #tFire {
+        right: 24px; bottom: 90px;
+        width: 88px; height: 88px;
+        border-color: var(--red);
+        color: var(--red);
+        border-radius: 50%;
+        font-size: 1rem;
+        letter-spacing: 0.1em;
+    }
+</style>
+</head>
+<body>
+<div id="wrap">
+    <canvas id="game"></canvas>
+</div>
+<div class="scanlines"></div>
+<div id="dmgFlash"></div>
+
+<div id="topbar" style="display:none;">
+    <div class="hud-box"><span class="hud-label">WAVE </span><span id="wave">1</span></div>
+    <div class="hud-box"><span class="hud-label">KILLS </span><span id="kills">0</span></div>
+    <div class="hud-box"><span class="hud-label">SCORE </span><span id="score">0</span></div>
+</div>
+<div id="hud" style="display:none;">
+    <div class="hud-box"><span class="hud-label">HP </span><span id="hp">100</span></div>
+    <div class="hud-box"><span class="hud-label">AMMO </span><span id="ammo">8</span></div>
+</div>
+<div id="quoteToast"></div>
+<div id="announce"></div>
+
+<!-- START -->
+<div class="overlay" id="startScreen">
+    <h1><span class="skull">☠</span> SNAAK DOOM <span class="skull">☠</span></h1>
+    <div class="sub">:: OPERATIE KAZERNE ZUIVERING ::</div>
+    <div class="instr">
+        <b>WASD / pijltjes</b> = bewegen &nbsp;·&nbsp; <b>muis</b> = richten<br>
+        <b>klik / spatie</b> = vuren &nbsp;·&nbsp; <b>R</b> = herladen &nbsp;·&nbsp; <b>ESC</b> = pauze<br>
+        Overleef de waves. Elke kill = punten voor je rank.
+    </div>
+    <button id="startBtn">▸ START MISSIE</button>
+    <a href="index.html">&larr; TERUG NAAR COMMAND CENTER</a>
+</div>
+
+<!-- GAME OVER -->
+<div class="overlay" id="gameOverScreen" style="display:none;">
+    <h1><span class="skull">GESNEUVELD</span></h1>
+    <div class="sub">:: MISSIE BEËINDIGD ::</div>
+    <div class="stats" id="finalStats"></div>
+    <button id="restartBtn">▸ OPNIEUW (R)</button>
+    <a href="index.html">&larr; TERUG NAAR COMMAND CENTER</a>
+</div>
+
+<!-- PAUZE -->
+<div class="overlay" id="pauseScreen" style="display:none;">
+    <h1>PAUZE</h1>
+    <button id="resumeBtn">▸ VERDER</button>
+    <a href="index.html">&larr; TERUG NAAR COMMAND CENTER</a>
+</div>
+
+<div id="touchControls">
+    <div class="tbtn" id="tLeft">⟲</div>
+    <div class="tbtn" id="tRight">⟳</div>
+    <div class="tbtn" id="tFwd">▲</div>
+    <div class="tbtn" id="tBack">▼</div>
+    <div class="tbtn" id="tFire">FIRE</div>
+</div>
+
+<script src="quotes.js"></script>
+<script src="config.js"></script>
+<script>
+(function () {
+    'use strict';
+
+    // ══════════════ CONFIG ══════════════
+    const FOV = Math.PI / 3;             // 60 graden
+    const MOVE_SPEED = 3.2;              // tegels per seconde
+    const ROT_SPEED = 2.6;               // rad per seconde (toetsen)
+    const MOUSE_SENS = 0.0022;
+    const CLIP_SIZE = 8;
+    const RELOAD_TIME = 900;             // ms
+    const FIRE_COOLDOWN = 230;           // ms
+    const SHOT_DAMAGE = 60;              // vijand heeft 100 hp → 2 schoten
+    const ENEMY_TOUCH_DAMAGE = 12;
+    const ENEMY_ATTACK_COOLDOWN = 900;   // ms
+    const KILL_SCORE = 100;
+    const RANK_POINTS_PER_KILL = 5;      // punten naar SnaakGPT rank systeem
+    const RANK_POINTS_PER_WAVE = 10;
+
+    // ══════════════ MAP (1=muur, 2=muur alt, 0=vrij) ══════════════
+    const MAP = [
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,0,0,0,0,0,0,0,2,0,0,0,0,0,2,0,0,0,0,0,0,1],
+        [1,0,1,1,0,1,1,0,2,0,1,1,0,0,2,0,1,1,1,1,0,1],
+        [1,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,1,0,1],
+        [1,0,1,0,1,0,1,1,1,0,1,0,1,1,1,1,1,1,0,1,0,1],
+        [1,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,1],
+        [1,1,1,0,1,1,1,1,2,2,0,1,1,0,1,1,0,1,1,1,0,1],
+        [1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,0,1],
+        [1,0,1,1,1,1,0,1,0,1,1,1,1,0,1,0,1,1,0,1,0,1],
+        [1,0,1,0,0,1,0,0,0,1,0,0,1,0,0,0,1,0,0,0,0,1],
+        [1,0,1,0,0,0,0,1,1,1,0,0,1,1,1,0,1,0,1,1,1,1],
+        [1,0,0,0,1,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1],
+        [1,0,1,1,1,0,0,1,1,2,2,1,1,0,1,1,1,1,1,1,0,1],
+        [1,0,1,0,0,0,1,1,0,0,0,0,1,0,0,0,0,0,1,0,0,1],
+        [1,0,1,0,1,0,0,0,0,1,1,0,1,1,1,1,1,0,1,0,1,1],
+        [1,0,0,0,1,1,1,1,0,1,0,0,0,0,0,1,0,0,0,0,0,1],
+        [1,1,1,0,0,0,0,1,0,1,0,1,1,1,0,1,0,1,1,1,0,1],
+        [1,0,0,0,1,1,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1],
+        [1,0,1,1,1,0,0,2,1,1,1,1,0,1,1,1,0,1,0,1,1,1],
+        [1,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1],
+        [1,1,0,0,0,0,1,1,1,0,1,0,0,0,0,1,1,0,1,0,0,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    ];
+    const MAP_H = MAP.length, MAP_W = MAP[0].length;
+    const wallAt = (x, y) => {
+        const xi = x | 0, yi = y | 0;
+        if (xi < 0 || yi < 0 || xi >= MAP_W || yi >= MAP_H) return 1;
+        return MAP[yi][xi];
+    };
+
+    // ══════════════ CANVAS ══════════════
+    const canvas = document.getElementById('game');
+    const ctx = canvas.getContext('2d');
+    let W = 0, H = 0;
+    function resize() {
+        // interne resolutie laag houden voor retro look + performance
+        const scale = Math.min(1, 900 / window.innerWidth);
+        W = Math.floor(window.innerWidth * scale / 2) * 2;
+        H = Math.floor(window.innerHeight * scale / 2) * 2;
+        canvas.width = W;
+        canvas.height = H;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // ══════════════ AUDIO (Web Audio, zelfde stijl als SnaakGPT) ══════════════
+    let audioCtx = null;
+    function beep(freq, dur, type, vol) {
+        try {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.type = type || 'square';
+            o.frequency.value = freq;
+            g.gain.setValueAtTime(vol || 0.05, audioCtx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur);
+            o.connect(g); g.connect(audioCtx.destination);
+            o.start(); o.stop(audioCtx.currentTime + dur);
+        } catch (e) { /* audio niet beschikbaar */ }
+    }
+    const sfx = {
+        shoot:  () => { beep(160, 0.12, 'square', 0.07); beep(90, 0.18, 'sawtooth', 0.05); },
+        hit:    () => beep(880, 0.06, 'square', 0.05),
+        kill:   () => { beep(220, 0.15, 'sawtooth', 0.07); beep(110, 0.25, 'sawtooth', 0.05); },
+        hurt:   () => beep(70, 0.3, 'sawtooth', 0.09),
+        reload: () => { beep(600, 0.05, 'square', 0.04); setTimeout(() => beep(900, 0.05, 'square', 0.04), 350); },
+        empty:  () => beep(1400, 0.04, 'square', 0.04),
+        wave:   () => [440, 550, 660].forEach((f, i) => setTimeout(() => beep(f, 0.12, 'square', 0.06), i * 110))
+    };
+
+    // ══════════════ VIJAND SPRITE (procedureel getekend) ══════════════
+    function makeEnemySprite(hurt) {
+        const s = document.createElement('canvas');
+        s.width = 64; s.height = 64;
+        const c = s.getContext('2d');
+        const body = hurt ? '#ff4444' : '#00cc00';
+        const dark = hurt ? '#881111' : '#005500';
+        // benen
+        c.fillStyle = dark;
+        c.fillRect(20, 48, 8, 14);
+        c.fillRect(36, 48, 8, 14);
+        // romp
+        c.fillStyle = body;
+        c.fillRect(16, 28, 32, 22);
+        // armen
+        c.fillRect(8, 30, 8, 16);
+        c.fillRect(48, 30, 8, 16);
+        // geweer (dwars voor de romp)
+        c.fillStyle = '#333';
+        c.fillRect(6, 38, 52, 5);
+        // hoofd
+        c.fillStyle = body;
+        c.fillRect(22, 10, 20, 18);
+        // helm
+        c.fillStyle = dark;
+        c.fillRect(20, 6, 24, 8);
+        c.fillRect(18, 12, 4, 6);
+        c.fillRect(42, 12, 4, 6);
+        // ogen (rood, priemend)
+        c.fillStyle = '#ff2222';
+        c.fillRect(26, 18, 4, 4);
+        c.fillRect(34, 18, 4, 4);
+        // grimmige mond
+        c.fillStyle = '#000';
+        c.fillRect(27, 25, 10, 2);
+        return s;
+    }
+    const SPRITE_NORMAL = makeEnemySprite(false);
+    const SPRITE_HURT = makeEnemySprite(true);
+
+    // ══════════════ STATE ══════════════
+    const player = { x: 1.5, y: 1.5, angle: 0.4, hp: 100 };
+    let enemies = [];          // {x, y, hp, hurtUntil, lastAttack}
+    let wave = 0, kills = 0, score = 0;
+    let ammo = CLIP_SIZE, reloading = false, lastShot = 0;
+    let muzzleUntil = 0;
+    let running = false, gameOver = false;
+    const keys = {};
+    let waveClearPending = false;
+
+    const zBuffer = new Float32Array(2048);
+
+    // ══════════════ SNAAKGPT PUNTEN INTEGRATIE ══════════════
+    function awardRankPoints(pts) {
+        try {
+            const stats = JSON.parse(localStorage.getItem('playerStats') || '{"score":0,"streak":0,"battles":0,"quizzes":0}');
+            stats.score += pts;
+            localStorage.setItem('playerStats', JSON.stringify(stats));
+            return stats.score;
+        } catch (e) { return 0; }
+    }
+    function currentRank(totalScore) {
+        try {
+            let best = null;
+            for (const threshold of Object.keys(snaakConfig.ranks)) {
+                if (totalScore >= +threshold) best = snaakConfig.ranks[threshold];
+            }
+            return best ? best.name : '';
+        } catch (e) { return ''; }
+    }
+
+    // ══════════════ HUD HELPERS ══════════════
+    const $ = id => document.getElementById(id);
+    function updateHud() {
+        $('hp').textContent = Math.max(0, player.hp | 0);
+        $('hp').classList.toggle('low', player.hp <= 30);
+        $('ammo').textContent = reloading ? '···' : ammo;
+        $('wave').textContent = wave;
+        $('kills').textContent = kills;
+        $('score').textContent = score;
+    }
+    let toastTimer = null;
+    function showQuote() {
+        try {
+            const q = allQuotes[Math.floor(Math.random() * allQuotes.length)];
+            const el = $('quoteToast');
+            el.textContent = '💀 "' + q + '"';
+            el.style.opacity = 1;
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => { el.style.opacity = 0; }, 2600);
+        } catch (e) { /* quotes.js niet geladen */ }
+    }
+    let announceTimer = null;
+    function announce(text, ms) {
+        const el = $('announce');
+        el.textContent = text;
+        el.style.opacity = 1;
+        clearTimeout(announceTimer);
+        announceTimer = setTimeout(() => { el.style.opacity = 0; }, ms || 1600);
+    }
+    function damageFlash() {
+        const el = $('dmgFlash');
+        el.style.transition = 'none';
+        el.style.opacity = 1;
+        requestAnimationFrame(() => {
+            el.style.transition = 'opacity 0.35s';
+            el.style.opacity = 0;
+        });
+    }
+
+    // ══════════════ WAVES ══════════════
+    function spawnWave() {
+        wave++;
+        const count = 3 + wave;
+        for (let n = 0; n < count; n++) {
+            let x, y, tries = 0;
+            do {
+                x = 1.5 + Math.floor(Math.random() * (MAP_W - 2));
+                y = 1.5 + Math.floor(Math.random() * (MAP_H - 2));
+                tries++;
+            } while ((wallAt(x, y) !== 0 || Math.hypot(x - player.x, y - player.y) < 6) && tries < 200);
+            if (wallAt(x, y) === 0) {
+                enemies.push({ x, y, hp: 100, hurtUntil: 0, lastAttack: 0 });
+            }
+        }
+        announce('WAVE ' + wave, 1800);
+        sfx.wave();
+        updateHud();
+    }
+
+    // ══════════════ SCHIETEN ══════════════
+    function losBlocked(x0, y0, x1, y1) {
+        // stapt in kleine stappen; goed genoeg voor gameplay
+        const dist = Math.hypot(x1 - x0, y1 - y0);
+        const steps = Math.ceil(dist * 8);
+        for (let i = 1; i < steps; i++) {
+            const t = i / steps;
+            if (wallAt(x0 + (x1 - x0) * t, y0 + (y1 - y0) * t) !== 0) return true;
+        }
+        return false;
+    }
+
+    function shoot() {
+        const now = performance.now();
+        if (!running || reloading || now - lastShot < FIRE_COOLDOWN) return;
+        if (ammo <= 0) { sfx.empty(); startReload(); return; }
+        ammo--;
+        lastShot = now;
+        muzzleUntil = now + 90;
+        sfx.shoot();
+        updateHud();
+
+        // hitscan: dichtstbijzijnde vijand vlakbij het kruispunt van het vizier
+        let target = null, targetDist = Infinity;
+        for (const e of enemies) {
+            const dx = e.x - player.x, dy = e.y - player.y;
+            const dist = Math.hypot(dx, dy);
+            if (dist < 0.4) { target = e; targetDist = dist; break; }
+            let angDiff = Math.atan2(dy, dx) - player.angle;
+            while (angDiff > Math.PI) angDiff -= 2 * Math.PI;
+            while (angDiff < -Math.PI) angDiff += 2 * Math.PI;
+            const tolerance = Math.min(0.35, 0.28 / dist + 0.02);
+            if (Math.abs(angDiff) < tolerance && dist < targetDist && !losBlocked(player.x, player.y, e.x, e.y)) {
+                target = e;
+                targetDist = dist;
+            }
+        }
+        if (target) {
+            target.hp -= SHOT_DAMAGE;
+            target.hurtUntil = now + 150;
+            if (target.hp <= 0) {
+                enemies.splice(enemies.indexOf(target), 1);
+                kills++;
+                score += KILL_SCORE;
+                sfx.kill();
+                showQuote();
+            } else {
+                sfx.hit();
+            }
+            updateHud();
+        }
+        if (ammo <= 0) startReload();
+    }
+
+    function startReload() {
+        if (reloading || ammo === CLIP_SIZE) return;
+        reloading = true;
+        sfx.reload();
+        updateHud();
+        setTimeout(() => {
+            reloading = false;
+            ammo = CLIP_SIZE;
+            updateHud();
+        }, RELOAD_TIME);
+    }
+
+    // ══════════════ BEWEGING & AI ══════════════
+    function tryMove(obj, nx, ny, radius) {
+        if (wallAt(nx + radius, obj.y) === 0 && wallAt(nx - radius, obj.y) === 0) obj.x = nx;
+        if (wallAt(obj.x, ny + radius) === 0 && wallAt(obj.x, ny - radius) === 0) obj.y = ny;
+    }
+
+    let mouseDx = 0;
+    function update(dt) {
+        // speler
+        let mx = 0, my = 0;
+        const fwd = (keys['w'] || keys['arrowup'] ? 1 : 0) - (keys['s'] || keys['arrowdown'] ? 1 : 0);
+        const strafe = (keys['d'] ? 1 : 0) - (keys['a'] ? 1 : 0);
+        const turn = (keys['arrowright'] ? 1 : 0) - (keys['arrowleft'] ? 1 : 0);
+        player.angle += turn * ROT_SPEED * dt + mouseDx * MOUSE_SENS;
+        mouseDx = 0;
+        mx = Math.cos(player.angle) * fwd + Math.cos(player.angle + Math.PI / 2) * strafe;
+        my = Math.sin(player.angle) * fwd + Math.sin(player.angle + Math.PI / 2) * strafe;
+        const len = Math.hypot(mx, my);
+        if (len > 0) {
+            mx /= len; my /= len;
+            tryMove(player, player.x + mx * MOVE_SPEED * dt, player.y + my * MOVE_SPEED * dt, 0.25);
+        }
+
+        // vijanden: jagen op de speler
+        const now = performance.now();
+        const enemySpeed = 1.1 + wave * 0.12;
+        for (const e of enemies) {
+            const dx = player.x - e.x, dy = player.y - e.y;
+            const dist = Math.hypot(dx, dy);
+            if (dist > 0.75) {
+                tryMove(e, e.x + (dx / dist) * enemySpeed * dt, e.y + (dy / dist) * enemySpeed * dt, 0.3);
+            } else if (now - e.lastAttack > ENEMY_ATTACK_COOLDOWN) {
+                e.lastAttack = now;
+                player.hp -= ENEMY_TOUCH_DAMAGE;
+                sfx.hurt();
+                damageFlash();
+                updateHud();
+                if (player.hp <= 0) endGame();
+            }
+        }
+
+        // wave klaar?
+        if (enemies.length === 0 && !waveClearPending && running) {
+            waveClearPending = true;
+            score += wave * 50;
+            announce('WAVE ' + wave + ' GEZUIVERD', 2000);
+            updateHud();
+            setTimeout(() => {
+                waveClearPending = false;
+                if (running) spawnWave();
+            }, 2500);
+        }
+    }
+
+    // ══════════════ RENDER ══════════════
+    function render() {
+        const now = performance.now();
+        // lucht & vloer
+        const skyGrad = ctx.createLinearGradient(0, 0, 0, H / 2);
+        skyGrad.addColorStop(0, '#000000');
+        skyGrad.addColorStop(1, '#001500');
+        ctx.fillStyle = skyGrad;
+        ctx.fillRect(0, 0, W, H / 2);
+        const floorGrad = ctx.createLinearGradient(0, H / 2, 0, H);
+        floorGrad.addColorStop(0, '#001100');
+        floorGrad.addColorStop(1, '#002b00');
+        ctx.fillStyle = floorGrad;
+        ctx.fillRect(0, H / 2, W, H / 2);
+
+        // muren via DDA raycasting
+        for (let col = 0; col < W; col++) {
+            const rayAngle = player.angle - FOV / 2 + (col / W) * FOV;
+            const rdx = Math.cos(rayAngle), rdy = Math.sin(rayAngle);
+            let mapX = player.x | 0, mapY = player.y | 0;
+            const deltaX = Math.abs(1 / (rdx || 1e-9)), deltaY = Math.abs(1 / (rdy || 1e-9));
+            let stepX, stepY, sideX, sideY;
+            if (rdx < 0) { stepX = -1; sideX = (player.x - mapX) * deltaX; }
+            else { stepX = 1; sideX = (mapX + 1 - player.x) * deltaX; }
+            if (rdy < 0) { stepY = -1; sideY = (player.y - mapY) * deltaY; }
+            else { stepY = 1; sideY = (mapY + 1 - player.y) * deltaY; }
+            let side = 0, tile = 0, guard = 0;
+            while (guard++ < 128) {
+                if (sideX < sideY) { sideX += deltaX; mapX += stepX; side = 0; }
+                else { sideY += deltaY; mapY += stepY; side = 1; }
+                tile = wallAt(mapX + 0.5, mapY + 0.5);
+                if (tile !== 0) break;
+            }
+            let dist = side === 0 ? sideX - deltaX : sideY - deltaY;
+            dist *= Math.cos(rayAngle - player.angle);   // fisheye correctie
+            dist = Math.max(0.01, dist);
+            zBuffer[col] = dist;
+
+            const lineH = Math.min(H * 3, H / dist);
+            const y0 = (H - lineH) / 2;
+            // groene muren, donkerder op afstand; alt-muren (2) iets geler
+            const shade = Math.max(0.08, 1 - dist / 14) * (side === 1 ? 0.72 : 1);
+            const g = Math.floor(190 * shade);
+            const r = tile === 2 ? Math.floor(120 * shade) : Math.floor(20 * shade);
+            ctx.fillStyle = 'rgb(' + r + ',' + g + ',' + Math.floor(25 * shade) + ')';
+            ctx.fillRect(col, y0, 1, lineH);
+            // subtiele horizontale "grid" lijn per tegel-rand voor terminal look
+            if (((side === 0 ? (player.y + dist * rdy) : (player.x + dist * rdx)) % 1) < 0.03) {
+                ctx.fillStyle = 'rgba(0,0,0,0.5)';
+                ctx.fillRect(col, y0, 1, lineH);
+            }
+        }
+
+        // sprites: ver → dichtbij
+        const sorted = enemies.slice().sort((a, b) =>
+            (Math.hypot(b.x - player.x, b.y - player.y)) - (Math.hypot(a.x - player.x, a.y - player.y)));
+        for (const e of sorted) {
+            const dx = e.x - player.x, dy = e.y - player.y;
+            const dist = Math.hypot(dx, dy);
+            if (dist < 0.2) continue;
+            let ang = Math.atan2(dy, dx) - player.angle;
+            while (ang > Math.PI) ang -= 2 * Math.PI;
+            while (ang < -Math.PI) ang += 2 * Math.PI;
+            if (Math.abs(ang) > FOV / 2 + 0.4) continue;
+            const depth = dist * Math.cos(ang);
+            if (depth <= 0.1) continue;
+            const size = Math.min(H * 2, H / depth);
+            const cx = (ang / FOV + 0.5) * W;
+            const x0 = cx - size / 2;
+            const y0 = H / 2 - size * 0.4;
+            const sprite = now < e.hurtUntil ? SPRITE_HURT : SPRITE_NORMAL;
+            // per-kolom occlusie tegen muren
+            const colStart = Math.max(0, Math.floor(x0));
+            const colEnd = Math.min(W - 1, Math.ceil(x0 + size));
+            const sliceW = Math.max(1, Math.floor(size / 64));
+            for (let sx = colStart; sx <= colEnd; sx += sliceW) {
+                if (zBuffer[sx] < depth) continue;
+                const texX = Math.floor(((sx - x0) / size) * 64);
+                if (texX < 0 || texX > 63) continue;
+                ctx.drawImage(sprite, texX, 0, 1, 64, sx, y0, sliceW, size);
+            }
+        }
+
+        // muzzle flash
+        if (now < muzzleUntil) {
+            const flash = ctx.createRadialGradient(W / 2, H * 0.78, 4, W / 2, H * 0.78, H * 0.2);
+            flash.addColorStop(0, 'rgba(255,255,160,0.9)');
+            flash.addColorStop(1, 'rgba(255,255,160,0)');
+            ctx.fillStyle = flash;
+            ctx.fillRect(0, 0, W, H);
+        }
+
+        // wapen (silhouet onderin)
+        const bob = Math.sin(now / 180) * (keys['w'] || keys['s'] || keys['a'] || keys['d'] || keys['arrowup'] || keys['arrowdown'] ? H * 0.008 : H * 0.003);
+        const gw = H * 0.34;
+        ctx.save();
+        ctx.translate(W / 2, H + bob);
+        ctx.fillStyle = '#031503';
+        ctx.strokeStyle = '#00aa00';
+        ctx.lineWidth = Math.max(1, H / 300);
+        ctx.beginPath();
+        ctx.moveTo(-gw * 0.32, 0);
+        ctx.lineTo(-gw * 0.13, -gw * 0.52);
+        ctx.lineTo(-gw * 0.05, -gw * 0.72);
+        ctx.lineTo(gw * 0.05, -gw * 0.72);
+        ctx.lineTo(gw * 0.13, -gw * 0.52);
+        ctx.lineTo(gw * 0.32, 0);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        // loop
+        ctx.fillStyle = '#000';
+        ctx.fillRect(-gw * 0.035, -gw * 0.72, gw * 0.07, gw * 0.2);
+        ctx.restore();
+
+        // crosshair
+        ctx.strokeStyle = reloading ? '#ffff00' : '#00ff00';
+        ctx.lineWidth = Math.max(1, H / 500);
+        const ch = H * 0.012;
+        ctx.beginPath();
+        ctx.moveTo(W / 2 - ch * 2, H / 2); ctx.lineTo(W / 2 - ch * 0.7, H / 2);
+        ctx.moveTo(W / 2 + ch * 0.7, H / 2); ctx.lineTo(W / 2 + ch * 2, H / 2);
+        ctx.moveTo(W / 2, H / 2 - ch * 2); ctx.lineTo(W / 2, H / 2 - ch * 0.7);
+        ctx.moveTo(W / 2, H / 2 + ch * 0.7); ctx.lineTo(W / 2, H / 2 + ch * 2);
+        ctx.stroke();
+
+        // minimap (rechtsboven)
+        const mm = Math.min(W, H) * 0.16;
+        const cell = mm / MAP_W;
+        const mmX = W - mm - 8, mmY = 34;
+        ctx.fillStyle = 'rgba(0,10,0,0.7)';
+        ctx.fillRect(mmX - 2, mmY - 2, mm + 4, cell * MAP_H + 4);
+        for (let y = 0; y < MAP_H; y++) {
+            for (let x = 0; x < MAP_W; x++) {
+                if (MAP[y][x] !== 0) {
+                    ctx.fillStyle = 'rgba(0,150,0,0.55)';
+                    ctx.fillRect(mmX + x * cell, mmY + y * cell, cell, cell);
+                }
+            }
+        }
+        ctx.fillStyle = '#ff2222';
+        for (const e of enemies) ctx.fillRect(mmX + e.x * cell - 1, mmY + e.y * cell - 1, 2.5, 2.5);
+        ctx.fillStyle = '#ffff00';
+        ctx.fillRect(mmX + player.x * cell - 1.5, mmY + player.y * cell - 1.5, 3, 3);
+    }
+
+    // ══════════════ GAME LOOP ══════════════
+    let lastFrame = 0;
+    function loop(ts) {
+        if (!running) return;
+        const dt = Math.min(0.05, (ts - lastFrame) / 1000 || 0.016);
+        lastFrame = ts;
+        update(dt);
+        render();
+        requestAnimationFrame(loop);
+    }
+
+    // ══════════════ START / PAUZE / EINDE ══════════════
+    function startGame() {
+        enemies = [];
+        wave = 0; kills = 0; score = 0;
+        player.x = 1.5; player.y = 1.5; player.angle = 0.4; player.hp = 100;
+        ammo = CLIP_SIZE; reloading = false;
+        gameOver = false;
+        waveClearPending = false;
+        $('startScreen').style.display = 'none';
+        $('gameOverScreen').style.display = 'none';
+        $('pauseScreen').style.display = 'none';
+        $('topbar').style.display = 'flex';
+        $('hud').style.display = 'flex';
+        running = true;
+        spawnWave();
+        lastFrame = performance.now();
+        requestAnimationFrame(loop);
+        if (!document.body.classList.contains('touch')) {
+            canvas.requestPointerLock && canvas.requestPointerLock();
+        }
+    }
+
+    function pauseGame() {
+        if (!running || gameOver) return;
+        running = false;
+        $('pauseScreen').style.display = 'flex';
+    }
+
+    function resumeGame() {
+        if (gameOver) return;
+        $('pauseScreen').style.display = 'none';
+        running = true;
+        lastFrame = performance.now();
+        requestAnimationFrame(loop);
+        if (!document.body.classList.contains('touch')) {
+            canvas.requestPointerLock && canvas.requestPointerLock();
+        }
+    }
+
+    function endGame() {
+        running = false;
+        gameOver = true;
+        document.exitPointerLock && document.exitPointerLock();
+        const rankPts = kills * RANK_POINTS_PER_KILL + Math.max(0, wave - 1) * RANK_POINTS_PER_WAVE;
+        const total = awardRankPoints(rankPts);
+        const rank = currentRank(total);
+        $('finalStats').innerHTML =
+            'KILLS: ' + kills + ' &nbsp;·&nbsp; WAVE: ' + wave + ' &nbsp;·&nbsp; SCORE: ' + score +
+            '<br>+' + rankPts + ' RANK-PUNTEN' + (rank ? ' &nbsp;·&nbsp; RANK: ' + rank : '');
+        $('gameOverScreen').style.display = 'flex';
+        $('topbar').style.display = 'none';
+        $('hud').style.display = 'none';
+    }
+
+    // ══════════════ INPUT ══════════════
+    document.addEventListener('keydown', e => {
+        const k = e.key.toLowerCase();
+        keys[k] = true;
+        if (k === ' ') { e.preventDefault(); shoot(); }
+        if (k === 'r') {
+            if (gameOver) startGame();
+            else startReload();
+        }
+        if (k === 'escape' && running) pauseGame();
+        if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright'].includes(k)) e.preventDefault();
+    });
+    document.addEventListener('keyup', e => { keys[e.key.toLowerCase()] = false; });
+
+    canvas.addEventListener('mousedown', () => {
+        if (!running) return;
+        if (!document.pointerLockElement && !document.body.classList.contains('touch')) {
+            canvas.requestPointerLock && canvas.requestPointerLock();
+        }
+        shoot();
+    });
+    document.addEventListener('mousemove', e => {
+        if (document.pointerLockElement === canvas) mouseDx += e.movementX;
+    });
+    document.addEventListener('pointerlockchange', () => {
+        // ESC uit pointer lock = pauze
+        if (!document.pointerLockElement && running && !gameOver && !document.body.classList.contains('touch')) {
+            pauseGame();
+        }
+    });
+
+    $('startBtn').addEventListener('click', startGame);
+    $('restartBtn').addEventListener('click', startGame);
+    $('resumeBtn').addEventListener('click', resumeGame);
+
+    // Touch controls
+    if ('ontouchstart' in window && !window.matchMedia('(pointer: fine)').matches) {
+        document.body.classList.add('touch');
+        const bindHold = (id, key) => {
+            const el = $(id);
+            el.addEventListener('touchstart', e => { e.preventDefault(); keys[key] = true; }, { passive: false });
+            el.addEventListener('touchend', e => { e.preventDefault(); keys[key] = false; }, { passive: false });
+        };
+        bindHold('tFwd', 'w');
+        bindHold('tBack', 's');
+        bindHold('tLeft', 'arrowleft');
+        bindHold('tRight', 'arrowright');
+        let fireInterval = null;
+        $('tFire').addEventListener('touchstart', e => {
+            e.preventDefault();
+            shoot();
+            fireInterval = setInterval(shoot, FIRE_COOLDOWN + 20);
+        }, { passive: false });
+        $('tFire').addEventListener('touchend', e => {
+            e.preventDefault();
+            clearInterval(fireInterval);
+        }, { passive: false });
+    }
+
+    // idle render zodat het startscherm niet op zwart staat
+    render();
+})();
+</script>
+</body>
+</html>

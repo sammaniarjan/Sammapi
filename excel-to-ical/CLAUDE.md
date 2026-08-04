@@ -18,7 +18,9 @@ No build step. Single-file app with inline CSS/JS.
 ## Architecture
 
 `index.html` contains everything:
-- **Excel parsing**: Uses xlsx.js via CDN to parse `.xlsx/.xls` files
+- **Access gate**: SHA-256 hashed access code required (sessionStorage token `ama-rooster-toegang`); only the hash is in source. Hub easter egg (type "rooster" or 7× logo taps) opens the same gate.
+- **Privacy**: 100% local processing, enforced by a CSP meta tag that blocks ALL network requests. xlsx.js is vendored locally in `lib/` (NOT loaded from CDN — do not reintroduce external resources). See `PRIVACY.md`.
+- **Excel parsing**: Uses local `lib/xlsx.full.min.js` to parse `.xlsx/.xls` files
 - **Calendar views**: Week and month views with navigation
 - **Change detection**: Compares uploads to detect new/modified events
 - **iCal export**: Generates `.ics` files for calendar import
@@ -46,6 +48,8 @@ No build step. Single-file app with inline CSS/JS.
 | File | Purpose |
 |------|---------|
 | `index.html` | Complete app (HTML/CSS/JS) |
+| `lib/xlsx.full.min.js` | Vendored SheetJS library (local, no CDN) |
+| `PRIVACY.md` | Privacy statement + technical proof for privacy officer |
 | `convertor.js` | Legacy React component (unused, for reference) |
 | `voorbeeld rooster/` | Test Excel files |
 
@@ -57,5 +61,6 @@ No build step. Single-file app with inline CSS/JS.
 
 ## Notes
 
-- `node_modules/` exists but xlsx is loaded via CDN in the browser
+- xlsx is loaded from local `lib/xlsx.full.min.js` (copied from `node_modules/xlsx/dist/`); never switch back to a CDN — the CSP blocks it and it undermines the privacy guarantee
+- To change the access code: compute `printf 'NEWCODE' | shasum -a 256` (uppercase!) and replace the `ACCESS_HASH` constant in BOTH `index.html` (gate script) and the hub `../index.html` (easter egg script)
 - Sample roster in `voorbeeld rooster/` for testing

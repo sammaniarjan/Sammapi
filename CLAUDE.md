@@ -17,7 +17,9 @@ Dashboard (index.html)
 ```
 
 ### Hub (index.html)
-Central launcher with links to all four apps. Dark theme with green accents matching sub-app aesthetics.
+Central launcher with links to the apps. Dark theme with green accents matching sub-app aesthetics.
+
+**Hidden app**: excel-to-ical is NOT visibly linked. It sits behind an easter egg: type "rooster" on the hub (desktop) or tap the logo icon 7× quickly (mobile), then enter an access code. Only the SHA-256 hash of the code lives in source (`ACCESS_HASH` in both hub `index.html` and `excel-to-ical/index.html`). The app itself is also gated, so a direct URL still requires the code. Never add a visible link to excel-to-ical or put the plaintext code anywhere in the repo.
 
 ### Sub-Apps (each has own CLAUDE.md with detailed docs)
 
