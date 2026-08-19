@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Tascheck</title>
+<meta name="description" content="Tellingen en vervaldatumbewaking van medische AE-tassen, met automatische bestellijst.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg-primary: #0a0f0d;
+    --bg-secondary: #111916;
+    --bg-card: #151d19;
+    --bg-card-hover: #1a2420;
+    --accent-green: #2dd4a0;
+    --accent-green-dim: #1a7a5c;
+    --accent-yellow: #fbbf24;
+    --accent-red: #f87171;
+    --accent-blue: #60a5fa;
+    --text-primary: #e8f0ec;
+    --text-secondary: #8b9d94;
+    --text-muted: #5a6b62;
+    --border: #243029;
+    --border-light: #2d3d34;
+    --shadow: 0 4px 24px rgba(0,0,0,0.4);
+    --radius: 12px;
+    --radius-sm: 8px;
+    color-scheme: dark;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    padding-bottom: calc(66px + env(safe-area-inset-bottom));
+}
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 1000;
+}
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: 2px solid var(--accent-green);
+    outline-offset: 2px;
+}
+input, select, textarea {
+    font: inherit;
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    width: 100%;
+    transition: border-color 0.2s ease;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--accent-green-dim); }
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ---------- Header ---------- */
+.topbar {
+    position: sticky; top: 0; z-index: 30;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 20px;
+    padding-top: calc(14px + env(safe-area-inset-top));
+}
+.logo { flex: 1; min-width: 0; }
+.logo h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--accent-green);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+.logo span {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 2px;
+}
+.iconbtn {
+    width: 38px; height: 38px; border-radius: var(--radius-sm); flex-shrink: 0;
+    display: grid; place-items: center;
+    color: var(--text-secondary);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    transition: all 0.2s ease;
+}
+.iconbtn:hover { background: var(--bg-card-hover); border-color: var(--border-light); color: var(--text-primary); }
+.iconbtn svg { width: 18px; height: 18px; }
+
+/* ---------- Layout ---------- */
+.wrap { max-width: 760px; margin: 0 auto; padding: 20px; }
+.view { display: none; }
+.view.active { display: block; }
+.eyebrow {
+    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em;
+    font-weight: 500; color: var(--text-muted);
+    margin: 4px 0 12px;
+}
+.eyebrow button:hover { color: var(--accent-green); }
+.page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+.page-head h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.75rem;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    text-wrap: balance;
+}
+.page-head .sub { color: var(--text-secondary); font-size: 0.85rem; margin-top: 4px; }
+
+/* ---------- Cards ---------- */
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    overflow: hidden;
+    transition: all 0.25s ease;
+}
+.card.clickable { cursor: pointer; }
+.card.clickable:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+.card-pad { padding: 16px 20px; }
+
+.bag-main { padding: 16px 20px; min-width: 0; }
+.bag-title-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.bag-name { font-weight: 500; font-size: 1rem; }
+.bag-meta { color: var(--text-muted); font-size: 0.8rem; margin-top: 2px; }
+.bag-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+
+.chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 0.72rem; font-weight: 500;
+    padding: 2px 10px; border-radius: 999px;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+.chip-danger { background: rgba(248, 113, 113, 0.08); border: 1px solid rgba(248, 113, 113, 0.2); color: var(--accent-red); }
+.chip-warn { background: rgba(251, 191, 36, 0.08); border: 1px solid rgba(251, 191, 36, 0.2); color: var(--accent-yellow); }
+.chip-ok { background: rgba(45, 212, 160, 0.08); border: 1px solid rgba(45, 212, 160, 0.2); color: var(--accent-green); }
+.chip-neutral { background: var(--bg-card-hover); border: 1px solid var(--border); color: var(--text-secondary); }
+.chip-accent { background: rgba(45, 212, 160, 0.08); border: 1px solid rgba(45, 212, 160, 0.2); color: var(--accent-green); }
+
+/* ---------- Buttons ---------- */
+.btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+    font-weight: 500; font-size: 0.875rem;
+    padding: 9px 16px; border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+.btn:hover { background: var(--bg-card-hover); border-color: var(--border-light); }
+.btn-primary {
+    background: var(--accent-green-dim);
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+}
+.btn-primary:hover { background: var(--accent-green); border-color: var(--accent-green); color: var(--bg-primary); }
+.btn-danger { color: var(--accent-red); border-color: rgba(248, 113, 113, 0.35); }
+.btn-danger:hover { background: rgba(248, 113, 113, 0.08); border-color: var(--accent-red); }
+.btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+.btn-block { width: 100%; }
+.btn svg { width: 16px; height: 16px; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* ---------- Item rows ---------- */
+.item-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 13px 20px;
+    border-top: 1px solid var(--border);
+}
+.item-row:first-child { border-top: none; }
+.item-row.clickable { cursor: pointer; transition: background 0.2s ease; }
+.item-row.clickable:hover { background: var(--bg-card-hover); }
+.item-info { flex: 1; min-width: 0; }
+.item-name { font-weight: 500; font-size: 0.9rem; }
+.item-detail { font-size: 0.78rem; color: var(--text-muted); display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin-top: 3px; }
+.item-qty {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500; font-size: 0.9rem;
+    text-align: right; flex-shrink: 0;
+    color: var(--text-primary);
+}
+.item-qty .of { color: var(--text-muted); font-weight: 400; font-size: 0.78rem; }
+.qty-short { color: var(--accent-red); }
+
+/* ---------- Tab bar ---------- */
+.tabbar {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 30;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border);
+    display: flex;
+    padding-bottom: env(safe-area-inset-bottom);
+}
+.tab {
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 9px 4px 8px;
+    font-size: 0.68rem; font-weight: 500; letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    position: relative;
+    transition: color 0.2s ease;
+}
+.tab svg { width: 20px; height: 20px; }
+.tab:hover { color: var(--text-secondary); }
+.tab.active { color: var(--accent-green); }
+.tab-dot {
+    position: absolute; top: 4px; right: calc(50% - 18px);
+    min-width: 16px; height: 16px; padding: 0 4px; border-radius: 999px;
+    background: var(--accent-red); color: var(--bg-primary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem; font-weight: 500;
+    display: grid; place-items: center;
+}
+
+/* ---------- Filter chips ---------- */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.filter-chip {
+    font-size: 0.8rem; font-weight: 500;
+    padding: 6px 14px; border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+}
+.filter-chip:hover { border-color: var(--border-light); color: var(--text-primary); }
+.filter-chip.active {
+    background: var(--accent-green-dim);
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+}
+
+/* ---------- Count mode ---------- */
+.count-progress { height: 4px; background: var(--bg-card); border-radius: 999px; overflow: hidden; margin-bottom: 20px; }
+.count-progress-fill { height: 100%; background: var(--accent-green); border-radius: 999px; transition: width 0.2s ease; }
+.count-item-name {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.75rem; font-weight: 400;
+    letter-spacing: -0.02em; line-height: 1.2;
+    text-wrap: balance;
+}
+.count-item-sub { color: var(--text-secondary); font-size: 0.875rem; margin-top: 5px; }
+.stepper { display: flex; align-items: center; justify-content: center; gap: 18px; margin: 28px 0; }
+.stepper button {
+    width: 62px; height: 62px; border-radius: 50%;
+    border: 1px solid var(--border-light);
+    background: var(--bg-card);
+    font-size: 28px; font-weight: 400; color: var(--text-primary);
+    transition: all 0.2s ease;
+}
+.stepper button:hover { background: var(--bg-card-hover); border-color: var(--accent-green-dim); }
+.stepper button:active { background: var(--accent-green-dim); border-color: var(--accent-green); color: var(--accent-green); }
+.stepper input {
+    width: 100px; text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2.2rem; font-weight: 500;
+    color: var(--accent-green);
+    border: none; background: transparent;
+    padding: 0;
+}
+.count-target { text-align: center; color: var(--text-muted); font-size: 0.8rem; margin-top: -18px; margin-bottom: 24px; }
+.count-expiry-block { margin: 0 0 20px; }
+.count-expiry-block label {
+    font-size: 0.7rem; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text-muted);
+    display: block; margin-bottom: 6px;
+}
+
+/* ---------- Alerts ---------- */
+.notice {
+    border-radius: var(--radius-sm);
+    padding: 13px 16px;
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+}
+.notice-danger { background: rgba(248, 113, 113, 0.08); border: 1px solid rgba(248, 113, 113, 0.2); color: var(--accent-red); }
+.notice-warn { background: rgba(251, 191, 36, 0.08); border: 1px solid rgba(251, 191, 36, 0.2); color: var(--accent-yellow); }
+.notice-ok { background: rgba(45, 212, 160, 0.08); border: 1px solid rgba(45, 212, 160, 0.2); color: var(--accent-green); }
+.notice-neutral { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); }
+
+/* ---------- Modal ---------- */
+.modal-backdrop {
+    position: fixed; inset: 0; z-index: 40;
+    background: rgba(0, 0, 0, 0.6);
+    display: none; align-items: flex-end; justify-content: center;
+}
+.modal-backdrop.open { display: flex; }
+.modal {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    width: 100%; max-width: 520px;
+    max-height: 88vh; overflow-y: auto;
+    border-radius: var(--radius) var(--radius) 0 0;
+    padding: 22px 20px calc(22px + env(safe-area-inset-bottom));
+    box-shadow: var(--shadow);
+}
+@media (min-width: 600px) {
+    .modal-backdrop { align-items: center; }
+    .modal { border-radius: var(--radius); padding-bottom: 22px; }
+}
+.modal h2 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.4rem; font-weight: 400;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+}
+.field { margin-bottom: 14px; }
+.field label {
+    display: block;
+    font-size: 0.7rem; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+}
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; flex-wrap: wrap; }
+
+/* ---------- Order list ---------- */
+.order-row { display: flex; align-items: flex-start; gap: 12px; padding: 13px 20px; border-top: 1px solid var(--border); }
+.order-row:first-child { border-top: none; }
+.order-row input[type="checkbox"] { width: 18px; height: 18px; margin-top: 3px; flex-shrink: 0; accent-color: var(--accent-green); }
+.order-row .qty-input {
+    width: 62px; text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 5px 6px; flex-shrink: 0;
+}
+.order-reason { font-size: 0.75rem; margin-top: 3px; }
+
+.empty {
+    text-align: center; color: var(--text-muted);
+    padding: 44px 20px; font-size: 0.875rem;
+}
+.empty svg { width: 36px; height: 36px; margin-bottom: 10px; opacity: 0.5; }
+
+.section-label {
+    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em;
+    font-weight: 500; color: var(--text-muted);
+    margin: 20px 0 8px;
+}
+.muted { color: var(--text-muted); font-size: 0.78rem; }
+.toast {
+    position: fixed; left: 50%; bottom: calc(82px + env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    background: var(--bg-card-hover);
+    border: 1px solid var(--accent-green-dim);
+    color: var(--accent-green);
+    padding: 10px 20px; border-radius: 999px;
+    font-size: 0.85rem; font-weight: 500;
+    z-index: 60; box-shadow: var(--shadow);
+    opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
+    max-width: calc(100vw - 32px); text-align: center;
+}
+.toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+    <div class="logo">
+        <h1>Tascheck</h1>
+        <span>AE medisch materiaal</span>
+    </div>
+    <button class="iconbtn" id="btn-settings" aria-label="Instellingen en back-up" title="Instellingen en back-up">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+    </button>
+</header>
+
+<div class="wrap">
+
+    <!-- ===== Tassen (dashboard) ===== -->
+    <section class="view" id="view-bags">
+        <div class="page-head">
+            <div>
+                <h1>Tassen</h1>
+                <div class="sub" id="bags-summary"></div>
+            </div>
+            <button class="btn btn-sm" id="btn-add-bag">+ Tas</button>
+        </div>
+        <div id="bags-list"></div>
+    </section>
+
+    <!-- ===== Tas detail ===== -->
+    <section class="view" id="view-bag-detail">
+        <div class="eyebrow"><button id="btn-back-bags" style="color:inherit;font:inherit;text-transform:inherit;letter-spacing:inherit;">&larr; Alle tassen</button></div>
+        <div class="page-head">
+            <div>
+                <h1 id="bag-detail-name"></h1>
+                <div class="sub" id="bag-detail-sub"></div>
+            </div>
+        </div>
+        <div id="bag-detail-notices"></div>
+        <div class="btn-row" style="margin-bottom:16px;">
+            <button class="btn btn-primary" id="btn-start-count">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                Start telling
+            </button>
+            <button class="btn" id="btn-add-item">+ Item</button>
+            <button class="btn" id="btn-edit-bag">Bewerk tas</button>
+        </div>
+        <div class="card" id="bag-items-card"><div id="bag-items-list"></div></div>
+    </section>
+
+    <!-- ===== Telling ===== -->
+    <section class="view" id="view-count">
+        <div class="eyebrow" id="count-bag-label"></div>
+        <div class="count-progress"><div class="count-progress-fill" id="count-progress-fill"></div></div>
+        <div id="count-body"></div>
+    </section>
+
+    <!-- ===== Vervaldata ===== -->
+    <section class="view" id="view-expiry">
+        <div class="page-head">
+            <div>
+                <h1>Vervaldata</h1>
+                <div class="sub">Alle items, gesorteerd op vervaldatum</div>
+            </div>
+        </div>
+        <div class="filters" id="expiry-filters">
+            <button class="filter-chip active" data-filter="attention">Aandacht nodig</button>
+            <button class="filter-chip" data-filter="expired">Verlopen</button>
+            <button class="filter-chip" data-filter="all">Alles</button>
+        </div>
+        <div class="card" id="expiry-card"><div id="expiry-list"></div></div>
+    </section>
+
+    <!-- ===== Bestellijst ===== -->
+    <section class="view" id="view-order">
+        <div class="page-head">
+            <div>
+                <h1>Bestellijst</h1>
+                <div class="sub">Automatisch samengesteld uit tekorten en vervaldatums</div>
+            </div>
+        </div>
+        <div id="order-notices"></div>
+        <div class="card" id="order-card"><div id="order-list"></div></div>
+        <div class="btn-row">
+            <button class="btn btn-primary" id="btn-order-mail">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                Bestel via e-mail
+            </button>
+            <button class="btn" id="btn-order-copy">Kopieer lijst</button>
+            <button class="btn" id="btn-order-csv">Download CSV</button>
+        </div>
+        <p class="muted" style="margin-top:12px;">Automatisch bestellen bij een leverancier vergt een koppeling met het bestelsysteem; tot die tijd genereert de app de bestellijst als e-mail of CSV.</p>
+    </section>
+
+</div>
+
+<!-- ===== Tab bar ===== -->
+<nav class="tabbar">
+    <button class="tab active" data-view="view-bags" id="tab-bags">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><path d="M12 11v3"></path><path d="M10.5 12.5h3"></path></svg>
+        Tassen
+    </button>
+    <button class="tab" data-view="view-expiry" id="tab-expiry">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        Vervaldata
+        <span class="tab-dot" id="expiry-dot" hidden></span>
+    </button>
+    <button class="tab" data-view="view-order" id="tab-order">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+        Bestellijst
+        <span class="tab-dot" id="order-dot" hidden></span>
+    </button>
+</nav>
+
+<!-- ===== Modals ===== -->
+<div class="modal-backdrop" id="modal-backdrop">
+    <div class="modal" id="modal" role="dialog" aria-modal="true"></div>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+'use strict';
+
+/* =====================================================================
+   Data & opslag
+   ===================================================================== */
+const STORAGE_KEY = 'tascheck-data-v1';
+const WARN_DAYS = 90;   // "bijna verlopen" binnen dit aantal dagen
+const CRIT_DAYS = 30;   // extra urgentie binnen dit aantal dagen
+
+let state = null;
+
+function uid() {
+    return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+}
+
+function todayISO() {
+    const d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+// Maandnotatie t.o.v. vandaag, voor demodata die altijd actueel blijft
+function monthFromNow(offsetMonths) {
+    const d = new Date();
+    d.setMonth(d.getMonth() + offsetMonths);
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+}
+
+function seedData() {
+    return {
+        bags: [
+            {
+                id: uid(), name: 'Rugzak 1 — Airway & Breathing', location: 'RW, cabine links',
+                lastCount: null,
+                items: [
+                    { id: uid(), name: 'Larynxmasker maat 4', target: 2, current: 2, unit: 'st', lot: 'LM4-2311', expiry: monthFromNow(14) },
+                    { id: uid(), name: 'Endotracheale tube 7.5', target: 2, current: 2, unit: 'st', lot: 'ET75-A22', expiry: monthFromNow(7) },
+                    { id: uid(), name: 'Guedel-airway set (3 maten)', target: 1, current: 1, unit: 'set', lot: '', expiry: monthFromNow(26) },
+                    { id: uid(), name: 'Non-rebreathing masker volwassene', target: 2, current: 1, unit: 'st', lot: '', expiry: monthFromNow(19) },
+                    { id: uid(), name: 'Beademingsballon met reservoir', target: 1, current: 1, unit: 'st', lot: 'BVM-889', expiry: monthFromNow(2) },
+                    { id: uid(), name: 'Zuigkatheter Ch14', target: 4, current: 4, unit: 'st', lot: '', expiry: monthFromNow(-1) }
+                ]
+            },
+            {
+                id: uid(), name: 'Rugzak 2 — Circulation', location: 'RW, cabine rechts',
+                lastCount: null,
+                items: [
+                    { id: uid(), name: 'Infuuskatheter 18G', target: 6, current: 6, unit: 'st', lot: 'IV18-556', expiry: monthFromNow(9) },
+                    { id: uid(), name: 'NaCl 0,9% 500 ml', target: 4, current: 3, unit: 'zak', lot: 'NCL-0341', expiry: monthFromNow(1) },
+                    { id: uid(), name: 'Infuussysteem', target: 4, current: 4, unit: 'st', lot: '', expiry: monthFromNow(22) },
+                    { id: uid(), name: 'Tourniquet (CAT)', target: 2, current: 2, unit: 'st', lot: '', expiry: null },
+                    { id: uid(), name: 'Israeli bandage 15 cm', target: 3, current: 2, unit: 'st', lot: 'IB-1102', expiry: monthFromNow(31) },
+                    { id: uid(), name: 'Hemostatisch gaas', target: 2, current: 2, unit: 'st', lot: 'HG-778', expiry: monthFromNow(-3) }
+                ]
+            },
+            {
+                id: uid(), name: 'Medicatietas', location: 'Koelbox / apotheekkast',
+                lastCount: null,
+                items: [
+                    { id: uid(), name: 'Adrenaline 1 mg/ml amp.', target: 5, current: 5, unit: 'amp', lot: 'ADR-2405', expiry: monthFromNow(3) },
+                    { id: uid(), name: 'Amiodaron 150 mg amp.', target: 3, current: 3, unit: 'amp', lot: 'AMI-1188', expiry: monthFromNow(11) },
+                    { id: uid(), name: 'Fentanyl 0,05 mg/ml amp.', target: 4, current: 4, unit: 'amp', lot: 'FEN-0921', expiry: monthFromNow(5) },
+                    { id: uid(), name: 'Ondansetron 4 mg amp.', target: 4, current: 3, unit: 'amp', lot: 'OND-3310', expiry: monthFromNow(16) },
+                    { id: uid(), name: 'Glucose 10% 500 ml', target: 2, current: 2, unit: 'zak', lot: 'GLU-441', expiry: monthFromNow(-2) },
+                    { id: uid(), name: 'Paracetamol 1 g i.v.', target: 4, current: 4, unit: 'fl', lot: 'PCM-905', expiry: monthFromNow(13) }
+                ]
+            }
+        ],
+        orderExcluded: {},   // itemId -> true als handmatig uitgevinkt
+        orderQty: {}         // itemId -> handmatig aangepast bestelaantal
+    };
+}
+
+function load() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) { state = JSON.parse(raw); return; }
+    } catch (e) { /* localStorage niet beschikbaar of corrupt: verder met demodata */ }
+    state = seedData();
+    save();
+}
+
+function save() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    catch (e) { /* opslag niet beschikbaar: app blijft in-memory werken */ }
+}
+
+/* =====================================================================
+   Vervaldatum-logica
+   ===================================================================== */
+// expiry is 'YYYY-MM'; materiaal is bruikbaar t/m de laatste dag van die maand
+function expiryStatus(expiry) {
+    if (!expiry) return { key: 'none', label: 'geen datum', days: null };
+    const [y, m] = expiry.split('-').map(Number);
+    const lastDay = new Date(y, m, 0); // laatste dag van de maand
+    lastDay.setHours(23, 59, 59);
+    const days = Math.floor((lastDay - new Date()) / 86400000);
+    if (days < 0) return { key: 'expired', label: 'verlopen', days };
+    if (days <= CRIT_DAYS) return { key: 'critical', label: '≤ 1 mnd', days };
+    if (days <= WARN_DAYS) return { key: 'warning', label: '≤ 3 mnd', days };
+    return { key: 'ok', label: 'goed', days };
+}
+
+function fmtExpiry(expiry) {
+    if (!expiry) return '—';
+    const [y, m] = expiry.split('-');
+    const months = ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
+    return months[Number(m) - 1] + ' ' + y;
+}
+
+function expiryChip(expiry) {
+    const s = expiryStatus(expiry);
+    if (s.key === 'none') return '<span class="chip chip-neutral">exp. —</span>';
+    const cls = s.key === 'expired' ? 'chip-danger' : (s.key === 'critical' ? 'chip-danger' : (s.key === 'warning' ? 'chip-warn' : 'chip-ok'));
+    const txt = s.key === 'expired' ? 'verlopen ' + fmtExpiry(expiry) : fmtExpiry(expiry);
+    return '<span class="chip ' + cls + '">' + txt + '</span>';
+}
+
+function bagStats(bag) {
+    let expired = 0, soon = 0, short = 0;
+    for (const it of bag.items) {
+        const s = expiryStatus(it.expiry);
+        if (s.key === 'expired') expired++;
+        else if (s.key === 'critical' || s.key === 'warning') soon++;
+        if (it.current < it.target) short++;
+    }
+    return { expired, soon, short };
+}
+
+/* =====================================================================
+   Bestellijst-logica
+   ===================================================================== */
+// Een item hoort op de bestellijst bij tekort, of wanneer (bijna) verlopen
+function orderLines() {
+    const lines = [];
+    for (const bag of state.bags) {
+        for (const it of bag.items) {
+            const s = expiryStatus(it.expiry);
+            const shortage = Math.max(0, it.target - it.current);
+            const reasons = [];
+            let qty = 0;
+            if (s.key === 'expired') { reasons.push('verlopen (' + fmtExpiry(it.expiry) + ')'); qty = it.target; }
+            else if (s.key === 'critical') { reasons.push('verloopt binnen 1 mnd'); qty = it.target; }
+            else if (s.key === 'warning') { reasons.push('verloopt binnen 3 mnd'); qty = it.target; }
+            if (shortage > 0) { reasons.push('tekort: ' + it.current + ' van ' + it.target); qty = Math.max(qty, shortage); }
+            if (reasons.length) {
+                lines.push({
+                    itemId: it.id, bagName: bag.name, name: it.name, unit: it.unit || 'st',
+                    qty: state.orderQty[it.id] != null ? state.orderQty[it.id] : qty,
+                    suggestedQty: qty,
+                    reasons, severity: s.key === 'expired' || shortage > 0 ? 'danger' : 'warn',
+                    included: !state.orderExcluded[it.id]
+                });
+            }
+        }
+    }
+    lines.sort((a, b) => (a.severity === b.severity) ? a.bagName.localeCompare(b.bagName) : (a.severity === 'danger' ? -1 : 1));
+    return lines;
+}
+
+/* =====================================================================
+   Hulpjes
+   ===================================================================== */
+const $ = (sel) => document.querySelector(sel);
+
+function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+function fmtDate(iso) {
+    if (!iso) return null;
+    const [y, m, d] = iso.split('-');
+    return d + '-' + m + '-' + y;
+}
+
+// Download: via de artifact-viewer als die dat aanbiedt, anders als gewone browserdownload
+async function saveFile(filename, text) {
+    const dl = (typeof claude !== 'undefined' && claude.use) ? await claude.use('downloads') : null;
+    if (dl) {
+        try {
+            await dl.save({ filename, data: text });
+            toast('Bestand opgeslagen');
+        } catch (err) {
+            if (err && err.code === 'extension_not_enabled' && filename.endsWith('.csv')) {
+                try {
+                    await dl.save({ filename: filename.replace(/\.csv$/, '.txt'), data: text });
+                    toast('Opgeslagen als .txt');
+                } catch (err2) {
+                    if (!err2 || err2.code !== 'declined') toast('Downloaden lukte hier niet.');
+                }
+                return;
+            }
+            if (err && err.code === 'declined') return;
+            if (err && err.code === 'rate_limited') { toast('Nog een download open — probeer zo opnieuw.'); return; }
+            toast('Downloaden lukte hier niet.');
+        }
+        return;
+    }
+    const blob = new Blob([text], { type: 'application/octet-stream' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(a.href);
+}
+
+let toastTimer = null;
+function toast(msg) {
+    const el = $('#toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+/* =====================================================================
+   Navigatie
+   ===================================================================== */
+let currentBagId = null;
+
+function showView(id) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    $('#' + id).classList.add('active');
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.view === id));
+    window.scrollTo(0, 0);
+}
+
+document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        renderAll();
+        showView(tab.dataset.view);
+    });
+});
+
+/* =====================================================================
+   Render: tassen-overzicht
+   ===================================================================== */
+function renderBags() {
+    const list = $('#bags-list');
+    if (!state.bags.length) {
+        list.innerHTML = '<div class="empty">Nog geen tassen. Voeg de eerste tas toe.</div>';
+        $('#bags-summary').textContent = '';
+        return;
+    }
+    let totExpired = 0, totSoon = 0, totShort = 0;
+    list.innerHTML = state.bags.map(bag => {
+        const st = bagStats(bag);
+        totExpired += st.expired; totSoon += st.soon; totShort += st.short;
+        const badges = [];
+        if (st.expired) badges.push('<span class="chip chip-danger">' + st.expired + ' verlopen</span>');
+        if (st.soon) badges.push('<span class="chip chip-warn">' + st.soon + ' bijna verlopen</span>');
+        if (st.short) badges.push('<span class="chip chip-danger">' + st.short + ' tekort</span>');
+        if (!badges.length) badges.push('<span class="chip chip-ok">op orde</span>');
+        const counted = bag.lastCount ? 'geteld ' + fmtDate(bag.lastCount) : 'nog niet geteld';
+        return '<div class="card clickable" data-bag="' + bag.id + '" role="button" tabindex="0" aria-label="' + esc(bag.name) + '">' +
+            '<div class="bag-main">' +
+                '<div class="bag-title-row"><div class="bag-name">' + esc(bag.name) + '</div>' +
+                '<div class="muted" style="white-space:nowrap;">' + bag.items.length + ' items</div></div>' +
+                '<div class="bag-meta">' + esc(bag.location || '') + (bag.location ? ' · ' : '') + counted + '</div>' +
+                '<div class="bag-badges">' + badges.join('') + '</div>' +
+            '</div></div>';
+    }).join('');
+
+    const parts = [];
+    if (totExpired) parts.push(totExpired + ' verlopen');
+    if (totSoon) parts.push(totSoon + ' bijna verlopen');
+    if (totShort) parts.push(totShort + ' tekort');
+    $('#bags-summary').textContent = parts.length ? 'Aandacht nodig: ' + parts.join(', ') : 'Alle tassen op orde';
+
+    list.querySelectorAll('[data-bag]').forEach(el => {
+        const open = () => { currentBagId = el.dataset.bag; renderBagDetail(); showView('view-bag-detail'); };
+        el.addEventListener('click', open);
+        el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+    });
+}
+
+/* =====================================================================
+   Render: tas-detail
+   ===================================================================== */
+function getBag(id) { return state.bags.find(b => b.id === id); }
+
+function renderBagDetail() {
+    const bag = getBag(currentBagId);
+    if (!bag) { showView('view-bags'); return; }
+    $('#bag-detail-name').textContent = bag.name;
+    $('#bag-detail-sub').textContent = (bag.location ? bag.location + ' · ' : '') +
+        (bag.lastCount ? 'laatste telling ' + fmtDate(bag.lastCount) : 'nog niet geteld');
+
+    const st = bagStats(bag);
+    const notices = [];
+    if (st.expired) notices.push('<div class="notice notice-danger"><strong>' + st.expired + ' item(s) verlopen.</strong> Vervang deze voor de volgende vlucht.</div>');
+    if (st.short) notices.push('<div class="notice notice-danger"><strong>' + st.short + ' item(s) onder de norm.</strong> Zie de bestellijst.</div>');
+    if (st.soon && !st.expired) notices.push('<div class="notice notice-warn">' + st.soon + ' item(s) verlopen binnen ' + (WARN_DAYS / 30) + ' maanden.</div>');
+    $('#bag-detail-notices').innerHTML = notices.join('');
+
+    const listEl = $('#bag-items-list');
+    if (!bag.items.length) {
+        listEl.innerHTML = '<div class="empty">Nog geen items in deze tas.</div>';
+        return;
+    }
+    listEl.innerHTML = bag.items.map(it => {
+        const shortCls = it.current < it.target ? ' qty-short' : '';
+        return '<div class="item-row clickable" data-item="' + it.id + '" role="button" tabindex="0">' +
+            '<div class="item-info">' +
+                '<div class="item-name">' + esc(it.name) + '</div>' +
+                '<div class="item-detail">' + expiryChip(it.expiry) + (it.lot ? '<span>lot ' + esc(it.lot) + '</span>' : '') + '</div>' +
+            '</div>' +
+            '<div class="item-qty' + shortCls + '">' + it.current + ' <span class="of">/ ' + it.target + ' ' + esc(it.unit || 'st') + '</span></div>' +
+        '</div>';
+    }).join('');
+
+    listEl.querySelectorAll('[data-item]').forEach(el => {
+        const open = () => openItemModal(bag.id, el.dataset.item);
+        el.addEventListener('click', open);
+        el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+    });
+}
+
+$('#btn-back-bags').addEventListener('click', () => { renderBags(); showView('view-bags'); });
+$('#btn-add-item').addEventListener('click', () => openItemModal(currentBagId, null));
+$('#btn-edit-bag').addEventListener('click', () => openBagModal(currentBagId));
+$('#btn-add-bag').addEventListener('click', () => openBagModal(null));
+
+/* =====================================================================
+   Telling (count mode)
+   ===================================================================== */
+let countSession = null; // { bagId, index, results: [{itemId, counted, expiry}] }
+
+$('#btn-start-count').addEventListener('click', () => {
+    const bag = getBag(currentBagId);
+    if (!bag || !bag.items.length) { toast('Deze tas heeft nog geen items.'); return; }
+    countSession = { bagId: bag.id, index: 0, results: bag.items.map(it => ({ itemId: it.id, counted: it.current, expiry: it.expiry })) };
+    renderCountStep();
+    showView('view-count');
+});
+
+function renderCountStep() {
+    const bag = getBag(countSession.bagId);
+    const total = bag.items.length;
+    const i = countSession.index;
+    $('#count-bag-label').textContent = 'Telling · ' + bag.name;
+
+    if (i >= total) { renderCountSummary(); return; }
+    $('#count-progress-fill').style.width = Math.round((i / total) * 100) + '%';
+
+    const it = bag.items[i];
+    const res = countSession.results[i];
+    $('#count-body').innerHTML =
+        '<div class="muted" style="margin-bottom:6px;">Item ' + (i + 1) + ' van ' + total + '</div>' +
+        '<div class="count-item-name">' + esc(it.name) + '</div>' +
+        '<div class="count-item-sub">Norm: ' + it.target + ' ' + esc(it.unit || 'st') + (it.lot ? ' · lot ' + esc(it.lot) : '') + '</div>' +
+        '<div class="stepper">' +
+            '<button id="count-minus" aria-label="Minder">&minus;</button>' +
+            '<input type="number" id="count-input" inputmode="numeric" min="0" value="' + res.counted + '" aria-label="Getelde hoeveelheid">' +
+            '<button id="count-plus" aria-label="Meer">+</button>' +
+        '</div>' +
+        '<div class="count-target">geteld aantal</div>' +
+        '<div class="count-expiry-block">' +
+            '<label for="count-expiry">Vervaldatum op verpakking</label>' +
+            '<input type="month" id="count-expiry" value="' + (res.expiry || '') + '">' +
+        '</div>' +
+        '<div class="btn-row">' +
+            (i > 0 ? '<button class="btn" id="count-prev">&larr; Vorige</button>' : '') +
+            '<button class="btn btn-primary" id="count-next" style="flex:1;">' + (i === total - 1 ? 'Naar overzicht' : 'Volgende &rarr;') + '</button>' +
+            '<button class="btn" id="count-cancel">Stop</button>' +
+        '</div>';
+
+    const input = $('#count-input');
+    $('#count-minus').addEventListener('click', () => { input.value = Math.max(0, (parseInt(input.value) || 0) - 1); });
+    $('#count-plus').addEventListener('click', () => { input.value = (parseInt(input.value) || 0) + 1; });
+    const commit = () => {
+        countSession.results[i].counted = Math.max(0, parseInt(input.value) || 0);
+        countSession.results[i].expiry = $('#count-expiry').value || null;
+    };
+    $('#count-next').addEventListener('click', () => { commit(); countSession.index++; renderCountStep(); });
+    const prev = $('#count-prev');
+    if (prev) prev.addEventListener('click', () => { commit(); countSession.index--; renderCountStep(); });
+    $('#count-cancel').addEventListener('click', () => {
+        countSession = null;
+        renderBagDetail();
+        showView('view-bag-detail');
+    });
+}
+
+function renderCountSummary() {
+    const bag = getBag(countSession.bagId);
+    $('#count-progress-fill').style.width = '100%';
+    const rows = countSession.results.map((r, idx) => {
+        const it = bag.items[idx];
+        const diff = r.counted - it.target;
+        const s = expiryStatus(r.expiry);
+        const flags = [];
+        if (diff < 0) flags.push('<span class="chip chip-danger">' + diff + '</span>');
+        if (diff > 0) flags.push('<span class="chip chip-neutral">+' + diff + '</span>');
+        if (s.key === 'expired') flags.push('<span class="chip chip-danger">verlopen</span>');
+        else if (s.key === 'critical' || s.key === 'warning') flags.push('<span class="chip chip-warn">' + fmtExpiry(r.expiry) + '</span>');
+        return '<div class="item-row"><div class="item-info"><div class="item-name">' + esc(it.name) + '</div></div>' +
+            '<div style="display:flex;gap:6px;align-items:center;">' + (flags.join('') || '<span class="chip chip-ok">ok</span>') +
+            '<span class="item-qty">' + r.counted + ' <span class="of">/ ' + it.target + '</span></span></div></div>';
+    }).join('');
+
+    const issues = countSession.results.filter((r, idx) => r.counted < bag.items[idx].target || ['expired', 'critical', 'warning'].includes(expiryStatus(r.expiry).key)).length;
+
+    $('#count-body').innerHTML =
+        '<h1 class="count-item-name" style="margin-bottom:6px;">Telling afgerond</h1>' +
+        '<p class="muted" style="margin-bottom:16px;">' + (issues ? issues + ' item(s) vragen aandacht; deze verschijnen op de bestellijst.' : 'Alles op orde.') + '</p>' +
+        '<div class="card">' + rows + '</div>' +
+        '<div class="btn-row">' +
+            '<button class="btn btn-primary btn-block" id="count-save">Telling opslaan</button>' +
+            '<button class="btn btn-block" id="count-discard">Verwerpen</button>' +
+        '</div>';
+
+    $('#count-save').addEventListener('click', () => {
+        countSession.results.forEach((r, idx) => {
+            bag.items[idx].current = r.counted;
+            bag.items[idx].expiry = r.expiry;
+            // nieuwe voorraad geteld: eerdere handmatige bestel-uitsluiting vervalt
+            delete state.orderExcluded[bag.items[idx].id];
+            delete state.orderQty[bag.items[idx].id];
+        });
+        bag.lastCount = todayISO();
+        save();
+        countSession = null;
+        renderAll();
+        renderBagDetail();
+        showView('view-bag-detail');
+        toast('Telling opgeslagen');
+    });
+    $('#count-discard').addEventListener('click', () => {
+        countSession = null;
+        renderBagDetail();
+        showView('view-bag-detail');
+    });
+}
+
+/* =====================================================================
+   Render: vervaldata
+   ===================================================================== */
+let expiryFilter = 'attention';
+
+$('#expiry-filters').addEventListener('click', e => {
+    const btn = e.target.closest('.filter-chip');
+    if (!btn) return;
+    expiryFilter = btn.dataset.filter;
+    document.querySelectorAll('#expiry-filters .filter-chip').forEach(c => c.classList.toggle('active', c === btn));
+    renderExpiry();
+});
+
+function renderExpiry() {
+    const rows = [];
+    for (const bag of state.bags) {
+        for (const it of bag.items) {
+            const s = expiryStatus(it.expiry);
+            if (expiryFilter === 'expired' && s.key !== 'expired') continue;
+            if (expiryFilter === 'attention' && !['expired', 'critical', 'warning'].includes(s.key)) continue;
+            rows.push({ bag, it, s });
+        }
+    }
+    rows.sort((a, b) => {
+        const da = a.s.days == null ? Infinity : a.s.days;
+        const db = b.s.days == null ? Infinity : b.s.days;
+        return da - db;
+    });
+    const el = $('#expiry-list');
+    if (!rows.length) {
+        el.innerHTML = '<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg><br>Niets ' + (expiryFilter === 'expired' ? 'verlopen' : 'dat aandacht nodig heeft') + '.</div>';
+        return;
+    }
+    el.innerHTML = rows.map(({ bag, it }) =>
+        '<div class="item-row"><div class="item-info">' +
+            '<div class="item-name">' + esc(it.name) + '</div>' +
+            '<div class="item-detail"><span>' + esc(bag.name) + '</span>' + (it.lot ? '<span>lot ' + esc(it.lot) + '</span>' : '') + '</div>' +
+        '</div>' + expiryChip(it.expiry) + '</div>'
+    ).join('');
+}
+
+/* =====================================================================
+   Render: bestellijst
+   ===================================================================== */
+function renderOrder() {
+    const lines = orderLines();
+    const el = $('#order-list');
+    const included = lines.filter(l => l.included);
+    $('#order-notices').innerHTML = included.length
+        ? '<div class="notice notice-neutral">' + included.length + ' regel(s) klaar om te bestellen. Vink uit wat niet mee hoeft.</div>'
+        : '';
+    if (!lines.length) {
+        el.innerHTML = '<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg><br>Niets te bestellen — alle tassen op orde.</div>';
+        return;
+    }
+    el.innerHTML = lines.map(l =>
+        '<div class="order-row">' +
+            '<input type="checkbox" data-check="' + l.itemId + '"' + (l.included ? ' checked' : '') + ' aria-label="Bestel ' + esc(l.name) + '">' +
+            '<div class="item-info">' +
+                '<div class="item-name">' + esc(l.name) + '</div>' +
+                '<div class="item-detail"><span>' + esc(l.bagName) + '</span></div>' +
+                '<div class="order-reason" style="color:var(--accent-' + (l.severity === 'danger' ? 'red' : 'yellow') + ');">' + l.reasons.map(esc).join(' · ') + '</div>' +
+            '</div>' +
+            '<input type="number" class="qty-input" min="0" value="' + l.qty + '" data-qty="' + l.itemId + '" aria-label="Aantal">' +
+        '</div>'
+    ).join('');
+
+    el.querySelectorAll('[data-check]').forEach(cb => cb.addEventListener('change', () => {
+        if (cb.checked) delete state.orderExcluded[cb.dataset.check];
+        else state.orderExcluded[cb.dataset.check] = true;
+        save();
+        renderOrder(); renderDots();
+    }));
+    el.querySelectorAll('[data-qty]').forEach(inp => inp.addEventListener('change', () => {
+        state.orderQty[inp.dataset.qty] = Math.max(0, parseInt(inp.value) || 0);
+        save();
+    }));
+}
+
+function orderText() {
+    const lines = orderLines().filter(l => l.included && l.qty > 0);
+    if (!lines.length) return null;
+    let txt = 'Bestelling medisch materiaal AE — ' + fmtDate(todayISO()) + '\n\n';
+    let curBag = '';
+    for (const l of lines) {
+        if (l.bagName !== curBag) { curBag = l.bagName; txt += curBag + '\n'; }
+        txt += '  - ' + l.qty + ' ' + l.unit + '  ' + l.name + '  (' + l.reasons.join('; ') + ')\n';
+    }
+    return txt;
+}
+
+$('#btn-order-copy').addEventListener('click', async () => {
+    const txt = orderText();
+    if (!txt) { toast('Geen regels geselecteerd.'); return; }
+    try { await navigator.clipboard.writeText(txt); toast('Bestellijst gekopieerd'); }
+    catch (e) { toast('Kopiëren niet toegestaan door de browser.'); }
+});
+
+$('#btn-order-mail').addEventListener('click', () => {
+    const txt = orderText();
+    if (!txt) { toast('Geen regels geselecteerd.'); return; }
+    location.href = 'mailto:?subject=' + encodeURIComponent('Bestelling medisch materiaal AE') + '&body=' + encodeURIComponent(txt);
+});
+
+$('#btn-order-csv').addEventListener('click', () => {
+    const lines = orderLines().filter(l => l.included && l.qty > 0);
+    if (!lines.length) { toast('Geen regels geselecteerd.'); return; }
+    const q = (s) => '"' + String(s).replace(/"/g, '""') + '"';
+    let csv = 'Tas;Item;Aantal;Eenheid;Reden\n';
+    for (const l of lines) csv += [q(l.bagName), q(l.name), l.qty, q(l.unit), q(l.reasons.join('; '))].join(';') + '\n';
+    saveFile('bestellijst-ae-' + todayISO() + '.csv', '﻿' + csv);
+});
+
+/* =====================================================================
+   Tab-badges
+   ===================================================================== */
+function renderDots() {
+    let expired = 0;
+    for (const bag of state.bags) expired += bagStats(bag).expired;
+    const eDot = $('#expiry-dot');
+    eDot.hidden = !expired;
+    eDot.textContent = expired;
+
+    const orders = orderLines().filter(l => l.included).length;
+    const oDot = $('#order-dot');
+    oDot.hidden = !orders;
+    oDot.textContent = orders;
+}
+
+/* =====================================================================
+   Modals: tas en item bewerken
+   ===================================================================== */
+const backdrop = $('#modal-backdrop');
+const modal = $('#modal');
+
+function openModal(html) {
+    modal.innerHTML = html;
+    backdrop.classList.add('open');
+}
+function closeModal() {
+    backdrop.classList.remove('open');
+    modal.innerHTML = '';
+}
+backdrop.addEventListener('click', e => { if (e.target === backdrop) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && backdrop.classList.contains('open')) closeModal(); });
+
+function openBagModal(bagId) {
+    const bag = bagId ? getBag(bagId) : null;
+    openModal(
+        '<h2>' + (bag ? 'Tas bewerken' : 'Nieuwe tas') + '</h2>' +
+        '<div class="field"><label for="f-bag-name">Naam</label><input id="f-bag-name" value="' + esc(bag ? bag.name : '') + '" placeholder="bijv. Rugzak 1 — Airway"></div>' +
+        '<div class="field"><label for="f-bag-loc">Locatie</label><input id="f-bag-loc" value="' + esc(bag ? bag.location : '') + '" placeholder="bijv. RW, cabine links"></div>' +
+        '<div class="modal-actions">' +
+            (bag ? '<button class="btn btn-danger" id="f-bag-delete" style="margin-right:auto;">Verwijder</button>' : '') +
+            '<button class="btn" id="f-cancel">Annuleer</button>' +
+            '<button class="btn btn-primary" id="f-bag-save">Opslaan</button>' +
+        '</div>'
+    );
+    $('#f-cancel').addEventListener('click', closeModal);
+    $('#f-bag-save').addEventListener('click', () => {
+        const name = $('#f-bag-name').value.trim();
+        if (!name) { toast('Geef de tas een naam.'); return; }
+        if (bag) { bag.name = name; bag.location = $('#f-bag-loc').value.trim(); }
+        else {
+            const nb = { id: uid(), name, location: $('#f-bag-loc').value.trim(), lastCount: null, items: [] };
+            state.bags.push(nb);
+            currentBagId = nb.id;
+        }
+        save(); closeModal(); renderAll();
+        if (bag) renderBagDetail(); else { renderBagDetail(); showView('view-bag-detail'); }
+    });
+    const del = $('#f-bag-delete');
+    if (del) del.addEventListener('click', () => {
+        if (!confirm('Tas "' + bag.name + '" en alle items verwijderen?')) return;
+        state.bags = state.bags.filter(b => b.id !== bag.id);
+        save(); closeModal(); renderAll(); showView('view-bags');
+    });
+}
+
+function openItemModal(bagId, itemId) {
+    const bag = getBag(bagId);
+    const it = itemId ? bag.items.find(i => i.id === itemId) : null;
+    openModal(
+        '<h2>' + (it ? 'Item bewerken' : 'Nieuw item') + '</h2>' +
+        '<div class="field"><label for="f-it-name">Naam</label><input id="f-it-name" value="' + esc(it ? it.name : '') + '" placeholder="bijv. NaCl 0,9% 500 ml"></div>' +
+        '<div class="field-row">' +
+            '<div class="field"><label for="f-it-target">Norm (aantal)</label><input id="f-it-target" type="number" min="0" inputmode="numeric" value="' + (it ? it.target : 1) + '"></div>' +
+            '<div class="field"><label for="f-it-current">Aanwezig</label><input id="f-it-current" type="number" min="0" inputmode="numeric" value="' + (it ? it.current : 0) + '"></div>' +
+        '</div>' +
+        '<div class="field-row">' +
+            '<div class="field"><label for="f-it-unit">Eenheid</label><input id="f-it-unit" value="' + esc(it ? it.unit : 'st') + '" placeholder="st / amp / zak"></div>' +
+            '<div class="field"><label for="f-it-lot">Lotnummer</label><input id="f-it-lot" value="' + esc(it ? it.lot : '') + '"></div>' +
+        '</div>' +
+        '<div class="field"><label for="f-it-expiry">Vervaldatum (maand)</label><input id="f-it-expiry" type="month" value="' + (it && it.expiry ? it.expiry : '') + '"></div>' +
+        '<div class="modal-actions">' +
+            (it ? '<button class="btn btn-danger" id="f-it-delete" style="margin-right:auto;">Verwijder</button>' : '') +
+            '<button class="btn" id="f-cancel">Annuleer</button>' +
+            '<button class="btn btn-primary" id="f-it-save">Opslaan</button>' +
+        '</div>'
+    );
+    $('#f-cancel').addEventListener('click', closeModal);
+    $('#f-it-save').addEventListener('click', () => {
+        const name = $('#f-it-name').value.trim();
+        if (!name) { toast('Geef het item een naam.'); return; }
+        const data = {
+            name,
+            target: Math.max(0, parseInt($('#f-it-target').value) || 0),
+            current: Math.max(0, parseInt($('#f-it-current').value) || 0),
+            unit: $('#f-it-unit').value.trim() || 'st',
+            lot: $('#f-it-lot').value.trim(),
+            expiry: $('#f-it-expiry').value || null
+        };
+        if (it) Object.assign(it, data);
+        else bag.items.push(Object.assign({ id: uid() }, data));
+        save(); closeModal(); renderAll(); renderBagDetail();
+    });
+    const del = $('#f-it-delete');
+    if (del) del.addEventListener('click', () => {
+        if (!confirm('Item "' + it.name + '" verwijderen?')) return;
+        bag.items = bag.items.filter(i => i.id !== it.id);
+        delete state.orderExcluded[it.id];
+        delete state.orderQty[it.id];
+        save(); closeModal(); renderAll(); renderBagDetail();
+    });
+}
+
+/* =====================================================================
+   Instellingen: back-up, herstel, demodata
+   ===================================================================== */
+$('#btn-settings').addEventListener('click', () => {
+    openModal(
+        '<h2>Instellingen</h2>' +
+        '<p class="muted" style="margin-bottom:14px;">Gegevens staan lokaal op dit apparaat (browseropslag). Maak regelmatig een back-up, zeker voordat je van apparaat wisselt.</p>' +
+        '<div class="btn-row" style="flex-direction:column;">' +
+            '<button class="btn btn-block" id="f-export">Back-up downloaden (JSON)</button>' +
+            '<button class="btn btn-block" id="f-import">Back-up herstellen</button>' +
+            '<button class="btn btn-block btn-danger" id="f-reset">Terug naar demodata</button>' +
+        '</div>' +
+        '<input type="file" id="f-import-file" accept="application/json" hidden>' +
+        '<div class="modal-actions"><button class="btn" id="f-cancel">Sluit</button></div>'
+    );
+    $('#f-cancel').addEventListener('click', closeModal);
+    $('#f-export').addEventListener('click', () => {
+        saveFile('tascheck-backup-' + todayISO() + '.json', JSON.stringify(state, null, 2));
+    });
+    $('#f-import').addEventListener('click', () => $('#f-import-file').click());
+    $('#f-import-file').addEventListener('change', e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+            try {
+                const data = JSON.parse(reader.result);
+                if (!Array.isArray(data.bags)) throw new Error('geen tassen gevonden');
+                state = data;
+                state.orderExcluded = state.orderExcluded || {};
+                state.orderQty = state.orderQty || {};
+                save(); closeModal(); renderAll(); showView('view-bags');
+                toast('Back-up hersteld');
+            } catch (err) {
+                toast('Bestand niet herkend als Tascheck-back-up.');
+            }
+        };
+        reader.readAsText(file);
+    });
+    $('#f-reset').addEventListener('click', () => {
+        if (!confirm('Alle huidige gegevens vervangen door demodata?')) return;
+        state = seedData();
+        save(); closeModal(); renderAll(); showView('view-bags');
+        toast('Demodata geladen');
+    });
+});
+
+/* =====================================================================
+   Init
+   ===================================================================== */
+function renderAll() {
+    renderBags();
+    renderExpiry();
+    renderOrder();
+    renderDots();
+}
+
+load();
+renderAll();
+showView('view-bags');
+</script>
+</body>
+</html>
