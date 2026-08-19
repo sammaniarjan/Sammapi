@@ -10,6 +10,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "xlsx": "^0.18.5"
+    "xlsx": "npm:@e965/xlsx@^0.20.3"
   }
 }
