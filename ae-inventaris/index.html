@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Tascheck</title>
-<meta name="description" content="Tellingen en vervaldatumbewaking van medische AE-tassen, met automatische bestellijst.">
+<meta name="description" content="Tellingen en vervaldatumbewaking van medische AE-sets, met automatische bestellijst op SAP-nummer.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -33,7 +33,7 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 body {
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     background: var(--bg-primary);
     color: var(--text-primary);
     line-height: 1.6;
@@ -81,7 +81,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--accent-green-dim
 }
 .logo { flex: 1; min-width: 0; }
 .logo h1 {
-    font-family: 'Instrument Serif', serif;
+    font-family: 'Instrument Serif', Georgia, 'Times New Roman', serif;
     font-size: 1.5rem;
     font-weight: 400;
     color: var(--accent-green);
@@ -90,7 +90,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--accent-green-dim
 }
 .logo span {
     display: block;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-size: 0.7rem;
     color: var(--text-muted);
     text-transform: uppercase;
@@ -120,7 +120,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--accent-green-dim
 .eyebrow button:hover { color: var(--accent-green); }
 .page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
 .page-head h1 {
-    font-family: 'Instrument Serif', serif;
+    font-family: 'Instrument Serif', Georgia, 'Times New Roman', serif;
     font-size: 1.75rem;
     font-weight: 400;
     letter-spacing: -0.02em;
@@ -145,13 +145,11 @@ input:focus, select:focus, textarea:focus { border-color: var(--accent-green-dim
     transform: translateY(-2px);
     box-shadow: var(--shadow);
 }
-.card-pad { padding: 16px 20px; }
-
-.bag-main { padding: 16px 20px; min-width: 0; }
-.bag-title-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
-.bag-name { font-weight: 500; font-size: 1rem; }
-.bag-meta { color: var(--text-muted); font-size: 0.8rem; margin-top: 2px; }
-.bag-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.card-main { padding: 16px 20px; min-width: 0; }
+.card-title-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.card-name { font-weight: 500; font-size: 1rem; }
+.card-meta { color: var(--text-muted); font-size: 0.8rem; margin-top: 2px; }
+.card-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 
 .chip {
     display: inline-flex; align-items: center; gap: 5px;
@@ -164,7 +162,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--accent-green-dim
 .chip-warn { background: rgba(251, 191, 36, 0.08); border: 1px solid rgba(251, 191, 36, 0.2); color: var(--accent-yellow); }
 .chip-ok { background: rgba(45, 212, 160, 0.08); border: 1px solid rgba(45, 212, 160, 0.2); color: var(--accent-green); }
 .chip-neutral { background: var(--bg-card-hover); border: 1px solid var(--border); color: var(--text-secondary); }
-.chip-accent { background: rgba(45, 212, 160, 0.08); border: 1px solid rgba(45, 212, 160, 0.2); color: var(--accent-green); }
+.chip-blue { background: rgba(96, 165, 250, 0.08); border: 1px solid rgba(96, 165, 250, 0.2); color: var(--accent-blue); }
 
 /* ---------- Buttons ---------- */
 .btn {
@@ -200,17 +198,34 @@ input:focus, select:focus, textarea:focus { border-color: var(--accent-green-dim
 .item-row:first-child { border-top: none; }
 .item-row.clickable { cursor: pointer; transition: background 0.2s ease; }
 .item-row.clickable:hover { background: var(--bg-card-hover); }
+.item-thumb {
+    width: 40px; height: 40px; flex-shrink: 0;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+    border: 1px solid var(--border-light);
+    background: var(--bg-secondary);
+}
 .item-info { flex: 1; min-width: 0; }
 .item-name { font-weight: 500; font-size: 0.9rem; }
 .item-detail { font-size: 0.78rem; color: var(--text-muted); display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin-top: 3px; }
+.sap-ref { font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace; font-size: 0.72rem; color: var(--text-secondary); }
 .item-qty {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace;
     font-weight: 500; font-size: 0.9rem;
     text-align: right; flex-shrink: 0;
     color: var(--text-primary);
 }
 .item-qty .of { color: var(--text-muted); font-weight: 400; font-size: 0.78rem; }
 .qty-short { color: var(--accent-red); }
+
+.group-head {
+    padding: 10px 20px 6px;
+    border-top: 1px solid var(--border);
+    font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em;
+    font-weight: 500; color: var(--text-muted);
+    background: var(--bg-secondary);
+}
+.group-head:first-child { border-top: none; }
 
 /* ---------- Tab bar ---------- */
 .tabbar {
@@ -236,7 +251,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--accent-green-dim
     position: absolute; top: 4px; right: calc(50% - 18px);
     min-width: 16px; height: 16px; padding: 0 4px; border-radius: 999px;
     background: var(--accent-red); color: var(--bg-primary);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace;
     font-size: 0.65rem; font-weight: 500;
     display: grid; place-items: center;
 }
@@ -262,12 +277,19 @@ input:focus, select:focus, textarea:focus { border-color: var(--accent-green-dim
 .count-progress { height: 4px; background: var(--bg-card); border-radius: 999px; overflow: hidden; margin-bottom: 20px; }
 .count-progress-fill { height: 100%; background: var(--accent-green); border-radius: 999px; transition: width 0.2s ease; }
 .count-item-name {
-    font-family: 'Instrument Serif', serif;
+    font-family: 'Instrument Serif', Georgia, 'Times New Roman', serif;
     font-size: 1.75rem; font-weight: 400;
     letter-spacing: -0.02em; line-height: 1.2;
     text-wrap: balance;
 }
 .count-item-sub { color: var(--text-secondary); font-size: 0.875rem; margin-top: 5px; }
+.count-photo {
+    display: block;
+    max-width: 100%; max-height: 180px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-light);
+    margin: 14px 0 0;
+}
 .stepper { display: flex; align-items: center; justify-content: center; gap: 18px; margin: 28px 0; }
 .stepper button {
     width: 62px; height: 62px; border-radius: 50%;
@@ -280,7 +302,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--accent-green-dim
 .stepper button:active { background: var(--accent-green-dim); border-color: var(--accent-green); color: var(--accent-green); }
 .stepper input {
     width: 100px; text-align: center;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace;
     font-size: 2.2rem; font-weight: 500;
     color: var(--accent-green);
     border: none; background: transparent;
@@ -328,7 +350,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--accent-green-dim
     .modal { border-radius: var(--radius); padding-bottom: 22px; }
 }
 .modal h2 {
-    font-family: 'Instrument Serif', serif;
+    font-family: 'Instrument Serif', Georgia, 'Times New Roman', serif;
     font-size: 1.4rem; font-weight: 400;
     letter-spacing: -0.02em;
     margin-bottom: 16px;
@@ -343,16 +365,25 @@ input:focus, select:focus, textarea:focus { border-color: var(--accent-green-dim
 }
 .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; flex-wrap: wrap; }
+.photo-preview {
+    max-width: 100%; max-height: 140px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-light);
+    display: block; margin-bottom: 8px;
+}
 
 /* ---------- Order list ---------- */
 .order-row { display: flex; align-items: flex-start; gap: 12px; padding: 13px 20px; border-top: 1px solid var(--border); }
 .order-row:first-child { border-top: none; }
+.order-row.resolved { opacity: 0.55; }
 .order-row input[type="checkbox"] { width: 18px; height: 18px; margin-top: 3px; flex-shrink: 0; accent-color: var(--accent-green); }
+.order-controls { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; flex-shrink: 0; }
 .order-row .qty-input {
     width: 62px; text-align: center;
-    font-family: 'JetBrains Mono', monospace;
-    padding: 5px 6px; flex-shrink: 0;
+    font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+    padding: 5px 6px;
 }
+.order-row select { width: auto; padding: 4px 8px; font-size: 0.75rem; }
 .order-reason { font-size: 0.75rem; margin-top: 3px; }
 
 .empty {
@@ -396,42 +427,58 @@ input:focus, select:focus, textarea:focus { border-color: var(--accent-green-dim
 
 <div class="wrap">
 
-    <!-- ===== Tassen (dashboard) ===== -->
-    <section class="view" id="view-bags">
+    <!-- ===== Sets (dashboard) ===== -->
+    <section class="view" id="view-sets">
         <div class="page-head">
             <div>
-                <h1>Tassen</h1>
-                <div class="sub" id="bags-summary"></div>
+                <h1>Sets</h1>
+                <div class="sub" id="sets-summary"></div>
             </div>
-            <button class="btn btn-sm" id="btn-add-bag">+ Tas</button>
+            <button class="btn btn-sm" id="btn-add-set">+ Set</button>
         </div>
-        <div id="bags-list"></div>
+        <div id="sets-list"></div>
     </section>
 
-    <!-- ===== Tas detail ===== -->
-    <section class="view" id="view-bag-detail">
-        <div class="eyebrow"><button id="btn-back-bags" style="color:inherit;font:inherit;text-transform:inherit;letter-spacing:inherit;">&larr; Alle tassen</button></div>
+    <!-- ===== Set detail (onderdelen) ===== -->
+    <section class="view" id="view-set-detail">
+        <div class="eyebrow"><button id="btn-back-sets" style="color:inherit;font:inherit;text-transform:inherit;letter-spacing:inherit;">&larr; Alle sets</button></div>
         <div class="page-head">
             <div>
-                <h1 id="bag-detail-name"></h1>
-                <div class="sub" id="bag-detail-sub"></div>
+                <h1 id="set-detail-name"></h1>
+                <div class="sub" id="set-detail-sub"></div>
             </div>
         </div>
-        <div id="bag-detail-notices"></div>
+        <div class="btn-row" style="margin-bottom:16px;">
+            <button class="btn" id="btn-add-part">+ Onderdeel</button>
+            <button class="btn" id="btn-edit-set">Bewerk set</button>
+        </div>
+        <div id="parts-list"></div>
+    </section>
+
+    <!-- ===== Onderdeel detail (artikelen) ===== -->
+    <section class="view" id="view-part-detail">
+        <div class="eyebrow"><button id="btn-back-set" style="color:inherit;font:inherit;text-transform:inherit;letter-spacing:inherit;">&larr; Terug</button></div>
+        <div class="page-head">
+            <div>
+                <h1 id="part-detail-name"></h1>
+                <div class="sub" id="part-detail-sub"></div>
+            </div>
+        </div>
+        <div id="part-detail-notices"></div>
         <div class="btn-row" style="margin-bottom:16px;">
             <button class="btn btn-primary" id="btn-start-count">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
                 Start telling
             </button>
-            <button class="btn" id="btn-add-item">+ Item</button>
-            <button class="btn" id="btn-edit-bag">Bewerk tas</button>
+            <button class="btn" id="btn-add-item">+ Artikel</button>
+            <button class="btn" id="btn-edit-part">Bewerk onderdeel</button>
         </div>
-        <div class="card" id="bag-items-card"><div id="bag-items-list"></div></div>
+        <div class="card" id="part-items-card"><div id="part-items-list"></div></div>
     </section>
 
     <!-- ===== Telling ===== -->
     <section class="view" id="view-count">
-        <div class="eyebrow" id="count-bag-label"></div>
+        <div class="eyebrow" id="count-label"></div>
         <div class="count-progress"><div class="count-progress-fill" id="count-progress-fill"></div></div>
         <div id="count-body"></div>
     </section>
@@ -441,7 +488,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--accent-green-dim
         <div class="page-head">
             <div>
                 <h1>Vervaldata</h1>
-                <div class="sub">Alle items, gesorteerd op vervaldatum</div>
+                <div class="sub">Alle artikelen, gesorteerd op vervaldatum</div>
             </div>
         </div>
         <div class="filters" id="expiry-filters">
@@ -460,26 +507,27 @@ input:focus, select:focus, textarea:focus { border-color: var(--accent-green-dim
                 <div class="sub">Automatisch samengesteld uit tekorten en vervaldatums</div>
             </div>
         </div>
+        <div class="notice notice-neutral">Aanvulvolgorde: eerst de <strong>grijze voorraad</strong>, dan de voorraad van <strong>MatLog (Gilze)</strong>; wat daar niet is gaat als <strong>VMF-bestelling</strong> via SharePoint MatLog naar het MGLC. Kies per regel de herkomst — regels die uit grijze voorraad of MatLog komen gaan niet mee in de bestelling.</div>
         <div id="order-notices"></div>
         <div class="card" id="order-card"><div id="order-list"></div></div>
         <div class="btn-row">
             <button class="btn btn-primary" id="btn-order-mail">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                Bestel via e-mail
+                Bestelling via e-mail
             </button>
             <button class="btn" id="btn-order-copy">Kopieer lijst</button>
             <button class="btn" id="btn-order-csv">Download CSV</button>
         </div>
-        <p class="muted" style="margin-top:12px;">Automatisch bestellen bij een leverancier vergt een koppeling met het bestelsysteem; tot die tijd genereert de app de bestellijst als e-mail of CSV.</p>
+        <p class="muted" style="margin-top:12px;">De export bevat per regel het SAP-nummer en de SAP-benaming; de VMF-bestelling gaat op SAP-nummer.</p>
     </section>
 
 </div>
 
 <!-- ===== Tab bar ===== -->
 <nav class="tabbar">
-    <button class="tab active" data-view="view-bags" id="tab-bags">
+    <button class="tab active" data-view="view-sets" id="tab-sets">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><path d="M12 11v3"></path><path d="M10.5 12.5h3"></path></svg>
-        Tassen
+        Sets
     </button>
     <button class="tab" data-view="view-expiry" id="tab-expiry">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
@@ -505,10 +553,14 @@ input:focus, select:focus, textarea:focus { border-color: var(--accent-green-dim
 
 /* =====================================================================
    Data & opslag
+   Structuur: set -> onderdeel (tas / container tas / foudraal (O2) /
+   pelicase / unipack) -> artikelen met compartiment-label, SAP-gegevens
+   en optionele foto.
    ===================================================================== */
-const STORAGE_KEY = 'tascheck-data-v1';
+const STORAGE_KEY = 'tascheck-data-v2';
 const WARN_DAYS = 90;   // "bijna verlopen" binnen dit aantal dagen
 const CRIT_DAYS = 30;   // extra urgentie binnen dit aantal dagen
+const PART_TYPES = ['Tas', 'Container tas', 'Foudraal (O2)', 'Pelicase', 'Unipack'];
 
 let state = null;
 
@@ -528,55 +580,94 @@ function monthFromNow(offsetMonths) {
     return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
 }
 
+/* Vaste (dummy)inhoud per onderdeeltype; elke set krijgt dezelfde
+   producten ("vastgestelde producten"), met per set licht variërende
+   vervaldatums en voorraadstanden zodat de demo iets laat zien.
+   SAP-nummers en -benamingen zijn dummy's. */
+function seedTemplate() {
+    const A = (name, sapName, sapNr, target, unit, compartment, expOffset) =>
+        ({ name, sapName, sapNr, target, unit, compartment, expOffset });
+    return [
+        { type: 'Tas', items: [
+            A('Adrenaline 1 mg/ml amp.', 'ADRENALINE INJVLST 1MG/ML AMP 1ML', '10245871', 5, 'amp', 'Ampullen', 3),
+            A('Ondansetron 4 mg amp.', 'ONDANSETRON INJVLST 2MG/ML AMP 2ML', '10245880', 4, 'amp', 'Ampullen', 16),
+            A('Larynxmasker maat 4', 'LARYNXMASKER DISP MT 4', '10298001', 2, 'st', 'Airway', 14),
+            A('Guedel-airway set (3 maten)', 'AIRWAY GUEDEL SET 3 MATEN', '10298015', 1, 'set', 'Airway', 26),
+            A('Israeli bandage 15 cm', 'NOODVERBAND 15CM DISP', '10312445', 3, 'st', 'Verband', 31),
+            A('Hemostatisch gaas', 'GAAS HEMOSTATISCH DISP', '10312460', 2, 'st', 'Verband', -3)
+        ]},
+        { type: 'Container tas', items: [
+            A('NaCl 0,9% 500 ml', 'NATRIUMCHLORIDE 0,9% INF 500ML', '10267001', 4, 'zak', 'Infusie', 1),
+            A('Infuussysteem', 'TOEDIENINGSSYSTEEM INFUUS', '10267010', 4, 'st', 'Infusie', 22),
+            A('Infuuskatheter 18G', 'KATHETER IV 18G DISP', '10267022', 6, 'st', 'Infusie', 9)
+        ]},
+        { type: 'Foudraal (O2)', items: [
+            A('Non-rebreathing masker volwassene', 'MASKER O2 NON-REBREATHING VOLW', '10281004', 2, 'st', '', 19),
+            A('Beademingsballon met reservoir', 'BEADEMINGSBALLON MET O2-RESERVOIR', '10281010', 1, 'st', '', 2),
+            A('Zuurstofslang 2 m', 'SLANG O2 2M', '10281016', 2, 'st', '', 38)
+        ]},
+        { type: 'Pelicase', items: [
+            A('Ecg-elektroden (set)', 'ELEKTRODE ECG DISP SET', '10333210', 4, 'set', 'Monitoring', 11),
+            A('Saturatiesensor disposable', 'SENSOR SPO2 DISP', '10333221', 2, 'st', 'Monitoring', 24),
+            A('Glucose 10% 500 ml', 'GLUCOSE 10% INF 500ML', '10251002', 2, 'zak', 'Medicatie', -2)
+        ]},
+        { type: 'Unipack', items: [
+            A('Tourniquet (CAT)', 'TOURNIQUET CAT', '10344001', 2, 'st', '', null),
+            A('Chest seal', 'CHEST SEAL VENTED DISP', '10344012', 2, 'st', '', 29),
+            A('Reddingsdeken', 'DEKEN ISOLATIE DISP', '10344020', 2, 'st', '', 44)
+        ]}
+    ];
+}
+
 function seedData() {
+    const template = seedTemplate();
+    const sets = [];
+    for (let s = 1; s <= 8; s++) {
+        sets.push({
+            id: uid(),
+            name: 'Set ' + s,
+            beheerders: '',
+            parts: template.map(part => ({
+                id: uid(),
+                name: part.type,
+                lastCount: null,
+                items: part.items.map((it, idx) => ({
+                    id: uid(),
+                    name: it.name,
+                    sapName: it.sapName,
+                    sapNr: it.sapNr,
+                    compartment: it.compartment,
+                    target: it.target,
+                    current: it.target - ((s + idx) % 7 === 0 ? 1 : 0),
+                    unit: it.unit,
+                    lot: '',
+                    expiry: it.expOffset == null ? null : monthFromNow(it.expOffset + ((s * 2 + idx) % 5) - 2),
+                    photo: null
+                }))
+            }))
+        });
+    }
     return {
-        bags: [
-            {
-                id: uid(), name: 'Rugzak 1 — Airway & Breathing', location: 'RW, cabine links',
-                lastCount: null,
-                items: [
-                    { id: uid(), name: 'Larynxmasker maat 4', target: 2, current: 2, unit: 'st', lot: 'LM4-2311', expiry: monthFromNow(14) },
-                    { id: uid(), name: 'Endotracheale tube 7.5', target: 2, current: 2, unit: 'st', lot: 'ET75-A22', expiry: monthFromNow(7) },
-                    { id: uid(), name: 'Guedel-airway set (3 maten)', target: 1, current: 1, unit: 'set', lot: '', expiry: monthFromNow(26) },
-                    { id: uid(), name: 'Non-rebreathing masker volwassene', target: 2, current: 1, unit: 'st', lot: '', expiry: monthFromNow(19) },
-                    { id: uid(), name: 'Beademingsballon met reservoir', target: 1, current: 1, unit: 'st', lot: 'BVM-889', expiry: monthFromNow(2) },
-                    { id: uid(), name: 'Zuigkatheter Ch14', target: 4, current: 4, unit: 'st', lot: '', expiry: monthFromNow(-1) }
-                ]
-            },
-            {
-                id: uid(), name: 'Rugzak 2 — Circulation', location: 'RW, cabine rechts',
-                lastCount: null,
-                items: [
-                    { id: uid(), name: 'Infuuskatheter 18G', target: 6, current: 6, unit: 'st', lot: 'IV18-556', expiry: monthFromNow(9) },
-                    { id: uid(), name: 'NaCl 0,9% 500 ml', target: 4, current: 3, unit: 'zak', lot: 'NCL-0341', expiry: monthFromNow(1) },
-                    { id: uid(), name: 'Infuussysteem', target: 4, current: 4, unit: 'st', lot: '', expiry: monthFromNow(22) },
-                    { id: uid(), name: 'Tourniquet (CAT)', target: 2, current: 2, unit: 'st', lot: '', expiry: null },
-                    { id: uid(), name: 'Israeli bandage 15 cm', target: 3, current: 2, unit: 'st', lot: 'IB-1102', expiry: monthFromNow(31) },
-                    { id: uid(), name: 'Hemostatisch gaas', target: 2, current: 2, unit: 'st', lot: 'HG-778', expiry: monthFromNow(-3) }
-                ]
-            },
-            {
-                id: uid(), name: 'Medicatietas', location: 'Koelbox / apotheekkast',
-                lastCount: null,
-                items: [
-                    { id: uid(), name: 'Adrenaline 1 mg/ml amp.', target: 5, current: 5, unit: 'amp', lot: 'ADR-2405', expiry: monthFromNow(3) },
-                    { id: uid(), name: 'Amiodaron 150 mg amp.', target: 3, current: 3, unit: 'amp', lot: 'AMI-1188', expiry: monthFromNow(11) },
-                    { id: uid(), name: 'Fentanyl 0,05 mg/ml amp.', target: 4, current: 4, unit: 'amp', lot: 'FEN-0921', expiry: monthFromNow(5) },
-                    { id: uid(), name: 'Ondansetron 4 mg amp.', target: 4, current: 3, unit: 'amp', lot: 'OND-3310', expiry: monthFromNow(16) },
-                    { id: uid(), name: 'Glucose 10% 500 ml', target: 2, current: 2, unit: 'zak', lot: 'GLU-441', expiry: monthFromNow(-2) },
-                    { id: uid(), name: 'Paracetamol 1 g i.v.', target: 4, current: 4, unit: 'fl', lot: 'PCM-905', expiry: monthFromNow(13) }
-                ]
-            }
-        ],
+        sets,
         orderExcluded: {},   // itemId -> true als handmatig uitgevinkt
-        orderQty: {}         // itemId -> handmatig aangepast bestelaantal
+        orderQty: {},        // itemId -> handmatig aangepast bestelaantal
+        orderSource: {}      // itemId -> '' | 'grijs' | 'matlog' | 'vmf'
     };
 }
 
 function load() {
     try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) { state = JSON.parse(raw); return; }
+        if (raw) {
+            const data = JSON.parse(raw);
+            if (Array.isArray(data.sets)) {
+                state = data;
+                state.orderExcluded = state.orderExcluded || {};
+                state.orderQty = state.orderQty || {};
+                state.orderSource = state.orderSource || {};
+                return;
+            }
+        }
     } catch (e) { /* localStorage niet beschikbaar of corrupt: verder met demodata */ }
     state = seedData();
     save();
@@ -584,7 +675,7 @@ function load() {
 
 function save() {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-    catch (e) { /* opslag niet beschikbaar: app blijft in-memory werken */ }
+    catch (e) { toast('Opslaan lukte niet — opslag vol? Verwijder foto’s of maak een back-up.'); }
 }
 
 /* =====================================================================
@@ -594,7 +685,7 @@ function save() {
 function expiryStatus(expiry) {
     if (!expiry) return { key: 'none', label: 'geen datum', days: null };
     const [y, m] = expiry.split('-').map(Number);
-    const lastDay = new Date(y, m, 0); // laatste dag van de maand
+    const lastDay = new Date(y, m, 0);
     lastDay.setHours(23, 59, 59);
     const days = Math.floor((lastDay - new Date()) / 86400000);
     if (days < 0) return { key: 'expired', label: 'verlopen', days };
@@ -613,14 +704,14 @@ function fmtExpiry(expiry) {
 function expiryChip(expiry) {
     const s = expiryStatus(expiry);
     if (s.key === 'none') return '<span class="chip chip-neutral">exp. —</span>';
-    const cls = s.key === 'expired' ? 'chip-danger' : (s.key === 'critical' ? 'chip-danger' : (s.key === 'warning' ? 'chip-warn' : 'chip-ok'));
+    const cls = (s.key === 'expired' || s.key === 'critical') ? 'chip-danger' : (s.key === 'warning' ? 'chip-warn' : 'chip-ok');
     const txt = s.key === 'expired' ? 'verlopen ' + fmtExpiry(expiry) : fmtExpiry(expiry);
     return '<span class="chip ' + cls + '">' + txt + '</span>';
 }
 
-function bagStats(bag) {
+function partStats(part) {
     let expired = 0, soon = 0, short = 0;
-    for (const it of bag.items) {
+    for (const it of part.items) {
         const s = expiryStatus(it.expiry);
         if (s.key === 'expired') expired++;
         else if (s.key === 'critical' || s.key === 'warning') soon++;
@@ -629,35 +720,75 @@ function bagStats(bag) {
     return { expired, soon, short };
 }
 
+function setStats(set) {
+    const tot = { expired: 0, soon: 0, short: 0 };
+    for (const part of set.parts) {
+        const st = partStats(part);
+        tot.expired += st.expired; tot.soon += st.soon; tot.short += st.short;
+    }
+    return tot;
+}
+
+function statusBadges(st) {
+    const badges = [];
+    if (st.expired) badges.push('<span class="chip chip-danger">' + st.expired + ' verlopen</span>');
+    if (st.soon) badges.push('<span class="chip chip-warn">' + st.soon + ' bijna verlopen</span>');
+    if (st.short) badges.push('<span class="chip chip-danger">' + st.short + ' tekort</span>');
+    if (!badges.length) badges.push('<span class="chip chip-ok">op orde</span>');
+    return badges.join('');
+}
+
 /* =====================================================================
    Bestellijst-logica
+   Aanvulvolgorde: grijze voorraad -> MatLog Gilze -> VMF-bestelling
+   (SharePoint MatLog -> MGLC). Regels gemarkeerd als grijs/MatLog
+   gaan niet mee in de export.
    ===================================================================== */
-// Een item hoort op de bestellijst bij tekort, of wanneer (bijna) verlopen
+const SOURCE_LABELS = { '': 'Nog bepalen', grijs: 'Grijze voorraad', matlog: 'MatLog Gilze', vmf: 'Bestellen (VMF)' };
+
+// Een artikel hoort op de bestellijst bij tekort, of wanneer (bijna) verlopen
 function orderLines() {
     const lines = [];
-    for (const bag of state.bags) {
-        for (const it of bag.items) {
-            const s = expiryStatus(it.expiry);
-            const shortage = Math.max(0, it.target - it.current);
-            const reasons = [];
-            let qty = 0;
-            if (s.key === 'expired') { reasons.push('verlopen (' + fmtExpiry(it.expiry) + ')'); qty = it.target; }
-            else if (s.key === 'critical') { reasons.push('verloopt binnen 1 mnd'); qty = it.target; }
-            else if (s.key === 'warning') { reasons.push('verloopt binnen 3 mnd'); qty = it.target; }
-            if (shortage > 0) { reasons.push('tekort: ' + it.current + ' van ' + it.target); qty = Math.max(qty, shortage); }
-            if (reasons.length) {
-                lines.push({
-                    itemId: it.id, bagName: bag.name, name: it.name, unit: it.unit || 'st',
-                    qty: state.orderQty[it.id] != null ? state.orderQty[it.id] : qty,
-                    suggestedQty: qty,
-                    reasons, severity: s.key === 'expired' || shortage > 0 ? 'danger' : 'warn',
-                    included: !state.orderExcluded[it.id]
-                });
+    for (const set of state.sets) {
+        for (const part of set.parts) {
+            for (const it of part.items) {
+                const s = expiryStatus(it.expiry);
+                const shortage = Math.max(0, it.target - it.current);
+                const reasons = [];
+                let qty = 0;
+                if (s.key === 'expired') { reasons.push('verlopen (' + fmtExpiry(it.expiry) + ')'); qty = it.target; }
+                else if (s.key === 'critical') { reasons.push('verloopt binnen 1 mnd'); qty = it.target; }
+                else if (s.key === 'warning') { reasons.push('verloopt binnen 3 mnd'); qty = it.target; }
+                if (shortage > 0) { reasons.push('tekort: ' + it.current + ' van ' + it.target); qty = Math.max(qty, shortage); }
+                if (reasons.length) {
+                    lines.push({
+                        itemId: it.id,
+                        setName: set.name, partName: part.name,
+                        name: it.name, sapName: it.sapName || '', sapNr: it.sapNr || '',
+                        unit: it.unit || 'st',
+                        qty: state.orderQty[it.id] != null ? state.orderQty[it.id] : qty,
+                        reasons,
+                        severity: (s.key === 'expired' || shortage > 0) ? 'danger' : 'warn',
+                        included: !state.orderExcluded[it.id],
+                        source: state.orderSource[it.id] || ''
+                    });
+                }
             }
         }
     }
-    lines.sort((a, b) => (a.severity === b.severity) ? a.bagName.localeCompare(b.bagName) : (a.severity === 'danger' ? -1 : 1));
+    lines.sort((a, b) => {
+        const ra = (a.source === 'grijs' || a.source === 'matlog') ? 1 : 0;
+        const rb = (b.source === 'grijs' || b.source === 'matlog') ? 1 : 0;
+        if (ra !== rb) return ra - rb;
+        if (a.severity !== b.severity) return a.severity === 'danger' ? -1 : 1;
+        return (a.setName + a.partName).localeCompare(b.setName + b.partName);
+    });
     return lines;
+}
+
+// Regels die meegaan in de VMF-bestelling: open ('nog bepalen') of expliciet VMF
+function exportLines() {
+    return orderLines().filter(l => l.included && l.qty > 0 && l.source !== 'grijs' && l.source !== 'matlog');
 }
 
 /* =====================================================================
@@ -673,6 +804,11 @@ function fmtDate(iso) {
     if (!iso) return null;
     const [y, m, d] = iso.split('-');
     return d + '-' + m + '-' + y;
+}
+
+function sapLine(it) {
+    if (!it.sapNr && !it.sapName) return '';
+    return '<span class="sap-ref">SAP ' + esc(it.sapNr || '?') + (it.sapName ? ' · ' + esc(it.sapName) : '') + '</span>';
 }
 
 // Download: via de artifact-viewer als die dat aanbiedt, anders als gewone browserdownload
@@ -706,6 +842,22 @@ async function saveFile(filename, text) {
     URL.revokeObjectURL(a.href);
 }
 
+// Foto verkleinen naar max 320px en opslaan als compacte jpeg-data-URI
+function resizePhoto(file, cb) {
+    const img = new Image();
+    img.onload = () => {
+        const scale = Math.min(1, 320 / Math.max(img.width, img.height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.round(img.width * scale);
+        canvas.height = Math.round(img.height * scale);
+        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+        URL.revokeObjectURL(img.src);
+        cb(canvas.toDataURL('image/jpeg', 0.72));
+    };
+    img.onerror = () => { URL.revokeObjectURL(img.src); toast('Afbeelding niet herkend.'); };
+    img.src = URL.createObjectURL(file);
+}
+
 let toastTimer = null;
 function toast(msg) {
     const el = $('#toast');
@@ -718,12 +870,20 @@ function toast(msg) {
 /* =====================================================================
    Navigatie
    ===================================================================== */
-let currentBagId = null;
+let currentSetId = null;
+let currentPartId = null;
+
+function getSet(id) { return state.sets.find(s => s.id === id); }
+function getPart(setId, partId) {
+    const set = getSet(setId);
+    return set ? set.parts.find(p => p.id === partId) : null;
+}
 
 function showView(id) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     $('#' + id).classList.add('active');
-    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.view === id));
+    const tabView = (id === 'view-set-detail' || id === 'view-part-detail' || id === 'view-count') ? 'view-sets' : id;
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.view === tabView));
     window.scrollTo(0, 0);
 }
 
@@ -735,122 +895,181 @@ document.querySelectorAll('.tab').forEach(tab => {
 });
 
 /* =====================================================================
-   Render: tassen-overzicht
+   Render: sets-overzicht
    ===================================================================== */
-function renderBags() {
-    const list = $('#bags-list');
-    if (!state.bags.length) {
-        list.innerHTML = '<div class="empty">Nog geen tassen. Voeg de eerste tas toe.</div>';
-        $('#bags-summary').textContent = '';
+function renderSets() {
+    const list = $('#sets-list');
+    if (!state.sets.length) {
+        list.innerHTML = '<div class="empty">Nog geen sets. Voeg de eerste set toe.</div>';
+        $('#sets-summary').textContent = '';
         return;
     }
-    let totExpired = 0, totSoon = 0, totShort = 0;
-    list.innerHTML = state.bags.map(bag => {
-        const st = bagStats(bag);
-        totExpired += st.expired; totSoon += st.soon; totShort += st.short;
-        const badges = [];
-        if (st.expired) badges.push('<span class="chip chip-danger">' + st.expired + ' verlopen</span>');
-        if (st.soon) badges.push('<span class="chip chip-warn">' + st.soon + ' bijna verlopen</span>');
-        if (st.short) badges.push('<span class="chip chip-danger">' + st.short + ' tekort</span>');
-        if (!badges.length) badges.push('<span class="chip chip-ok">op orde</span>');
-        const counted = bag.lastCount ? 'geteld ' + fmtDate(bag.lastCount) : 'nog niet geteld';
-        return '<div class="card clickable" data-bag="' + bag.id + '" role="button" tabindex="0" aria-label="' + esc(bag.name) + '">' +
-            '<div class="bag-main">' +
-                '<div class="bag-title-row"><div class="bag-name">' + esc(bag.name) + '</div>' +
-                '<div class="muted" style="white-space:nowrap;">' + bag.items.length + ' items</div></div>' +
-                '<div class="bag-meta">' + esc(bag.location || '') + (bag.location ? ' · ' : '') + counted + '</div>' +
-                '<div class="bag-badges">' + badges.join('') + '</div>' +
+    const tot = { expired: 0, soon: 0, short: 0 };
+    list.innerHTML = state.sets.map(set => {
+        const st = setStats(set);
+        tot.expired += st.expired; tot.soon += st.soon; tot.short += st.short;
+        const itemCount = set.parts.reduce((n, p) => n + p.items.length, 0);
+        const meta = [set.beheerders ? 'Duo: ' + esc(set.beheerders) : 'duo nog niet ingevuld',
+                      set.parts.length + ' onderdelen', itemCount + ' artikelen'].join(' · ');
+        return '<div class="card clickable" data-set="' + set.id + '" role="button" tabindex="0" aria-label="' + esc(set.name) + '">' +
+            '<div class="card-main">' +
+                '<div class="card-title-row"><div class="card-name">' + esc(set.name) + '</div></div>' +
+                '<div class="card-meta">' + meta + '</div>' +
+                '<div class="card-badges">' + statusBadges(st) + '</div>' +
             '</div></div>';
     }).join('');
 
     const parts = [];
-    if (totExpired) parts.push(totExpired + ' verlopen');
-    if (totSoon) parts.push(totSoon + ' bijna verlopen');
-    if (totShort) parts.push(totShort + ' tekort');
-    $('#bags-summary').textContent = parts.length ? 'Aandacht nodig: ' + parts.join(', ') : 'Alle tassen op orde';
+    if (tot.expired) parts.push(tot.expired + ' verlopen');
+    if (tot.soon) parts.push(tot.soon + ' bijna verlopen');
+    if (tot.short) parts.push(tot.short + ' tekort');
+    $('#sets-summary').textContent = parts.length ? 'Aandacht nodig: ' + parts.join(', ') : 'Alle sets op orde';
 
-    list.querySelectorAll('[data-bag]').forEach(el => {
-        const open = () => { currentBagId = el.dataset.bag; renderBagDetail(); showView('view-bag-detail'); };
+    list.querySelectorAll('[data-set]').forEach(el => {
+        const open = () => { currentSetId = el.dataset.set; renderSetDetail(); showView('view-set-detail'); };
         el.addEventListener('click', open);
         el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
     });
 }
 
 /* =====================================================================
-   Render: tas-detail
+   Render: set-detail (onderdelen)
    ===================================================================== */
-function getBag(id) { return state.bags.find(b => b.id === id); }
+function renderSetDetail() {
+    const set = getSet(currentSetId);
+    if (!set) { showView('view-sets'); return; }
+    $('#set-detail-name').textContent = set.name;
+    $('#set-detail-sub').textContent = set.beheerders ? 'Duo: ' + set.beheerders : 'Duo nog niet ingevuld';
 
-function renderBagDetail() {
-    const bag = getBag(currentBagId);
-    if (!bag) { showView('view-bags'); return; }
-    $('#bag-detail-name').textContent = bag.name;
-    $('#bag-detail-sub').textContent = (bag.location ? bag.location + ' · ' : '') +
-        (bag.lastCount ? 'laatste telling ' + fmtDate(bag.lastCount) : 'nog niet geteld');
-
-    const st = bagStats(bag);
-    const notices = [];
-    if (st.expired) notices.push('<div class="notice notice-danger"><strong>' + st.expired + ' item(s) verlopen.</strong> Vervang deze voor de volgende vlucht.</div>');
-    if (st.short) notices.push('<div class="notice notice-danger"><strong>' + st.short + ' item(s) onder de norm.</strong> Zie de bestellijst.</div>');
-    if (st.soon && !st.expired) notices.push('<div class="notice notice-warn">' + st.soon + ' item(s) verlopen binnen ' + (WARN_DAYS / 30) + ' maanden.</div>');
-    $('#bag-detail-notices').innerHTML = notices.join('');
-
-    const listEl = $('#bag-items-list');
-    if (!bag.items.length) {
-        listEl.innerHTML = '<div class="empty">Nog geen items in deze tas.</div>';
+    const list = $('#parts-list');
+    if (!set.parts.length) {
+        list.innerHTML = '<div class="empty">Nog geen onderdelen in deze set.</div>';
         return;
     }
-    listEl.innerHTML = bag.items.map(it => {
-        const shortCls = it.current < it.target ? ' qty-short' : '';
-        return '<div class="item-row clickable" data-item="' + it.id + '" role="button" tabindex="0">' +
-            '<div class="item-info">' +
-                '<div class="item-name">' + esc(it.name) + '</div>' +
-                '<div class="item-detail">' + expiryChip(it.expiry) + (it.lot ? '<span>lot ' + esc(it.lot) + '</span>' : '') + '</div>' +
-            '</div>' +
-            '<div class="item-qty' + shortCls + '">' + it.current + ' <span class="of">/ ' + it.target + ' ' + esc(it.unit || 'st') + '</span></div>' +
-        '</div>';
+    list.innerHTML = set.parts.map(part => {
+        const st = partStats(part);
+        const counted = part.lastCount ? 'geteld ' + fmtDate(part.lastCount) : 'nog niet geteld';
+        return '<div class="card clickable" data-part="' + part.id + '" role="button" tabindex="0" aria-label="' + esc(part.name) + '">' +
+            '<div class="card-main">' +
+                '<div class="card-title-row"><div class="card-name">' + esc(part.name) + '</div>' +
+                '<div class="muted" style="white-space:nowrap;">' + part.items.length + ' artikelen</div></div>' +
+                '<div class="card-meta">' + counted + '</div>' +
+                '<div class="card-badges">' + statusBadges(st) + '</div>' +
+            '</div></div>';
     }).join('');
 
-    listEl.querySelectorAll('[data-item]').forEach(el => {
-        const open = () => openItemModal(bag.id, el.dataset.item);
+    list.querySelectorAll('[data-part]').forEach(el => {
+        const open = () => { currentPartId = el.dataset.part; renderPartDetail(); showView('view-part-detail'); };
         el.addEventListener('click', open);
         el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
     });
 }
 
-$('#btn-back-bags').addEventListener('click', () => { renderBags(); showView('view-bags'); });
-$('#btn-add-item').addEventListener('click', () => openItemModal(currentBagId, null));
-$('#btn-edit-bag').addEventListener('click', () => openBagModal(currentBagId));
-$('#btn-add-bag').addEventListener('click', () => openBagModal(null));
+$('#btn-back-sets').addEventListener('click', () => { renderSets(); showView('view-sets'); });
+$('#btn-add-set').addEventListener('click', () => openSetModal(null));
+$('#btn-edit-set').addEventListener('click', () => openSetModal(currentSetId));
+$('#btn-add-part').addEventListener('click', () => openPartModal(currentSetId, null));
 
 /* =====================================================================
-   Telling (count mode)
+   Render: onderdeel-detail (artikelen, gegroepeerd per compartiment)
    ===================================================================== */
-let countSession = null; // { bagId, index, results: [{itemId, counted, expiry}] }
+function itemRow(it) {
+    const shortCls = it.current < it.target ? ' qty-short' : '';
+    const details = [expiryChip(it.expiry), sapLine(it)];
+    if (it.lot) details.push('<span>lot ' + esc(it.lot) + '</span>');
+    return '<div class="item-row clickable" data-item="' + it.id + '" role="button" tabindex="0">' +
+        (it.photo ? '<img class="item-thumb" src="' + it.photo + '" alt="">' : '') +
+        '<div class="item-info">' +
+            '<div class="item-name">' + esc(it.name) + '</div>' +
+            '<div class="item-detail">' + details.filter(Boolean).join('') + '</div>' +
+        '</div>' +
+        '<div class="item-qty' + shortCls + '">' + it.current + ' <span class="of">/ ' + it.target + ' ' + esc(it.unit || 'st') + '</span></div>' +
+    '</div>';
+}
+
+function renderPartDetail() {
+    const set = getSet(currentSetId);
+    const part = getPart(currentSetId, currentPartId);
+    if (!set || !part) { showView('view-sets'); return; }
+    $('#part-detail-name').textContent = part.name;
+    $('#part-detail-sub').textContent = set.name + ' · ' +
+        (part.lastCount ? 'laatste telling ' + fmtDate(part.lastCount) : 'nog niet geteld');
+    $('#btn-back-set').innerHTML = '&larr; ' + esc(set.name);
+
+    const st = partStats(part);
+    const notices = [];
+    if (st.expired) notices.push('<div class="notice notice-danger"><strong>' + st.expired + ' artikel(en) verlopen.</strong> Vervang deze voor de volgende vlucht.</div>');
+    if (st.short) notices.push('<div class="notice notice-danger"><strong>' + st.short + ' artikel(en) onder de norm.</strong> Zie de bestellijst.</div>');
+    if (st.soon && !st.expired) notices.push('<div class="notice notice-warn">' + st.soon + ' artikel(en) verlopen binnen ' + (WARN_DAYS / 30) + ' maanden.</div>');
+    $('#part-detail-notices').innerHTML = notices.join('');
+
+    const listEl = $('#part-items-list');
+    if (!part.items.length) {
+        listEl.innerHTML = '<div class="empty">Nog geen artikelen in dit onderdeel.</div>';
+        return;
+    }
+    // Groepeer op compartiment (volgorde van eerste voorkomen; leeg = geen kop)
+    const groups = [];
+    for (const it of part.items) {
+        const key = it.compartment || '';
+        let g = groups.find(x => x.key === key);
+        if (!g) { g = { key, items: [] }; groups.push(g); }
+        g.items.push(it);
+    }
+    listEl.innerHTML = groups.map(g =>
+        (g.key ? '<div class="group-head">' + esc(g.key) + '</div>' : '') +
+        g.items.map(itemRow).join('')
+    ).join('');
+
+    listEl.querySelectorAll('[data-item]').forEach(el => {
+        const open = () => openItemModal(currentSetId, currentPartId, el.dataset.item);
+        el.addEventListener('click', open);
+        el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+    });
+}
+
+$('#btn-back-set').addEventListener('click', () => { renderSetDetail(); showView('view-set-detail'); });
+$('#btn-add-item').addEventListener('click', () => openItemModal(currentSetId, currentPartId, null));
+$('#btn-edit-part').addEventListener('click', () => openPartModal(currentSetId, currentPartId));
+
+/* =====================================================================
+   Telling (per onderdeel)
+   ===================================================================== */
+let countSession = null; // { setId, partId, index, results: [{counted, expiry}] }
 
 $('#btn-start-count').addEventListener('click', () => {
-    const bag = getBag(currentBagId);
-    if (!bag || !bag.items.length) { toast('Deze tas heeft nog geen items.'); return; }
-    countSession = { bagId: bag.id, index: 0, results: bag.items.map(it => ({ itemId: it.id, counted: it.current, expiry: it.expiry })) };
+    const part = getPart(currentSetId, currentPartId);
+    if (!part || !part.items.length) { toast('Dit onderdeel heeft nog geen artikelen.'); return; }
+    countSession = {
+        setId: currentSetId, partId: currentPartId, index: 0,
+        results: part.items.map(it => ({ counted: it.current, expiry: it.expiry }))
+    };
     renderCountStep();
     showView('view-count');
 });
 
 function renderCountStep() {
-    const bag = getBag(countSession.bagId);
-    const total = bag.items.length;
+    const set = getSet(countSession.setId);
+    const part = getPart(countSession.setId, countSession.partId);
+    const total = part.items.length;
     const i = countSession.index;
-    $('#count-bag-label').textContent = 'Telling · ' + bag.name;
+    $('#count-label').textContent = 'Telling · ' + set.name + ' · ' + part.name;
 
     if (i >= total) { renderCountSummary(); return; }
     $('#count-progress-fill').style.width = Math.round((i / total) * 100) + '%';
 
-    const it = bag.items[i];
+    const it = part.items[i];
     const res = countSession.results[i];
+    const subParts = ['Norm: ' + it.target + ' ' + esc(it.unit || 'st')];
+    if (it.compartment) subParts.unshift(esc(it.compartment));
+    if (it.lot) subParts.push('lot ' + esc(it.lot));
+
     $('#count-body').innerHTML =
-        '<div class="muted" style="margin-bottom:6px;">Item ' + (i + 1) + ' van ' + total + '</div>' +
+        '<div class="muted" style="margin-bottom:6px;">Artikel ' + (i + 1) + ' van ' + total + '</div>' +
         '<div class="count-item-name">' + esc(it.name) + '</div>' +
-        '<div class="count-item-sub">Norm: ' + it.target + ' ' + esc(it.unit || 'st') + (it.lot ? ' · lot ' + esc(it.lot) : '') + '</div>' +
+        '<div class="count-item-sub">' + subParts.join(' · ') + '</div>' +
+        (sapLine(it) ? '<div style="margin-top:4px;">' + sapLine(it) + '</div>' : '') +
+        (it.photo ? '<img class="count-photo" src="' + it.photo + '" alt="Foto van ' + esc(it.name) + '">' : '') +
         '<div class="stepper">' +
             '<button id="count-minus" aria-label="Minder">&minus;</button>' +
             '<input type="number" id="count-input" inputmode="numeric" min="0" value="' + res.counted + '" aria-label="Getelde hoeveelheid">' +
@@ -879,16 +1098,16 @@ function renderCountStep() {
     if (prev) prev.addEventListener('click', () => { commit(); countSession.index--; renderCountStep(); });
     $('#count-cancel').addEventListener('click', () => {
         countSession = null;
-        renderBagDetail();
-        showView('view-bag-detail');
+        renderPartDetail();
+        showView('view-part-detail');
     });
 }
 
 function renderCountSummary() {
-    const bag = getBag(countSession.bagId);
+    const part = getPart(countSession.setId, countSession.partId);
     $('#count-progress-fill').style.width = '100%';
     const rows = countSession.results.map((r, idx) => {
-        const it = bag.items[idx];
+        const it = part.items[idx];
         const diff = r.counted - it.target;
         const s = expiryStatus(r.expiry);
         const flags = [];
@@ -901,11 +1120,11 @@ function renderCountSummary() {
             '<span class="item-qty">' + r.counted + ' <span class="of">/ ' + it.target + '</span></span></div></div>';
     }).join('');
 
-    const issues = countSession.results.filter((r, idx) => r.counted < bag.items[idx].target || ['expired', 'critical', 'warning'].includes(expiryStatus(r.expiry).key)).length;
+    const issues = countSession.results.filter((r, idx) => r.counted < part.items[idx].target || ['expired', 'critical', 'warning'].includes(expiryStatus(r.expiry).key)).length;
 
     $('#count-body').innerHTML =
         '<h1 class="count-item-name" style="margin-bottom:6px;">Telling afgerond</h1>' +
-        '<p class="muted" style="margin-bottom:16px;">' + (issues ? issues + ' item(s) vragen aandacht; deze verschijnen op de bestellijst.' : 'Alles op orde.') + '</p>' +
+        '<p class="muted" style="margin-bottom:16px;">' + (issues ? issues + ' artikel(en) vragen aandacht; deze verschijnen op de bestellijst.' : 'Alles op orde.') + '</p>' +
         '<div class="card">' + rows + '</div>' +
         '<div class="btn-row">' +
             '<button class="btn btn-primary btn-block" id="count-save">Telling opslaan</button>' +
@@ -914,24 +1133,26 @@ function renderCountSummary() {
 
     $('#count-save').addEventListener('click', () => {
         countSession.results.forEach((r, idx) => {
-            bag.items[idx].current = r.counted;
-            bag.items[idx].expiry = r.expiry;
-            // nieuwe voorraad geteld: eerdere handmatige bestel-uitsluiting vervalt
-            delete state.orderExcluded[bag.items[idx].id];
-            delete state.orderQty[bag.items[idx].id];
+            const it = part.items[idx];
+            it.current = r.counted;
+            it.expiry = r.expiry;
+            // nieuwe voorraad geteld: eerdere handmatige bestelkeuzes vervallen
+            delete state.orderExcluded[it.id];
+            delete state.orderQty[it.id];
+            delete state.orderSource[it.id];
         });
-        bag.lastCount = todayISO();
+        part.lastCount = todayISO();
         save();
         countSession = null;
         renderAll();
-        renderBagDetail();
-        showView('view-bag-detail');
+        renderPartDetail();
+        showView('view-part-detail');
         toast('Telling opgeslagen');
     });
     $('#count-discard').addEventListener('click', () => {
         countSession = null;
-        renderBagDetail();
-        showView('view-bag-detail');
+        renderPartDetail();
+        showView('view-part-detail');
     });
 }
 
@@ -950,12 +1171,14 @@ $('#expiry-filters').addEventListener('click', e => {
 
 function renderExpiry() {
     const rows = [];
-    for (const bag of state.bags) {
-        for (const it of bag.items) {
-            const s = expiryStatus(it.expiry);
-            if (expiryFilter === 'expired' && s.key !== 'expired') continue;
-            if (expiryFilter === 'attention' && !['expired', 'critical', 'warning'].includes(s.key)) continue;
-            rows.push({ bag, it, s });
+    for (const set of state.sets) {
+        for (const part of set.parts) {
+            for (const it of part.items) {
+                const s = expiryStatus(it.expiry);
+                if (expiryFilter === 'expired' && s.key !== 'expired') continue;
+                if (expiryFilter === 'attention' && !['expired', 'critical', 'warning'].includes(s.key)) continue;
+                rows.push({ set, part, it, s });
+            }
         }
     }
     rows.sort((a, b) => {
@@ -968,10 +1191,10 @@ function renderExpiry() {
         el.innerHTML = '<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg><br>Niets ' + (expiryFilter === 'expired' ? 'verlopen' : 'dat aandacht nodig heeft') + '.</div>';
         return;
     }
-    el.innerHTML = rows.map(({ bag, it }) =>
+    el.innerHTML = rows.map(({ set, part, it }) =>
         '<div class="item-row"><div class="item-info">' +
             '<div class="item-name">' + esc(it.name) + '</div>' +
-            '<div class="item-detail"><span>' + esc(bag.name) + '</span>' + (it.lot ? '<span>lot ' + esc(it.lot) + '</span>' : '') + '</div>' +
+            '<div class="item-detail"><span>' + esc(set.name) + ' · ' + esc(part.name) + (it.compartment ? ' · ' + esc(it.compartment) : '') + '</span>' + sapLine(it) + '</div>' +
         '</div>' + expiryChip(it.expiry) + '</div>'
     ).join('');
 }
@@ -982,25 +1205,31 @@ function renderExpiry() {
 function renderOrder() {
     const lines = orderLines();
     const el = $('#order-list');
-    const included = lines.filter(l => l.included);
-    $('#order-notices').innerHTML = included.length
-        ? '<div class="notice notice-neutral">' + included.length + ' regel(s) klaar om te bestellen. Vink uit wat niet mee hoeft.</div>'
-        : '';
+    const open = exportLines();
+    $('#order-notices').innerHTML = open.length
+        ? '<div class="notice notice-neutral">' + open.length + ' regel(s) gaan mee in de bestelling. Vink uit wat niet mee hoeft, of markeer regels als aangevuld uit grijze voorraad / MatLog.</div>'
+        : (lines.length ? '<div class="notice notice-ok">Alle regels zijn afgedekt uit grijze voorraad of MatLog — geen VMF-bestelling nodig.</div>' : '');
     if (!lines.length) {
-        el.innerHTML = '<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg><br>Niets te bestellen — alle tassen op orde.</div>';
+        el.innerHTML = '<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg><br>Niets aan te vullen — alle sets op orde.</div>';
         return;
     }
-    el.innerHTML = lines.map(l =>
-        '<div class="order-row">' +
-            '<input type="checkbox" data-check="' + l.itemId + '"' + (l.included ? ' checked' : '') + ' aria-label="Bestel ' + esc(l.name) + '">' +
+    el.innerHTML = lines.map(l => {
+        const resolved = l.source === 'grijs' || l.source === 'matlog';
+        const sourceOptions = Object.keys(SOURCE_LABELS).map(k =>
+            '<option value="' + k + '"' + (l.source === k ? ' selected' : '') + '>' + SOURCE_LABELS[k] + '</option>').join('');
+        return '<div class="order-row' + (resolved ? ' resolved' : '') + '">' +
+            '<input type="checkbox" data-check="' + l.itemId + '"' + (l.included ? ' checked' : '') + ' aria-label="Neem ' + esc(l.name) + ' op">' +
             '<div class="item-info">' +
                 '<div class="item-name">' + esc(l.name) + '</div>' +
-                '<div class="item-detail"><span>' + esc(l.bagName) + '</span></div>' +
+                '<div class="item-detail">' + (l.sapNr ? '<span class="sap-ref">SAP ' + esc(l.sapNr) + (l.sapName ? ' · ' + esc(l.sapName) : '') + '</span>' : '') + '<span>' + esc(l.setName) + ' · ' + esc(l.partName) + '</span></div>' +
                 '<div class="order-reason" style="color:var(--accent-' + (l.severity === 'danger' ? 'red' : 'yellow') + ');">' + l.reasons.map(esc).join(' · ') + '</div>' +
             '</div>' +
-            '<input type="number" class="qty-input" min="0" value="' + l.qty + '" data-qty="' + l.itemId + '" aria-label="Aantal">' +
-        '</div>'
-    ).join('');
+            '<div class="order-controls">' +
+                '<input type="number" class="qty-input" min="0" value="' + l.qty + '" data-qty="' + l.itemId + '" aria-label="Aantal">' +
+                '<select data-source="' + l.itemId + '" aria-label="Herkomst">' + sourceOptions + '</select>' +
+            '</div>' +
+        '</div>';
+    }).join('');
 
     el.querySelectorAll('[data-check]').forEach(cb => cb.addEventListener('change', () => {
         if (cb.checked) delete state.orderExcluded[cb.dataset.check];
@@ -1011,41 +1240,50 @@ function renderOrder() {
     el.querySelectorAll('[data-qty]').forEach(inp => inp.addEventListener('change', () => {
         state.orderQty[inp.dataset.qty] = Math.max(0, parseInt(inp.value) || 0);
         save();
+        renderDots();
+    }));
+    el.querySelectorAll('[data-source]').forEach(sel => sel.addEventListener('change', () => {
+        if (sel.value) state.orderSource[sel.dataset.source] = sel.value;
+        else delete state.orderSource[sel.dataset.source];
+        save();
+        renderOrder(); renderDots();
     }));
 }
 
 function orderText() {
-    const lines = orderLines().filter(l => l.included && l.qty > 0);
+    const lines = exportLines();
     if (!lines.length) return null;
-    let txt = 'Bestelling medisch materiaal AE — ' + fmtDate(todayISO()) + '\n\n';
-    let curBag = '';
+    let txt = 'VMF-bestelling medisch materiaal AE — ' + fmtDate(todayISO()) + '\n\n';
+    let cur = '';
     for (const l of lines) {
-        if (l.bagName !== curBag) { curBag = l.bagName; txt += curBag + '\n'; }
-        txt += '  - ' + l.qty + ' ' + l.unit + '  ' + l.name + '  (' + l.reasons.join('; ') + ')\n';
+        const head = l.setName + ' · ' + l.partName;
+        if (head !== cur) { cur = head; txt += head + '\n'; }
+        txt += '  - ' + l.qty + ' ' + l.unit + '  SAP ' + (l.sapNr || '?') + '  ' + (l.sapName || l.name) +
+               (l.sapName ? ' (' + l.name + ')' : '') + '  [' + l.reasons.join('; ') + ']\n';
     }
     return txt;
 }
 
 $('#btn-order-copy').addEventListener('click', async () => {
     const txt = orderText();
-    if (!txt) { toast('Geen regels geselecteerd.'); return; }
+    if (!txt) { toast('Geen open regels om te bestellen.'); return; }
     try { await navigator.clipboard.writeText(txt); toast('Bestellijst gekopieerd'); }
     catch (e) { toast('Kopiëren niet toegestaan door de browser.'); }
 });
 
 $('#btn-order-mail').addEventListener('click', () => {
     const txt = orderText();
-    if (!txt) { toast('Geen regels geselecteerd.'); return; }
-    location.href = 'mailto:?subject=' + encodeURIComponent('Bestelling medisch materiaal AE') + '&body=' + encodeURIComponent(txt);
+    if (!txt) { toast('Geen open regels om te bestellen.'); return; }
+    location.href = 'mailto:?subject=' + encodeURIComponent('VMF-bestelling medisch materiaal AE') + '&body=' + encodeURIComponent(txt);
 });
 
 $('#btn-order-csv').addEventListener('click', () => {
-    const lines = orderLines().filter(l => l.included && l.qty > 0);
-    if (!lines.length) { toast('Geen regels geselecteerd.'); return; }
+    const lines = exportLines();
+    if (!lines.length) { toast('Geen open regels om te bestellen.'); return; }
     const q = (s) => '"' + String(s).replace(/"/g, '""') + '"';
-    let csv = 'Tas;Item;Aantal;Eenheid;Reden\n';
-    for (const l of lines) csv += [q(l.bagName), q(l.name), l.qty, q(l.unit), q(l.reasons.join('; '))].join(';') + '\n';
-    saveFile('bestellijst-ae-' + todayISO() + '.csv', '﻿' + csv);
+    let csv = 'SAP-nummer;SAP-benaming;Artikel;Aantal;Eenheid;Set;Onderdeel;Reden\n';
+    for (const l of lines) csv += [q(l.sapNr), q(l.sapName), q(l.name), l.qty, q(l.unit), q(l.setName), q(l.partName), q(l.reasons.join('; '))].join(';') + '\n';
+    saveFile('vmf-bestelling-ae-' + todayISO() + '.csv', '﻿' + csv);
 });
 
 /* =====================================================================
@@ -1053,19 +1291,19 @@ $('#btn-order-csv').addEventListener('click', () => {
    ===================================================================== */
 function renderDots() {
     let expired = 0;
-    for (const bag of state.bags) expired += bagStats(bag).expired;
+    for (const set of state.sets) expired += setStats(set).expired;
     const eDot = $('#expiry-dot');
     eDot.hidden = !expired;
     eDot.textContent = expired;
 
-    const orders = orderLines().filter(l => l.included).length;
+    const orders = exportLines().length;
     const oDot = $('#order-dot');
     oDot.hidden = !orders;
     oDot.textContent = orders;
 }
 
 /* =====================================================================
-   Modals: tas en item bewerken
+   Modals
    ===================================================================== */
 const backdrop = $('#modal-backdrop');
 const modal = $('#modal');
@@ -1081,45 +1319,111 @@ function closeModal() {
 backdrop.addEventListener('click', e => { if (e.target === backdrop) closeModal(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && backdrop.classList.contains('open')) closeModal(); });
 
-function openBagModal(bagId) {
-    const bag = bagId ? getBag(bagId) : null;
+function openSetModal(setId) {
+    const set = setId ? getSet(setId) : null;
     openModal(
-        '<h2>' + (bag ? 'Tas bewerken' : 'Nieuwe tas') + '</h2>' +
-        '<div class="field"><label for="f-bag-name">Naam</label><input id="f-bag-name" value="' + esc(bag ? bag.name : '') + '" placeholder="bijv. Rugzak 1 — Airway"></div>' +
-        '<div class="field"><label for="f-bag-loc">Locatie</label><input id="f-bag-loc" value="' + esc(bag ? bag.location : '') + '" placeholder="bijv. RW, cabine links"></div>' +
+        '<h2>' + (set ? 'Set bewerken' : 'Nieuwe set') + '</h2>' +
+        '<div class="field"><label for="f-set-name">Naam</label><input id="f-set-name" value="' + esc(set ? set.name : 'Set ' + (state.sets.length + 1)) + '"></div>' +
+        '<div class="field"><label for="f-set-duo">Duo / beheerders</label><input id="f-set-duo" value="' + esc(set ? set.beheerders : '') + '" placeholder="bijv. Jansen &amp; Pietersen"></div>' +
+        (set ? '' : '<div class="field"><label style="text-transform:none;letter-spacing:0;font-size:0.85rem;color:var(--text-secondary);"><input type="checkbox" id="f-set-template" checked style="width:auto;margin-right:8px;vertical-align:middle;">Vul met de standaardonderdelen (Tas, Container tas, Foudraal (O2), Pelicase, Unipack)</label></div>') +
         '<div class="modal-actions">' +
-            (bag ? '<button class="btn btn-danger" id="f-bag-delete" style="margin-right:auto;">Verwijder</button>' : '') +
+            (set ? '<button class="btn btn-danger" id="f-set-delete" style="margin-right:auto;">Verwijder</button>' : '') +
             '<button class="btn" id="f-cancel">Annuleer</button>' +
-            '<button class="btn btn-primary" id="f-bag-save">Opslaan</button>' +
+            '<button class="btn btn-primary" id="f-set-save">Opslaan</button>' +
         '</div>'
     );
     $('#f-cancel').addEventListener('click', closeModal);
-    $('#f-bag-save').addEventListener('click', () => {
-        const name = $('#f-bag-name').value.trim();
-        if (!name) { toast('Geef de tas een naam.'); return; }
-        if (bag) { bag.name = name; bag.location = $('#f-bag-loc').value.trim(); }
-        else {
-            const nb = { id: uid(), name, location: $('#f-bag-loc').value.trim(), lastCount: null, items: [] };
-            state.bags.push(nb);
-            currentBagId = nb.id;
+    $('#f-set-save').addEventListener('click', () => {
+        const name = $('#f-set-name').value.trim();
+        if (!name) { toast('Geef de set een naam.'); return; }
+        if (set) {
+            set.name = name;
+            set.beheerders = $('#f-set-duo').value.trim();
+            save(); closeModal(); renderAll(); renderSetDetail();
+        } else {
+            const withTemplate = $('#f-set-template').checked;
+            const ns = {
+                id: uid(), name,
+                beheerders: $('#f-set-duo').value.trim(),
+                parts: withTemplate ? PART_TYPES.map(t => ({ id: uid(), name: t, lastCount: null, items: [] })) : []
+            };
+            state.sets.push(ns);
+            currentSetId = ns.id;
+            save(); closeModal(); renderAll(); renderSetDetail(); showView('view-set-detail');
         }
-        save(); closeModal(); renderAll();
-        if (bag) renderBagDetail(); else { renderBagDetail(); showView('view-bag-detail'); }
     });
-    const del = $('#f-bag-delete');
+    const del = $('#f-set-delete');
     if (del) del.addEventListener('click', () => {
-        if (!confirm('Tas "' + bag.name + '" en alle items verwijderen?')) return;
-        state.bags = state.bags.filter(b => b.id !== bag.id);
-        save(); closeModal(); renderAll(); showView('view-bags');
+        if (!confirm('Set "' + set.name + '" en alle onderdelen verwijderen?')) return;
+        for (const part of set.parts) {
+            for (const it of part.items) {
+                delete state.orderExcluded[it.id];
+                delete state.orderQty[it.id];
+                delete state.orderSource[it.id];
+            }
+        }
+        state.sets = state.sets.filter(s => s.id !== set.id);
+        save(); closeModal(); renderAll(); showView('view-sets');
     });
 }
 
-function openItemModal(bagId, itemId) {
-    const bag = getBag(bagId);
-    const it = itemId ? bag.items.find(i => i.id === itemId) : null;
+function openPartModal(setId, partId) {
+    const set = getSet(setId);
+    const part = partId ? getPart(setId, partId) : null;
+    const typeOptions = PART_TYPES.map(t => '<option value="' + esc(t) + '">').join('');
     openModal(
-        '<h2>' + (it ? 'Item bewerken' : 'Nieuw item') + '</h2>' +
-        '<div class="field"><label for="f-it-name">Naam</label><input id="f-it-name" value="' + esc(it ? it.name : '') + '" placeholder="bijv. NaCl 0,9% 500 ml"></div>' +
+        '<h2>' + (part ? 'Onderdeel bewerken' : 'Nieuw onderdeel') + '</h2>' +
+        '<div class="field"><label for="f-part-name">Naam</label>' +
+        '<input id="f-part-name" list="part-types" value="' + esc(part ? part.name : '') + '" placeholder="bijv. Pelicase">' +
+        '<datalist id="part-types">' + typeOptions + '</datalist></div>' +
+        '<div class="modal-actions">' +
+            (part ? '<button class="btn btn-danger" id="f-part-delete" style="margin-right:auto;">Verwijder</button>' : '') +
+            '<button class="btn" id="f-cancel">Annuleer</button>' +
+            '<button class="btn btn-primary" id="f-part-save">Opslaan</button>' +
+        '</div>'
+    );
+    $('#f-cancel').addEventListener('click', closeModal);
+    $('#f-part-save').addEventListener('click', () => {
+        const name = $('#f-part-name').value.trim();
+        if (!name) { toast('Geef het onderdeel een naam.'); return; }
+        if (part) {
+            part.name = name;
+            save(); closeModal(); renderAll(); renderSetDetail(); renderPartDetail();
+        } else {
+            const np = { id: uid(), name, lastCount: null, items: [] };
+            set.parts.push(np);
+            currentPartId = np.id;
+            save(); closeModal(); renderAll(); renderSetDetail(); renderPartDetail(); showView('view-part-detail');
+        }
+    });
+    const del = $('#f-part-delete');
+    if (del) del.addEventListener('click', () => {
+        if (!confirm('Onderdeel "' + part.name + '" en alle artikelen verwijderen?')) return;
+        for (const it of part.items) {
+            delete state.orderExcluded[it.id];
+            delete state.orderQty[it.id];
+            delete state.orderSource[it.id];
+        }
+        set.parts = set.parts.filter(p => p.id !== part.id);
+        save(); closeModal(); renderAll(); renderSetDetail(); showView('view-set-detail');
+    });
+}
+
+function openItemModal(setId, partId, itemId) {
+    const part = getPart(setId, partId);
+    const it = itemId ? part.items.find(i => i.id === itemId) : null;
+    const compartments = [...new Set(part.items.map(i => i.compartment).filter(Boolean))];
+    const compOptions = compartments.map(c => '<option value="' + esc(c) + '">').join('');
+    let pendingPhoto = it ? it.photo : null;
+
+    openModal(
+        '<h2>' + (it ? 'Artikel bewerken' : 'Nieuw artikel') + '</h2>' +
+        '<div class="field"><label for="f-it-name">Naam (herkenbaar)</label><input id="f-it-name" value="' + esc(it ? it.name : '') + '" placeholder="bijv. NaCl 0,9% 500 ml"></div>' +
+        '<div class="field-row">' +
+            '<div class="field"><label for="f-it-sapnr">SAP-nummer</label><input id="f-it-sapnr" inputmode="numeric" value="' + esc(it ? it.sapNr : '') + '" placeholder="bijv. 10267001"></div>' +
+            '<div class="field"><label for="f-it-comp">Compartiment</label><input id="f-it-comp" list="comp-list" value="' + esc(it ? it.compartment : '') + '" placeholder="leeg = geen"><datalist id="comp-list">' + compOptions + '</datalist></div>' +
+        '</div>' +
+        '<div class="field"><label for="f-it-sapname">SAP-benaming</label><input id="f-it-sapname" value="' + esc(it ? it.sapName : '') + '" placeholder="officiële omschrijving"></div>' +
         '<div class="field-row">' +
             '<div class="field"><label for="f-it-target">Norm (aantal)</label><input id="f-it-target" type="number" min="0" inputmode="numeric" value="' + (it ? it.target : 1) + '"></div>' +
             '<div class="field"><label for="f-it-current">Aanwezig</label><input id="f-it-current" type="number" min="0" inputmode="numeric" value="' + (it ? it.current : 0) + '"></div>' +
@@ -1129,6 +1433,14 @@ function openItemModal(bagId, itemId) {
             '<div class="field"><label for="f-it-lot">Lotnummer</label><input id="f-it-lot" value="' + esc(it ? it.lot : '') + '"></div>' +
         '</div>' +
         '<div class="field"><label for="f-it-expiry">Vervaldatum (maand)</label><input id="f-it-expiry" type="month" value="' + (it && it.expiry ? it.expiry : '') + '"></div>' +
+        '<div class="field"><label>Foto</label>' +
+            '<div id="f-photo-holder">' + (pendingPhoto ? '<img class="photo-preview" src="' + pendingPhoto + '" alt="">' : '') + '</div>' +
+            '<div class="btn-row">' +
+                '<button class="btn btn-sm" id="f-photo-pick">' + (pendingPhoto ? 'Andere foto' : 'Foto toevoegen') + '</button>' +
+                '<button class="btn btn-sm btn-danger" id="f-photo-remove"' + (pendingPhoto ? '' : ' hidden') + '>Verwijder foto</button>' +
+            '</div>' +
+            '<input type="file" id="f-photo-file" accept="image/*" hidden>' +
+        '</div>' +
         '<div class="modal-actions">' +
             (it ? '<button class="btn btn-danger" id="f-it-delete" style="margin-right:auto;">Verwijder</button>' : '') +
             '<button class="btn" id="f-cancel">Annuleer</button>' +
@@ -1136,28 +1448,50 @@ function openItemModal(bagId, itemId) {
         '</div>'
     );
     $('#f-cancel').addEventListener('click', closeModal);
+    $('#f-photo-pick').addEventListener('click', () => $('#f-photo-file').click());
+    $('#f-photo-file').addEventListener('change', e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        resizePhoto(file, dataUrl => {
+            pendingPhoto = dataUrl;
+            $('#f-photo-holder').innerHTML = '<img class="photo-preview" src="' + dataUrl + '" alt="">';
+            $('#f-photo-remove').hidden = false;
+            $('#f-photo-pick').textContent = 'Andere foto';
+        });
+    });
+    $('#f-photo-remove').addEventListener('click', () => {
+        pendingPhoto = null;
+        $('#f-photo-holder').innerHTML = '';
+        $('#f-photo-remove').hidden = true;
+        $('#f-photo-pick').textContent = 'Foto toevoegen';
+    });
     $('#f-it-save').addEventListener('click', () => {
         const name = $('#f-it-name').value.trim();
-        if (!name) { toast('Geef het item een naam.'); return; }
+        if (!name) { toast('Geef het artikel een naam.'); return; }
         const data = {
             name,
+            sapName: $('#f-it-sapname').value.trim(),
+            sapNr: $('#f-it-sapnr').value.trim(),
+            compartment: $('#f-it-comp').value.trim(),
             target: Math.max(0, parseInt($('#f-it-target').value) || 0),
             current: Math.max(0, parseInt($('#f-it-current').value) || 0),
             unit: $('#f-it-unit').value.trim() || 'st',
             lot: $('#f-it-lot').value.trim(),
-            expiry: $('#f-it-expiry').value || null
+            expiry: $('#f-it-expiry').value || null,
+            photo: pendingPhoto
         };
         if (it) Object.assign(it, data);
-        else bag.items.push(Object.assign({ id: uid() }, data));
-        save(); closeModal(); renderAll(); renderBagDetail();
+        else part.items.push(Object.assign({ id: uid() }, data));
+        save(); closeModal(); renderAll(); renderPartDetail();
     });
     const del = $('#f-it-delete');
     if (del) del.addEventListener('click', () => {
-        if (!confirm('Item "' + it.name + '" verwijderen?')) return;
-        bag.items = bag.items.filter(i => i.id !== it.id);
+        if (!confirm('Artikel "' + it.name + '" verwijderen?')) return;
+        part.items = part.items.filter(i => i.id !== it.id);
         delete state.orderExcluded[it.id];
         delete state.orderQty[it.id];
-        save(); closeModal(); renderAll(); renderBagDetail();
+        delete state.orderSource[it.id];
+        save(); closeModal(); renderAll(); renderPartDetail();
     });
 }
 
@@ -1167,7 +1501,7 @@ function openItemModal(bagId, itemId) {
 $('#btn-settings').addEventListener('click', () => {
     openModal(
         '<h2>Instellingen</h2>' +
-        '<p class="muted" style="margin-bottom:14px;">Gegevens staan lokaal op dit apparaat (browseropslag). Maak regelmatig een back-up, zeker voordat je van apparaat wisselt.</p>' +
+        '<p class="muted" style="margin-bottom:14px;">Gegevens staan lokaal op dit apparaat (browseropslag). Maak regelmatig een back-up, zeker voordat je van apparaat wisselt. Foto’s tellen mee in de opslagruimte.</p>' +
         '<div class="btn-row" style="flex-direction:column;">' +
             '<button class="btn btn-block" id="f-export">Back-up downloaden (JSON)</button>' +
             '<button class="btn btn-block" id="f-import">Back-up herstellen</button>' +
@@ -1188,11 +1522,12 @@ $('#btn-settings').addEventListener('click', () => {
         reader.onload = () => {
             try {
                 const data = JSON.parse(reader.result);
-                if (!Array.isArray(data.bags)) throw new Error('geen tassen gevonden');
+                if (!Array.isArray(data.sets)) throw new Error('geen sets gevonden');
                 state = data;
                 state.orderExcluded = state.orderExcluded || {};
                 state.orderQty = state.orderQty || {};
-                save(); closeModal(); renderAll(); showView('view-bags');
+                state.orderSource = state.orderSource || {};
+                save(); closeModal(); renderAll(); showView('view-sets');
                 toast('Back-up hersteld');
             } catch (err) {
                 toast('Bestand niet herkend als Tascheck-back-up.');
@@ -1203,7 +1538,7 @@ $('#btn-settings').addEventListener('click', () => {
     $('#f-reset').addEventListener('click', () => {
         if (!confirm('Alle huidige gegevens vervangen door demodata?')) return;
         state = seedData();
-        save(); closeModal(); renderAll(); showView('view-bags');
+        save(); closeModal(); renderAll(); showView('view-sets');
         toast('Demodata geladen');
     });
 });
@@ -1212,7 +1547,7 @@ $('#btn-settings').addEventListener('click', () => {
    Init
    ===================================================================== */
 function renderAll() {
-    renderBags();
+    renderSets();
     renderExpiry();
     renderOrder();
     renderDots();
@@ -1220,7 +1555,7 @@ function renderAll() {
 
 load();
 renderAll();
-showView('view-bags');
+showView('view-sets');
 </script>
 </body>
 </html>
