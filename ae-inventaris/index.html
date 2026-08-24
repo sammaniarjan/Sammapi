@@ -448,8 +448,9 @@ table.data select { width: auto; padding: 4px 6px; font-size: 0.8rem; }
         <div class="btn-row" style="margin-bottom:14px;">
             <button class="btn btn-primary" id="btn-start-count">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                Start telling
+                <span id="btn-start-count-label">Start telling</span>
             </button>
+            <button class="btn" id="btn-restart-count" hidden>Nieuwe telling</button>
             <button class="btn" id="btn-add-item">+ Artikel</button>
             <button class="btn" id="btn-edit-part">Bewerk onderdeel</button>
         </div>
@@ -492,6 +493,7 @@ table.data select { width: auto; padding: 4px 6px; font-size: 0.8rem; }
         </div>
         <div class="toolbar">
             <span class="selectie-info" id="order-selection-info"></span>
+            <button class="btn btn-sm" id="btn-order-mark" style="margin-left:auto;">Markeer selectie als besteld</button>
         </div>
         <div class="tablewrap" id="order-tablewrap"></div>
         <div class="btn-row">
@@ -545,15 +547,21 @@ function monthFromNow(offsetMonths) {
     return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
 }
 
+function dateFromNowDays(offsetDays) {
+    const d = new Date();
+    d.setDate(d.getDate() + offsetDays);
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
 /* Vaste (dummy)inhoud per onderdeeltype; elke set krijgt dezelfde
    producten, met per set licht variërende vervaldatums en standen.
    SAP-nummers en -benamingen zijn dummy's. */
 function seedTemplate() {
-    const A = (name, sapName, sapNr, target, unit, compartment, expOffset) =>
-        ({ name, sapName, sapNr, target, unit, compartment, expOffset });
+    const A = (name, sapName, sapNr, target, unit, compartment, expOffset, note) =>
+        ({ name, sapName, sapNr, target, unit, compartment, expOffset, note: note || '' });
     return [
         { type: 'Tas', items: [
-            A('Adrenaline 1 mg/ml amp.', 'ADRENALINE INJVLST 1MG/ML AMP 1ML', '10245871', 5, 'amp', 'Ampullen', 3),
+            A('Adrenaline 1 mg/ml amp.', 'ADRENALINE INJVLST 1MG/ML AMP 1ML', '10245871', 5, 'amp', 'Ampullen', 3, 'Koel en donker bewaren'),
             A('Ondansetron 4 mg amp.', 'ONDANSETRON INJVLST 2MG/ML AMP 2ML', '10245880', 4, 'amp', 'Ampullen', 16),
             A('Larynxmasker maat 4', 'LARYNXMASKER DISP MT 4', '10298001', 2, 'st', 'Airway', 14),
             A('Guedel-airway set (3 maten)', 'AIRWAY GUEDEL SET 3 MATEN', '10298015', 1, 'set', 'Airway', 26),
@@ -576,7 +584,7 @@ function seedTemplate() {
             A('Glucose 10% 500 ml', 'GLUCOSE 10% INF 500ML', '10251002', 2, 'zak', 'Medicatie', -2)
         ]},
         { type: 'Unipack', items: [
-            A('Tourniquet (CAT)', 'TOURNIQUET CAT', '10344001', 2, 'st', '', null),
+            A('Tourniquet (CAT)', 'TOURNIQUET CAT', '10344001', 2, 'st', '', null, 'Blauwe trainingsversie niet meetellen'),
             A('Chest seal', 'CHEST SEAL VENTED DISP', '10344012', 2, 'st', '', 29),
             A('Reddingsdeken', 'DEKEN ISOLATIE DISP', '10344020', 2, 'st', '', 44)
         ]}
@@ -591,6 +599,7 @@ function seedData() {
             id: uid(),
             name: 'Set ' + s,
             beheerders: '',
+            yearCheck: dateFromNowDays(s * 55 - 70),   // volgende jaarlijkse reset
             parts: template.map(part => ({
                 id: uid(),
                 name: part.type,
@@ -605,6 +614,7 @@ function seedData() {
                     current: it.target - ((s + idx) % 7 === 0 ? 1 : 0),
                     unit: it.unit,
                     lot: '',
+                    note: it.note || '',
                     expiry: it.expOffset == null ? null : monthFromNow(it.expOffset + ((s * 2 + idx) % 5) - 2),
                     photo: null
                 }))
@@ -615,7 +625,9 @@ function seedData() {
         sets,
         orderExcluded: {},   // itemId -> true als handmatig uitgevinkt
         orderQty: {},        // itemId -> handmatig aangepast bestelaantal
-        orderSource: {}      // itemId -> '' | 'grijs' | 'matlog' | 'vmf'
+        orderSource: {},     // itemId -> '' | 'grijs' | 'matlog' | 'vmf'
+        orderedAt: {},       // itemId -> datum waarop besteld (nog niet binnen)
+        countSessions: {}    // partId -> gepauzeerde telling
     };
 }
 
@@ -629,6 +641,8 @@ function load() {
                 state.orderExcluded = state.orderExcluded || {};
                 state.orderQty = state.orderQty || {};
                 state.orderSource = state.orderSource || {};
+                state.orderedAt = state.orderedAt || {};
+                state.countSessions = state.countSessions || {};
                 return;
             }
         }
@@ -702,6 +716,16 @@ function statusBadges(st) {
     return badges.join('');
 }
 
+// Jaarlijkse reset van een set: status t.o.v. de geplande datum
+function yearCheckStatus(set) {
+    if (!set.yearCheck) return null;
+    const due = new Date(set.yearCheck + 'T23:59:59');
+    const days = Math.floor((due - new Date()) / 86400000);
+    if (days < 0) return { key: 'overdue', days, chip: '<span class="chip chip-danger">jaarreset verlopen</span>' };
+    if (days <= 30) return { key: 'soon', days, chip: '<span class="chip chip-warn">jaarreset over ' + days + ' dg</span>' };
+    return { key: 'ok', days, chip: '' };
+}
+
 // Alle artikelen als platte lijst met context
 function allArticles() {
     const rows = [];
@@ -742,7 +766,8 @@ function orderLines() {
                         reasons,
                         severity: (s.key === 'expired' || shortage > 0) ? 'danger' : 'warn',
                         included: !state.orderExcluded[it.id],
-                        source: state.orderSource[it.id] || ''
+                        source: state.orderSource[it.id] || '',
+                        orderedAt: state.orderedAt[it.id] || null
                     });
                 }
             }
@@ -751,9 +776,11 @@ function orderLines() {
     return lines;
 }
 
-// Regels die meegaan in de VMF-bestelling: open ('nog bepalen') of expliciet VMF
+// Regels die meegaan in de VMF-bestelling: open ('nog bepalen') of expliciet
+// VMF, en nog niet eerder besteld (voorkomt dubbel bestellen)
 function exportLines() {
-    return orderLines().filter(l => l.included && l.qty > 0 && l.source !== 'grijs' && l.source !== 'matlog');
+    return orderLines().filter(l => l.included && l.qty > 0 &&
+        l.source !== 'grijs' && l.source !== 'matlog' && !l.orderedAt);
 }
 
 /* =====================================================================
@@ -874,13 +901,15 @@ function renderSets() {
         const st = setStats(set);
         tot.expired += st.expired; tot.soon += st.soon; tot.short += st.short;
         const itemCount = set.parts.reduce((n, p) => n + p.items.length, 0);
+        const yc = yearCheckStatus(set);
         const meta = [set.beheerders ? 'Duo: ' + esc(set.beheerders) : 'duo nog niet ingevuld',
-                      set.parts.length + ' onderdelen', itemCount + ' artikelen'].join(' · ');
+                      set.parts.length + ' onderdelen', itemCount + ' artikelen',
+                      set.yearCheck ? 'jaarreset ' + fmtDate(set.yearCheck) : null].filter(Boolean).join(' · ');
         return '<div class="card clickable" data-set="' + set.id + '" role="button" tabindex="0" aria-label="' + esc(set.name) + '">' +
             '<div class="card-main"><div class="card-body">' +
                 '<div class="card-name">' + esc(set.name) + '</div>' +
                 '<div class="card-meta">' + meta + '</div>' +
-                '<div class="card-badges">' + statusBadges(st) + '</div>' +
+                '<div class="card-badges">' + statusBadges(st) + (yc ? yc.chip : '') + '</div>' +
             '</div><span class="chevron" aria-hidden="true">&rsaquo;</span></div></div>';
     }).join('');
 
@@ -904,7 +933,11 @@ function renderSetDetail() {
     const set = getSet(currentSetId);
     if (!set) { showView('view-sets'); return; }
     $('#set-detail-name').textContent = set.name;
-    $('#set-detail-sub').textContent = set.beheerders ? 'Duo: ' + set.beheerders : 'Duo nog niet ingevuld';
+    const yc = yearCheckStatus(set);
+    $('#set-detail-sub').textContent =
+        (set.beheerders ? 'Duo: ' + set.beheerders : 'Duo nog niet ingevuld') +
+        (set.yearCheck ? ' · jaarlijkse reset: ' + fmtDate(set.yearCheck) +
+            (yc && yc.key === 'overdue' ? ' (verlopen)' : (yc && yc.key === 'soon' ? ' (over ' + yc.days + ' dagen)' : '')) : '');
 
     const list = $('#parts-list');
     if (!set.parts.length) {
@@ -941,6 +974,7 @@ function itemRow(it) {
     const shortCls = it.current < it.target ? ' qty-short' : '';
     const details = [expiryChip(it.expiry), sapLine(it)];
     if (it.lot) details.push('<span>lot ' + esc(it.lot) + '</span>');
+    if (it.note) details.push('<span style="font-style:italic;">✎ ' + esc(it.note) + '</span>');
     return '<div class="item-row clickable" data-item="' + it.id + '" role="button" tabindex="0">' +
         (it.photo ? '<img class="item-thumb" src="' + it.photo + '" alt="">' : '') +
         '<div class="item-info">' +
@@ -959,6 +993,13 @@ function renderPartDetail() {
     $('#part-detail-sub').textContent = set.name + ' · ' +
         (part.lastCount ? 'laatste telling ' + fmtDate(part.lastCount) : 'nog niet geteld');
     $('#btn-back-set').textContent = set.name;
+
+    // Gepauzeerde telling? Dan wordt de startknop een hervatknop.
+    const paused = pausedSession(part);
+    $('#btn-start-count-label').textContent = paused
+        ? 'Hervat telling (artikel ' + (paused.index + 1) + ' van ' + part.items.length + ')'
+        : 'Start telling';
+    $('#btn-restart-count').hidden = !paused;
 
     const st = partStats(part);
     const notices = [];
@@ -1000,15 +1041,42 @@ $('#btn-edit-part').addEventListener('click', () => openPartModal(currentSetId, 
    ===================================================================== */
 let countSession = null; // { setId, partId, index, results: [{counted, expiry}] }
 
-$('#btn-start-count').addEventListener('click', () => {
+// Geldige gepauzeerde telling voor dit onderdeel (vervalt als de
+// artikellijst intussen is veranderd)
+function pausedSession(part) {
+    const s = state.countSessions[part.id];
+    return (s && s.results.length === part.items.length) ? s : null;
+}
+
+function persistCountSession() {
+    if (!countSession) return;
+    state.countSessions[countSession.partId] = countSession;
+    save();
+}
+
+function clearCountSession(partId) {
+    delete state.countSessions[partId];
+    save();
+}
+
+function startCount(fresh) {
     const part = getPart(currentSetId, currentPartId);
     if (!part || !part.items.length) { toast('Dit onderdeel heeft nog geen artikelen.'); return; }
-    countSession = {
+    const paused = fresh ? null : pausedSession(part);
+    countSession = paused || {
         setId: currentSetId, partId: currentPartId, index: 0,
         results: part.items.map(it => ({ counted: it.current, expiry: it.expiry }))
     };
+    persistCountSession();
     renderCountStep();
     showView('view-count');
+}
+
+$('#btn-start-count').addEventListener('click', () => startCount(false));
+$('#btn-restart-count').addEventListener('click', () => {
+    if (!confirm('Gepauzeerde telling weggooien en opnieuw beginnen?')) return;
+    clearCountSession(currentPartId);
+    startCount(true);
 });
 
 function renderCountStep() {
@@ -1032,6 +1100,7 @@ function renderCountStep() {
         '<div class="count-item-name">' + esc(it.name) + '</div>' +
         '<div class="count-item-sub">' + subParts.join(' · ') + '</div>' +
         (sapLine(it) ? '<div style="margin-top:4px;">' + sapLine(it) + '</div>' : '') +
+        (it.note ? '<div class="notice notice-warn" style="margin-top:10px;">✎ ' + esc(it.note) + '</div>' : '') +
         (it.photo ? '<img class="count-photo" src="' + it.photo + '" alt="Foto van ' + esc(it.name) + '">' : '') +
         '<div class="stepper">' +
             '<button id="count-minus" aria-label="Minder">&minus;</button>' +
@@ -1046,7 +1115,7 @@ function renderCountStep() {
         '<div class="btn-row">' +
             (i > 0 ? '<button class="btn" id="count-prev">&larr; Vorige</button>' : '') +
             '<button class="btn btn-primary" id="count-next" style="flex:1;">' + (i === total - 1 ? 'Naar overzicht' : 'Volgende &rarr;') + '</button>' +
-            '<button class="btn" id="count-cancel">Stop</button>' +
+            '<button class="btn" id="count-cancel">Pauzeer</button>' +
         '</div>';
 
     const input = $('#count-input');
@@ -1055,14 +1124,17 @@ function renderCountStep() {
     const commit = () => {
         countSession.results[i].counted = Math.max(0, parseInt(input.value) || 0);
         countSession.results[i].expiry = $('#count-expiry').value || null;
+        persistCountSession();   // tussentijds bewaren: later verdergaan kan altijd
     };
-    $('#count-next').addEventListener('click', () => { commit(); countSession.index++; renderCountStep(); });
+    $('#count-next').addEventListener('click', () => { commit(); countSession.index++; persistCountSession(); renderCountStep(); });
     const prev = $('#count-prev');
-    if (prev) prev.addEventListener('click', () => { commit(); countSession.index--; renderCountStep(); });
+    if (prev) prev.addEventListener('click', () => { commit(); countSession.index--; persistCountSession(); renderCountStep(); });
     $('#count-cancel').addEventListener('click', () => {
+        commit();
         countSession = null;
         renderPartDetail();
         showView('view-part-detail');
+        toast('Telling gepauzeerd — je kunt later verdergaan');
     });
 }
 
@@ -1099,12 +1171,15 @@ function renderCountSummary() {
             const it = part.items[idx];
             it.current = r.counted;
             it.expiry = r.expiry;
-            // nieuwe voorraad geteld: eerdere handmatige bestelkeuzes vervallen
+            // nieuwe voorraad geteld: eerdere handmatige bestelkeuzes en
+            // de "besteld"-markering vervallen (levering is dan verwerkt)
             delete state.orderExcluded[it.id];
             delete state.orderQty[it.id];
             delete state.orderSource[it.id];
+            delete state.orderedAt[it.id];
         });
         part.lastCount = todayISO();
+        delete state.countSessions[part.id];
         save();
         countSession = null;
         renderAll();
@@ -1113,6 +1188,7 @@ function renderCountSummary() {
         toast('Telling opgeslagen');
     });
     $('#count-discard').addEventListener('click', () => {
+        clearCountSession(part.id);
         countSession = null;
         renderPartDetail();
         showView('view-part-detail');
@@ -1195,7 +1271,8 @@ function renderArticles() {
         const shortCls = r.it.current < r.it.target ? ' class="qty-short"' : '';
         return '<tr class="rowlink" data-item="' + r.it.id + '" data-setid="' + r.set.id + '" data-partid="' + r.part.id + '">' +
             '<td><span class="item-name-cell" style="font-weight:600;">' + esc(r.it.name) + '</span>' +
-                (r.it.sapName ? '<span class="cell-sub">' + esc(r.it.sapName) + '</span>' : '') + '</td>' +
+                (r.it.sapName ? '<span class="cell-sub">' + esc(r.it.sapName) + '</span>' : '') +
+                (r.it.note ? '<span class="cell-sub" style="font-style:italic;">✎ ' + esc(r.it.note) + '</span>' : '') + '</td>' +
             '<td>' + esc(r.it.sapNr || '—') + '</td>' +
             '<td>' + esc(r.set.name) + '</td>' +
             '<td>' + esc(r.part.name) + (r.it.compartment ? '<span class="cell-sub">' + esc(r.it.compartment) + '</span>' : '') + '</td>' +
@@ -1231,8 +1308,10 @@ function renderOrder() {
     const open = exportLines();
     const included = lines.filter(l => l.included);
 
+    const orderedCount = lines.filter(l => l.orderedAt).length;
     $('#order-selection-info').innerHTML = lines.length
-        ? '<strong>' + open.length + '</strong> van ' + lines.length + ' regels gaan mee in de bestelling'
+        ? '<strong>' + open.length + '</strong> van ' + lines.length + ' regels gaan mee in de bestelling' +
+          (orderedCount ? ' · ' + orderedCount + ' al besteld' : '')
         : '';
 
     if (!lines.length) {
@@ -1258,17 +1337,21 @@ function renderOrder() {
     const body = groups.map(g => {
         const gAll = g.lines.every(l => l.included);
         const rows = g.lines.map(l => {
-            const resolved = l.source === 'grijs' || l.source === 'matlog';
+            const resolved = l.source === 'grijs' || l.source === 'matlog' || l.orderedAt;
             const sourceOptions = Object.keys(SOURCE_LABELS).map(k =>
                 '<option value="' + k + '"' + (l.source === k ? ' selected' : '') + '>' + SOURCE_LABELS[k] + '</option>').join('');
+            const herkomstCell = l.orderedAt
+                ? '<span class="chip chip-neutral">besteld ' + fmtDate(l.orderedAt) + '</span> ' +
+                  '<button class="btn btn-sm" data-unorder="' + l.itemId + '" title="Bestelling terugdraaien (bijv. binnengekomen of geannuleerd)">Herstel</button>'
+                : '<select data-source="' + l.itemId + '" aria-label="Herkomst">' + sourceOptions + '</select>';
             return '<tr class="' + (resolved ? 'resolved' : '') + '">' +
                 '<td><input type="checkbox" data-check="' + l.itemId + '"' + (l.included ? ' checked' : '') + ' aria-label="Neem ' + esc(l.name) + ' op"></td>' +
                 '<td><span class="item-name-cell" style="font-weight:600;">' + esc(l.name) + '</span>' +
                     (l.sapNr ? '<span class="cell-sub">SAP ' + esc(l.sapNr) + (l.sapName ? ' · ' + esc(l.sapName) : '') + '</span>' : '') + '</td>' +
                 '<td>' + esc(l.partName) + '</td>' +
                 '<td><span style="color:var(--' + (l.severity === 'danger' ? 'rood' : 'geel-tekst') + ');font-size:0.8rem;">' + l.reasons.map(esc).join(' · ') + '</span></td>' +
-                '<td class="num"><input type="number" class="qty-input" min="0" value="' + l.qty + '" data-qty="' + l.itemId + '" aria-label="Aantal"> <span class="muted">' + esc(l.unit) + '</span></td>' +
-                '<td><select data-source="' + l.itemId + '" aria-label="Herkomst">' + sourceOptions + '</select></td>' +
+                '<td class="num"><input type="number" class="qty-input" min="0" value="' + l.qty + '" data-qty="' + l.itemId + '" aria-label="Aantal"' + (l.orderedAt ? ' disabled' : '') + '> <span class="muted">' + esc(l.unit) + '</span></td>' +
+                '<td>' + herkomstCell + '</td>' +
             '</tr>';
         }).join('');
         return '<tr class="groep"><td><input type="checkbox" data-group="' + esc(g.name) + '"' + (gAll ? ' checked' : '') + ' aria-label="Selecteer alles van ' + esc(g.name) + '"></td>' +
@@ -1308,7 +1391,21 @@ function renderOrder() {
         else delete state.orderSource[sel.dataset.source];
         save(); renderOrder(); renderDots();
     }));
+    wrapEl.querySelectorAll('[data-unorder]').forEach(btn => btn.addEventListener('click', () => {
+        delete state.orderedAt[btn.dataset.unorder];
+        save(); renderOrder(); renderDots();
+    }));
 }
+
+// Alles wat nu in de bestelling zit stempelen als "besteld" met datum,
+// zodat het bij een volgende export niet dubbel wordt besteld
+$('#btn-order-mark').addEventListener('click', () => {
+    const lines = exportLines();
+    if (!lines.length) { toast('Geen open regels om als besteld te markeren.'); return; }
+    for (const l of lines) state.orderedAt[l.itemId] = todayISO();
+    save(); renderOrder(); renderDots();
+    toast(lines.length + ' regel(s) gemarkeerd als besteld');
+});
 
 function orderText() {
     const lines = exportLines();
@@ -1385,6 +1482,7 @@ function openSetModal(setId) {
         '<h2>' + (set ? 'Set bewerken' : 'Nieuwe set') + '</h2>' +
         '<div class="field"><label for="f-set-name">Naam</label><input id="f-set-name" value="' + esc(set ? set.name : 'Set ' + (state.sets.length + 1)) + '"></div>' +
         '<div class="field"><label for="f-set-duo">Duo / beheerders</label><input id="f-set-duo" value="' + esc(set ? set.beheerders : '') + '" placeholder="bijv. Jansen &amp; Pietersen"></div>' +
+        '<div class="field"><label for="f-set-year">Volgende jaarlijkse reset</label><input id="f-set-year" type="date" value="' + esc(set && set.yearCheck ? set.yearCheck : '') + '"></div>' +
         (set ? '' : '<div class="field"><label style="font-weight:400;"><input type="checkbox" id="f-set-template" checked style="width:auto;margin-right:8px;vertical-align:middle;">Vul met de standaardonderdelen (Tas, Container tas, Foudraal (O2), Pelicase, Unipack)</label></div>') +
         '<div class="modal-actions">' +
             (set ? '<button class="btn btn-danger" id="f-set-delete" style="margin-right:auto;">Verwijder</button>' : '') +
@@ -1399,12 +1497,14 @@ function openSetModal(setId) {
         if (set) {
             set.name = name;
             set.beheerders = $('#f-set-duo').value.trim();
+            set.yearCheck = $('#f-set-year').value || null;
             save(); closeModal(); renderAll(); renderSetDetail();
         } else {
             const withTemplate = $('#f-set-template').checked;
             const ns = {
                 id: uid(), name,
                 beheerders: $('#f-set-duo').value.trim(),
+                yearCheck: $('#f-set-year').value || null,
                 parts: withTemplate ? PART_TYPES.map(t => ({ id: uid(), name: t, lastCount: null, items: [] })) : []
             };
             state.sets.push(ns);
@@ -1420,7 +1520,9 @@ function openSetModal(setId) {
                 delete state.orderExcluded[it.id];
                 delete state.orderQty[it.id];
                 delete state.orderSource[it.id];
+                delete state.orderedAt[it.id];
             }
+            delete state.countSessions[part.id];
         }
         state.sets = state.sets.filter(s => s.id !== set.id);
         save(); closeModal(); renderAll(); showView('view-sets');
@@ -1463,7 +1565,9 @@ function openPartModal(setId, partId) {
             delete state.orderExcluded[it.id];
             delete state.orderQty[it.id];
             delete state.orderSource[it.id];
+            delete state.orderedAt[it.id];
         }
+        delete state.countSessions[part.id];
         set.parts = set.parts.filter(p => p.id !== part.id);
         save(); closeModal(); renderAll(); renderSetDetail(); showView('view-set-detail');
     });
@@ -1494,6 +1598,7 @@ function openItemModal(setId, partId, itemId) {
             '<div class="field"><label for="f-it-lot">Lotnummer</label><input id="f-it-lot" value="' + esc(it ? it.lot : '') + '"></div>' +
         '</div>' +
         '<div class="field"><label for="f-it-expiry">Vervaldatum (maand)</label><input id="f-it-expiry" type="month" value="' + (it && it.expiry ? it.expiry : '') + '"></div>' +
+        '<div class="field"><label for="f-it-note">Opmerkingen / bijzonderheden</label><textarea id="f-it-note" rows="2" placeholder="bijv. koel bewaren, trainingsversie niet meetellen">' + esc(it ? it.note : '') + '</textarea></div>' +
         '<div class="field"><label>Foto</label>' +
             '<div id="f-photo-holder">' + (pendingPhoto ? '<img class="photo-preview" src="' + pendingPhoto + '" alt="">' : '') + '</div>' +
             '<div class="btn-row">' +
@@ -1538,6 +1643,7 @@ function openItemModal(setId, partId, itemId) {
             current: Math.max(0, parseInt($('#f-it-current').value) || 0),
             unit: $('#f-it-unit').value.trim() || 'st',
             lot: $('#f-it-lot').value.trim(),
+            note: $('#f-it-note').value.trim(),
             expiry: $('#f-it-expiry').value || null,
             photo: pendingPhoto
         };
@@ -1553,6 +1659,8 @@ function openItemModal(setId, partId, itemId) {
         delete state.orderExcluded[it.id];
         delete state.orderQty[it.id];
         delete state.orderSource[it.id];
+        delete state.orderedAt[it.id];
+        delete state.countSessions[part.id];   // artikellijst gewijzigd: telling vervalt
         save(); closeModal(); renderAll();
         if ($('#view-part-detail').classList.contains('active')) renderPartDetail();
     });
