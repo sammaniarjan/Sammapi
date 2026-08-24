@@ -4,409 +4,368 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Tascheck</title>
-<meta name="description" content="Tellingen en vervaldatumbewaking van medische AE-sets, met automatische bestellijst op SAP-nummer.">
+<meta name="description" content="Tellingen en vervaldatumbewaking van medische AE-sets, met bestellijst op SAP-nummer.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
+/* Rijkshuisstijl-geinspireerd: wit vlak, oranje banner, donkerblauwe
+   navigatie, blauwe interactie-elementen. Geen decoratie. */
 :root {
-    --bg-primary: #0a0f0d;
-    --bg-secondary: #111916;
-    --bg-card: #151d19;
-    --bg-card-hover: #1a2420;
-    --accent-green: #2dd4a0;
-    --accent-green-dim: #1a7a5c;
-    --accent-yellow: #fbbf24;
-    --accent-red: #f87171;
-    --accent-blue: #60a5fa;
-    --text-primary: #e8f0ec;
-    --text-secondary: #8b9d94;
-    --text-muted: #5a6b62;
-    --border: #243029;
-    --border-light: #2d3d34;
-    --shadow: 0 4px 24px rgba(0,0,0,0.4);
-    --radius: 12px;
-    --radius-sm: 8px;
-    color-scheme: dark;
+    --oranje: #E17000;
+    --donkerblauw: #154273;
+    --linkblauw: #01689B;
+    --linkblauw-donker: #01496E;
+    --rood: #D52B1E;
+    --rood-bg: #F9E1DF;
+    --geel-tekst: #94710A;
+    --geel-bg: #FBF3E1;
+    --groen: #39870C;
+    --groen-bg: #E8F2E1;
+    --bg: #F3F3F3;
+    --vlak: #FFFFFF;
+    --vlak-hover: #F0F6F9;
+    --tekst: #282828;
+    --tekst-2: #535353;
+    --muted: #696969;
+    --rand: #CCCCCC;
+    --rand-licht: #E6E6E6;
+    --schaduw: 0 1px 4px rgba(0,0,0,0.10);
+    color-scheme: light;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 body {
-    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: var(--bg-primary);
-    color: var(--text-primary);
-    line-height: 1.6;
+    font-family: 'Source Sans 3', 'Segoe UI', Verdana, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--tekst);
+    line-height: 1.55;
     min-height: 100vh;
-    padding-bottom: calc(66px + env(safe-area-inset-bottom));
-}
-body::before {
-    content: '';
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-    opacity: 0.03;
-    pointer-events: none;
-    z-index: 1000;
+    font-variant-numeric: tabular-nums;
 }
 button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
-button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
-    outline: 2px solid var(--accent-green);
-    outline-offset: 2px;
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
+    outline: 3px solid var(--oranje);
+    outline-offset: 1px;
 }
 input, select, textarea {
     font: inherit;
-    color: var(--text-primary);
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-light);
-    border-radius: var(--radius-sm);
-    padding: 8px 12px;
+    color: var(--tekst);
+    background: var(--vlak);
+    border: 1px solid var(--rand);
+    border-radius: 2px;
+    padding: 7px 10px;
     width: 100%;
-    transition: border-color 0.2s ease;
 }
-input:focus, select:focus, textarea:focus { border-color: var(--accent-green-dim); }
+input:focus, select:focus { border-color: var(--linkblauw); }
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 
-/* ---------- Header ---------- */
-.topbar {
-    position: sticky; top: 0; z-index: 30;
-    background: var(--bg-secondary);
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: 12px;
-    padding: 14px 20px;
-    padding-top: calc(14px + env(safe-area-inset-top));
+/* ---------- Masthead ---------- */
+.mast-top {
+    background: var(--vlak);
+    border-bottom: 1px solid var(--rand-licht);
+    padding: 8px 16px;
+    padding-top: calc(8px + env(safe-area-inset-top));
+    display: flex; align-items: center; gap: 10px;
 }
-.logo { flex: 1; min-width: 0; }
-.logo h1 {
-    font-family: 'Instrument Serif', Georgia, 'Times New Roman', serif;
-    font-size: 1.5rem;
-    font-weight: 400;
-    color: var(--accent-green);
-    letter-spacing: -0.02em;
-    line-height: 1.2;
-}
-.logo span {
-    display: block;
-    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-top: 2px;
-}
-.iconbtn {
-    width: 38px; height: 38px; border-radius: var(--radius-sm); flex-shrink: 0;
+.mast-mark {
+    width: 26px; height: 26px; flex-shrink: 0;
+    background: var(--donkerblauw); color: #fff;
+    font-size: 0.7rem; font-weight: 700;
     display: grid; place-items: center;
-    color: var(--text-secondary);
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    transition: all 0.2s ease;
 }
-.iconbtn:hover { background: var(--bg-card-hover); border-color: var(--border-light); color: var(--text-primary); }
-.iconbtn svg { width: 18px; height: 18px; }
+.mast-top span.label {
+    font-size: 0.78rem; color: var(--muted);
+}
+.mast-banner {
+    background: var(--oranje);
+    padding: 14px 16px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.mast-banner .inner, .mainnav .inner, .wrap { max-width: 960px; margin: 0 auto; width: 100%; }
+.mast-banner .inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.mast-banner h1 { color: #fff; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.2; }
+.iconbtn {
+    width: 40px; height: 40px; flex-shrink: 0;
+    display: grid; place-items: center;
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.55);
+    border-radius: 2px;
+}
+.iconbtn:hover { background: rgba(255,255,255,0.15); }
+.iconbtn svg { width: 19px; height: 19px; }
+
+/* ---------- Hoofdnavigatie (donkerblauw) ---------- */
+.mainnav {
+    background: var(--donkerblauw);
+    position: sticky; top: 0; z-index: 30;
+}
+.mainnav .inner { display: flex; }
+.tab {
+    display: flex; align-items: center; gap: 8px;
+    padding: 13px 18px 10px;
+    color: rgba(255,255,255,0.85);
+    font-size: 0.9rem; font-weight: 600;
+    border-bottom: 3px solid transparent;
+    position: relative;
+}
+.tab:hover { color: #fff; background: rgba(255,255,255,0.08); }
+.tab.active { color: #fff; border-bottom-color: var(--oranje); }
+.tab svg { width: 17px; height: 17px; }
+.tab-dot {
+    min-width: 17px; height: 17px; padding: 0 4px; border-radius: 999px;
+    background: var(--rood); color: #fff;
+    font-size: 0.68rem; font-weight: 700;
+    display: grid; place-items: center;
+}
+@media (max-width: 480px) {
+    .tab { flex: 1; justify-content: center; padding: 12px 6px 9px; font-size: 0.8rem; }
+    .tab svg { display: none; }
+}
 
 /* ---------- Layout ---------- */
-.wrap { max-width: 760px; margin: 0 auto; padding: 20px; }
+.wrap { padding: 20px 16px 48px; }
 .view { display: none; }
 .view.active { display: block; }
-.eyebrow {
-    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em;
-    font-weight: 500; color: var(--text-muted);
-    margin: 4px 0 12px;
-}
-.eyebrow button:hover { color: var(--accent-green); }
-.page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
-.page-head h1 {
-    font-family: 'Instrument Serif', Georgia, 'Times New Roman', serif;
-    font-size: 1.75rem;
-    font-weight: 400;
-    letter-spacing: -0.02em;
-    line-height: 1.2;
-    text-wrap: balance;
-}
-.page-head .sub { color: var(--text-secondary); font-size: 0.85rem; margin-top: 4px; }
+.crumb { font-size: 0.82rem; margin-bottom: 12px; }
+.crumb button { color: var(--linkblauw); font-weight: 600; }
+.crumb button:hover { text-decoration: underline; }
+.crumb button::before { content: '‹ '; }
+.page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+.page-head h2 { font-size: 1.35rem; font-weight: 700; line-height: 1.25; }
+.page-head .sub { color: var(--tekst-2); font-size: 0.85rem; margin-top: 2px; }
 
-/* ---------- Cards ---------- */
+/* ---------- Kaarten (lijsten van sets/onderdelen) ---------- */
 .card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    margin-bottom: 16px;
-    overflow: hidden;
-    transition: all 0.25s ease;
+    background: var(--vlak);
+    border: 1px solid var(--rand-licht);
+    box-shadow: var(--schaduw);
+    margin-bottom: 10px;
 }
 .card.clickable { cursor: pointer; }
-.card.clickable:hover {
-    background: var(--bg-card-hover);
-    border-color: var(--border-light);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow);
-}
-.card-main { padding: 16px 20px; min-width: 0; }
-.card-title-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
-.card-name { font-weight: 500; font-size: 1rem; }
-.card-meta { color: var(--text-muted); font-size: 0.8rem; margin-top: 2px; }
-.card-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.card.clickable:hover { background: var(--vlak-hover); }
+.card-main { padding: 13px 16px; display: flex; align-items: center; gap: 12px; }
+.card-body { flex: 1; min-width: 0; }
+.card-name { font-weight: 700; font-size: 1rem; color: var(--linkblauw); }
+.card.clickable:hover .card-name { text-decoration: underline; }
+.card-meta { color: var(--muted); font-size: 0.8rem; }
+.card-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 7px; }
+.chevron { color: var(--linkblauw); font-size: 1.3rem; line-height: 1; flex-shrink: 0; }
 
 .chip {
-    display: inline-flex; align-items: center; gap: 5px;
-    font-size: 0.72rem; font-weight: 500;
-    padding: 2px 10px; border-radius: 999px;
-    font-variant-numeric: tabular-nums;
+    display: inline-flex; align-items: center;
+    font-size: 0.74rem; font-weight: 600;
+    padding: 1px 8px;
     white-space: nowrap;
 }
-.chip-danger { background: rgba(248, 113, 113, 0.08); border: 1px solid rgba(248, 113, 113, 0.2); color: var(--accent-red); }
-.chip-warn { background: rgba(251, 191, 36, 0.08); border: 1px solid rgba(251, 191, 36, 0.2); color: var(--accent-yellow); }
-.chip-ok { background: rgba(45, 212, 160, 0.08); border: 1px solid rgba(45, 212, 160, 0.2); color: var(--accent-green); }
-.chip-neutral { background: var(--bg-card-hover); border: 1px solid var(--border); color: var(--text-secondary); }
-.chip-blue { background: rgba(96, 165, 250, 0.08); border: 1px solid rgba(96, 165, 250, 0.2); color: var(--accent-blue); }
+.chip-danger { background: var(--rood-bg); color: var(--rood); }
+.chip-warn { background: var(--geel-bg); color: var(--geel-tekst); }
+.chip-ok { background: var(--groen-bg); color: var(--groen); }
+.chip-neutral { background: var(--bg); color: var(--tekst-2); }
 
-/* ---------- Buttons ---------- */
+/* ---------- Knoppen ---------- */
 .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 7px;
-    font-weight: 500; font-size: 0.875rem;
-    padding: 9px 16px; border-radius: var(--radius-sm);
-    border: 1px solid var(--border);
-    background: var(--bg-card);
-    color: var(--text-primary);
+    font-weight: 600; font-size: 0.9rem;
+    padding: 9px 16px; border-radius: 2px;
+    border: 1px solid var(--linkblauw);
+    background: var(--vlak);
+    color: var(--linkblauw);
     white-space: nowrap;
-    transition: all 0.2s ease;
 }
-.btn:hover { background: var(--bg-card-hover); border-color: var(--border-light); }
-.btn-primary {
-    background: var(--accent-green-dim);
-    border-color: var(--accent-green);
-    color: var(--accent-green);
-}
-.btn-primary:hover { background: var(--accent-green); border-color: var(--accent-green); color: var(--bg-primary); }
-.btn-danger { color: var(--accent-red); border-color: rgba(248, 113, 113, 0.35); }
-.btn-danger:hover { background: rgba(248, 113, 113, 0.08); border-color: var(--accent-red); }
-.btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+.btn:hover { background: var(--vlak-hover); }
+.btn-primary { background: var(--linkblauw); color: #fff; }
+.btn-primary:hover { background: var(--linkblauw-donker); }
+.btn-danger { color: var(--rood); border-color: var(--rood); }
+.btn-danger:hover { background: var(--rood-bg); }
+.btn-sm { padding: 5px 11px; font-size: 0.82rem; }
 .btn-block { width: 100%; }
 .btn svg { width: 16px; height: 16px; }
 .btn-row { display: flex; flex-wrap: wrap; gap: 8px; }
 
-/* ---------- Item rows ---------- */
+/* ---------- Artikel-rijen in onderdeel-detail ---------- */
 .item-row {
     display: flex; align-items: center; gap: 12px;
-    padding: 13px 20px;
-    border-top: 1px solid var(--border);
+    padding: 11px 16px;
+    border-top: 1px solid var(--rand-licht);
 }
 .item-row:first-child { border-top: none; }
-.item-row.clickable { cursor: pointer; transition: background 0.2s ease; }
-.item-row.clickable:hover { background: var(--bg-card-hover); }
+.item-row.clickable { cursor: pointer; }
+.item-row.clickable:hover { background: var(--vlak-hover); }
 .item-thumb {
-    width: 40px; height: 40px; flex-shrink: 0;
-    border-radius: var(--radius-sm);
+    width: 38px; height: 38px; flex-shrink: 0;
     object-fit: cover;
-    border: 1px solid var(--border-light);
-    background: var(--bg-secondary);
+    border: 1px solid var(--rand-licht);
+    background: var(--bg);
 }
 .item-info { flex: 1; min-width: 0; }
-.item-name { font-weight: 500; font-size: 0.9rem; }
-.item-detail { font-size: 0.78rem; color: var(--text-muted); display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin-top: 3px; }
-.sap-ref { font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace; font-size: 0.72rem; color: var(--text-secondary); }
-.item-qty {
-    font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace;
-    font-weight: 500; font-size: 0.9rem;
-    text-align: right; flex-shrink: 0;
-    color: var(--text-primary);
-}
-.item-qty .of { color: var(--text-muted); font-weight: 400; font-size: 0.78rem; }
-.qty-short { color: var(--accent-red); }
+.item-name { font-weight: 600; font-size: 0.9rem; }
+.item-detail { font-size: 0.78rem; color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; gap: 3px 10px; margin-top: 2px; }
+.sap-ref { font-size: 0.75rem; color: var(--tekst-2); }
+.item-qty { font-weight: 700; font-size: 0.92rem; text-align: right; flex-shrink: 0; }
+.item-qty .of { color: var(--muted); font-weight: 400; font-size: 0.78rem; }
+.qty-short { color: var(--rood); }
 
 .group-head {
-    padding: 10px 20px 6px;
-    border-top: 1px solid var(--border);
-    font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em;
-    font-weight: 500; color: var(--text-muted);
-    background: var(--bg-secondary);
+    padding: 8px 16px 5px;
+    border-top: 1px solid var(--rand-licht);
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em;
+    font-weight: 700; color: var(--muted);
+    background: var(--bg);
 }
 .group-head:first-child { border-top: none; }
 
-/* ---------- Tab bar ---------- */
-.tabbar {
-    position: fixed; bottom: 0; left: 0; right: 0; z-index: 30;
-    background: var(--bg-secondary);
-    border-top: 1px solid var(--border);
-    display: flex;
-    padding-bottom: env(safe-area-inset-bottom);
+/* ---------- Datatabellen ---------- */
+.toolbar {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    margin-bottom: 10px;
 }
-.tab {
-    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
-    padding: 9px 4px 8px;
-    font-size: 0.68rem; font-weight: 500; letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    position: relative;
-    transition: color 0.2s ease;
-}
-.tab svg { width: 20px; height: 20px; }
-.tab:hover { color: var(--text-secondary); }
-.tab.active { color: var(--accent-green); }
-.tab-dot {
-    position: absolute; top: 4px; right: calc(50% - 18px);
-    min-width: 16px; height: 16px; padding: 0 4px; border-radius: 999px;
-    background: var(--accent-red); color: var(--bg-primary);
-    font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace;
-    font-size: 0.65rem; font-weight: 500;
-    display: grid; place-items: center;
-}
-
-/* ---------- Filter chips ---------- */
-.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.toolbar input[type="search"] { max-width: 260px; }
+.filters { display: flex; gap: 6px; }
 .filter-chip {
-    font-size: 0.8rem; font-weight: 500;
-    padding: 6px 14px; border-radius: 999px;
-    border: 1px solid var(--border);
-    background: var(--bg-card);
-    color: var(--text-secondary);
-    transition: all 0.2s ease;
+    font-size: 0.82rem; font-weight: 600;
+    padding: 6px 13px; border-radius: 2px;
+    border: 1px solid var(--rand);
+    background: var(--vlak);
+    color: var(--tekst-2);
 }
-.filter-chip:hover { border-color: var(--border-light); color: var(--text-primary); }
-.filter-chip.active {
-    background: var(--accent-green-dim);
-    border-color: var(--accent-green);
-    color: var(--accent-green);
-}
+.filter-chip:hover { border-color: var(--linkblauw); color: var(--linkblauw); }
+.filter-chip.active { background: var(--donkerblauw); border-color: var(--donkerblauw); color: #fff; }
 
-/* ---------- Count mode ---------- */
-.count-progress { height: 4px; background: var(--bg-card); border-radius: 999px; overflow: hidden; margin-bottom: 20px; }
-.count-progress-fill { height: 100%; background: var(--accent-green); border-radius: 999px; transition: width 0.2s ease; }
-.count-item-name {
-    font-family: 'Instrument Serif', Georgia, 'Times New Roman', serif;
-    font-size: 1.75rem; font-weight: 400;
-    letter-spacing: -0.02em; line-height: 1.2;
-    text-wrap: balance;
+.tablewrap {
+    background: var(--vlak);
+    border: 1px solid var(--rand-licht);
+    box-shadow: var(--schaduw);
+    overflow-x: auto;
+    margin-bottom: 14px;
 }
-.count-item-sub { color: var(--text-secondary); font-size: 0.875rem; margin-top: 5px; }
+table.data { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 640px; }
+table.data th {
+    text-align: left;
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--tekst-2); font-weight: 700;
+    padding: 9px 10px;
+    background: var(--bg);
+    border-bottom: 2px solid var(--rand);
+    white-space: nowrap;
+    position: sticky; top: 0;
+}
+table.data th.sortable { cursor: pointer; user-select: none; }
+table.data th.sortable:hover { color: var(--linkblauw); }
+table.data th.sorted { color: var(--donkerblauw); }
+table.data th .arrow { font-size: 0.65rem; margin-left: 3px; }
+table.data td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--rand-licht);
+    vertical-align: middle;
+}
+table.data tbody tr:hover { background: var(--vlak-hover); }
+table.data tr.rowlink { cursor: pointer; }
+table.data td.num { text-align: right; white-space: nowrap; }
+table.data .cell-sub { display: block; font-size: 0.75rem; color: var(--muted); }
+table.data tr.resolved td { color: var(--muted); }
+table.data tr.resolved .item-name-cell { text-decoration: line-through; text-decoration-color: var(--rand); }
+table.data tr.groep td {
+    background: var(--donkerblauw); color: #fff;
+    font-weight: 700; font-size: 0.82rem;
+    padding: 6px 10px;
+    border-bottom: none;
+}
+table.data tr.groep:hover td { background: var(--donkerblauw); }
+table.data input[type="checkbox"] { width: 17px; height: 17px; accent-color: var(--linkblauw); display: block; }
+table.data tr.groep input[type="checkbox"] { accent-color: #fff; }
+table.data .qty-input { width: 60px; text-align: center; padding: 4px 5px; }
+table.data select { width: auto; padding: 4px 6px; font-size: 0.8rem; }
+.selectie-info { font-size: 0.85rem; color: var(--tekst-2); }
+.selectie-info strong { color: var(--tekst); }
+
+/* ---------- Telling ---------- */
+.count-progress { height: 5px; background: var(--rand-licht); overflow: hidden; margin-bottom: 18px; }
+.count-progress-fill { height: 100%; background: var(--linkblauw); transition: width 0.2s ease; }
+.count-item-name { font-size: 1.5rem; font-weight: 700; line-height: 1.2; text-wrap: balance; }
+.count-item-sub { color: var(--tekst-2); font-size: 0.9rem; margin-top: 4px; }
 .count-photo {
     display: block;
     max-width: 100%; max-height: 180px;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border-light);
-    margin: 14px 0 0;
+    border: 1px solid var(--rand-licht);
+    margin: 12px 0 0;
 }
-.stepper { display: flex; align-items: center; justify-content: center; gap: 18px; margin: 28px 0; }
+.stepper { display: flex; align-items: center; justify-content: center; gap: 18px; margin: 26px 0; }
 .stepper button {
     width: 62px; height: 62px; border-radius: 50%;
-    border: 1px solid var(--border-light);
-    background: var(--bg-card);
-    font-size: 28px; font-weight: 400; color: var(--text-primary);
-    transition: all 0.2s ease;
+    border: 1px solid var(--rand);
+    background: var(--vlak);
+    font-size: 28px; color: var(--tekst);
+    box-shadow: var(--schaduw);
 }
-.stepper button:hover { background: var(--bg-card-hover); border-color: var(--accent-green-dim); }
-.stepper button:active { background: var(--accent-green-dim); border-color: var(--accent-green); color: var(--accent-green); }
+.stepper button:hover { border-color: var(--linkblauw); color: var(--linkblauw); }
 .stepper input {
     width: 100px; text-align: center;
-    font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace;
-    font-size: 2.2rem; font-weight: 500;
-    color: var(--accent-green);
+    font-size: 2.3rem; font-weight: 700;
+    color: var(--donkerblauw);
     border: none; background: transparent;
     padding: 0;
 }
-.count-target { text-align: center; color: var(--text-muted); font-size: 0.8rem; margin-top: -18px; margin-bottom: 24px; }
-.count-expiry-block { margin: 0 0 20px; }
+.count-target { text-align: center; color: var(--muted); font-size: 0.8rem; margin-top: -16px; margin-bottom: 22px; }
+.count-expiry-block { margin: 0 0 18px; }
 .count-expiry-block label {
-    font-size: 0.7rem; font-weight: 500;
-    text-transform: uppercase; letter-spacing: 0.1em;
-    color: var(--text-muted);
-    display: block; margin-bottom: 6px;
+    font-size: 0.75rem; font-weight: 700;
+    color: var(--tekst-2);
+    display: block; margin-bottom: 5px;
 }
 
-/* ---------- Alerts ---------- */
-.notice {
-    border-radius: var(--radius-sm);
-    padding: 13px 16px;
-    font-size: 0.85rem;
-    margin-bottom: 12px;
-}
-.notice-danger { background: rgba(248, 113, 113, 0.08); border: 1px solid rgba(248, 113, 113, 0.2); color: var(--accent-red); }
-.notice-warn { background: rgba(251, 191, 36, 0.08); border: 1px solid rgba(251, 191, 36, 0.2); color: var(--accent-yellow); }
-.notice-ok { background: rgba(45, 212, 160, 0.08); border: 1px solid rgba(45, 212, 160, 0.2); color: var(--accent-green); }
-.notice-neutral { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); }
+/* ---------- Meldingen ---------- */
+.notice { padding: 11px 14px; font-size: 0.86rem; margin-bottom: 10px; border-left: 4px solid; }
+.notice-danger { background: var(--rood-bg); border-color: var(--rood); color: var(--rood); }
+.notice-warn { background: var(--geel-bg); border-color: var(--geel-tekst); color: var(--geel-tekst); }
+.notice-ok { background: var(--groen-bg); border-color: var(--groen); color: var(--groen); }
 
 /* ---------- Modal ---------- */
 .modal-backdrop {
     position: fixed; inset: 0; z-index: 40;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(21, 66, 115, 0.45);
     display: none; align-items: flex-end; justify-content: center;
 }
 .modal-backdrop.open { display: flex; }
 .modal {
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    width: 100%; max-width: 520px;
-    max-height: 88vh; overflow-y: auto;
-    border-radius: var(--radius) var(--radius) 0 0;
+    background: var(--vlak);
+    width: 100%; max-width: 540px;
+    max-height: 90vh; overflow-y: auto;
     padding: 22px 20px calc(22px + env(safe-area-inset-bottom));
-    box-shadow: var(--shadow);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.25);
 }
 @media (min-width: 600px) {
     .modal-backdrop { align-items: center; }
-    .modal { border-radius: var(--radius); padding-bottom: 22px; }
+    .modal { padding-bottom: 22px; }
 }
-.modal h2 {
-    font-family: 'Instrument Serif', Georgia, 'Times New Roman', serif;
-    font-size: 1.4rem; font-weight: 400;
-    letter-spacing: -0.02em;
-    margin-bottom: 16px;
-}
-.field { margin-bottom: 14px; }
+.modal h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 14px; }
+.field { margin-bottom: 12px; }
 .field label {
     display: block;
-    font-size: 0.7rem; font-weight: 500;
-    text-transform: uppercase; letter-spacing: 0.08em;
-    color: var(--text-muted);
-    margin-bottom: 5px;
+    font-size: 0.78rem; font-weight: 700;
+    color: var(--tekst-2);
+    margin-bottom: 4px;
 }
 .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; flex-wrap: wrap; }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 18px; flex-wrap: wrap; }
 .photo-preview {
     max-width: 100%; max-height: 140px;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border-light);
+    border: 1px solid var(--rand-licht);
     display: block; margin-bottom: 8px;
 }
 
-/* ---------- Order list ---------- */
-.order-row { display: flex; align-items: flex-start; gap: 12px; padding: 13px 20px; border-top: 1px solid var(--border); }
-.order-row:first-child { border-top: none; }
-.order-row.resolved { opacity: 0.55; }
-.order-row input[type="checkbox"] { width: 18px; height: 18px; margin-top: 3px; flex-shrink: 0; accent-color: var(--accent-green); }
-.order-controls { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; flex-shrink: 0; }
-.order-row .qty-input {
-    width: 62px; text-align: center;
-    font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace;
-    padding: 5px 6px;
-}
-.order-row select { width: auto; padding: 4px 8px; font-size: 0.75rem; }
-.order-reason { font-size: 0.75rem; margin-top: 3px; }
-
-.empty {
-    text-align: center; color: var(--text-muted);
-    padding: 44px 20px; font-size: 0.875rem;
-}
-.empty svg { width: 36px; height: 36px; margin-bottom: 10px; opacity: 0.5; }
-
-.section-label {
-    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em;
-    font-weight: 500; color: var(--text-muted);
-    margin: 20px 0 8px;
-}
-.muted { color: var(--text-muted); font-size: 0.78rem; }
+.empty { text-align: center; color: var(--muted); padding: 40px 20px; font-size: 0.9rem; }
+.muted { color: var(--muted); font-size: 0.8rem; }
 .toast {
-    position: fixed; left: 50%; bottom: calc(82px + env(safe-area-inset-bottom));
+    position: fixed; left: 50%; bottom: 24px;
     transform: translateX(-50%);
-    background: var(--bg-card-hover);
-    border: 1px solid var(--accent-green-dim);
-    color: var(--accent-green);
-    padding: 10px 20px; border-radius: 999px;
-    font-size: 0.85rem; font-weight: 500;
-    z-index: 60; box-shadow: var(--shadow);
+    background: var(--donkerblauw); color: #fff;
+    padding: 10px 20px; border-radius: 2px;
+    font-size: 0.88rem; font-weight: 600;
+    z-index: 60; box-shadow: 0 2px 12px rgba(0,0,0,0.3);
     opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
     max-width: calc(100vw - 32px); text-align: center;
 }
@@ -415,23 +374,44 @@ input:focus, select:focus, textarea:focus { border-color: var(--accent-green-dim
 </head>
 <body>
 
-<header class="topbar">
-    <div class="logo">
+<div class="mast-top">
+    <span class="mast-mark" aria-hidden="true">TC</span>
+    <span class="label">AE medisch materiaal</span>
+</div>
+<header class="mast-banner">
+    <div class="inner">
         <h1>Tascheck</h1>
-        <span>AE medisch materiaal</span>
+        <button class="iconbtn" id="btn-settings" aria-label="Instellingen en back-up" title="Instellingen en back-up">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        </button>
     </div>
-    <button class="iconbtn" id="btn-settings" aria-label="Instellingen en back-up" title="Instellingen en back-up">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-    </button>
 </header>
+<nav class="mainnav">
+    <div class="inner">
+        <button class="tab active" data-view="view-sets" id="tab-sets">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            Sets
+        </button>
+        <button class="tab" data-view="view-expiry" id="tab-expiry">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            Artikelen
+            <span class="tab-dot" id="expiry-dot" hidden></span>
+        </button>
+        <button class="tab" data-view="view-order" id="tab-order">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+            Bestellijst
+            <span class="tab-dot" id="order-dot" hidden></span>
+        </button>
+    </div>
+</nav>
 
 <div class="wrap">
 
-    <!-- ===== Sets (dashboard) ===== -->
+    <!-- ===== Sets ===== -->
     <section class="view" id="view-sets">
         <div class="page-head">
             <div>
-                <h1>Sets</h1>
+                <h2>Sets</h2>
                 <div class="sub" id="sets-summary"></div>
             </div>
             <button class="btn btn-sm" id="btn-add-set">+ Set</button>
@@ -439,33 +419,33 @@ input:focus, select:focus, textarea:focus { border-color: var(--accent-green-dim
         <div id="sets-list"></div>
     </section>
 
-    <!-- ===== Set detail (onderdelen) ===== -->
+    <!-- ===== Set detail ===== -->
     <section class="view" id="view-set-detail">
-        <div class="eyebrow"><button id="btn-back-sets" style="color:inherit;font:inherit;text-transform:inherit;letter-spacing:inherit;">&larr; Alle sets</button></div>
+        <div class="crumb"><button id="btn-back-sets">Alle sets</button></div>
         <div class="page-head">
             <div>
-                <h1 id="set-detail-name"></h1>
+                <h2 id="set-detail-name"></h2>
                 <div class="sub" id="set-detail-sub"></div>
             </div>
-        </div>
-        <div class="btn-row" style="margin-bottom:16px;">
-            <button class="btn" id="btn-add-part">+ Onderdeel</button>
-            <button class="btn" id="btn-edit-set">Bewerk set</button>
+            <div class="btn-row">
+                <button class="btn btn-sm" id="btn-add-part">+ Onderdeel</button>
+                <button class="btn btn-sm" id="btn-edit-set">Bewerk set</button>
+            </div>
         </div>
         <div id="parts-list"></div>
     </section>
 
-    <!-- ===== Onderdeel detail (artikelen) ===== -->
+    <!-- ===== Onderdeel detail ===== -->
     <section class="view" id="view-part-detail">
-        <div class="eyebrow"><button id="btn-back-set" style="color:inherit;font:inherit;text-transform:inherit;letter-spacing:inherit;">&larr; Terug</button></div>
+        <div class="crumb"><button id="btn-back-set">Terug</button></div>
         <div class="page-head">
             <div>
-                <h1 id="part-detail-name"></h1>
+                <h2 id="part-detail-name"></h2>
                 <div class="sub" id="part-detail-sub"></div>
             </div>
         </div>
         <div id="part-detail-notices"></div>
-        <div class="btn-row" style="margin-bottom:16px;">
+        <div class="btn-row" style="margin-bottom:14px;">
             <button class="btn btn-primary" id="btn-start-count">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
                 Start telling
@@ -478,38 +458,42 @@ input:focus, select:focus, textarea:focus { border-color: var(--accent-green-dim
 
     <!-- ===== Telling ===== -->
     <section class="view" id="view-count">
-        <div class="eyebrow" id="count-label"></div>
+        <div class="crumb" id="count-label" style="color:var(--muted);"></div>
         <div class="count-progress"><div class="count-progress-fill" id="count-progress-fill"></div></div>
         <div id="count-body"></div>
     </section>
 
-    <!-- ===== Vervaldata ===== -->
+    <!-- ===== Artikelen (data viewer) ===== -->
     <section class="view" id="view-expiry">
         <div class="page-head">
             <div>
-                <h1>Vervaldata</h1>
-                <div class="sub">Alle artikelen, gesorteerd op vervaldatum</div>
+                <h2>Artikelen</h2>
+                <div class="sub" id="articles-sub"></div>
             </div>
         </div>
-        <div class="filters" id="expiry-filters">
-            <button class="filter-chip active" data-filter="attention">Aandacht nodig</button>
-            <button class="filter-chip" data-filter="expired">Verlopen</button>
-            <button class="filter-chip" data-filter="all">Alles</button>
+        <div class="toolbar">
+            <input type="search" id="article-search" placeholder="Zoek artikel, SAP-nummer, set…" aria-label="Zoeken">
+            <div class="filters" id="expiry-filters">
+                <button class="filter-chip active" data-filter="all">Alles</button>
+                <button class="filter-chip" data-filter="attention">Aandacht</button>
+                <button class="filter-chip" data-filter="expired">Verlopen</button>
+            </div>
         </div>
-        <div class="card" id="expiry-card"><div id="expiry-list"></div></div>
+        <div class="tablewrap" id="articles-tablewrap"></div>
     </section>
 
     <!-- ===== Bestellijst ===== -->
     <section class="view" id="view-order">
         <div class="page-head">
             <div>
-                <h1>Bestellijst</h1>
-                <div class="sub">Automatisch samengesteld uit tekorten en vervaldatums</div>
+                <h2>Bestellijst</h2>
+                <div class="sub">Herkomst per regel: grijze voorraad &rarr; MatLog Gilze &rarr; VMF (SharePoint MatLog / MGLC)</div>
             </div>
         </div>
-        <div class="notice notice-neutral">Aanvulvolgorde: eerst de <strong>grijze voorraad</strong>, dan de voorraad van <strong>MatLog (Gilze)</strong>; wat daar niet is gaat als <strong>VMF-bestelling</strong> via SharePoint MatLog naar het MGLC. Kies per regel de herkomst — regels die uit grijze voorraad of MatLog komen gaan niet mee in de bestelling.</div>
-        <div id="order-notices"></div>
-        <div class="card" id="order-card"><div id="order-list"></div></div>
+        <div class="toolbar">
+            <span class="selectie-info" id="order-selection-info"></span>
+        </div>
+        <div class="tablewrap" id="order-tablewrap"></div>
         <div class="btn-row">
             <button class="btn btn-primary" id="btn-order-mail">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
@@ -518,28 +502,9 @@ input:focus, select:focus, textarea:focus { border-color: var(--accent-green-dim
             <button class="btn" id="btn-order-copy">Kopieer lijst</button>
             <button class="btn" id="btn-order-csv">Download CSV</button>
         </div>
-        <p class="muted" style="margin-top:12px;">De export bevat per regel het SAP-nummer en de SAP-benaming; de VMF-bestelling gaat op SAP-nummer.</p>
     </section>
 
 </div>
-
-<!-- ===== Tab bar ===== -->
-<nav class="tabbar">
-    <button class="tab active" data-view="view-sets" id="tab-sets">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><path d="M12 11v3"></path><path d="M10.5 12.5h3"></path></svg>
-        Sets
-    </button>
-    <button class="tab" data-view="view-expiry" id="tab-expiry">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-        Vervaldata
-        <span class="tab-dot" id="expiry-dot" hidden></span>
-    </button>
-    <button class="tab" data-view="view-order" id="tab-order">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-        Bestellijst
-        <span class="tab-dot" id="order-dot" hidden></span>
-    </button>
-</nav>
 
 <!-- ===== Modals ===== -->
 <div class="modal-backdrop" id="modal-backdrop">
@@ -581,8 +546,7 @@ function monthFromNow(offsetMonths) {
 }
 
 /* Vaste (dummy)inhoud per onderdeeltype; elke set krijgt dezelfde
-   producten ("vastgestelde producten"), met per set licht variërende
-   vervaldatums en voorraadstanden zodat de demo iets laat zien.
+   producten, met per set licht variërende vervaldatums en standen.
    SAP-nummers en -benamingen zijn dummy's. */
 function seedTemplate() {
     const A = (name, sapName, sapNr, target, unit, compartment, expOffset) =>
@@ -703,9 +667,9 @@ function fmtExpiry(expiry) {
 
 function expiryChip(expiry) {
     const s = expiryStatus(expiry);
-    if (s.key === 'none') return '<span class="chip chip-neutral">exp. —</span>';
+    if (s.key === 'none') return '<span class="chip chip-neutral">geen datum</span>';
     const cls = (s.key === 'expired' || s.key === 'critical') ? 'chip-danger' : (s.key === 'warning' ? 'chip-warn' : 'chip-ok');
-    const txt = s.key === 'expired' ? 'verlopen ' + fmtExpiry(expiry) : fmtExpiry(expiry);
+    const txt = s.key === 'expired' ? 'verlopen' : (s.key === 'ok' ? 'goed' : s.label);
     return '<span class="chip ' + cls + '">' + txt + '</span>';
 }
 
@@ -738,15 +702,23 @@ function statusBadges(st) {
     return badges.join('');
 }
 
+// Alle artikelen als platte lijst met context
+function allArticles() {
+    const rows = [];
+    for (const set of state.sets)
+        for (const part of set.parts)
+            for (const it of part.items)
+                rows.push({ set, part, it, status: expiryStatus(it.expiry) });
+    return rows;
+}
+
 /* =====================================================================
    Bestellijst-logica
-   Aanvulvolgorde: grijze voorraad -> MatLog Gilze -> VMF-bestelling
-   (SharePoint MatLog -> MGLC). Regels gemarkeerd als grijs/MatLog
-   gaan niet mee in de export.
+   Aanvulvolgorde: grijze voorraad -> MatLog Gilze -> VMF-bestelling.
+   Regels gemarkeerd als grijs/MatLog gaan niet mee in de export.
    ===================================================================== */
 const SOURCE_LABELS = { '': 'Nog bepalen', grijs: 'Grijze voorraad', matlog: 'MatLog Gilze', vmf: 'Bestellen (VMF)' };
 
-// Een artikel hoort op de bestellijst bij tekort, of wanneer (bijna) verlopen
 function orderLines() {
     const lines = [];
     for (const set of state.sets) {
@@ -776,13 +748,6 @@ function orderLines() {
             }
         }
     }
-    lines.sort((a, b) => {
-        const ra = (a.source === 'grijs' || a.source === 'matlog') ? 1 : 0;
-        const rb = (b.source === 'grijs' || b.source === 'matlog') ? 1 : 0;
-        if (ra !== rb) return ra - rb;
-        if (a.severity !== b.severity) return a.severity === 'danger' ? -1 : 1;
-        return (a.setName + a.partName).localeCompare(b.setName + b.partName);
-    });
     return lines;
 }
 
@@ -912,11 +877,11 @@ function renderSets() {
         const meta = [set.beheerders ? 'Duo: ' + esc(set.beheerders) : 'duo nog niet ingevuld',
                       set.parts.length + ' onderdelen', itemCount + ' artikelen'].join(' · ');
         return '<div class="card clickable" data-set="' + set.id + '" role="button" tabindex="0" aria-label="' + esc(set.name) + '">' +
-            '<div class="card-main">' +
-                '<div class="card-title-row"><div class="card-name">' + esc(set.name) + '</div></div>' +
+            '<div class="card-main"><div class="card-body">' +
+                '<div class="card-name">' + esc(set.name) + '</div>' +
                 '<div class="card-meta">' + meta + '</div>' +
                 '<div class="card-badges">' + statusBadges(st) + '</div>' +
-            '</div></div>';
+            '</div><span class="chevron" aria-hidden="true">&rsaquo;</span></div></div>';
     }).join('');
 
     const parts = [];
@@ -950,12 +915,11 @@ function renderSetDetail() {
         const st = partStats(part);
         const counted = part.lastCount ? 'geteld ' + fmtDate(part.lastCount) : 'nog niet geteld';
         return '<div class="card clickable" data-part="' + part.id + '" role="button" tabindex="0" aria-label="' + esc(part.name) + '">' +
-            '<div class="card-main">' +
-                '<div class="card-title-row"><div class="card-name">' + esc(part.name) + '</div>' +
-                '<div class="muted" style="white-space:nowrap;">' + part.items.length + ' artikelen</div></div>' +
-                '<div class="card-meta">' + counted + '</div>' +
+            '<div class="card-main"><div class="card-body">' +
+                '<div class="card-name">' + esc(part.name) + '</div>' +
+                '<div class="card-meta">' + part.items.length + ' artikelen · ' + counted + '</div>' +
                 '<div class="card-badges">' + statusBadges(st) + '</div>' +
-            '</div></div>';
+            '</div><span class="chevron" aria-hidden="true">&rsaquo;</span></div></div>';
     }).join('');
 
     list.querySelectorAll('[data-part]').forEach(el => {
@@ -994,7 +958,7 @@ function renderPartDetail() {
     $('#part-detail-name').textContent = part.name;
     $('#part-detail-sub').textContent = set.name + ' · ' +
         (part.lastCount ? 'laatste telling ' + fmtDate(part.lastCount) : 'nog niet geteld');
-    $('#btn-back-set').innerHTML = '&larr; ' + esc(set.name);
+    $('#btn-back-set').textContent = set.name;
 
     const st = partStats(part);
     const notices = [];
@@ -1008,7 +972,6 @@ function renderPartDetail() {
         listEl.innerHTML = '<div class="empty">Nog geen artikelen in dit onderdeel.</div>';
         return;
     }
-    // Groepeer op compartiment (volgorde van eerste voorkomen; leeg = geen kop)
     const groups = [];
     for (const it of part.items) {
         const key = it.compartment || '';
@@ -1123,8 +1086,8 @@ function renderCountSummary() {
     const issues = countSession.results.filter((r, idx) => r.counted < part.items[idx].target || ['expired', 'critical', 'warning'].includes(expiryStatus(r.expiry).key)).length;
 
     $('#count-body').innerHTML =
-        '<h1 class="count-item-name" style="margin-bottom:6px;">Telling afgerond</h1>' +
-        '<p class="muted" style="margin-bottom:16px;">' + (issues ? issues + ' artikel(en) vragen aandacht; deze verschijnen op de bestellijst.' : 'Alles op orde.') + '</p>' +
+        '<h2 style="font-size:1.35rem;margin-bottom:4px;">Telling afgerond</h2>' +
+        '<p class="muted" style="margin-bottom:14px;">' + (issues ? issues + ' artikel(en) vragen aandacht; deze verschijnen op de bestellijst.' : 'Alles op orde.') + '</p>' +
         '<div class="card">' + rows + '</div>' +
         '<div class="btn-row">' +
             '<button class="btn btn-primary btn-block" id="count-save">Telling opslaan</button>' +
@@ -1157,96 +1120,193 @@ function renderCountSummary() {
 }
 
 /* =====================================================================
-   Render: vervaldata
+   Render: artikelen (sorteerbare datatabel)
    ===================================================================== */
-let expiryFilter = 'attention';
+let expiryFilter = 'all';
+let articleSearch = '';
+let articleSort = { key: 'expiry', dir: 1 };
+
+const ARTICLE_COLS = [
+    { key: 'name', label: 'Artikel' },
+    { key: 'sapNr', label: 'SAP-nr' },
+    { key: 'set', label: 'Set' },
+    { key: 'part', label: 'Onderdeel' },
+    { key: 'qty', label: 'Aanwezig', num: true },
+    { key: 'expiry', label: 'Vervaldatum' },
+    { key: 'status', label: 'Status' }
+];
+
+function articleSortValue(row, key) {
+    switch (key) {
+        case 'name': return row.it.name.toLowerCase();
+        case 'sapNr': return row.it.sapNr || '';
+        case 'set': return row.set.name.toLowerCase();
+        case 'part': return row.part.name.toLowerCase();
+        case 'qty': return row.it.current;
+        case 'expiry': return row.status.days == null ? Infinity : row.status.days;
+        case 'status': {
+            const order = { expired: 0, critical: 1, warning: 2, ok: 3, none: 4 };
+            return order[row.status.key];
+        }
+    }
+    return '';
+}
 
 $('#expiry-filters').addEventListener('click', e => {
     const btn = e.target.closest('.filter-chip');
     if (!btn) return;
     expiryFilter = btn.dataset.filter;
     document.querySelectorAll('#expiry-filters .filter-chip').forEach(c => c.classList.toggle('active', c === btn));
-    renderExpiry();
+    renderArticles();
+});
+$('#article-search').addEventListener('input', e => {
+    articleSearch = e.target.value.trim().toLowerCase();
+    renderArticles();
 });
 
-function renderExpiry() {
-    const rows = [];
-    for (const set of state.sets) {
-        for (const part of set.parts) {
-            for (const it of part.items) {
-                const s = expiryStatus(it.expiry);
-                if (expiryFilter === 'expired' && s.key !== 'expired') continue;
-                if (expiryFilter === 'attention' && !['expired', 'critical', 'warning'].includes(s.key)) continue;
-                rows.push({ set, part, it, s });
-            }
-        }
+function renderArticles() {
+    let rows = allArticles();
+    const totalCount = rows.length;
+    if (expiryFilter === 'expired') rows = rows.filter(r => r.status.key === 'expired');
+    if (expiryFilter === 'attention') rows = rows.filter(r => ['expired', 'critical', 'warning'].includes(r.status.key) || r.it.current < r.it.target);
+    if (articleSearch) {
+        rows = rows.filter(r =>
+            (r.it.name + ' ' + (r.it.sapNr || '') + ' ' + (r.it.sapName || '') + ' ' +
+             r.set.name + ' ' + r.part.name + ' ' + (r.it.compartment || '')).toLowerCase().includes(articleSearch));
     }
     rows.sort((a, b) => {
-        const da = a.s.days == null ? Infinity : a.s.days;
-        const db = b.s.days == null ? Infinity : b.s.days;
-        return da - db;
+        const va = articleSortValue(a, articleSort.key);
+        const vb = articleSortValue(b, articleSort.key);
+        const cmp = (typeof va === 'string') ? va.localeCompare(vb) : (va - vb);
+        return cmp * articleSort.dir;
     });
-    const el = $('#expiry-list');
-    if (!rows.length) {
-        el.innerHTML = '<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg><br>Niets ' + (expiryFilter === 'expired' ? 'verlopen' : 'dat aandacht nodig heeft') + '.</div>';
-        return;
-    }
-    el.innerHTML = rows.map(({ set, part, it }) =>
-        '<div class="item-row"><div class="item-info">' +
-            '<div class="item-name">' + esc(it.name) + '</div>' +
-            '<div class="item-detail"><span>' + esc(set.name) + ' · ' + esc(part.name) + (it.compartment ? ' · ' + esc(it.compartment) : '') + '</span>' + sapLine(it) + '</div>' +
-        '</div>' + expiryChip(it.expiry) + '</div>'
-    ).join('');
+
+    $('#articles-sub').textContent = rows.length === totalCount
+        ? totalCount + ' artikelen'
+        : rows.length + ' van ' + totalCount + ' artikelen';
+
+    const head = ARTICLE_COLS.map(c => {
+        const sorted = articleSort.key === c.key;
+        return '<th class="sortable' + (sorted ? ' sorted' : '') + '" data-sort="' + c.key + '" role="button" tabindex="0" aria-sort="' + (sorted ? (articleSort.dir === 1 ? 'ascending' : 'descending') : 'none') + '">' +
+            c.label + (sorted ? '<span class="arrow">' + (articleSort.dir === 1 ? '▲' : '▼') + '</span>' : '') + '</th>';
+    }).join('');
+
+    const body = rows.length ? rows.map(r => {
+        const shortCls = r.it.current < r.it.target ? ' class="qty-short"' : '';
+        return '<tr class="rowlink" data-item="' + r.it.id + '" data-setid="' + r.set.id + '" data-partid="' + r.part.id + '">' +
+            '<td><span class="item-name-cell" style="font-weight:600;">' + esc(r.it.name) + '</span>' +
+                (r.it.sapName ? '<span class="cell-sub">' + esc(r.it.sapName) + '</span>' : '') + '</td>' +
+            '<td>' + esc(r.it.sapNr || '—') + '</td>' +
+            '<td>' + esc(r.set.name) + '</td>' +
+            '<td>' + esc(r.part.name) + (r.it.compartment ? '<span class="cell-sub">' + esc(r.it.compartment) + '</span>' : '') + '</td>' +
+            '<td class="num"><span' + shortCls + '>' + r.it.current + '</span> / ' + r.it.target + ' ' + esc(r.it.unit || 'st') + '</td>' +
+            '<td>' + fmtExpiry(r.it.expiry) + '</td>' +
+            '<td>' + expiryChip(r.it.expiry) + '</td>' +
+        '</tr>';
+    }).join('') : '<tr><td colspan="7"><div class="empty">Geen artikelen gevonden.</div></td></tr>';
+
+    $('#articles-tablewrap').innerHTML = '<table class="data"><thead><tr>' + head + '</tr></thead><tbody>' + body + '</tbody></table>';
+
+    document.querySelectorAll('#articles-tablewrap th.sortable').forEach(th => {
+        const sortOn = () => {
+            const key = th.dataset.sort;
+            if (articleSort.key === key) articleSort.dir *= -1;
+            else articleSort = { key, dir: 1 };
+            renderArticles();
+        };
+        th.addEventListener('click', sortOn);
+        th.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); sortOn(); } });
+    });
+    document.querySelectorAll('#articles-tablewrap tr.rowlink').forEach(tr => {
+        tr.addEventListener('click', () => openItemModal(tr.dataset.setid, tr.dataset.partid, tr.dataset.item));
+    });
 }
 
 /* =====================================================================
-   Render: bestellijst
+   Render: bestellijst (tabel, gegroepeerd per set, groepsselectie)
    ===================================================================== */
 function renderOrder() {
     const lines = orderLines();
-    const el = $('#order-list');
+    const wrapEl = $('#order-tablewrap');
     const open = exportLines();
-    $('#order-notices').innerHTML = open.length
-        ? '<div class="notice notice-neutral">' + open.length + ' regel(s) gaan mee in de bestelling. Vink uit wat niet mee hoeft, of markeer regels als aangevuld uit grijze voorraad / MatLog.</div>'
-        : (lines.length ? '<div class="notice notice-ok">Alle regels zijn afgedekt uit grijze voorraad of MatLog — geen VMF-bestelling nodig.</div>' : '');
+    const included = lines.filter(l => l.included);
+
+    $('#order-selection-info').innerHTML = lines.length
+        ? '<strong>' + open.length + '</strong> van ' + lines.length + ' regels gaan mee in de bestelling'
+        : '';
+
     if (!lines.length) {
-        el.innerHTML = '<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg><br>Niets aan te vullen — alle sets op orde.</div>';
+        wrapEl.innerHTML = '<div class="empty">Niets aan te vullen — alle sets op orde.</div>';
         return;
     }
-    el.innerHTML = lines.map(l => {
-        const resolved = l.source === 'grijs' || l.source === 'matlog';
-        const sourceOptions = Object.keys(SOURCE_LABELS).map(k =>
-            '<option value="' + k + '"' + (l.source === k ? ' selected' : '') + '>' + SOURCE_LABELS[k] + '</option>').join('');
-        return '<div class="order-row' + (resolved ? ' resolved' : '') + '">' +
-            '<input type="checkbox" data-check="' + l.itemId + '"' + (l.included ? ' checked' : '') + ' aria-label="Neem ' + esc(l.name) + ' op">' +
-            '<div class="item-info">' +
-                '<div class="item-name">' + esc(l.name) + '</div>' +
-                '<div class="item-detail">' + (l.sapNr ? '<span class="sap-ref">SAP ' + esc(l.sapNr) + (l.sapName ? ' · ' + esc(l.sapName) : '') + '</span>' : '') + '<span>' + esc(l.setName) + ' · ' + esc(l.partName) + '</span></div>' +
-                '<div class="order-reason" style="color:var(--accent-' + (l.severity === 'danger' ? 'red' : 'yellow') + ');">' + l.reasons.map(esc).join(' · ') + '</div>' +
-            '</div>' +
-            '<div class="order-controls">' +
-                '<input type="number" class="qty-input" min="0" value="' + l.qty + '" data-qty="' + l.itemId + '" aria-label="Aantal">' +
-                '<select data-source="' + l.itemId + '" aria-label="Herkomst">' + sourceOptions + '</select>' +
-            '</div>' +
-        '</div>';
+
+    // Groepeer per set (volgorde van de sets aanhouden)
+    const groups = [];
+    for (const l of lines) {
+        let g = groups.find(x => x.name === l.setName);
+        if (!g) { g = { name: l.setName, lines: [] }; groups.push(g); }
+        g.lines.push(l);
+    }
+
+    const allIncluded = lines.every(l => l.included);
+    const someIncluded = lines.some(l => l.included);
+
+    const head =
+        '<th style="width:34px;"><input type="checkbox" id="order-master" aria-label="Selecteer of deselecteer alles"' + (allIncluded ? ' checked' : '') + '></th>' +
+        '<th>Artikel</th><th>Onderdeel</th><th>Reden</th><th style="text-align:right;">Aantal</th><th>Herkomst</th>';
+
+    const body = groups.map(g => {
+        const gAll = g.lines.every(l => l.included);
+        const rows = g.lines.map(l => {
+            const resolved = l.source === 'grijs' || l.source === 'matlog';
+            const sourceOptions = Object.keys(SOURCE_LABELS).map(k =>
+                '<option value="' + k + '"' + (l.source === k ? ' selected' : '') + '>' + SOURCE_LABELS[k] + '</option>').join('');
+            return '<tr class="' + (resolved ? 'resolved' : '') + '">' +
+                '<td><input type="checkbox" data-check="' + l.itemId + '"' + (l.included ? ' checked' : '') + ' aria-label="Neem ' + esc(l.name) + ' op"></td>' +
+                '<td><span class="item-name-cell" style="font-weight:600;">' + esc(l.name) + '</span>' +
+                    (l.sapNr ? '<span class="cell-sub">SAP ' + esc(l.sapNr) + (l.sapName ? ' · ' + esc(l.sapName) : '') + '</span>' : '') + '</td>' +
+                '<td>' + esc(l.partName) + '</td>' +
+                '<td><span style="color:var(--' + (l.severity === 'danger' ? 'rood' : 'geel-tekst') + ');font-size:0.8rem;">' + l.reasons.map(esc).join(' · ') + '</span></td>' +
+                '<td class="num"><input type="number" class="qty-input" min="0" value="' + l.qty + '" data-qty="' + l.itemId + '" aria-label="Aantal"> <span class="muted">' + esc(l.unit) + '</span></td>' +
+                '<td><select data-source="' + l.itemId + '" aria-label="Herkomst">' + sourceOptions + '</select></td>' +
+            '</tr>';
+        }).join('');
+        return '<tr class="groep"><td><input type="checkbox" data-group="' + esc(g.name) + '"' + (gAll ? ' checked' : '') + ' aria-label="Selecteer alles van ' + esc(g.name) + '"></td>' +
+            '<td colspan="5">' + esc(g.name) + ' <span style="font-weight:400;opacity:0.8;">(' + g.lines.length + ')</span></td></tr>' + rows;
     }).join('');
 
-    el.querySelectorAll('[data-check]').forEach(cb => cb.addEventListener('change', () => {
+    wrapEl.innerHTML = '<table class="data"><thead><tr>' + head + '</tr></thead><tbody>' + body + '</tbody></table>';
+
+    const master = $('#order-master');
+    master.indeterminate = someIncluded && !allIncluded;
+    master.addEventListener('change', () => {
+        for (const l of lines) {
+            if (master.checked) delete state.orderExcluded[l.itemId];
+            else state.orderExcluded[l.itemId] = true;
+        }
+        save(); renderOrder(); renderDots();
+    });
+    wrapEl.querySelectorAll('[data-group]').forEach(cb => cb.addEventListener('change', () => {
+        const g = groups.find(x => x.name === cb.dataset.group);
+        for (const l of g.lines) {
+            if (cb.checked) delete state.orderExcluded[l.itemId];
+            else state.orderExcluded[l.itemId] = true;
+        }
+        save(); renderOrder(); renderDots();
+    }));
+    wrapEl.querySelectorAll('[data-check]').forEach(cb => cb.addEventListener('change', () => {
         if (cb.checked) delete state.orderExcluded[cb.dataset.check];
         else state.orderExcluded[cb.dataset.check] = true;
-        save();
-        renderOrder(); renderDots();
+        save(); renderOrder(); renderDots();
     }));
-    el.querySelectorAll('[data-qty]').forEach(inp => inp.addEventListener('change', () => {
+    wrapEl.querySelectorAll('[data-qty]').forEach(inp => inp.addEventListener('change', () => {
         state.orderQty[inp.dataset.qty] = Math.max(0, parseInt(inp.value) || 0);
-        save();
-        renderDots();
+        save(); renderDots();
     }));
-    el.querySelectorAll('[data-source]').forEach(sel => sel.addEventListener('change', () => {
+    wrapEl.querySelectorAll('[data-source]').forEach(sel => sel.addEventListener('change', () => {
         if (sel.value) state.orderSource[sel.dataset.source] = sel.value;
         else delete state.orderSource[sel.dataset.source];
-        save();
-        renderOrder(); renderDots();
+        save(); renderOrder(); renderDots();
     }));
 }
 
@@ -1325,7 +1385,7 @@ function openSetModal(setId) {
         '<h2>' + (set ? 'Set bewerken' : 'Nieuwe set') + '</h2>' +
         '<div class="field"><label for="f-set-name">Naam</label><input id="f-set-name" value="' + esc(set ? set.name : 'Set ' + (state.sets.length + 1)) + '"></div>' +
         '<div class="field"><label for="f-set-duo">Duo / beheerders</label><input id="f-set-duo" value="' + esc(set ? set.beheerders : '') + '" placeholder="bijv. Jansen &amp; Pietersen"></div>' +
-        (set ? '' : '<div class="field"><label style="text-transform:none;letter-spacing:0;font-size:0.85rem;color:var(--text-secondary);"><input type="checkbox" id="f-set-template" checked style="width:auto;margin-right:8px;vertical-align:middle;">Vul met de standaardonderdelen (Tas, Container tas, Foudraal (O2), Pelicase, Unipack)</label></div>') +
+        (set ? '' : '<div class="field"><label style="font-weight:400;"><input type="checkbox" id="f-set-template" checked style="width:auto;margin-right:8px;vertical-align:middle;">Vul met de standaardonderdelen (Tas, Container tas, Foudraal (O2), Pelicase, Unipack)</label></div>') +
         '<div class="modal-actions">' +
             (set ? '<button class="btn btn-danger" id="f-set-delete" style="margin-right:auto;">Verwijder</button>' : '') +
             '<button class="btn" id="f-cancel">Annuleer</button>' +
@@ -1411,6 +1471,7 @@ function openPartModal(setId, partId) {
 
 function openItemModal(setId, partId, itemId) {
     const part = getPart(setId, partId);
+    if (!part) return;
     const it = itemId ? part.items.find(i => i.id === itemId) : null;
     const compartments = [...new Set(part.items.map(i => i.compartment).filter(Boolean))];
     const compOptions = compartments.map(c => '<option value="' + esc(c) + '">').join('');
@@ -1482,7 +1543,8 @@ function openItemModal(setId, partId, itemId) {
         };
         if (it) Object.assign(it, data);
         else part.items.push(Object.assign({ id: uid() }, data));
-        save(); closeModal(); renderAll(); renderPartDetail();
+        save(); closeModal(); renderAll();
+        if ($('#view-part-detail').classList.contains('active')) renderPartDetail();
     });
     const del = $('#f-it-delete');
     if (del) del.addEventListener('click', () => {
@@ -1491,7 +1553,8 @@ function openItemModal(setId, partId, itemId) {
         delete state.orderExcluded[it.id];
         delete state.orderQty[it.id];
         delete state.orderSource[it.id];
-        save(); closeModal(); renderAll(); renderPartDetail();
+        save(); closeModal(); renderAll();
+        if ($('#view-part-detail').classList.contains('active')) renderPartDetail();
     });
 }
 
@@ -1548,7 +1611,7 @@ $('#btn-settings').addEventListener('click', () => {
    ===================================================================== */
 function renderAll() {
     renderSets();
-    renderExpiry();
+    renderArticles();
     renderOrder();
     renderDots();
 }
