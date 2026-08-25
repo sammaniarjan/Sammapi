@@ -126,6 +126,21 @@ input:focus, select:focus { border-color: var(--linkblauw); }
     .tab svg { display: none; }
 }
 
+/* ---------- Coördinaten-tab ---------- */
+.coord-card { padding: 16px; margin-bottom: 14px; }
+.coord-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 12px; }
+.coord-label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--tekst-2); margin-bottom: 4px; }
+.coord-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (max-width: 480px) { .coord-grid { grid-template-columns: 1fr; } }
+.coord-mono { font-family: 'Courier New', monospace; font-variant-numeric: tabular-nums; letter-spacing: 0.03em; }
+.coord-result { margin-top: 12px; border-top: 1px solid var(--rand-licht); padding-top: 10px; }
+.coord-row { display: flex; justify-content: space-between; gap: 12px; padding: 4px 0; font-size: 0.9rem; flex-wrap: wrap; }
+.coord-row span { color: var(--muted); }
+.coord-error { margin-top: 10px; background: var(--rood-bg); color: var(--rood); font-size: 0.85rem; padding: 8px 10px; border-radius: 2px; }
+.coord-help p { font-size: 0.85rem; color: var(--tekst-2); margin-bottom: 8px; }
+.coord-help p:last-child { margin-bottom: 0; }
+#coord-map-link { text-decoration: none; }
+
 /* ---------- Layout ---------- */
 .wrap { padding: 20px 16px 48px; }
 .view { display: none; }
@@ -496,6 +511,10 @@ table.data select { width: auto; padding: 4px 6px; font-size: 0.8rem; }
             Bestellijst
             <span class="tab-dot" id="order-dot" hidden></span>
         </button>
+        <button class="tab" data-view="view-coords" id="tab-coords">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+            Co&ouml;rdinaten
+        </button>
     </div>
 </nav>
 
@@ -597,6 +616,66 @@ table.data select { width: auto; padding: 4px 6px; font-size: 0.8rem; }
             </button>
             <button class="btn" id="btn-order-copy">Kopieer lijst</button>
             <button class="btn" id="btn-order-csv">Download CSV</button>
+        </div>
+    </section>
+
+    <!-- ===== Coördinaten (MGRS ⇄ GPS) ===== -->
+    <section class="view" id="view-coords">
+        <div class="page-head">
+            <div>
+                <h2>Co&ouml;rdinaten</h2>
+                <div class="sub">MGRS (militair) &harr; GPS/WGS84. Berekening volledig lokaal op dit apparaat.</div>
+            </div>
+        </div>
+
+        <div class="card coord-card">
+            <h3 class="coord-title">MGRS &rarr; GPS</h3>
+            <label class="coord-label" for="coord-mgrs-in">MGRS-co&ouml;rdinaat</label>
+            <input type="text" id="coord-mgrs-in" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="bijv. 31UFT 45332 73249">
+            <div class="coord-result" id="coord-mgrs-result" hidden>
+                <div class="coord-row"><span>Decimaal</span><strong id="coord-out-dec" class="coord-mono"></strong></div>
+                <div class="coord-row"><span>Graden/min/sec</span><strong id="coord-out-dms" class="coord-mono"></strong></div>
+                <div class="coord-row"><span>Precisie</span><strong id="coord-out-prec"></strong></div>
+                <div class="btn-row">
+                    <button class="btn btn-sm" id="coord-copy-dec">Kopieer decimaal</button>
+                    <a class="btn btn-sm" id="coord-map-link" target="_blank" rel="noopener">Toon op kaart</a>
+                </div>
+            </div>
+            <div class="coord-error" id="coord-mgrs-error" hidden>Ongeldig MGRS-co&ouml;rdinaat. Verwacht formaat: zone + band + vak + cijfers, bijv. <span class="coord-mono">31UFT4533273249</span>.</div>
+        </div>
+
+        <div class="card coord-card">
+            <h3 class="coord-title">GPS &rarr; MGRS</h3>
+            <div class="coord-grid">
+                <div>
+                    <label class="coord-label" for="coord-lat-in">Breedtegraad (lat)</label>
+                    <input type="text" inputmode="decimal" id="coord-lat-in" autocomplete="off" placeholder="bijv. 52.0907">
+                </div>
+                <div>
+                    <label class="coord-label" for="coord-lon-in">Lengtegraad (lon)</label>
+                    <input type="text" inputmode="decimal" id="coord-lon-in" autocomplete="off" placeholder="bijv. 5.1214">
+                </div>
+            </div>
+            <div class="btn-row" style="margin-top:10px;">
+                <button class="btn btn-sm" id="coord-geoloc">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    Gebruik mijn locatie
+                </button>
+            </div>
+            <div class="coord-result" id="coord-gps-result" hidden>
+                <div class="coord-row"><span>MGRS (1 m)</span><strong id="coord-out-mgrs" class="coord-mono"></strong></div>
+                <div class="coord-row"><span>MGRS (10 m)</span><strong id="coord-out-mgrs10" class="coord-mono"></strong></div>
+                <div class="btn-row">
+                    <button class="btn btn-sm" id="coord-copy-mgrs">Kopieer MGRS</button>
+                </div>
+            </div>
+            <div class="coord-error" id="coord-gps-error" hidden></div>
+        </div>
+
+        <div class="card coord-card coord-help">
+            <h3 class="coord-title">Uitleg</h3>
+            <p>Een MGRS-co&ouml;rdinaat is opgebouwd als <span class="coord-mono">31U FT 45332 73249</span>: gridzone (<span class="coord-mono">31U</span>), 100&nbsp;km-vak (<span class="coord-mono">FT</span>) en easting/northing. Meer cijfers = nauwkeuriger: 5+5 cijfers is 1&nbsp;m, 4+4 is 10&nbsp;m, 3+3 is 100&nbsp;m.</p>
+            <p>De omrekening gebruikt de WGS84-ellipso&iuml;de (zelfde datum als GPS) en is op ruim onder de meter nauwkeurig. Controleer co&ouml;rdinaten altijd via een tweede bron voordat ze operationeel worden gebruikt.</p>
         </div>
     </section>
 
@@ -1807,6 +1886,231 @@ $('#btn-settings').addEventListener('click', () => {
         toast('Demodata geladen');
     });
 });
+
+/* =====================================================================
+   Coördinaten: MGRS <-> WGS84 (UTM-gebaseerd, NAVO-standaard)
+   ===================================================================== */
+const MGRS = (function () {
+    const A = 6378137.0;               // WGS84 halve lange as
+    const ECC_SQ = 0.00669437999014;   // eerste excentriciteit^2
+    const K0 = 0.9996;
+    const E1 = (1 - Math.sqrt(1 - ECC_SQ)) / (1 + Math.sqrt(1 - ECC_SQ));
+    const BANDS = 'CDEFGHJKLMNPQRSTUVWX';
+    const COL_SETS = ['ABCDEFGH', 'JKLMNPQR', 'STUVWXYZ'];
+    const ROW_LETTERS = 'ABCDEFGHJKLMNPQRSTUV';
+    const MIN_NORTHING = { C:1100000, D:2000000, E:2800000, F:3700000, G:4600000, H:5500000,
+        J:6400000, K:7300000, L:8200000, M:9100000, N:0, P:800000, Q:1700000, R:2600000,
+        S:3500000, T:4400000, U:5300000, V:6200000, W:7000000, X:7900000 };
+
+    function latBand(lat) {
+        if (lat < -80 || lat > 84) return null;
+        let idx = Math.floor((lat + 80) / 8);
+        if (idx > 19) idx = 19; // band X loopt door tot 84
+        return BANDS.charAt(idx);
+    }
+
+    function zoneFor(lat, lon) {
+        let zone = Math.floor((lon + 180) / 6) + 1;
+        if (zone > 60) zone = 60;
+        if (lat >= 56 && lat < 64 && lon >= 3 && lon < 12) zone = 32; // Noorwegen
+        if (lat >= 72 && lat < 84) { // Svalbard
+            if (lon >= 0 && lon < 9) zone = 31;
+            else if (lon >= 9 && lon < 21) zone = 33;
+            else if (lon >= 21 && lon < 33) zone = 35;
+            else if (lon >= 33 && lon < 42) zone = 37;
+        }
+        return zone;
+    }
+
+    function llToUtm(lat, lon) {
+        const zone = zoneFor(lat, lon);
+        const latR = lat * Math.PI / 180, lonR = lon * Math.PI / 180;
+        const lonOriginR = ((zone - 1) * 6 - 180 + 3) * Math.PI / 180;
+        const ep2 = ECC_SQ / (1 - ECC_SQ);
+        const N = A / Math.sqrt(1 - ECC_SQ * Math.sin(latR) * Math.sin(latR));
+        const T = Math.tan(latR) * Math.tan(latR);
+        const C = ep2 * Math.cos(latR) * Math.cos(latR);
+        const Aa = Math.cos(latR) * (lonR - lonOriginR);
+        const M = A * ((1 - ECC_SQ / 4 - 3 * ECC_SQ * ECC_SQ / 64 - 5 * ECC_SQ * ECC_SQ * ECC_SQ / 256) * latR
+            - (3 * ECC_SQ / 8 + 3 * ECC_SQ * ECC_SQ / 32 + 45 * ECC_SQ * ECC_SQ * ECC_SQ / 1024) * Math.sin(2 * latR)
+            + (15 * ECC_SQ * ECC_SQ / 256 + 45 * ECC_SQ * ECC_SQ * ECC_SQ / 1024) * Math.sin(4 * latR)
+            - (35 * ECC_SQ * ECC_SQ * ECC_SQ / 3072) * Math.sin(6 * latR));
+        const easting = K0 * N * (Aa + (1 - T + C) * Aa * Aa * Aa / 6
+            + (5 - 18 * T + T * T + 72 * C - 58 * ep2) * Math.pow(Aa, 5) / 120) + 500000;
+        let northing = K0 * (M + N * Math.tan(latR) * (Aa * Aa / 2
+            + (5 - T + 9 * C + 4 * C * C) * Math.pow(Aa, 4) / 24
+            + (61 - 58 * T + T * T + 600 * C - 330 * ep2) * Math.pow(Aa, 6) / 720));
+        if (lat < 0) northing += 10000000;
+        return { zone, band: latBand(lat), easting, northing };
+    }
+
+    function utmToLl(zone, easting, northing, southern) {
+        const ep2 = ECC_SQ / (1 - ECC_SQ);
+        const x = easting - 500000;
+        const y = southern ? northing - 10000000 : northing;
+        const mu = (y / K0) / (A * (1 - ECC_SQ / 4 - 3 * ECC_SQ * ECC_SQ / 64 - 5 * ECC_SQ * ECC_SQ * ECC_SQ / 256));
+        const phi1 = mu + (3 * E1 / 2 - 27 * Math.pow(E1, 3) / 32) * Math.sin(2 * mu)
+            + (21 * E1 * E1 / 16 - 55 * Math.pow(E1, 4) / 32) * Math.sin(4 * mu)
+            + (151 * Math.pow(E1, 3) / 96) * Math.sin(6 * mu)
+            + (1097 * Math.pow(E1, 4) / 512) * Math.sin(8 * mu);
+        const N1 = A / Math.sqrt(1 - ECC_SQ * Math.sin(phi1) * Math.sin(phi1));
+        const T1 = Math.tan(phi1) * Math.tan(phi1);
+        const C1 = ep2 * Math.cos(phi1) * Math.cos(phi1);
+        const R1 = A * (1 - ECC_SQ) / Math.pow(1 - ECC_SQ * Math.sin(phi1) * Math.sin(phi1), 1.5);
+        const D = x / (N1 * K0);
+        const lat = phi1 - (N1 * Math.tan(phi1) / R1) * (D * D / 2
+            - (5 + 3 * T1 + 10 * C1 - 4 * C1 * C1 - 9 * ep2) * Math.pow(D, 4) / 24
+            + (61 + 90 * T1 + 298 * C1 + 45 * T1 * T1 - 252 * ep2 - 3 * C1 * C1) * Math.pow(D, 6) / 720);
+        const lon = (D - (1 + 2 * T1 + C1) * Math.pow(D, 3) / 6
+            + (5 - 2 * C1 + 28 * T1 - 3 * C1 * C1 + 8 * ep2 + 24 * T1 * T1) * Math.pow(D, 5) / 120) / Math.cos(phi1);
+        return { lat: lat * 180 / Math.PI, lon: (zone - 1) * 6 - 180 + 3 + lon * 180 / Math.PI };
+    }
+
+    // lat/lon -> MGRS-string (digits per as: 5 = 1 m, 4 = 10 m, ...)
+    function toMgrs(lat, lon, digits) {
+        digits = digits || 5;
+        if (!latBand(lat)) return null; // poolgebieden vallen buiten MGRS-grid
+        const u = llToUtm(lat, lon);
+        const colLetter = COL_SETS[(u.zone - 1) % 3].charAt(Math.floor(u.easting / 100000) - 1);
+        let rowIdx = Math.floor(u.northing / 100000) % 20;
+        if (u.zone % 2 === 0) rowIdx = (rowIdx + 5) % 20; // even zones: rij-origine 'F'
+        const eDig = String(Math.floor(u.easting % 100000)).padStart(5, '0').slice(0, digits);
+        const nDig = String(Math.floor(u.northing % 100000)).padStart(5, '0').slice(0, digits);
+        return u.zone + u.band + ' ' + colLetter + ROW_LETTERS.charAt(rowIdx) + ' ' + eDig + ' ' + nDig;
+    }
+
+    // MGRS-string -> {lat, lon, precisionM}; positie = midden van het gridvak
+    function fromMgrs(str) {
+        const s = String(str).toUpperCase().replace(/[^0-9A-Z]/g, '');
+        const m = s.match(/^(\d{1,2})([C-HJ-NP-X])([A-HJ-NP-Z])([A-HJ-NP-V])(\d*)$/);
+        if (!m) return null;
+        const zone = parseInt(m[1], 10);
+        const band = m[2], digits = m[5];
+        if (zone < 1 || zone > 60) return null;
+        if (digits.length % 2 !== 0 || digits.length > 10) return null;
+
+        const colIdx = COL_SETS[(zone - 1) % 3].indexOf(m[3]);
+        if (colIdx < 0) return null; // vakletter hoort niet bij deze zone
+        let rowIdx = ROW_LETTERS.indexOf(m[4]);
+        if (zone % 2 === 0) rowIdx = (rowIdx + 15) % 20; // omgekeerde offset even zones
+
+        const half = digits.length ? Math.pow(10, 5 - digits.length / 2) / 2 : 50000;
+        const eOff = digits.length ? parseInt(digits.slice(0, digits.length / 2).padEnd(5, '0'), 10) : 0;
+        const nOff = digits.length ? parseInt(digits.slice(digits.length / 2).padEnd(5, '0'), 10) : 0;
+
+        let northing = rowIdx * 100000;
+        while (northing < MIN_NORTHING[band]) northing += 2000000;
+
+        const ll = utmToLl(zone, (colIdx + 1) * 100000 + eOff + half, northing + nOff + half, band < 'N');
+        return { lat: ll.lat, lon: ll.lon, precisionM: digits.length ? Math.pow(10, 5 - digits.length / 2) : 100000 };
+    }
+
+    return { toMgrs, fromMgrs };
+})();
+
+/* ---------- Coördinaten-tab UI ---------- */
+(function () {
+    const mgrsIn = $('#coord-mgrs-in');
+    const latIn = $('#coord-lat-in');
+    const lonIn = $('#coord-lon-in');
+    let lastDec = '', lastMgrs = '';
+
+    function toDms(v, posChar, negChar) {
+        const h = v >= 0 ? posChar : negChar;
+        v = Math.abs(v);
+        const d = Math.floor(v);
+        const mFull = (v - d) * 60;
+        const mm = Math.floor(mFull);
+        const ss = ((mFull - mm) * 60).toFixed(1);
+        return d + '°' + String(mm).padStart(2, '0') + '′' + ss.padStart(4, '0') + '″' + h;
+    }
+
+    function fmtPrec(p) {
+        return p >= 1000 ? (p / 1000) + ' km' : p + ' m';
+    }
+
+    function convertMgrs() {
+        const raw = mgrsIn.value.trim();
+        const resEl = $('#coord-mgrs-result'), errEl = $('#coord-mgrs-error');
+        if (!raw) { resEl.hidden = true; errEl.hidden = true; return; }
+        const r = MGRS.fromMgrs(raw);
+        if (!r) { resEl.hidden = true; errEl.hidden = false; return; }
+        errEl.hidden = true;
+        lastDec = r.lat.toFixed(6) + ', ' + r.lon.toFixed(6);
+        $('#coord-out-dec').textContent = lastDec;
+        $('#coord-out-dms').textContent = toDms(r.lat, 'N', 'Z') + '  ' + toDms(r.lon, 'O', 'W');
+        $('#coord-out-prec').textContent = fmtPrec(r.precisionM);
+        $('#coord-map-link').href = 'https://www.openstreetmap.org/?mlat=' + r.lat.toFixed(6) + '&mlon=' + r.lon.toFixed(6) + '#map=15/' + r.lat.toFixed(5) + '/' + r.lon.toFixed(5);
+        resEl.hidden = false;
+    }
+
+    function convertGps() {
+        const resEl = $('#coord-gps-result'), errEl = $('#coord-gps-error');
+        const latRaw = latIn.value.trim().replace(',', '.');
+        const lonRaw = lonIn.value.trim().replace(',', '.');
+        if (!latRaw || !lonRaw) { resEl.hidden = true; errEl.hidden = true; return; }
+        const lat = parseFloat(latRaw), lon = parseFloat(lonRaw);
+        if (!isFinite(lat) || !isFinite(lon) || lat < -90 || lat > 90 || lon < -180 || lon > 180) {
+            resEl.hidden = true;
+            errEl.textContent = 'Ongeldige invoer. Breedtegraad: −90 t/m 90, lengtegraad: −180 t/m 180 (decimale graden).';
+            errEl.hidden = false;
+            return;
+        }
+        const m1 = MGRS.toMgrs(lat, lon, 5);
+        if (!m1) {
+            resEl.hidden = true;
+            errEl.textContent = 'Deze locatie valt buiten het MGRS-grid (poolgebieden boven 84°N / onder 80°Z gebruiken UPS).';
+            errEl.hidden = false;
+            return;
+        }
+        errEl.hidden = true;
+        lastMgrs = m1;
+        $('#coord-out-mgrs').textContent = m1;
+        $('#coord-out-mgrs10').textContent = MGRS.toMgrs(lat, lon, 4);
+        resEl.hidden = false;
+    }
+
+    function copyText(text, label) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => toast(label + ' gekopieerd'));
+        } else {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            ta.remove();
+            toast(label + ' gekopieerd');
+        }
+    }
+
+    mgrsIn.addEventListener('input', convertMgrs);
+    latIn.addEventListener('input', convertGps);
+    lonIn.addEventListener('input', convertGps);
+    $('#coord-copy-dec').addEventListener('click', () => { if (lastDec) copyText(lastDec, 'GPS-coördinaat'); });
+    $('#coord-copy-mgrs').addEventListener('click', () => { if (lastMgrs) copyText(lastMgrs, 'MGRS-coördinaat'); });
+
+    $('#coord-geoloc').addEventListener('click', () => {
+        const errEl = $('#coord-gps-error');
+        if (!navigator.geolocation) {
+            errEl.textContent = 'Locatiebepaling wordt niet ondersteund door deze browser.';
+            errEl.hidden = false;
+            return;
+        }
+        navigator.geolocation.getCurrentPosition(
+            (pos) => {
+                latIn.value = pos.coords.latitude.toFixed(6);
+                lonIn.value = pos.coords.longitude.toFixed(6);
+                convertGps();
+            },
+            () => {
+                errEl.textContent = 'Locatie kon niet worden bepaald. Controleer of locatietoegang is toegestaan.';
+                errEl.hidden = false;
+            },
+            { enableHighAccuracy: true, timeout: 10000 }
+        );
+    });
+})();
 
 /* =====================================================================
    Init
