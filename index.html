@@ -15,12 +15,9 @@
             box-sizing: border-box;
         }
 
-        /* ===================================
-           Warm Theme (Manava-inspired)
-           =================================== */
         body {
             font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: #f7f3ed;
+            background-color: #e2d9cc;
             color: #2c3e36;
             min-height: 100vh;
             line-height: 1.6;
@@ -41,121 +38,18 @@
         .container {
             position: relative;
             z-index: 1;
-            max-width: 960px;
+            max-width: 640px;
             margin: 0 auto;
-            padding: 0 32px;
+            padding: 0 24px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-        }
-
-        /* ===================================
-           Navigation
-           =================================== */
-        .nav {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 28px 0;
-        }
-
-        .nav-brand {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: #2c3e36;
-            letter-spacing: -0.02em;
-            transition: color 0.8s ease, font-family 0.01s;
-        }
-
-        .nav-brand span {
-            color: #c45a3c;
-            transition: color 0.8s ease;
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 32px;
-        }
-
-        .nav-link {
-            font-size: 0.9rem;
-            color: #5a6b5f;
-            text-decoration: none;
-            transition: color 0.3s ease;
-            font-weight: 500;
-        }
-
-        .nav-link:hover {
-            color: #c45a3c;
-        }
-
-        .nav-link.cta {
-            background: #c45a3c;
-            color: #fff;
-            padding: 10px 24px;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
-        }
-
-        .nav-link.cta:hover {
-            background: #a3442e;
-            transform: translateY(-1px);
-        }
-
-        /* ===================================
-           Hero Section
-           =================================== */
-        .hero {
-            padding: 60px 0 48px;
-            max-width: 680px;
-        }
-
-        .hero-label {
-            display: inline-block;
-            font-size: 0.72rem;
-            font-weight: 600;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: #c45a3c;
-            margin-bottom: 24px;
-            transition: color 0.8s ease;
-        }
-
-        .hero h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(2rem, 5vw, 3.2rem);
-            font-weight: 400;
-            line-height: 1.2;
-            color: #2c3e36;
-            margin-bottom: 20px;
-            transition: color 0.8s ease, font-family 0.01s;
-        }
-
-        .hero h1 em {
-            color: #c45a3c;
-            font-style: italic;
-            transition: color 0.8s ease;
-        }
-
-        .hero p {
-            font-size: 1rem;
-            color: #6b7b6f;
-            max-width: 480px;
-            line-height: 1.7;
-            transition: color 0.8s ease;
+            justify-content: center;
         }
 
         /* ===================================
            Apps Grid
            =================================== */
-        .apps-section {
-            flex: 1;
-            padding-bottom: 40px;
-        }
-
         .apps-grid {
             display: flex;
             flex-direction: column;
@@ -164,28 +58,27 @@
 
         .app-card {
             background: #ffffff;
-            border: 1px solid #e8e0d6;
+            border: 1px solid #d5cdc2;
             border-radius: 14px;
-            padding: 24px 28px;
+            padding: 22px 24px;
             text-decoration: none;
             color: inherit;
             display: grid;
-            grid-template-columns: 52px 1fr 28px;
+            grid-template-columns: 48px 1fr 24px;
             align-items: center;
-            gap: 22px;
+            gap: 20px;
             transition: all 0.3s ease;
-            position: relative;
         }
 
         .app-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(44, 62, 54, 0.08);
-            border-color: #d0c8be;
+            box-shadow: 0 12px 40px rgba(44, 62, 54, 0.1);
+            border-color: #c4b8aa;
         }
 
         .app-icon {
-            width: 52px;
-            height: 52px;
+            width: 48px;
+            height: 48px;
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -199,56 +92,43 @@
         }
 
         .app-card.biupama .app-icon {
-            background: rgba(45, 212, 160, 0.08);
-            border: 1px solid rgba(45, 212, 160, 0.2);
-        }
-        .app-card.rooster .app-icon {
-            background: rgba(16, 185, 129, 0.08);
-            border: 1px solid rgba(16, 185, 129, 0.2);
+            background: rgba(45, 212, 160, 0.1);
+            border: 1px solid rgba(45, 212, 160, 0.25);
         }
         .app-card.ppv .app-icon {
-            background: rgba(59, 130, 246, 0.08);
-            border: 1px solid rgba(59, 130, 246, 0.2);
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+        }
+        .app-card.tascheck .app-icon {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.25);
+        }
+        .app-card.rooster .app-icon {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.25);
         }
 
         .app-content { flex: 1; min-width: 0; }
 
         .app-title {
             font-family: 'Playfair Display', serif;
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             font-weight: 600;
             color: #2c3e36;
-            margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
+            margin-bottom: 3px;
             transition: color 0.8s ease, font-family 0.01s;
-        }
-
-        .app-badge {
-            font-size: 0.58rem;
-            font-family: 'DM Sans', sans-serif;
-            font-weight: 600;
-            padding: 3px 10px;
-            border-radius: 50px;
-            background: rgba(196, 90, 60, 0.08);
-            color: #c45a3c;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: background 0.8s ease, color 0.8s ease;
         }
 
         .app-description {
             color: #7a8b7f;
-            font-size: 0.88rem;
-            line-height: 1.5;
+            font-size: 0.85rem;
+            line-height: 1.4;
             transition: color 0.8s ease;
         }
 
         .arrow-icon {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             color: #c4b8ac;
             transition: transform 0.3s ease, color 0.3s ease;
             flex-shrink: 0;
@@ -264,16 +144,15 @@
            =================================== */
         .footer {
             padding: 24px 0;
-            border-top: 1px solid #e8e0d6;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-top: auto;
+            margin-top: 32px;
             transition: border-color 0.8s ease;
         }
 
         .footer-text {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: #9aa69e;
             transition: color 0.8s ease;
         }
@@ -281,11 +160,11 @@
         .footer-links {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 18px;
         }
 
         .footer-link {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: #9aa69e;
             text-decoration: none;
             transition: color 0.3s ease;
@@ -306,6 +185,94 @@
         }
 
         /* ===================================
+           Hidden Rooster Password Modal
+           =================================== */
+        .password-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 5000;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .password-modal.active {
+            display: flex;
+        }
+
+        .password-box {
+            background: #fff;
+            border-radius: 14px;
+            padding: 32px;
+            max-width: 340px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .password-box h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            color: #2c3e36;
+            margin-bottom: 6px;
+        }
+
+        .password-box p {
+            font-size: 0.82rem;
+            color: #7a8b7f;
+            margin-bottom: 18px;
+        }
+
+        .password-box input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #d5cdc2;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            text-align: center;
+            letter-spacing: 2px;
+            color: #2c3e36;
+            background: #f7f3ed;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .password-box input:focus {
+            border-color: #10b981;
+        }
+
+        .password-box input.error {
+            border-color: #ef4444;
+            animation: head-shake 0.4s ease;
+        }
+
+        @keyframes head-shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-4px); }
+        }
+
+        .password-box .hint {
+            font-size: 0.72rem;
+            color: #c4b8ac;
+            margin-top: 12px;
+        }
+
+        .password-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            color: #9aa69e;
+            cursor: pointer;
+        }
+
+        /* ===================================
            Enter Easter Egg Toggle
            =================================== */
         .enter-toggle {
@@ -315,7 +282,7 @@
             z-index: 50;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.7rem;
-            color: #c4b8ac;
+            color: #b0a898;
             cursor: pointer;
             padding: 6px 12px;
             border-radius: 6px;
@@ -323,13 +290,12 @@
             border: 1px solid transparent;
             transition: all 0.3s ease;
             user-select: none;
-            opacity: 0.4;
+            opacity: 0.35;
         }
 
         .enter-toggle:hover {
             opacity: 1;
-            border-color: #c4b8ac;
-            background: rgba(196, 90, 60, 0.05);
+            border-color: #b0a898;
         }
 
         @keyframes blink-cursor {
@@ -349,58 +315,6 @@
             color: #00ff00;
         }
 
-        body.terminal-mode .nav-brand {
-            font-family: 'JetBrains Mono', monospace;
-            color: #00ff00;
-        }
-
-        body.terminal-mode .nav-brand span {
-            color: #00ff00;
-        }
-
-        body.terminal-mode .nav-link {
-            color: #00aa00;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        body.terminal-mode .nav-link:hover {
-            color: #00ff00;
-        }
-
-        body.terminal-mode .nav-link.cta {
-            background: #00ff00;
-            color: #0a0a0a;
-            border-radius: 4px;
-        }
-
-        body.terminal-mode .nav-link.cta:hover {
-            background: #00cc00;
-        }
-
-        body.terminal-mode .hero-label {
-            color: #00aa00;
-            letter-spacing: 2px;
-        }
-
-        body.terminal-mode .hero h1 {
-            font-family: 'JetBrains Mono', monospace;
-            color: #00ff00;
-            font-size: clamp(1.4rem, 3.5vw, 2rem);
-            font-weight: 500;
-        }
-
-        body.terminal-mode .hero h1 em {
-            color: #00ff00;
-            font-style: normal;
-            text-decoration: underline;
-        }
-
-        body.terminal-mode .hero p {
-            color: #00aa00;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-        }
-
         body.terminal-mode .app-card {
             background: #0f0f0f;
             border-color: #1a3a1a;
@@ -415,19 +329,13 @@
         body.terminal-mode .app-title {
             font-family: 'JetBrains Mono', monospace;
             color: #00ff00;
-            font-size: 1rem;
-        }
-
-        body.terminal-mode .app-badge {
-            background: rgba(0, 255, 0, 0.1);
-            color: #00ff00;
-            border-radius: 2px;
+            font-size: 0.95rem;
         }
 
         body.terminal-mode .app-description {
             color: #008800;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
         }
 
         body.terminal-mode .app-icon {
@@ -440,17 +348,8 @@
             stroke: #00ff00 !important;
         }
 
-        body.terminal-mode .arrow-icon {
-            color: #005500;
-        }
-
-        body.terminal-mode .app-card:hover .arrow-icon {
-            color: #00ff00;
-        }
-
-        body.terminal-mode .footer {
-            border-color: #1a3a1a;
-        }
+        body.terminal-mode .arrow-icon { color: #005500; }
+        body.terminal-mode .app-card:hover .arrow-icon { color: #00ff00; }
 
         body.terminal-mode .footer-text,
         body.terminal-mode .footer-link {
@@ -458,9 +357,7 @@
             font-family: 'JetBrains Mono', monospace;
         }
 
-        body.terminal-mode .footer-link:hover {
-            color: #00ff00;
-        }
+        body.terminal-mode .footer-link:hover { color: #00ff00; }
 
         body.terminal-mode .enter-toggle {
             color: #00ff00;
@@ -469,11 +366,23 @@
 
         body.terminal-mode .enter-toggle:hover {
             border-color: #00ff00;
-            background: rgba(0, 255, 0, 0.05);
             opacity: 1;
         }
 
-        /* Scanlines overlay in terminal mode */
+        body.terminal-mode .password-box {
+            background: #0f0f0f;
+            border: 1px solid #1a3a1a;
+        }
+
+        body.terminal-mode .password-box h3 { color: #00ff00; }
+        body.terminal-mode .password-box p { color: #008800; }
+
+        body.terminal-mode .password-box input {
+            background: #0a0a0a;
+            border-color: #1a3a1a;
+            color: #00ff00;
+        }
+
         body.terminal-mode::before {
             content: '';
             position: fixed;
@@ -526,9 +435,7 @@
             transition: opacity 0.5s ease;
         }
 
-        .transition-overlay.active .transition-scanlines {
-            opacity: 1;
-        }
+        .transition-overlay.active .transition-scanlines { opacity: 1; }
 
         .transition-glitch {
             position: absolute;
@@ -556,9 +463,7 @@
             min-width: 340px;
         }
 
-        .transition-overlay.phase2 .terminal-boot {
-            opacity: 1;
-        }
+        .transition-overlay.phase2 .terminal-boot { opacity: 1; }
 
         @keyframes glitch-shake {
             0%, 100% { transform: translate(0, 0); }
@@ -597,50 +502,29 @@
            Responsive
            =================================== */
         @media (max-width: 640px) {
-            .container {
-                padding: 0 18px;
-            }
-
-            .nav { padding: 20px 0; }
-
-            .nav-links { gap: 16px; }
-
-            .nav-link { font-size: 0.82rem; }
-
-            .hero { padding: 32px 0 36px; }
+            .container { padding: 0 16px; }
 
             .app-card {
-                padding: 18px 20px;
-                gap: 16px;
-                grid-template-columns: 44px 1fr 24px;
+                padding: 16px 18px;
+                gap: 14px;
+                grid-template-columns: 42px 1fr 20px;
             }
 
-            .app-icon { width: 44px; height: 44px; }
-
+            .app-icon { width: 42px; height: 42px; }
             .app-icon svg { width: 22px; height: 22px; }
-
-            .app-title { font-size: 1rem; }
-
-            .app-description { font-size: 0.82rem; }
-
+            .app-title { font-size: 0.98rem; }
+            .app-description { font-size: 0.8rem; }
             .terminal-boot { font-size: 0.7rem; min-width: 260px; }
         }
 
-        /* ===================================
-           Keyboard focus
-           =================================== */
         .app-card:focus {
             outline: 2px solid #c45a3c;
             outline-offset: 2px;
         }
 
-        .app-card:focus:not(:focus-visible) {
-            outline: none;
-        }
+        .app-card:focus:not(:focus-visible) { outline: none; }
 
-        body.terminal-mode .app-card:focus {
-            outline-color: #00ff00;
-        }
+        body.terminal-mode .app-card:focus { outline-color: #00ff00; }
     </style>
 </head>
 <body>
@@ -653,106 +537,77 @@
         <div class="terminal-boot" id="terminal-boot"></div>
     </div>
 
+    <!-- Password Modal (hidden rooster) -->
+    <div class="password-modal" id="password-modal">
+        <div class="password-box">
+            <h3>Lesrooster</h3>
+            <p>Voer het wachtwoord in</p>
+            <input type="password" id="password-input" placeholder="********" autocomplete="off">
+            <div class="hint">Typ <em>rooster</em> om dit scherm te openen</div>
+        </div>
+    </div>
+
     <div class="container">
 
-        <!-- Navigation -->
-        <nav class="nav">
-            <div class="nav-brand">BIUPAMA<span>.</span></div>
-            <div class="nav-links">
-                <a href="#" class="nav-link" id="over-mij-link">Over mij</a>
-            </div>
-        </nav>
+        <section class="apps-grid">
+            <a href="biupama-app-main/index.html" class="app-card biupama">
+                <div class="app-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2dd4a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                        <line x1="8" y1="6" x2="16" y2="6"/>
+                        <line x1="8" y1="10" x2="14" y2="10"/>
+                    </svg>
+                </div>
+                <div class="app-content">
+                    <div class="app-title">Tropengeneeskunde</div>
+                    <p class="app-description">Studiegids met klachtgestuurde diagnostiek en ziektebeelden.</p>
+                </div>
+                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
 
-        <!-- Hero -->
-        <section class="hero">
-            <span class="hero-label">STUDIE &middot; DIAGNOSTIEK &middot; INNOVATIE</span>
-            <h1>Van <em>studie</em> naar <em>praktijk</em>: tools voor de geneeskunde</h1>
-            <p>Handige applicaties voor het BIUPAMA curriculum en militair-medisch onderwijs.</p>
+            <a href="ppv-main/index.html" class="app-card ppv">
+                <div class="app-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="20" x2="18" y2="10"/>
+                        <line x1="12" y1="20" x2="12" y2="4"/>
+                        <line x1="6" y1="20" x2="6" y2="14"/>
+                        <line x1="2" y1="20" x2="22" y2="20"/>
+                    </svg>
+                </div>
+                <div class="app-content">
+                    <div class="app-title">Algoritme Checker</div>
+                    <p class="app-description">Bereken PPV en NPV van diagnostische tests.</p>
+                </div>
+                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+
+            <a href="ae-inventaris/index.html" class="app-card tascheck">
+                <div class="app-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 11l3 3L22 4"/>
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                    </svg>
+                </div>
+                <div class="app-content">
+                    <div class="app-title">Tascheck AE</div>
+                    <p class="app-description">Telling en vervaldatumbewaking van AE-tassen.</p>
+                </div>
+                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
         </section>
 
-        <!-- Apps -->
-        <section class="apps-section">
-            <div class="apps-grid">
-                <a href="biupama-app-main/index.html" class="app-card biupama">
-                    <div class="app-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2dd4a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-                            <line x1="8" y1="6" x2="16" y2="6"/>
-                            <line x1="8" y1="10" x2="14" y2="10"/>
-                        </svg>
-                    </div>
-                    <div class="app-content">
-                        <div class="app-title">
-                            Tropengeneeskunde
-                            <span class="app-badge">Studiegids</span>
-                        </div>
-                        <p class="app-description">Uitgebreide studiegids voor tropengeneeskunde met klachtgestuurde diagnostiek, ziektebeelden en praktische informatie.</p>
-                    </div>
-                    <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </a>
-
-                <a href="excel-to-ical/index.html" class="app-card rooster">
-                    <div class="app-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                            <line x1="16" y1="2" x2="16" y2="6"/>
-                            <line x1="8" y1="2" x2="8" y2="6"/>
-                            <line x1="3" y1="10" x2="21" y2="10"/>
-                            <path d="M8 14h.01"/>
-                            <path d="M12 14h.01"/>
-                            <path d="M16 14h.01"/>
-                        </svg>
-                    </div>
-                    <div class="app-content">
-                        <div class="app-title">
-                            Lesrooster
-                            <span class="app-badge">Rooster</span>
-                        </div>
-                        <p class="app-description">Upload je Excel rooster en bekijk het in een overzichtelijke kalender. Exporteer naar iCal voor je agenda.</p>
-                    </div>
-                    <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </a>
-
-                <a href="ppv-main/index.html" class="app-card ppv">
-                    <div class="app-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="18" y1="20" x2="18" y2="10"/>
-                            <line x1="12" y1="20" x2="12" y2="4"/>
-                            <line x1="6" y1="20" x2="6" y2="14"/>
-                            <line x1="2" y1="20" x2="22" y2="20"/>
-                        </svg>
-                    </div>
-                    <div class="app-content">
-                        <div class="app-title">
-                            Algoritme Checker
-                            <span class="app-badge">PPV / NPV</span>
-                        </div>
-                        <p class="app-description">Bereken de voorspellende waarde van diagnostische tests. Begrijp sensitiviteit, specificiteit en de base rate fallacy.</p>
-                    </div>
-                    <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </a>
-            </div>
-        </section>
-
-        <!-- Footer -->
         <footer class="footer">
             <span class="footer-text">&copy; Arjan Sammani</span>
             <div class="footer-links">
                 <a href="https://www.linkedin.com/in/arjan-sammani/" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
-                <a href="#" class="footer-link snaak-link" id="snaak-link" title="SNAAK Command Center">🎮</a>
+                <a href="#" class="footer-link" id="over-mij-link">Over mij</a>
+                <a href="#" class="footer-link snaak-link" id="snaak-link" title="SNAAK">🎮</a>
             </div>
         </footer>
 
     </div>
 
-    <!-- Enter Easter Egg -->
     <div class="enter-toggle" id="enter-toggle">><span class="cursor">_</span></div>
 
     <script>
@@ -772,72 +627,61 @@
 
     function createDots() {
         dots = [];
-        const count = Math.floor((canvas.width * canvas.height) / 12000);
+        const count = Math.floor((canvas.width * canvas.height) / 14000);
         for (let i = 0; i < count; i++) {
             dots.push({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
-                vx: (Math.random() - 0.5) * 0.3,
-                vy: (Math.random() - 0.5) * 0.3,
-                r: Math.random() * 2.5 + 1,
-                type: Math.random() > 0.7 ? 'accent' : 'primary'
+                vx: (Math.random() - 0.5) * 0.25,
+                vy: (Math.random() - 0.5) * 0.25,
+                r: Math.random() * 2 + 0.8,
+                type: Math.random() > 0.75 ? 'accent' : 'primary'
             });
         }
     }
 
     function drawConstellation() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        const connectDist = 120;
+        const connectDist = 110;
         const primary = isTerminal ? 'rgba(0,255,0,' : 'rgba(44,62,54,';
         const accent = isTerminal ? 'rgba(0,200,0,' : 'rgba(196,90,60,';
-        const lineColor = isTerminal ? 'rgba(0,255,0,' : 'rgba(44,62,54,';
 
         for (let i = 0; i < dots.length; i++) {
             const a = dots[i];
             a.x += a.vx;
             a.y += a.vy;
-
             if (a.x < 0 || a.x > canvas.width) a.vx *= -1;
             if (a.y < 0 || a.y > canvas.height) a.vy *= -1;
 
-            // Draw dot
             ctx.beginPath();
             ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
             const col = a.type === 'accent' ? accent : primary;
-            ctx.fillStyle = col + (isTerminal ? '0.5)' : '0.3)');
+            ctx.fillStyle = col + (isTerminal ? '0.5)' : '0.25)');
             ctx.fill();
 
-            // Connect nearby dots
             for (let j = i + 1; j < dots.length; j++) {
                 const b = dots[j];
                 const dx = a.x - b.x;
                 const dy = a.y - b.y;
                 const dist = Math.sqrt(dx * dx + dy * dy);
-
                 if (dist < connectDist) {
-                    const alpha = (1 - dist / connectDist) * (isTerminal ? 0.15 : 0.06);
+                    const alpha = (1 - dist / connectDist) * (isTerminal ? 0.15 : 0.05);
                     ctx.beginPath();
                     ctx.moveTo(a.x, a.y);
                     ctx.lineTo(b.x, b.y);
-                    ctx.strokeStyle = lineColor + alpha + ')';
-                    ctx.lineWidth = 0.6;
+                    ctx.strokeStyle = primary + alpha + ')';
+                    ctx.lineWidth = 0.5;
                     ctx.stroke();
                 }
             }
         }
-
         animationId = requestAnimationFrame(drawConstellation);
     }
 
     resizeCanvas();
     createDots();
     drawConstellation();
-
-    window.addEventListener('resize', () => {
-        resizeCanvas();
-        createDots();
-    });
+    window.addEventListener('resize', () => { resizeCanvas(); createDots(); });
 
     // ===================================
     // Transition Animation
@@ -850,30 +694,27 @@
         if (transitioning) return;
         transitioning = true;
 
-        // Phase 1: Glitch shake + color flash (0-600ms)
         document.body.classList.add('glitching');
         overlay.classList.add('active');
 
         setTimeout(() => {
-            // Phase 2: Switch to terminal mode, show boot screen (600ms)
             document.body.classList.remove('glitching');
             document.body.classList.add('terminal-mode');
             isTerminal = true;
             overlay.classList.add('phase2');
-
-            // Type terminal boot text
             typeBootSequence(targetUrl);
         }, 600);
     }
 
     function typeBootSequence(targetUrl) {
+        const label = targetUrl.includes('sammani') ? 'SAMMANI.NL' : 'SNAAK COMMAND CENTER';
         const lines = [
             '>> INIT',
             '>> CONNECTING...',
             '>> LOADING PROFILE...',
             '',
             '   STATUS  : ONLINE',
-            '   TARGET  : ' + (targetUrl.includes('sammani') ? 'SAMMANI.NL' : 'SNAAK COMMAND CENTER'),
+            '   TARGET  : ' + label,
             '',
             '>> REDIRECTING...',
         ];
@@ -884,13 +725,9 @@
 
         function typeChar() {
             if (lineIdx >= lines.length) {
-                // Done typing, redirect after brief pause
-                setTimeout(() => {
-                    window.location.href = targetUrl;
-                }, 400);
+                setTimeout(() => { window.location.href = targetUrl; }, 400);
                 return;
             }
-
             const line = lines[lineIdx];
             if (charIdx <= line.length) {
                 terminalBoot.textContent = lines.slice(0, lineIdx).join('\n') +
@@ -903,24 +740,71 @@
                 setTimeout(typeChar, line === '' ? 50 : 120);
             }
         }
-
         typeChar();
     }
 
-    // ===================================
-    // Over Mij Link
-    // ===================================
+    // Over Mij → sammani.nl with transition
     document.getElementById('over-mij-link').addEventListener('click', (e) => {
         e.preventDefault();
         startTransition('https://arjan.sammani.nl');
     });
 
-    // ===================================
-    // SnaakGPT Link
-    // ===================================
+    // SnaakGPT → with transition
     document.getElementById('snaak-link').addEventListener('click', (e) => {
         e.preventDefault();
         startTransition('SnaakGPT/index.html');
+    });
+
+    // ===================================
+    // Hidden Rooster (type "rooster" + password)
+    // ===================================
+    let typedBuffer = '';
+    const passwordModal = document.getElementById('password-modal');
+    const passwordInput = document.getElementById('password-input');
+
+    document.addEventListener('keydown', (e) => {
+        if (passwordModal.classList.contains('active')) return;
+        if (e.target.matches('input, textarea')) return;
+
+        if (e.key === 'Enter' && !e.target.matches('input, textarea, button, a')) {
+            e.preventDefault();
+            toggleTerminalMode();
+            return;
+        }
+
+        if (e.key.length === 1) {
+            typedBuffer += e.key.toLowerCase();
+            if (typedBuffer.length > 20) typedBuffer = typedBuffer.slice(-20);
+
+            if (typedBuffer.endsWith('rooster')) {
+                typedBuffer = '';
+                passwordModal.classList.add('active');
+                setTimeout(() => passwordInput.focus(), 100);
+            }
+        }
+    });
+
+    passwordInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            if (passwordInput.value === 'TROPEN42') {
+                window.location.href = 'excel-to-ical/index.html';
+            } else {
+                passwordInput.classList.add('error');
+                passwordInput.value = '';
+                setTimeout(() => passwordInput.classList.remove('error'), 500);
+            }
+        }
+        if (e.key === 'Escape') {
+            passwordModal.classList.remove('active');
+            passwordInput.value = '';
+        }
+    });
+
+    passwordModal.addEventListener('click', (e) => {
+        if (e.target === passwordModal) {
+            passwordModal.classList.remove('active');
+            passwordInput.value = '';
+        }
     });
 
     // ===================================
@@ -935,13 +819,6 @@
     }
 
     enterToggle.addEventListener('click', toggleTerminalMode);
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && !e.target.matches('input, textarea, button, a')) {
-            e.preventDefault();
-            toggleTerminalMode();
-        }
-    });
     </script>
 </body>
 </html>
