@@ -210,15 +210,15 @@ textarea { resize: vertical; min-height: 54px; }
     <section class="view active" id="view-liner">
 
         <div class="mode-toggle" role="group" aria-label="Situatie">
-            <button id="mode-oorlog" class="active">Oorlog</button>
-            <button id="mode-vrede">Vredestijd</button>
+            <button id="mode-oorlog" class="active">Wartime</button>
+            <button id="mode-vrede">Peacetime</button>
         </div>
 
         <div class="card line-card">
             <div class="line-num">1</div>
             <div class="line-body">
-                <div class="line-title">Locatie ophaalpunt</div>
-                <div class="line-hint">MGRS-co&ouml;rdinaat, bijv. 31UFT 45332 73249</div>
+                <div class="line-title">Location of pick-up site</div>
+                <div class="line-hint">MGRS grid, e.g. 31UFT 45332 73249</div>
                 <input type="text" id="l1" autocapitalize="characters" spellcheck="false" placeholder="31UFT 45332 73249">
                 <div class="mgrs-status" id="l1-status" hidden></div>
                 <div class="btn-row" style="margin-top:8px;">
@@ -233,11 +233,11 @@ textarea { resize: vertical; min-height: 54px; }
         <div class="card line-card">
             <div class="line-num">2</div>
             <div class="line-body">
-                <div class="line-title">Frequentie &amp; callsign</div>
-                <div class="line-hint">Radiofrequentie en roepnaam op het ophaalpunt</div>
+                <div class="line-title">Radio frequency, call sign, and suffix</div>
+                <div class="line-hint">Frequency and call sign at the pick-up site</div>
                 <div class="grid-2">
-                    <div><label for="l2-freq">Frequentie</label><input type="text" id="l2-freq" placeholder="bijv. 46.500"></div>
-                    <div><label for="l2-call">Callsign</label><input type="text" id="l2-call" placeholder="bijv. DUSTOFF 6"></div>
+                    <div><label for="l2-freq">Frequency</label><input type="text" id="l2-freq" placeholder="e.g. 46.500"></div>
+                    <div><label for="l2-call">Call sign</label><input type="text" id="l2-call" placeholder="e.g. DUSTOFF 6"></div>
                 </div>
             </div>
         </div>
@@ -245,14 +245,14 @@ textarea { resize: vertical; min-height: 54px; }
         <div class="card line-card">
             <div class="line-num">3</div>
             <div class="line-body">
-                <div class="line-title">Aantal pati&euml;nten per urgentie</div>
-                <div class="line-hint">A urgent (&lt;2 u) &middot; B urgent-chirurgisch &middot; C priority (&lt;4 u) &middot; D routine (&lt;24 u) &middot; E convenience</div>
+                <div class="line-title">Number of patients by precedence</div>
+                <div class="line-hint">A Urgent (&lt;2 h) &middot; B Urgent Surgical &middot; C Priority (&lt;4 h) &middot; D Routine (&lt;24 h) &middot; E Convenience</div>
                 <div class="grid-counts">
-                    <div><label for="l3a">A urgent</label><input type="number" id="l3a" min="0" placeholder="0"></div>
-                    <div><label for="l3b">B chirurg.</label><input type="number" id="l3b" min="0" placeholder="0"></div>
-                    <div><label for="l3c">C priority</label><input type="number" id="l3c" min="0" placeholder="0"></div>
-                    <div><label for="l3d">D routine</label><input type="number" id="l3d" min="0" placeholder="0"></div>
-                    <div><label for="l3e">E conven.</label><input type="number" id="l3e" min="0" placeholder="0"></div>
+                    <div><label for="l3a">A Urgent</label><input type="number" id="l3a" min="0" placeholder="0"></div>
+                    <div><label for="l3b">B Urg Surg</label><input type="number" id="l3b" min="0" placeholder="0"></div>
+                    <div><label for="l3c">C Priority</label><input type="number" id="l3c" min="0" placeholder="0"></div>
+                    <div><label for="l3d">D Routine</label><input type="number" id="l3d" min="0" placeholder="0"></div>
+                    <div><label for="l3e">E Conven.</label><input type="number" id="l3e" min="0" placeholder="0"></div>
                 </div>
             </div>
         </div>
@@ -260,12 +260,12 @@ textarea { resize: vertical; min-height: 54px; }
         <div class="card line-card">
             <div class="line-num">4</div>
             <div class="line-body">
-                <div class="line-title">Speciale uitrusting</div>
+                <div class="line-title">Special equipment required</div>
                 <div class="check-list">
-                    <label><input type="checkbox" id="l4a" checked> A &mdash; geen</label>
-                    <label><input type="checkbox" id="l4b"> B &mdash; hoist (lier)</label>
-                    <label><input type="checkbox" id="l4c"> C &mdash; extractiematerieel</label>
-                    <label><input type="checkbox" id="l4d"> D &mdash; beademingsapparaat</label>
+                    <label><input type="checkbox" id="l4a" checked> A &mdash; None</label>
+                    <label><input type="checkbox" id="l4b"> B &mdash; Hoist</label>
+                    <label><input type="checkbox" id="l4c"> C &mdash; Extraction equipment</label>
+                    <label><input type="checkbox" id="l4d"> D &mdash; Ventilator</label>
                 </div>
             </div>
         </div>
@@ -273,10 +273,10 @@ textarea { resize: vertical; min-height: 54px; }
         <div class="card line-card">
             <div class="line-num">5</div>
             <div class="line-body">
-                <div class="line-title">Aantal pati&euml;nten per type</div>
+                <div class="line-title">Number of patients by type</div>
                 <div class="grid-counts">
-                    <div><label for="l5l">L liggend (litter)</label><input type="number" id="l5l" min="0" placeholder="0"></div>
-                    <div><label for="l5a">A lopend (ambulatory)</label><input type="number" id="l5a" min="0" placeholder="0"></div>
+                    <div><label for="l5l">L Litter</label><input type="number" id="l5l" min="0" placeholder="0"></div>
+                    <div><label for="l5a">A Ambulatory</label><input type="number" id="l5a" min="0" placeholder="0"></div>
                 </div>
             </div>
         </div>
@@ -284,19 +284,19 @@ textarea { resize: vertical; min-height: 54px; }
         <div class="card line-card">
             <div class="line-num">6</div>
             <div class="line-body">
-                <div class="line-title" id="l6-title">Veiligheid op ophaalpunt</div>
+                <div class="line-title" id="l6-title">Security at pick-up site</div>
                 <div id="l6-oorlog">
                     <select id="l6-sel">
-                        <option value="">&mdash; kies &mdash;</option>
-                        <option value="N">N &mdash; geen vijandelijke troepen in het gebied</option>
-                        <option value="P">P &mdash; mogelijk vijandelijke troepen (nader met voorzichtigheid)</option>
-                        <option value="E">E &mdash; vijandelijke troepen in het gebied (nader met voorzichtigheid)</option>
-                        <option value="X">X &mdash; vijandelijke troepen; gewapende escorte vereist</option>
+                        <option value="">&mdash; select &mdash;</option>
+                        <option value="N">N &mdash; No enemy troops in area</option>
+                        <option value="P">P &mdash; Possible enemy troops in area (approach with caution)</option>
+                        <option value="E">E &mdash; Enemy troops in area (approach with caution)</option>
+                        <option value="X">X &mdash; Enemy troops in area (armed escort required)</option>
                     </select>
                 </div>
                 <div id="l6-vrede" hidden>
-                    <div class="line-hint">Vredestijd: aantal en type verwonding/letsel/ziekte</div>
-                    <input type="text" id="l6-txt" placeholder="bijv. 2x fractuur onderbeen, 1x hitteletsel">
+                    <div class="line-hint">Peacetime: number and types of wounds, injuries, and illnesses</div>
+                    <input type="text" id="l6-txt" placeholder="e.g. 2x lower leg fracture, 1x heat injury">
                 </div>
             </div>
         </div>
@@ -304,17 +304,17 @@ textarea { resize: vertical; min-height: 54px; }
         <div class="card line-card">
             <div class="line-num">7</div>
             <div class="line-body">
-                <div class="line-title">Markering ophaalpunt</div>
+                <div class="line-title">Method of marking pick-up site</div>
                 <select id="l7-sel">
-                    <option value="">&mdash; kies &mdash;</option>
-                    <option value="A">A &mdash; panelen</option>
-                    <option value="B">B &mdash; pyrotechnisch signaal</option>
-                    <option value="C">C &mdash; rooksignaal</option>
-                    <option value="D">D &mdash; geen markering</option>
-                    <option value="E">E &mdash; anders</option>
+                    <option value="">&mdash; select &mdash;</option>
+                    <option value="A">A &mdash; Panels</option>
+                    <option value="B">B &mdash; Pyrotechnic signal</option>
+                    <option value="C">C &mdash; Smoke signal</option>
+                    <option value="D">D &mdash; None</option>
+                    <option value="E">E &mdash; Other</option>
                 </select>
                 <div style="margin-top:8px;" id="l7-other-wrap" hidden>
-                    <input type="text" id="l7-other" placeholder="omschrijf de markering">
+                    <input type="text" id="l7-other" placeholder="describe the marking">
                 </div>
             </div>
         </div>
@@ -322,14 +322,14 @@ textarea { resize: vertical; min-height: 54px; }
         <div class="card line-card">
             <div class="line-num">8</div>
             <div class="line-body">
-                <div class="line-title">Nationaliteit &amp; status pati&euml;nten</div>
-                <div class="line-hint">Aantal per categorie</div>
+                <div class="line-title">Patient nationality and status</div>
+                <div class="line-hint">Number per category</div>
                 <div class="grid-counts">
-                    <div><label for="l8a">A eigen/coalitie mil.</label><input type="number" id="l8a" min="0" placeholder="0"></div>
-                    <div><label for="l8b">B coalitie burger</label><input type="number" id="l8b" min="0" placeholder="0"></div>
-                    <div><label for="l8c">C niet-coalitie veiligheidstroepen</label><input type="number" id="l8c" min="0" placeholder="0"></div>
-                    <div><label for="l8d">D niet-coalitie burger</label><input type="number" id="l8d" min="0" placeholder="0"></div>
-                    <div><label for="l8e">E krijgsgevangene (EPW)</label><input type="number" id="l8e" min="0" placeholder="0"></div>
+                    <div><label for="l8a">A Coalition military</label><input type="number" id="l8a" min="0" placeholder="0"></div>
+                    <div><label for="l8b">B Coalition civilian</label><input type="number" id="l8b" min="0" placeholder="0"></div>
+                    <div><label for="l8c">C Non-Coalition security forces</label><input type="number" id="l8c" min="0" placeholder="0"></div>
+                    <div><label for="l8d">D Non-Coalition civilian</label><input type="number" id="l8d" min="0" placeholder="0"></div>
+                    <div><label for="l8e">E EPW</label><input type="number" id="l8e" min="0" placeholder="0"></div>
                 </div>
             </div>
         </div>
@@ -337,19 +337,18 @@ textarea { resize: vertical; min-height: 54px; }
         <div class="card line-card">
             <div class="line-num">9</div>
             <div class="line-body">
-                <div class="line-title" id="l9-title">CBRN-besmetting</div>
+                <div class="line-title" id="l9-title">NBC contamination</div>
                 <div id="l9-oorlog">
                     <select id="l9-sel">
-                        <option value="">&mdash; geen &mdash;</option>
-                        <option value="C">C &mdash; chemisch</option>
-                        <option value="B">B &mdash; biologisch</option>
-                        <option value="R">R &mdash; radiologisch</option>
-                        <option value="N">N &mdash; nucleair</option>
+                        <option value="">&mdash; None &mdash;</option>
+                        <option value="N">N &mdash; Nuclear</option>
+                        <option value="B">B &mdash; Biological</option>
+                        <option value="C">C &mdash; Chemical</option>
                     </select>
                 </div>
                 <div id="l9-vrede" hidden>
-                    <div class="line-hint">Vredestijd: terreinbeschrijving en obstakels rond het ophaalpunt</div>
-                    <textarea id="l9-txt" placeholder="bijv. open weiland, hoogspanningsleiding aan noordzijde"></textarea>
+                    <div class="line-hint">Peacetime: terrain description and obstacles around the pick-up site</div>
+                    <textarea id="l9-txt" placeholder="e.g. open field, power line on north side"></textarea>
                 </div>
             </div>
         </div>
@@ -615,10 +614,10 @@ function setMode(m) {
     $('#mode-vrede').classList.toggle('active', m === 'vrede');
     $('#l6-oorlog').hidden = m !== 'oorlog';
     $('#l6-vrede').hidden = m === 'oorlog';
-    $('#l6-title').textContent = m === 'oorlog' ? 'Veiligheid op ophaalpunt' : 'Aantal en type letsel';
+    $('#l6-title').textContent = m === 'oorlog' ? 'Security at pick-up site' : 'Wounds, injuries, and illnesses';
     $('#l9-oorlog').hidden = m !== 'oorlog';
     $('#l9-vrede').hidden = m === 'oorlog';
-    $('#l9-title').textContent = m === 'oorlog' ? 'CBRN-besmetting' : 'Terreinbeschrijving';
+    $('#l9-title').textContent = m === 'oorlog' ? 'NBC contamination' : 'Terrain description';
     updateOutput();
 }
 $('#mode-oorlog').addEventListener('click', () => setMode('oorlog'));
@@ -653,37 +652,37 @@ function updateLine1() {
 function buildOutput() {
     const g = (id) => $('#' + id).value.trim();
     const lines = [];
-    lines.push('9-LINER MEDEVAC' + (mode === 'vrede' ? ' (VREDESTIJD)' : ''));
+    lines.push('MEDEVAC REQUEST (9-LINER)' + (mode === 'vrede' ? ' — PEACETIME' : ''));
     lines.push('');
-    lines.push('LINE 1  LOCATIE:      ' + (g('l1').toUpperCase() || '—'));
+    lines.push('LINE 1  LOCATION:       ' + (g('l1').toUpperCase() || '—'));
     const freq = g('l2-freq'), call = g('l2-call');
-    lines.push('LINE 2  FREQ/CALL:    ' + ((freq || call) ? [freq, call].filter(Boolean).join(' / ') : '—'));
-    lines.push('LINE 3  URGENTIE:     ' + (counts(['l3a','l3b','l3c','l3d','l3e'],
-        ['A (urgent)','B (urgent-chirurgisch)','C (priority)','D (routine)','E (convenience)']) || '—'));
+    lines.push('LINE 2  FREQ/CALL SIGN: ' + ((freq || call) ? [freq, call].filter(Boolean).join(' / ') : '—'));
+    lines.push('LINE 3  PRECEDENCE:     ' + (counts(['l3a','l3b','l3c','l3d','l3e'],
+        ['A (Urgent)','B (Urgent Surgical)','C (Priority)','D (Routine)','E (Convenience)']) || '—'));
     const eq = [];
-    if ($('#l4a').checked) eq.push('A (geen)');
-    if ($('#l4b').checked) eq.push('B (hoist)');
-    if ($('#l4c').checked) eq.push('C (extractie)');
-    if ($('#l4d').checked) eq.push('D (beademing)');
-    lines.push('LINE 4  UITRUSTING:   ' + (eq.join(', ') || '—'));
-    lines.push('LINE 5  TYPE:         ' + (counts(['l5l','l5a'], ['L (liggend)','A (lopend)']) || '—'));
+    if ($('#l4a').checked) eq.push('A (None)');
+    if ($('#l4b').checked) eq.push('B (Hoist)');
+    if ($('#l4c').checked) eq.push('C (Extraction equipment)');
+    if ($('#l4d').checked) eq.push('D (Ventilator)');
+    lines.push('LINE 4  EQUIPMENT:      ' + (eq.join(', ') || '—'));
+    lines.push('LINE 5  BY TYPE:        ' + (counts(['l5l','l5a'], ['L (Litter)','A (Ambulatory)']) || '—'));
     if (mode === 'oorlog') {
         const l6 = $('#l6-sel');
-        lines.push('LINE 6  VEILIGHEID:   ' + (l6.value ? l6.options[l6.selectedIndex].text : '—'));
+        lines.push('LINE 6  SECURITY:       ' + (l6.value ? l6.options[l6.selectedIndex].text : '—'));
     } else {
-        lines.push('LINE 6  LETSEL:       ' + (g('l6-txt') || '—'));
+        lines.push('LINE 6  WOUNDS:         ' + (g('l6-txt') || '—'));
     }
     const l7 = $('#l7-sel');
     let l7txt = l7.value ? l7.options[l7.selectedIndex].text : '—';
     if (l7.value === 'E' && g('l7-other')) l7txt = 'E — ' + g('l7-other');
-    lines.push('LINE 7  MARKERING:    ' + l7txt);
-    lines.push('LINE 8  STATUS:       ' + (counts(['l8a','l8b','l8c','l8d','l8e'],
-        ['A (eigen/coalitie mil.)','B (coalitie burger)','C (niet-coalitie veiligheidstr.)','D (niet-coalitie burger)','E (EPW)']) || '—'));
+    lines.push('LINE 7  MARKING:        ' + l7txt);
+    lines.push('LINE 8  NATIONALITY:    ' + (counts(['l8a','l8b','l8c','l8d','l8e'],
+        ['A (Coalition military)','B (Coalition civilian)','C (Non-Coalition security forces)','D (Non-Coalition civilian)','E (EPW)']) || '—'));
     if (mode === 'oorlog') {
         const l9 = $('#l9-sel');
-        lines.push('LINE 9  CBRN:         ' + (l9.value ? l9.options[l9.selectedIndex].text : 'geen'));
+        lines.push('LINE 9  NBC:            ' + (l9.value ? l9.options[l9.selectedIndex].text : 'None'));
     } else {
-        lines.push('LINE 9  TERREIN:      ' + (g('l9-txt') || '—'));
+        lines.push('LINE 9  TERRAIN:        ' + (g('l9-txt') || '—'));
     }
     return lines.join('\n');
 }
