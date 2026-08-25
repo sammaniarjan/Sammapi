@@ -374,6 +374,100 @@ table.data select { width: auto; padding: 4px 6px; font-size: 0.8rem; }
 </head>
 <body>
 
+<!-- ══════════════ TOEGANGSGATE ══════════════
+     Deze app is alleen toegankelijk met een toegangscode. De code zelf staat
+     nergens in de broncode; alleen een SHA-256 hash. -->
+<div id="accessGate" style="position: fixed; inset: 0; z-index: 99999; background: #F3F3F3; display: flex; align-items: center; justify-content: center; padding: 20px;">
+  <div style="max-width: 380px; width: 100%; text-align: center; background: #FFFFFF; border: 1px solid #CCCCCC; border-top: 4px solid #E17000; padding: 36px 28px; box-shadow: 0 1px 4px rgba(0,0,0,0.10);">
+    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#154273" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 16px;">
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+      <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+    </svg>
+    <h2 style="font-size: 1.2rem; margin-bottom: 8px; color: #154273;">Toegangscode vereist</h2>
+    <p style="font-size: 0.85rem; color: #535353; margin-bottom: 20px;">Deze pagina is afgeschermd. Voer de toegangscode in om verder te gaan.</p>
+    <input type="password" id="accessCodeInput" autocomplete="off" placeholder="Toegangscode" style="width: 100%; padding: 12px 14px; border-radius: 2px; border: 1px solid #CCCCCC; background: #FFFFFF; color: #282828; font-size: 1rem; text-align: center; letter-spacing: 0.1em; outline: none; margin-bottom: 12px;">
+    <button id="accessCodeBtn" style="width: 100%; padding: 12px; border-radius: 2px; border: none; background: #01689B; color: #fff; font-weight: 700; font-size: 0.95rem; cursor: pointer;">Ontgrendel</button>
+    <p id="accessCodeError" style="display: none; color: #D52B1E; font-size: 0.8rem; margin-top: 12px;">Onjuiste code. Probeer opnieuw.</p>
+    <a href="../index.html" style="display: inline-block; margin-top: 18px; color: #696969; font-size: 0.8rem; text-decoration: none;">&larr; Terug naar Dashboard</a>
+  </div>
+</div>
+<script>
+  (function () {
+    // SHA-256 hash van de toegangscode (de code zelf staat NIET in de broncode)
+    var ACCESS_HASH = '1bce40b95a74b3be820ce9c7fd2d47e8c6b95ab289cccb639ffb3793953340eb';
+    var ACCESS_KEY = 'tascheck-toegang';
+
+    function sha256Hex(str) {
+      var K = [0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+        0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+        0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+        0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+        0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+        0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+        0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+        0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+      var H = [0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+      var bytes = Array.prototype.slice.call(new TextEncoder().encode(str));
+      var bitLen = bytes.length * 8;
+      bytes.push(0x80);
+      while (bytes.length % 64 !== 56) bytes.push(0);
+      for (var i = 7; i >= 0; i--) bytes.push((bitLen / Math.pow(2, 8 * i)) & 0xff);
+      var rr = function (x, n) { return (x >>> n) | (x << (32 - n)); };
+      for (var i = 0; i < bytes.length; i += 64) {
+        var w = new Array(64);
+        for (var t = 0; t < 16; t++) {
+          w[t] = (bytes[i + 4*t] << 24) | (bytes[i + 4*t + 1] << 16) | (bytes[i + 4*t + 2] << 8) | bytes[i + 4*t + 3];
+        }
+        for (var t = 16; t < 64; t++) {
+          var s0 = rr(w[t-15], 7) ^ rr(w[t-15], 18) ^ (w[t-15] >>> 3);
+          var s1 = rr(w[t-2], 17) ^ rr(w[t-2], 19) ^ (w[t-2] >>> 10);
+          w[t] = (w[t-16] + s0 + w[t-7] + s1) | 0;
+        }
+        var a = H[0], b = H[1], c = H[2], d = H[3], e = H[4], f = H[5], g = H[6], h = H[7];
+        for (var t = 0; t < 64; t++) {
+          var S1 = rr(e,6) ^ rr(e,11) ^ rr(e,25);
+          var ch = (e & f) ^ (~e & g);
+          var t1 = (h + S1 + ch + K[t] + w[t]) | 0;
+          var S0 = rr(a,2) ^ rr(a,13) ^ rr(a,22);
+          var maj = (a & b) ^ (a & c) ^ (b & c);
+          var t2 = (S0 + maj) | 0;
+          h=g; g=f; f=e; e=(d+t1)|0; d=c; c=b; b=a; a=(t1+t2)|0;
+        }
+        var out = [a,b,c,d,e,f,g,h];
+        for (var j = 0; j < 8; j++) H[j] = (H[j] + out[j]) | 0;
+      }
+      return H.map(function (v) { return (v >>> 0).toString(16).padStart(8, '0'); }).join('');
+    }
+
+    var gate = document.getElementById('accessGate');
+    if (sessionStorage.getItem(ACCESS_KEY) === ACCESS_HASH) {
+      gate.remove();
+      return;
+    }
+
+    var input = document.getElementById('accessCodeInput');
+    var errorEl = document.getElementById('accessCodeError');
+
+    function tryUnlock() {
+      var code = input.value.trim().toUpperCase();
+      if (code && sha256Hex(code) === ACCESS_HASH) {
+        sessionStorage.setItem(ACCESS_KEY, ACCESS_HASH);
+        gate.remove();
+      } else {
+        errorEl.style.display = 'block';
+        input.value = '';
+        input.focus();
+      }
+    }
+
+    document.getElementById('accessCodeBtn').addEventListener('click', tryUnlock);
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') tryUnlock();
+    });
+    input.focus();
+  })();
+</script>
+
 <div class="mast-top">
     <span class="mast-mark" aria-hidden="true">TC</span>
     <span class="label">AE medisch materiaal</span>
