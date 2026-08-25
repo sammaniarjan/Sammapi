@@ -787,6 +787,9 @@
     passwordInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             if (passwordInput.value === 'TROPEN42') {
+                // Zet het sessie-token dat de rooster-app zelf ook gebruikt,
+                // zodat de toegangsgate daar niet nogmaals om de code vraagt
+                sessionStorage.setItem('ama-rooster-toegang', '2a8f519b87f9bf1a38e60ed1a695f2162ca525b96bc34505f566cc14e4fb76d3');
                 window.location.href = 'excel-to-ical/index.html';
             } else {
                 passwordInput.classList.add('error');

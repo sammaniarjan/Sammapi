@@ -3,24 +3,24 @@
    =================================== */
 
 :root {
-  --bg-primary: #0a0f0d;
-  --bg-secondary: #111916;
-  --bg-card: #151d19;
-  --bg-card-hover: #1a2420;
+  --bg-primary: #e2d9cc;
+  --bg-secondary: #faf6ef;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f5efe6;
   --accent: #3b82f6;
   --accent-dim: #1d4ed8;
-  --accent-glow: rgba(59, 130, 246, 0.2);
-  --success: #10b981;
-  --success-bg: rgba(16, 185, 129, 0.15);
-  --danger: #ef4444;
-  --danger-bg: rgba(239, 68, 68, 0.15);
-  --warning: #f59e0b;
-  --warning-bg: rgba(245, 158, 11, 0.15);
-  --text-primary: #e8f0ec;
-  --text-secondary: #8b9d94;
-  --text-muted: #5a6b62;
-  --border: #243029;
-  --border-light: #2d3d34;
+  --accent-glow: rgba(59, 130, 246, 0.12);
+  --success: #059669;
+  --success-bg: rgba(16, 185, 129, 0.12);
+  --danger: #dc2626;
+  --danger-bg: rgba(239, 68, 68, 0.1);
+  --warning: #d97706;
+  --warning-bg: rgba(245, 158, 11, 0.12);
+  --text-primary: #2c3e36;
+  --text-secondary: #6b7b6f;
+  --text-muted: #9aa69e;
+  --border: #e3dbd0;
+  --border-light: #d5cdc2;
   --radius: 12px;
   --radius-sm: 8px;
 }
@@ -982,9 +982,9 @@ body::before {
    Defense Context
    =================================== */
 :root {
-  --defense-accent: #84cc16;
-  --defense-accent-dim: #65a30d;
-  --defense-accent-glow: rgba(132, 204, 22, 0.15);
+  --defense-accent: #4d7c0f;
+  --defense-accent-dim: #3f6212;
+  --defense-accent-glow: rgba(132, 204, 22, 0.12);
 }
 
 .welcome-buttons {
@@ -1493,4 +1493,14 @@ body::before {
     width: 12px;
     height: 12px;
   }
+}
+
+/* ===================================
+   Warm theme typography (dashboard match)
+   =================================== */
+.welcome-screen h1,
+.step-content h1,
+.defense-step h1 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
 }
