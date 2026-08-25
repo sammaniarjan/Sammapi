@@ -7,318 +7,630 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230a0f0d'/><path d='M50 20L20 35l30 15 30-15-30-15z' fill='%232dd4a0'/><path d='M20 50l30 15 30-15' stroke='%232dd4a0' stroke-width='6' fill='none'/><path d='M20 65l30 15 30-15' stroke='%232dd4a0' stroke-width='6' fill='none'/></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-primary: #0a0f0d;
-            --bg-secondary: #111916;
-            --bg-card: #151d19;
-            --bg-card-hover: #1a2420;
-            --accent: #2dd4a0;
-            --accent-dim: #1a7a5c;
-            --accent-glow: rgba(45, 212, 160, 0.3);
-            --text-primary: #e8f0ec;
-            --text-secondary: #8b9d94;
-            --text-muted: #5a6b62;
-            --border: #243029;
-            --border-light: #2d3d34;
-            --radius: 16px;
-            --radius-sm: 10px;
-        }
-
-        * {
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        /* ===================================
+           Warm Theme (Manava-inspired)
+           =================================== */
         body {
             font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
+            background-color: #f7f3ed;
+            color: #2c3e36;
             min-height: 100vh;
             line-height: 1.6;
+            transition: background-color 0.8s ease, color 0.8s ease;
+            overflow-x: hidden;
         }
 
-        /* Subtle noise texture */
-        body::before {
-            content: '';
+        #constellation {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            opacity: 0.03;
             pointer-events: none;
-            z-index: 1000;
+            z-index: 0;
         }
 
         .container {
-            max-width: 1000px;
+            position: relative;
+            z-index: 1;
+            max-width: 960px;
             margin: 0 auto;
-            padding: 40px 24px;
+            padding: 0 32px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
-        /* Header */
-        .header {
-            text-align: center;
-            margin-bottom: 48px;
-        }
-
-        .logo {
-            display: inline-flex;
+        /* ===================================
+           Navigation
+           =================================== */
+        .nav {
+            display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
+            justify-content: space-between;
+            padding: 28px 0;
         }
 
-        .logo-icon {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dim) 100%);
+        .nav-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #2c3e36;
+            letter-spacing: -0.02em;
+            transition: color 0.8s ease, font-family 0.01s;
+        }
+
+        .nav-brand span {
+            color: #c45a3c;
+            transition: color 0.8s ease;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-link {
+            font-size: 0.9rem;
+            color: #5a6b5f;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            color: #c45a3c;
+        }
+
+        .nav-link.cta {
+            background: #c45a3c;
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+        }
+
+        .nav-link.cta:hover {
+            background: #a3442e;
+            transform: translateY(-1px);
+        }
+
+        /* ===================================
+           Hero Section
+           =================================== */
+        .hero {
+            padding: 60px 0 48px;
+            max-width: 680px;
+        }
+
+        .hero-label {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #c45a3c;
+            margin-bottom: 24px;
+            transition: color 0.8s ease;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 400;
+            line-height: 1.2;
+            color: #2c3e36;
+            margin-bottom: 20px;
+            transition: color 0.8s ease, font-family 0.01s;
+        }
+
+        .hero h1 em {
+            color: #c45a3c;
+            font-style: italic;
+            transition: color 0.8s ease;
+        }
+
+        .hero p {
+            font-size: 1rem;
+            color: #6b7b6f;
+            max-width: 480px;
+            line-height: 1.7;
+            transition: color 0.8s ease;
+        }
+
+        /* ===================================
+           Apps Grid
+           =================================== */
+        .apps-section {
+            flex: 1;
+            padding-bottom: 40px;
+        }
+
+        .apps-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .app-card {
+            background: #ffffff;
+            border: 1px solid #e8e0d6;
+            border-radius: 14px;
+            padding: 24px 28px;
+            text-decoration: none;
+            color: inherit;
+            display: grid;
+            grid-template-columns: 52px 1fr 28px;
+            align-items: center;
+            gap: 22px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .app-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(44, 62, 54, 0.08);
+            border-color: #d0c8be;
+        }
+
+        .app-icon {
+            width: 52px;
+            height: 52px;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 20px var(--accent-glow);
-        }
-
-        .logo-icon svg {
-            width: 28px;
-            height: 28px;
-            color: var(--bg-primary);
-        }
-
-        .logo-text {
-            font-size: 2rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            color: var(--text-primary);
-        }
-
-        .logo-text span {
-            color: var(--accent);
-        }
-
-        .subtitle {
-            color: var(--text-secondary);
-            font-size: 1rem;
-            font-weight: 400;
-        }
-
-        /* Apps Grid */
-        .apps-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            flex: 1;
-        }
-
-        .app-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 24px 28px;
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.3s ease;
-            display: grid;
-            grid-template-columns: auto 1fr auto;
-            align-items: center;
-            gap: 24px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .app-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--card-accent, var(--accent)), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .app-card:hover {
-            background: var(--bg-card-hover);
-            border-color: var(--border-light);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-        }
-
-        .app-card:hover::before {
-            opacity: 1;
-        }
-
-        .app-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: var(--radius-sm);
-            display: flex;
-            align-items: center;
-            justify-content: center;
             flex-shrink: 0;
+            transition: background 0.8s ease, border-color 0.8s ease;
         }
 
-        .app-content {
-            flex: 1;
-            min-width: 0;
+        .app-icon svg {
+            transition: stroke 0.8s ease;
         }
 
-        /* Card-specific colors */
-        .app-card.biupama {
-            --card-accent: #2dd4a0;
-        }
         .app-card.biupama .app-icon {
-            background: linear-gradient(135deg, rgba(45, 212, 160, 0.2), rgba(45, 212, 160, 0.05));
-            border: 1px solid rgba(45, 212, 160, 0.3);
-        }
-
-        .app-card.rooster {
-            --card-accent: #10b981;
+            background: rgba(45, 212, 160, 0.08);
+            border: 1px solid rgba(45, 212, 160, 0.2);
         }
         .app-card.rooster .app-icon {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.05));
-            border: 1px solid rgba(16, 185, 129, 0.3);
-        }
-
-        .app-card.snaak {
-            --card-accent: #00ff00;
-        }
-        .app-card.snaak .app-icon {
-            background: linear-gradient(135deg, rgba(0, 255, 0, 0.15), rgba(0, 255, 0, 0.03));
-            border: 1px solid rgba(0, 255, 0, 0.3);
-        }
-
-        .app-card.ppv {
-            --card-accent: #3b82f6;
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.2);
         }
         .app-card.ppv .app-icon {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.05));
-            border: 1px solid rgba(59, 130, 246, 0.3);
+            background: rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.2);
         }
 
+        .app-content { flex: 1; min-width: 0; }
+
         .app-title {
-            font-size: 1.2rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
             font-weight: 600;
+            color: #2c3e36;
             margin-bottom: 4px;
             display: flex;
             align-items: center;
             gap: 10px;
             flex-wrap: wrap;
+            transition: color 0.8s ease, font-family 0.01s;
         }
 
         .app-badge {
-            font-size: 0.6rem;
-            font-family: 'JetBrains Mono', monospace;
-            padding: 3px 8px;
-            border-radius: 4px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            color: var(--text-muted);
+            font-size: 0.58rem;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 50px;
+            background: rgba(196, 90, 60, 0.08);
+            color: #c45a3c;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 1px;
+            transition: background 0.8s ease, color 0.8s ease;
         }
 
         .app-description {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
+            color: #7a8b7f;
+            font-size: 0.88rem;
             line-height: 1.5;
+            transition: color 0.8s ease;
         }
 
         .arrow-icon {
-            width: 24px;
-            height: 24px;
-            color: var(--text-muted);
+            width: 22px;
+            height: 22px;
+            color: #c4b8ac;
             transition: transform 0.3s ease, color 0.3s ease;
             flex-shrink: 0;
         }
 
         .app-card:hover .arrow-icon {
             transform: translateX(4px);
-            color: var(--card-accent, var(--accent));
+            color: #c45a3c;
         }
 
-        /* Footer */
+        /* ===================================
+           Footer
+           =================================== */
         .footer {
-            text-align: center;
-            padding: 32px 0 16px;
+            padding: 24px 0;
+            border-top: 1px solid #e8e0d6;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             margin-top: auto;
+            transition: border-color 0.8s ease;
         }
 
         .footer-text {
             font-size: 0.8rem;
-            color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
+            color: #9aa69e;
+            transition: color 0.8s ease;
         }
 
-        .footer-text span {
-            color: var(--accent);
+        .footer-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
         }
 
         .footer-link {
-            color: var(--text-muted);
+            font-size: 0.8rem;
+            color: #9aa69e;
             text-decoration: none;
-            transition: color 0.2s ease;
+            transition: color 0.3s ease;
         }
 
         .footer-link:hover {
-            color: var(--accent);
+            color: #c45a3c;
         }
 
-        /* Mobile */
+        .snaak-link {
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .snaak-link:hover {
+            transform: scale(1.2);
+        }
+
+        /* ===================================
+           Enter Easter Egg Toggle
+           =================================== */
+        .enter-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 24px;
+            z-index: 50;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: #c4b8ac;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 6px;
+            background: transparent;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+            user-select: none;
+            opacity: 0.4;
+        }
+
+        .enter-toggle:hover {
+            opacity: 1;
+            border-color: #c4b8ac;
+            background: rgba(196, 90, 60, 0.05);
+        }
+
+        @keyframes blink-cursor {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .enter-toggle .cursor {
+            animation: blink-cursor 1s step-end infinite;
+        }
+
+        /* ===================================
+           Terminal Mode
+           =================================== */
+        body.terminal-mode {
+            background-color: #0a0a0a;
+            color: #00ff00;
+        }
+
+        body.terminal-mode .nav-brand {
+            font-family: 'JetBrains Mono', monospace;
+            color: #00ff00;
+        }
+
+        body.terminal-mode .nav-brand span {
+            color: #00ff00;
+        }
+
+        body.terminal-mode .nav-link {
+            color: #00aa00;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        body.terminal-mode .nav-link:hover {
+            color: #00ff00;
+        }
+
+        body.terminal-mode .nav-link.cta {
+            background: #00ff00;
+            color: #0a0a0a;
+            border-radius: 4px;
+        }
+
+        body.terminal-mode .nav-link.cta:hover {
+            background: #00cc00;
+        }
+
+        body.terminal-mode .hero-label {
+            color: #00aa00;
+            letter-spacing: 2px;
+        }
+
+        body.terminal-mode .hero h1 {
+            font-family: 'JetBrains Mono', monospace;
+            color: #00ff00;
+            font-size: clamp(1.4rem, 3.5vw, 2rem);
+            font-weight: 500;
+        }
+
+        body.terminal-mode .hero h1 em {
+            color: #00ff00;
+            font-style: normal;
+            text-decoration: underline;
+        }
+
+        body.terminal-mode .hero p {
+            color: #00aa00;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        body.terminal-mode .app-card {
+            background: #0f0f0f;
+            border-color: #1a3a1a;
+            border-radius: 4px;
+        }
+
+        body.terminal-mode .app-card:hover {
+            border-color: #00ff00;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
+        }
+
+        body.terminal-mode .app-title {
+            font-family: 'JetBrains Mono', monospace;
+            color: #00ff00;
+            font-size: 1rem;
+        }
+
+        body.terminal-mode .app-badge {
+            background: rgba(0, 255, 0, 0.1);
+            color: #00ff00;
+            border-radius: 2px;
+        }
+
+        body.terminal-mode .app-description {
+            color: #008800;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+        }
+
+        body.terminal-mode .app-icon {
+            background: rgba(0, 255, 0, 0.05) !important;
+            border-color: rgba(0, 255, 0, 0.3) !important;
+            border-radius: 4px;
+        }
+
+        body.terminal-mode .app-icon svg {
+            stroke: #00ff00 !important;
+        }
+
+        body.terminal-mode .arrow-icon {
+            color: #005500;
+        }
+
+        body.terminal-mode .app-card:hover .arrow-icon {
+            color: #00ff00;
+        }
+
+        body.terminal-mode .footer {
+            border-color: #1a3a1a;
+        }
+
+        body.terminal-mode .footer-text,
+        body.terminal-mode .footer-link {
+            color: #005500;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        body.terminal-mode .footer-link:hover {
+            color: #00ff00;
+        }
+
+        body.terminal-mode .enter-toggle {
+            color: #00ff00;
+            opacity: 0.6;
+        }
+
+        body.terminal-mode .enter-toggle:hover {
+            border-color: #00ff00;
+            background: rgba(0, 255, 0, 0.05);
+            opacity: 1;
+        }
+
+        /* Scanlines overlay in terminal mode */
+        body.terminal-mode::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 255, 0, 0.015) 2px,
+                rgba(0, 255, 0, 0.015) 4px
+            );
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        /* ===================================
+           Transition Animation
+           =================================== */
+        .transition-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .transition-overlay.active {
+            pointer-events: all;
+            opacity: 1;
+        }
+
+        .transition-scanlines {
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 255, 0, 0.04) 2px,
+                rgba(0, 255, 0, 0.04) 4px
+            );
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .transition-overlay.active .transition-scanlines {
+            opacity: 1;
+        }
+
+        .transition-glitch {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0);
+            transition: background 0.8s ease;
+        }
+
+        .transition-overlay.phase2 .transition-glitch {
+            background: rgba(0, 0, 0, 0.85);
+        }
+
+        .terminal-boot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: #00ff00;
+            text-align: left;
+            white-space: pre;
+            line-height: 1.8;
+            opacity: 0;
+            min-width: 340px;
+        }
+
+        .transition-overlay.phase2 .terminal-boot {
+            opacity: 1;
+        }
+
+        @keyframes glitch-shake {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-3px, 1px); }
+            20% { transform: translate(2px, -2px); }
+            30% { transform: translate(-1px, 3px); }
+            40% { transform: translate(3px, -1px); }
+            50% { transform: translate(-2px, 2px); }
+            60% { transform: translate(1px, -3px); }
+            70% { transform: translate(-3px, -1px); }
+            80% { transform: translate(2px, 3px); }
+            90% { transform: translate(-1px, -2px); }
+        }
+
+        body.glitching .container {
+            animation: glitch-shake 0.15s linear infinite;
+        }
+
+        @keyframes color-flash {
+            0% { opacity: 0; }
+            50% { opacity: 0.15; }
+            100% { opacity: 0; }
+        }
+
+        body.glitching::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: #00ff00;
+            animation: color-flash 0.1s linear infinite;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* ===================================
+           Responsive
+           =================================== */
         @media (max-width: 640px) {
             .container {
-                padding: 24px 16px;
+                padding: 0 18px;
             }
 
-            .header {
-                margin-bottom: 32px;
-            }
+            .nav { padding: 20px 0; }
 
-            .logo-text {
-                font-size: 1.5rem;
-            }
+            .nav-links { gap: 16px; }
 
-            .logo-icon {
-                width: 40px;
-                height: 40px;
-            }
+            .nav-link { font-size: 0.82rem; }
+
+            .hero { padding: 32px 0 36px; }
 
             .app-card {
-                padding: 16px 20px;
+                padding: 18px 20px;
                 gap: 16px;
+                grid-template-columns: 44px 1fr 24px;
             }
 
-            .app-icon {
-                width: 44px;
-                height: 44px;
-            }
+            .app-icon { width: 44px; height: 44px; }
 
-            .app-icon svg {
-                width: 22px;
-                height: 22px;
-            }
+            .app-icon svg { width: 22px; height: 22px; }
 
-            .app-title {
-                font-size: 1rem;
-            }
+            .app-title { font-size: 1rem; }
 
-            .app-description {
-                font-size: 0.85rem;
-            }
+            .app-description { font-size: 0.82rem; }
+
+            .terminal-boot { font-size: 0.7rem; min-width: 260px; }
         }
 
-        /* Keyboard navigation */
+        /* ===================================
+           Keyboard focus
+           =================================== */
         .app-card:focus {
-            outline: 2px solid var(--accent);
+            outline: 2px solid #c45a3c;
             outline-offset: 2px;
         }
 
@@ -326,143 +638,310 @@
             outline: none;
         }
 
-        /* SNAAK easter egg pulse */
-        @keyframes pulse-glow {
-            0%, 100% {
-                opacity: 0.6;
-                text-shadow: 0 0 4px rgba(0, 255, 0, 0.3);
-            }
-            50% {
-                opacity: 1;
-                text-shadow: 0 0 12px rgba(0, 255, 0, 0.8), 0 0 20px rgba(0, 255, 0, 0.4);
-            }
-        }
-
-        .snaak-link {
-            animation: pulse-glow 2.5s ease-in-out infinite;
-            font-size: 1rem;
-        }
-
-        .snaak-link:hover {
-            animation: none;
-            opacity: 1;
-            text-shadow: 0 0 16px rgba(0, 255, 0, 1), 0 0 30px rgba(0, 255, 0, 0.6);
-        }
-
-        /* Placeholder card */
-        .app-card.placeholder {
-            border-style: dashed;
-            opacity: 0.5;
-            cursor: default;
-        }
-
-        .app-card.placeholder:hover {
-            transform: none;
-            background: var(--bg-card);
-            box-shadow: none;
-        }
-
-        .app-card.placeholder .app-icon {
-            background: var(--bg-secondary);
-            border: 1px dashed var(--border-light);
+        body.terminal-mode .app-card:focus {
+            outline-color: #00ff00;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <div class="logo">
-                <div class="logo-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                        <path d="M2 17l10 5 10-5"/>
-                        <path d="M2 12l10 5 10-5"/>
-                    </svg>
-                </div>
-                <div class="logo-text">Dash<span>board</span></div>
-            </div>
-            <p class="subtitle">Paar handige studietools</p>
-        </header>
+    <canvas id="constellation"></canvas>
 
-        <div class="apps-grid">
-            <!-- Biupama App -->
-            <a href="biupama-app-main/index.html" class="app-card biupama">
-                <div class="app-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2dd4a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-                        <line x1="8" y1="6" x2="16" y2="6"/>
-                        <line x1="8" y1="10" x2="14" y2="10"/>
-                    </svg>
-                </div>
-                <div class="app-content">
-                    <div class="app-title">
-                        Tropengeneeskunde
-                        <span class="app-badge">Studiegids</span>
-                    </div>
-                    <p class="app-description">Uitgebreide studiegids voor tropengeneeskunde met klachtgestuurde diagnostiek, ziektebeelden en praktische informatie.</p>
-                </div>
-                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-            </a>
-
-            <!-- Excel to iCal App -->
-            <a href="excel-to-ical/index.html" class="app-card rooster">
-                <div class="app-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                        <line x1="16" y1="2" x2="16" y2="6"/>
-                        <line x1="8" y1="2" x2="8" y2="6"/>
-                        <line x1="3" y1="10" x2="21" y2="10"/>
-                        <path d="M8 14h.01"/>
-                        <path d="M12 14h.01"/>
-                        <path d="M16 14h.01"/>
-                    </svg>
-                </div>
-                <div class="app-content">
-                    <div class="app-title">
-                        Lesrooster
-                        <span class="app-badge">ROOSTER</span>
-                    </div>
-                    <p class="app-description">Upload je Excel rooster en bekijk het in een overzichtelijke kalender. Exporteer naar iCal voor je agenda.</p>
-                </div>
-                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-            </a>
-
-            <!-- PPV Calculator App -->
-            <a href="ppv-main/index.html" class="app-card ppv">
-                <div class="app-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="20" x2="18" y2="10"/>
-                        <line x1="12" y1="20" x2="12" y2="4"/>
-                        <line x1="6" y1="20" x2="6" y2="14"/>
-                        <line x1="2" y1="20" x2="22" y2="20"/>
-                    </svg>
-                </div>
-                <div class="app-content">
-                    <div class="app-title">
-                        Begrijp diagnostische testen in de praktijk
-                        <span class="app-badge">PPV/NPV</span>
-                    </div>
-                    <p class="app-description">Bereken de voorspellende waarde van diagnostische tests. Begrijp sensitiviteit, specificiteit en de base rate fallacy.</p>
-                </div>
-                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-            </a>
-
-        </div>
-
-        <footer class="footer">
-            <p class="footer-text">
-                <a href="README.md" class="footer-link">Code <span>&copy;</span> Arjan Sammani</a> ·
-                <a href="https://www.linkedin.com/in/arjan-sammani/" target="_blank" rel="noopener" class="footer-link">LinkedIn</a> ·
-                <a href="SnaakGPT/index.html" class="footer-link snaak-link" title="SNAAK Command Center">🎮</a>
-            </p>
-        </footer>
+    <!-- Transition Overlay -->
+    <div id="transition-overlay" class="transition-overlay">
+        <div class="transition-scanlines"></div>
+        <div class="transition-glitch"></div>
+        <div class="terminal-boot" id="terminal-boot"></div>
     </div>
+
+    <div class="container">
+
+        <!-- Navigation -->
+        <nav class="nav">
+            <div class="nav-brand">BIUPAMA<span>.</span></div>
+            <div class="nav-links">
+                <a href="#" class="nav-link" id="over-mij-link">Over mij</a>
+            </div>
+        </nav>
+
+        <!-- Hero -->
+        <section class="hero">
+            <span class="hero-label">STUDIE &middot; DIAGNOSTIEK &middot; INNOVATIE</span>
+            <h1>Van <em>studie</em> naar <em>praktijk</em>: tools voor de geneeskunde</h1>
+            <p>Handige applicaties voor het BIUPAMA curriculum en militair-medisch onderwijs.</p>
+        </section>
+
+        <!-- Apps -->
+        <section class="apps-section">
+            <div class="apps-grid">
+                <a href="biupama-app-main/index.html" class="app-card biupama">
+                    <div class="app-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2dd4a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                            <line x1="8" y1="6" x2="16" y2="6"/>
+                            <line x1="8" y1="10" x2="14" y2="10"/>
+                        </svg>
+                    </div>
+                    <div class="app-content">
+                        <div class="app-title">
+                            Tropengeneeskunde
+                            <span class="app-badge">Studiegids</span>
+                        </div>
+                        <p class="app-description">Uitgebreide studiegids voor tropengeneeskunde met klachtgestuurde diagnostiek, ziektebeelden en praktische informatie.</p>
+                    </div>
+                    <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+
+                <a href="excel-to-ical/index.html" class="app-card rooster">
+                    <div class="app-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                            <line x1="16" y1="2" x2="16" y2="6"/>
+                            <line x1="8" y1="2" x2="8" y2="6"/>
+                            <line x1="3" y1="10" x2="21" y2="10"/>
+                            <path d="M8 14h.01"/>
+                            <path d="M12 14h.01"/>
+                            <path d="M16 14h.01"/>
+                        </svg>
+                    </div>
+                    <div class="app-content">
+                        <div class="app-title">
+                            Lesrooster
+                            <span class="app-badge">Rooster</span>
+                        </div>
+                        <p class="app-description">Upload je Excel rooster en bekijk het in een overzichtelijke kalender. Exporteer naar iCal voor je agenda.</p>
+                    </div>
+                    <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+
+                <a href="ppv-main/index.html" class="app-card ppv">
+                    <div class="app-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="20" x2="18" y2="10"/>
+                            <line x1="12" y1="20" x2="12" y2="4"/>
+                            <line x1="6" y1="20" x2="6" y2="14"/>
+                            <line x1="2" y1="20" x2="22" y2="20"/>
+                        </svg>
+                    </div>
+                    <div class="app-content">
+                        <div class="app-title">
+                            Algoritme Checker
+                            <span class="app-badge">PPV / NPV</span>
+                        </div>
+                        <p class="app-description">Bereken de voorspellende waarde van diagnostische tests. Begrijp sensitiviteit, specificiteit en de base rate fallacy.</p>
+                    </div>
+                    <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <span class="footer-text">&copy; Arjan Sammani</span>
+            <div class="footer-links">
+                <a href="https://www.linkedin.com/in/arjan-sammani/" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+                <a href="#" class="footer-link snaak-link" id="snaak-link" title="SNAAK Command Center">🎮</a>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Enter Easter Egg -->
+    <div class="enter-toggle" id="enter-toggle">><span class="cursor">_</span></div>
+
+    <script>
+    // ===================================
+    // Constellation Background
+    // ===================================
+    const canvas = document.getElementById('constellation');
+    const ctx = canvas.getContext('2d');
+    let dots = [];
+    let isTerminal = false;
+    let animationId;
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function createDots() {
+        dots = [];
+        const count = Math.floor((canvas.width * canvas.height) / 12000);
+        for (let i = 0; i < count; i++) {
+            dots.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.3,
+                vy: (Math.random() - 0.5) * 0.3,
+                r: Math.random() * 2.5 + 1,
+                type: Math.random() > 0.7 ? 'accent' : 'primary'
+            });
+        }
+    }
+
+    function drawConstellation() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const connectDist = 120;
+        const primary = isTerminal ? 'rgba(0,255,0,' : 'rgba(44,62,54,';
+        const accent = isTerminal ? 'rgba(0,200,0,' : 'rgba(196,90,60,';
+        const lineColor = isTerminal ? 'rgba(0,255,0,' : 'rgba(44,62,54,';
+
+        for (let i = 0; i < dots.length; i++) {
+            const a = dots[i];
+            a.x += a.vx;
+            a.y += a.vy;
+
+            if (a.x < 0 || a.x > canvas.width) a.vx *= -1;
+            if (a.y < 0 || a.y > canvas.height) a.vy *= -1;
+
+            // Draw dot
+            ctx.beginPath();
+            ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
+            const col = a.type === 'accent' ? accent : primary;
+            ctx.fillStyle = col + (isTerminal ? '0.5)' : '0.3)');
+            ctx.fill();
+
+            // Connect nearby dots
+            for (let j = i + 1; j < dots.length; j++) {
+                const b = dots[j];
+                const dx = a.x - b.x;
+                const dy = a.y - b.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < connectDist) {
+                    const alpha = (1 - dist / connectDist) * (isTerminal ? 0.15 : 0.06);
+                    ctx.beginPath();
+                    ctx.moveTo(a.x, a.y);
+                    ctx.lineTo(b.x, b.y);
+                    ctx.strokeStyle = lineColor + alpha + ')';
+                    ctx.lineWidth = 0.6;
+                    ctx.stroke();
+                }
+            }
+        }
+
+        animationId = requestAnimationFrame(drawConstellation);
+    }
+
+    resizeCanvas();
+    createDots();
+    drawConstellation();
+
+    window.addEventListener('resize', () => {
+        resizeCanvas();
+        createDots();
+    });
+
+    // ===================================
+    // Transition Animation
+    // ===================================
+    const overlay = document.getElementById('transition-overlay');
+    const terminalBoot = document.getElementById('terminal-boot');
+    let transitioning = false;
+
+    function startTransition(targetUrl) {
+        if (transitioning) return;
+        transitioning = true;
+
+        // Phase 1: Glitch shake + color flash (0-600ms)
+        document.body.classList.add('glitching');
+        overlay.classList.add('active');
+
+        setTimeout(() => {
+            // Phase 2: Switch to terminal mode, show boot screen (600ms)
+            document.body.classList.remove('glitching');
+            document.body.classList.add('terminal-mode');
+            isTerminal = true;
+            overlay.classList.add('phase2');
+
+            // Type terminal boot text
+            typeBootSequence(targetUrl);
+        }, 600);
+    }
+
+    function typeBootSequence(targetUrl) {
+        const lines = [
+            '>> INIT',
+            '>> CONNECTING...',
+            '>> LOADING PROFILE...',
+            '',
+            '   STATUS  : ONLINE',
+            '   TARGET  : ' + (targetUrl.includes('sammani') ? 'SAMMANI.NL' : 'SNAAK COMMAND CENTER'),
+            '',
+            '>> REDIRECTING...',
+        ];
+
+        terminalBoot.textContent = '';
+        let lineIdx = 0;
+        let charIdx = 0;
+
+        function typeChar() {
+            if (lineIdx >= lines.length) {
+                // Done typing, redirect after brief pause
+                setTimeout(() => {
+                    window.location.href = targetUrl;
+                }, 400);
+                return;
+            }
+
+            const line = lines[lineIdx];
+            if (charIdx <= line.length) {
+                terminalBoot.textContent = lines.slice(0, lineIdx).join('\n') +
+                    (lineIdx > 0 ? '\n' : '') + line.substring(0, charIdx);
+                charIdx++;
+                setTimeout(typeChar, line.startsWith('>>') ? 30 : 15);
+            } else {
+                lineIdx++;
+                charIdx = 0;
+                setTimeout(typeChar, line === '' ? 50 : 120);
+            }
+        }
+
+        typeChar();
+    }
+
+    // ===================================
+    // Over Mij Link
+    // ===================================
+    document.getElementById('over-mij-link').addEventListener('click', (e) => {
+        e.preventDefault();
+        startTransition('https://arjan.sammani.nl');
+    });
+
+    // ===================================
+    // SnaakGPT Link
+    // ===================================
+    document.getElementById('snaak-link').addEventListener('click', (e) => {
+        e.preventDefault();
+        startTransition('SnaakGPT/index.html');
+    });
+
+    // ===================================
+    // Enter Easter Egg
+    // ===================================
+    const enterToggle = document.getElementById('enter-toggle');
+
+    function toggleTerminalMode() {
+        if (transitioning) return;
+        isTerminal = !isTerminal;
+        document.body.classList.toggle('terminal-mode');
+    }
+
+    enterToggle.addEventListener('click', toggleTerminalMode);
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.target.matches('input, textarea, button, a')) {
+            e.preventDefault();
+            toggleTerminalMode();
+        }
+    });
+    </script>
 </body>
 </html>
