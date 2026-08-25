@@ -111,6 +111,46 @@
             background: rgba(13, 148, 136, 0.1);
             border: 1px solid rgba(13, 148, 136, 0.25);
         }
+        .app-card.zuurstof .app-icon {
+            background: rgba(2, 132, 199, 0.1);
+            border: 1px solid rgba(2, 132, 199, 0.25);
+        }
+        .app-card.brandwonden .app-icon {
+            background: rgba(234, 88, 12, 0.1);
+            border: 1px solid rgba(234, 88, 12, 0.25);
+        }
+        .app-card.quiz .app-icon {
+            background: rgba(13, 159, 110, 0.1);
+            border: 1px solid rgba(13, 159, 110, 0.25);
+        }
+
+        .app-card.placeholder {
+            border-style: dashed;
+            opacity: 0.55;
+            cursor: default;
+        }
+        .app-card.placeholder:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: #d5cdc2;
+        }
+        .app-card.placeholder .app-icon {
+            background: #f0ebe2;
+            border: 1px dashed #d5cdc2;
+        }
+        .wip-badge {
+            display: inline-block;
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 50px;
+            background: rgba(154, 166, 158, 0.15);
+            color: #9aa69e;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
         .app-card.rooster .app-icon {
             background: rgba(16, 185, 129, 0.1);
             border: 1px solid rgba(16, 185, 129, 0.25);
@@ -562,6 +602,21 @@
                 <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
 
+            <a href="biupama-quiz/index.html" class="app-card quiz">
+                <div class="app-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0d9f6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                        <circle cx="12" cy="12" r="10"/>
+                    </svg>
+                </div>
+                <div class="app-content">
+                    <div class="app-title">BIUPAMA Quiz</div>
+                    <p class="app-description">Oefenvragen uit de tropengeneeskunde-studiegids.</p>
+                </div>
+                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+
             <a href="ppv-main/index.html" class="app-card ppv">
                 <div class="app-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -610,6 +665,33 @@
                 <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
 
+            <a href="zuurstof/index.html" class="app-card zuurstof">
+                <div class="app-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="8" y="7" width="8" height="14" rx="3"/>
+                        <path d="M10 7V4h4v3"/>
+                    </svg>
+                </div>
+                <div class="app-content">
+                    <div class="app-title">O₂-rekenaar</div>
+                    <p class="app-description">Hoe lang gaat de zuurstofcilinder mee bij deze flow?</p>
+                </div>
+                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+
+            <a href="brandwonden/index.html" class="app-card brandwonden">
+                <div class="app-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 3c3 4 6 6.5 6 10.5a6 6 0 1 1-12 0C6 9.5 9 7 12 3z"/>
+                    </svg>
+                </div>
+                <div class="app-content">
+                    <div class="app-title">Brandwonden</div>
+                    <p class="app-description">Rule of nines → TBSA → Parkland-vochtresuscitatie.</p>
+                </div>
+                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+
             <a href="ae-inventaris/index.html" class="app-card tascheck">
                 <div class="app-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -623,6 +705,21 @@
                 </div>
                 <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
+
+            <div class="app-card placeholder">
+                <div class="app-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9aa69e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                </div>
+                <div class="app-content">
+                    <div class="app-title">Sociale geneeskunde<span class="wip-badge">in ontwikkeling</span></div>
+                    <p class="app-description">App voor de lessen sociale geneeskunde — binnenkort.</p>
+                </div>
+            </div>
         </section>
 
         <footer class="footer">

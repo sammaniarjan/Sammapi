@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O₂-rekenaar</title>
+<meta name="description" content="Bereken hoe lang een zuurstofcilinder meegaat bij een gegeven flow. Voor onderwijsdoeleinden.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23e2d9cc'/><rect x='36' y='28' width='28' height='56' rx='10' fill='none' stroke='%230284c7' stroke-width='7'/><rect x='43' y='14' width='14' height='14' rx='3' fill='%230284c7'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --bg: #e2d9cc;
+    --vlak: #ffffff;
+    --vlak-zacht: #f7f3ed;
+    --tekst: #2c3e36;
+    --tekst-2: #6b7b6f;
+    --muted: #9aa69e;
+    --rand: #d5cdc2;
+    --rand-licht: #e3dbd0;
+    --accent: #0284c7;
+    --accent-donker: #0369a1;
+    --groen: #059669;
+    --oranje: #d97706;
+    --rood: #dc2626;
+    --rood-bg: rgba(220, 38, 38, 0.08);
+}
+
+body {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--tekst);
+    line-height: 1.55;
+    min-height: 100vh;
+}
+
+.wrap { max-width: 640px; margin: 0 auto; padding: 16px 16px 60px; }
+
+.back-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--tekst-2); text-decoration: none;
+    font-size: 0.88rem; padding: 10px 0;
+}
+.back-link:hover { color: var(--accent); }
+.back-link svg { width: 17px; height: 17px; }
+
+.app-head { margin: 8px 0 18px; }
+.app-head h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem; font-weight: 600;
+}
+.app-head .sub { color: var(--tekst-2); font-size: 0.88rem; }
+
+.card {
+    background: var(--vlak);
+    border: 1px solid var(--rand-licht);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 14px;
+}
+.card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; font-weight: 600; margin-bottom: 12px;
+}
+
+label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--tekst-2); margin-bottom: 4px; }
+input[type="number"], select {
+    font: inherit; width: 100%;
+    color: var(--tekst); background: var(--vlak-zacht);
+    border: 1px solid var(--rand); border-radius: 8px;
+    padding: 9px 12px;
+}
+input:focus, select:focus { outline: none; border-color: var(--accent); }
+
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+@media (max-width: 520px) { .grid-3 { grid-template-columns: 1fr; } }
+
+.cyl-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.cyl-btn {
+    font: inherit; font-size: 0.82rem; font-weight: 600;
+    padding: 7px 14px; border-radius: 50px; cursor: pointer;
+    background: transparent; color: var(--tekst-2);
+    border: 1px solid var(--rand);
+    transition: all 0.2s;
+}
+.cyl-btn:hover { border-color: var(--accent); color: var(--accent); }
+.cyl-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+.result-box {
+    margin-top: 16px; border-top: 1px solid var(--rand-licht); padding-top: 14px;
+}
+.result-main {
+    text-align: center; padding: 14px;
+    background: var(--vlak-zacht); border-radius: 10px; margin-bottom: 10px;
+}
+.result-main .tijd {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2.2rem; font-weight: 700; line-height: 1.2;
+}
+.result-main .tijd.ok { color: var(--groen); }
+.result-main .tijd.krap { color: var(--oranje); }
+.result-main .tijd.op { color: var(--rood); }
+.result-main .label { font-size: 0.8rem; color: var(--muted); }
+
+.result-rows { display: flex; flex-direction: column; gap: 4px; }
+.result-row { display: flex; justify-content: space-between; gap: 12px; font-size: 0.88rem; }
+.result-row span { color: var(--muted); }
+.result-row strong { font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+
+.waarschuwing {
+    margin-top: 10px; background: var(--rood-bg); color: var(--rood);
+    font-size: 0.85rem; padding: 8px 12px; border-radius: 8px;
+}
+
+.formule {
+    background: var(--vlak-zacht); border: 1px solid var(--rand-licht);
+    border-radius: 8px; padding: 10px 14px; margin: 10px 0;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
+    color: var(--accent-donker);
+}
+.help-text { font-size: 0.85rem; color: var(--tekst-2); margin-bottom: 8px; }
+.help-text:last-child { margin-bottom: 0; }
+
+.disclaimer {
+    font-size: 0.78rem; color: var(--muted);
+    text-align: center; margin-top: 24px;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+    <a href="../index.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Dashboard
+    </a>
+
+    <div class="app-head">
+        <h1>O&#8322;-rekenaar</h1>
+        <div class="sub">Hoe lang gaat de cilinder mee? &middot; werkt volledig lokaal</div>
+    </div>
+
+    <div class="card">
+        <h3>Cilinder</h3>
+        <div class="cyl-buttons">
+            <button class="cyl-btn" data-vol="2">2 L</button>
+            <button class="cyl-btn" data-vol="5">5 L</button>
+            <button class="cyl-btn active" data-vol="10">10 L</button>
+            <button class="cyl-btn" data-vol="">Anders&hellip;</button>
+        </div>
+        <div class="grid-3">
+            <div>
+                <label for="volume">Waterinhoud (L)</label>
+                <input type="number" id="volume" min="0.5" step="0.5" value="10">
+            </div>
+            <div>
+                <label for="druk">Druk op manometer (bar)</label>
+                <input type="number" id="druk" min="0" step="5" value="200">
+            </div>
+            <div>
+                <label for="flow">Flow (L/min)</label>
+                <input type="number" id="flow" min="0.5" step="0.5" value="15">
+            </div>
+        </div>
+
+        <div class="result-box">
+            <div class="result-main">
+                <div class="tijd" id="tijd">--</div>
+                <div class="label" id="tijd-label">bruikbare tijd (tot restdruk)</div>
+            </div>
+            <div class="result-rows">
+                <div class="result-row"><span>Inhoud bij deze druk</span><strong id="inhoud">--</strong></div>
+                <div class="result-row"><span>Bruikbaar (boven restdruk)</span><strong id="bruikbaar">--</strong></div>
+                <div class="result-row"><span>Totale tijd (tot 0 bar)</span><strong id="tijd-totaal">--</strong></div>
+                <div class="result-row"><span>Leeg om (bij start nu)</span><strong id="leeg-om">--</strong></div>
+            </div>
+            <div class="waarschuwing" id="waarschuwing" hidden></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Restdruk</h3>
+        <label for="restdruk">Veiligheidsmarge: reken tot restdruk (bar)</label>
+        <input type="number" id="restdruk" min="0" step="5" value="20">
+        <p class="help-text" style="margin-top:8px;">Plan nooit tot een lege cilinder: onder de restdruk kan de flow onbetrouwbaar worden en houd je geen buffer voor vertraging.</p>
+    </div>
+
+    <div class="card">
+        <h3>Uitleg</h3>
+        <div class="formule">beschikbare O&#8322; (L) &asymp; waterinhoud (L) &times; druk (bar)</div>
+        <p class="help-text">Een 10&nbsp;L-cilinder op 200&nbsp;bar bevat dus ongeveer 2.000&nbsp;L zuurstof. Deel dat door de flow in L/min en je hebt de tijd in minuten:</p>
+        <div class="formule">tijd (min) = waterinhoud &times; (druk &minus; restdruk) / flow</div>
+        <p class="help-text">Voorbeeld: 10&nbsp;L &times; (200&nbsp;&minus;&nbsp;20) bar / 15&nbsp;L/min = 120&nbsp;min bruikbaar.</p>
+        <p class="help-text">Vuistregel bij transport: reken uit hoe lang de rit duurt, tel ruim marge (vertraging, overdracht) erbij, en controleer of de bruikbare tijd daarboven zit.</p>
+    </div>
+
+    <p class="disclaimer">Rekentool voor onderwijsdoeleinden. Controleer apparatuur en berekening altijd zelf voor gebruik bij pati&euml;ntenzorg.</p>
+</div>
+
+<script>
+'use strict';
+const $ = (sel) => document.querySelector(sel);
+
+document.querySelectorAll('.cyl-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.cyl-btn').forEach(b => b.classList.toggle('active', b === btn));
+        if (btn.dataset.vol) {
+            $('#volume').value = btn.dataset.vol;
+        } else {
+            $('#volume').focus();
+            $('#volume').select();
+        }
+        bereken();
+    });
+});
+
+function fmtTijd(minuten) {
+    if (!isFinite(minuten) || minuten < 0) return '--';
+    const u = Math.floor(minuten / 60);
+    const m = Math.round(minuten % 60);
+    if (u === 0) return m + ' min';
+    return u + ' u ' + String(m).padStart(2, '0') + ' min';
+}
+
+function bereken() {
+    const vol = parseFloat($('#volume').value);
+    const druk = parseFloat($('#druk').value);
+    const flow = parseFloat($('#flow').value);
+    const rest = parseFloat($('#restdruk').value) || 0;
+
+    const waarsch = $('#waarschuwing');
+    waarsch.hidden = true;
+
+    if (!(vol > 0) || !(druk >= 0) || !(flow > 0)) {
+        $('#tijd').textContent = '--';
+        $('#tijd').className = 'tijd';
+        ['inhoud', 'bruikbaar', 'tijd-totaal', 'leeg-om'].forEach(id => $('#' + id).textContent = '--');
+        return;
+    }
+
+    const inhoud = vol * druk;                        // L O2 totaal bij deze druk
+    const bruikbaarL = vol * Math.max(0, druk - rest); // L boven restdruk
+    const minBruikbaar = bruikbaarL / flow;
+    const minTotaal = inhoud / flow;
+
+    $('#inhoud').textContent = Math.round(inhoud).toLocaleString('nl-NL') + ' L';
+    $('#bruikbaar').textContent = Math.round(bruikbaarL).toLocaleString('nl-NL') + ' L';
+    $('#tijd-totaal').textContent = fmtTijd(minTotaal);
+
+    const leegOm = new Date(Date.now() + minBruikbaar * 60000);
+    $('#leeg-om').textContent = leegOm.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
+
+    const tijdEl = $('#tijd');
+    tijdEl.textContent = fmtTijd(minBruikbaar);
+    if (minBruikbaar <= 0) {
+        tijdEl.className = 'tijd op';
+        waarsch.textContent = 'De druk is niet hoger dan de restdruk: deze cilinder is praktisch leeg. Wissel de cilinder.';
+        waarsch.hidden = false;
+    } else if (minBruikbaar < 30) {
+        tijdEl.className = 'tijd krap';
+        waarsch.textContent = 'Minder dan 30 minuten bruikbaar. Overweeg een volle of extra cilinder mee te nemen.';
+        waarsch.hidden = false;
+    } else {
+        tijdEl.className = 'tijd ok';
+    }
+
+    if (druk > 300) {
+        waarsch.textContent = 'Druk boven 300 bar is ongebruikelijk voor medische cilinders. Controleer de manometerwaarde.';
+        waarsch.hidden = false;
+    }
+}
+
+['volume', 'druk', 'flow', 'restdruk'].forEach(id => $('#' + id).addEventListener('input', bereken));
+bereken();
+</script>
+</body>
+</html>

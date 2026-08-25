@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIUPAMA Quiz</title>
+<meta name="description" content="Oefenvragen over tropengeneeskunde uit de BIUPAMA-studiegids.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23e2d9cc'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='%230d9f6e' font-family='Georgia' font-weight='bold'>?</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --bg: #e2d9cc;
+    --vlak: #ffffff;
+    --vlak-zacht: #f7f3ed;
+    --tekst: #2c3e36;
+    --tekst-2: #6b7b6f;
+    --muted: #9aa69e;
+    --rand: #d5cdc2;
+    --rand-licht: #e3dbd0;
+    --accent: #0d9f6e;
+    --accent-donker: #0b805a;
+    --goed: #059669;
+    --goed-bg: rgba(5, 150, 105, 0.1);
+    --fout: #dc2626;
+    --fout-bg: rgba(220, 38, 38, 0.08);
+}
+
+body {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--tekst);
+    line-height: 1.55;
+    min-height: 100vh;
+}
+
+.wrap { max-width: 640px; margin: 0 auto; padding: 16px 16px 60px; }
+
+.back-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--tekst-2); text-decoration: none;
+    font-size: 0.88rem; padding: 10px 0;
+}
+.back-link:hover { color: var(--accent); }
+.back-link svg { width: 17px; height: 17px; }
+
+.app-head { margin: 8px 0 18px; }
+.app-head h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem; font-weight: 600;
+}
+.app-head .sub { color: var(--tekst-2); font-size: 0.88rem; }
+
+.card {
+    background: var(--vlak);
+    border: 1px solid var(--rand-licht);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 14px;
+}
+.card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; font-weight: 600; margin-bottom: 12px;
+}
+
+/* ---------- Startscherm ---------- */
+.cat-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.cat-btn {
+    font: inherit; font-size: 0.8rem; font-weight: 600;
+    padding: 7px 14px; border-radius: 50px; cursor: pointer;
+    background: transparent; color: var(--tekst-2);
+    border: 1px solid var(--rand);
+    transition: all 0.2s;
+}
+.cat-btn:hover { border-color: var(--accent); color: var(--accent); }
+.cat-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+.stat-row { display: flex; justify-content: space-between; font-size: 0.85rem; padding: 3px 0; }
+.stat-row span { color: var(--muted); }
+.stat-row strong { font-family: 'JetBrains Mono', monospace; }
+
+.btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+    font: inherit; font-weight: 600; font-size: 0.9rem;
+    padding: 11px 22px; border-radius: 50px;
+    border: 1px solid var(--rand); background: var(--vlak);
+    color: var(--tekst); cursor: pointer;
+    transition: all 0.2s;
+}
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-donker); color: #fff; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* ---------- Vraagscherm ---------- */
+.voortgang { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.voortgang-balk { flex: 1; height: 6px; background: var(--rand-licht); border-radius: 3px; overflow: hidden; }
+.voortgang-vul { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.3s; }
+.voortgang-tekst { font-size: 0.8rem; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+
+.vraag-cat {
+    display: inline-block; font-size: 0.7rem; font-weight: 600;
+    padding: 3px 12px; border-radius: 50px;
+    background: rgba(13, 159, 110, 0.1); color: var(--accent-donker);
+    letter-spacing: 0.5px; margin-bottom: 10px;
+}
+.vraag-tekst { font-size: 1.02rem; font-weight: 600; margin-bottom: 16px; line-height: 1.5; }
+
+.opties { display: flex; flex-direction: column; gap: 8px; }
+.optie {
+    font: inherit; text-align: left; cursor: pointer;
+    padding: 12px 16px; border-radius: 10px;
+    background: var(--vlak-zacht); color: var(--tekst);
+    border: 1px solid var(--rand);
+    transition: all 0.15s; font-size: 0.92rem;
+}
+.optie:hover:not(:disabled) { border-color: var(--accent); }
+.optie:disabled { cursor: default; }
+.optie.goed { background: var(--goed-bg); border-color: var(--goed); color: var(--goed); font-weight: 600; }
+.optie.fout { background: var(--fout-bg); border-color: var(--fout); color: var(--fout); }
+.optie.dim { opacity: 0.55; }
+
+.uitleg {
+    margin-top: 14px; padding: 12px 16px; border-radius: 10px;
+    background: var(--vlak-zacht); border-left: 3px solid var(--accent);
+    font-size: 0.88rem; color: var(--tekst-2);
+}
+.uitleg strong { color: var(--tekst); }
+
+.na-antwoord { margin-top: 14px; }
+
+/* ---------- Resultaat ---------- */
+.score-box { text-align: center; padding: 20px; }
+.score-groot {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 3rem; font-weight: 700; color: var(--accent-donker);
+}
+.score-sub { color: var(--tekst-2); font-size: 0.9rem; margin-bottom: 16px; }
+
+.view { display: none; }
+.view.active { display: block; animation: fadeIn 0.25s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+.disclaimer {
+    font-size: 0.78rem; color: var(--muted);
+    text-align: center; margin-top: 24px;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+    <a href="../index.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Dashboard
+    </a>
+
+    <div class="app-head">
+        <h1>BIUPAMA Quiz</h1>
+        <div class="sub">Oefenvragen uit de tropengeneeskunde-studiegids</div>
+    </div>
+
+    <!-- Start -->
+    <section class="view active" id="view-start">
+        <div class="card">
+            <h3>Kies je onderwerp</h3>
+            <div class="cat-buttons" id="cat-buttons"></div>
+            <div class="btn-row">
+                <button class="btn btn-primary" id="btn-start">Start quiz (10 vragen)</button>
+            </div>
+        </div>
+        <div class="card">
+            <h3>Jouw voortgang</h3>
+            <div id="stats"></div>
+            <div class="btn-row" style="margin-top:12px;">
+                <button class="btn" id="btn-reset-stats">Wis voortgang</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vraag -->
+    <section class="view" id="view-vraag">
+        <div class="voortgang">
+            <div class="voortgang-balk"><div class="voortgang-vul" id="voortgang-vul"></div></div>
+            <div class="voortgang-tekst" id="voortgang-tekst"></div>
+        </div>
+        <div class="card">
+            <span class="vraag-cat" id="vraag-cat"></span>
+            <div class="vraag-tekst" id="vraag-tekst"></div>
+            <div class="opties" id="opties"></div>
+            <div class="uitleg" id="uitleg" hidden></div>
+            <div class="na-antwoord" id="na-antwoord" hidden>
+                <button class="btn btn-primary" id="btn-volgende">Volgende &rarr;</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resultaat -->
+    <section class="view" id="view-klaar">
+        <div class="card score-box">
+            <div class="score-groot" id="score"></div>
+            <div class="score-sub" id="score-sub"></div>
+            <div class="btn-row" style="justify-content:center;">
+                <button class="btn btn-primary" id="btn-nogmaals">Nog een ronde</button>
+                <button class="btn" id="btn-naar-start">Naar start</button>
+            </div>
+        </div>
+    </section>
+
+    <p class="disclaimer">Vragen gebaseerd op de BIUPAMA-studiegids. Voor onderwijsdoeleinden.</p>
+</div>
+
+<script src="questions.js"></script>
+<script>
+'use strict';
+const $ = (sel) => document.querySelector(sel);
+
+const STORE_KEY = 'biupama-quiz-stats';
+const RONDE_LENGTE = 10;
+
+// stats[id] = { goed: n, fout: n }
+let stats = {};
+try { stats = JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch (e) { stats = {}; }
+function saveStats() {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(stats)); } catch (e) { /* opslag niet beschikbaar */ }
+}
+
+let gekozenCat = 'Alles';
+let ronde = [];
+let idx = 0;
+let goedDezeRonde = 0;
+
+/* ---------- Startscherm ---------- */
+function categorieen() {
+    return ['Alles', ...new Set(QUIZ_QUESTIONS.map(q => q.cat))];
+}
+
+function renderStart() {
+    const wrap = $('#cat-buttons');
+    wrap.innerHTML = '';
+    categorieen().forEach(cat => {
+        const b = document.createElement('button');
+        b.className = 'cat-btn' + (cat === gekozenCat ? ' active' : '');
+        const n = cat === 'Alles' ? QUIZ_QUESTIONS.length : QUIZ_QUESTIONS.filter(q => q.cat === cat).length;
+        b.textContent = cat + ' (' + n + ')';
+        b.addEventListener('click', () => { gekozenCat = cat; renderStart(); });
+        wrap.appendChild(b);
+    });
+
+    const beantwoord = Object.keys(stats).length;
+    const totGoed = Object.values(stats).reduce((s, v) => s + v.goed, 0);
+    const totFout = Object.values(stats).reduce((s, v) => s + v.fout, 0);
+    const lastig = Object.keys(stats).filter(id => stats[id].fout > stats[id].goed).length;
+    $('#stats').innerHTML =
+        '<div class="stat-row"><span>Vragen in de bank</span><strong>' + QUIZ_QUESTIONS.length + '</strong></div>' +
+        '<div class="stat-row"><span>Ooit beantwoord</span><strong>' + beantwoord + '</strong></div>' +
+        '<div class="stat-row"><span>Totaal goed / fout</span><strong>' + totGoed + ' / ' + totFout + '</strong></div>' +
+        '<div class="stat-row"><span>Nog lastig (vaker fout dan goed)</span><strong>' + lastig + '</strong></div>';
+}
+
+/* ---------- Rondesamenstelling: lastige vragen eerst ---------- */
+function stelRondeSamen() {
+    const pool = gekozenCat === 'Alles' ? [...QUIZ_QUESTIONS] : QUIZ_QUESTIONS.filter(q => q.cat === gekozenCat);
+    // gewicht: nooit gedaan = 3, vaker fout dan goed = 4, anders 1
+    const gewogen = pool.map(q => {
+        const s = stats[q.id];
+        let w = 1;
+        if (!s) w = 3;
+        else if (s.fout > s.goed) w = 4;
+        return { q, w };
+    });
+    // gewogen shuffle (loting zonder teruglegging)
+    const gekozen = [];
+    const n = Math.min(RONDE_LENGTE, gewogen.length);
+    for (let i = 0; i < n; i++) {
+        const totW = gewogen.reduce((s, g) => s + g.w, 0);
+        let r = Math.random() * totW;
+        let pick = 0;
+        for (let j = 0; j < gewogen.length; j++) {
+            r -= gewogen[j].w;
+            if (r <= 0) { pick = j; break; }
+        }
+        gekozen.push(gewogen[pick].q);
+        gewogen.splice(pick, 1);
+    }
+    return gekozen;
+}
+
+/* ---------- Vraagweergave ---------- */
+function toonView(id) {
+    document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === id));
+    window.scrollTo(0, 0);
+}
+
+function toonVraag() {
+    const q = ronde[idx];
+    $('#voortgang-vul').style.width = ((idx) / ronde.length * 100) + '%';
+    $('#voortgang-tekst').textContent = (idx + 1) + '/' + ronde.length;
+    $('#vraag-cat').textContent = q.cat;
+    $('#vraag-tekst').textContent = q.q;
+    $('#uitleg').hidden = true;
+    $('#na-antwoord').hidden = true;
+
+    const wrap = $('#opties');
+    wrap.innerHTML = '';
+    q.opts.forEach((opt, i) => {
+        const b = document.createElement('button');
+        b.className = 'optie';
+        b.textContent = opt;
+        b.addEventListener('click', () => beantwoord(i));
+        wrap.appendChild(b);
+    });
+}
+
+function beantwoord(gekozenIdx) {
+    const q = ronde[idx];
+    const knoppen = document.querySelectorAll('.optie');
+    knoppen.forEach(b => b.disabled = true);
+
+    const juist = gekozenIdx === q.correct;
+    if (juist) goedDezeRonde++;
+
+    knoppen.forEach((b, i) => {
+        if (i === q.correct) b.classList.add('goed');
+        else if (i === gekozenIdx) b.classList.add('fout');
+        else b.classList.add('dim');
+    });
+
+    if (!stats[q.id]) stats[q.id] = { goed: 0, fout: 0 };
+    stats[q.id][juist ? 'goed' : 'fout']++;
+    saveStats();
+
+    const uitleg = $('#uitleg');
+    uitleg.innerHTML = '<strong>' + (juist ? 'Goed!' : 'Helaas.') + '</strong> ' + q.uitleg;
+    uitleg.hidden = false;
+    $('#na-antwoord').hidden = false;
+    $('#btn-volgende').textContent = idx + 1 < ronde.length ? 'Volgende →' : 'Bekijk resultaat →';
+    $('#btn-volgende').focus();
+}
+
+function volgende() {
+    idx++;
+    if (idx < ronde.length) {
+        toonVraag();
+    } else {
+        const pct = Math.round(goedDezeRonde / ronde.length * 100);
+        $('#score').textContent = goedDezeRonde + '/' + ronde.length;
+        $('#score-sub').textContent = pct >= 80 ? 'Sterk! (' + pct + '%)'
+            : pct >= 60 ? 'Aardig op weg (' + pct + '%) — foute vragen komen vaker terug.'
+            : 'Nog even stampen (' + pct + '%) — foute vragen komen vaker terug.';
+        toonView('view-klaar');
+    }
+}
+
+function startRonde() {
+    ronde = stelRondeSamen();
+    if (!ronde.length) return;
+    idx = 0;
+    goedDezeRonde = 0;
+    toonView('view-vraag');
+    toonVraag();
+}
+
+/* ---------- Events ---------- */
+$('#btn-start').addEventListener('click', startRonde);
+$('#btn-volgende').addEventListener('click', volgende);
+$('#btn-nogmaals').addEventListener('click', startRonde);
+$('#btn-naar-start').addEventListener('click', () => { renderStart(); toonView('view-start'); });
+$('#btn-reset-stats').addEventListener('click', () => {
+    stats = {};
+    saveStats();
+    renderStart();
+});
+
+renderStart();
+</script>
+</body>
+</html>
