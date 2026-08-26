@@ -1811,7 +1811,7 @@ body::before {
 .reveal-line {
   opacity: 0;
   transform: translateY(10px);
-  animation: revealUp 0.5s ease forwards;
+  animation: revealUp 0.7s ease forwards;
 }
 
 @keyframes revealUp {

@@ -633,7 +633,7 @@ function revealHtml(regels, startVertraging) {
   let d = startVertraging || 0;
   return regels.map(r => {
     const html = '<p class="brief-regel reveal-line" style="animation-delay:' + d.toFixed(1) + 's">' + r + '</p>';
-    d += 0.55;
+    d += 0.8;
     return html;
   }).join('');
 }
@@ -794,7 +794,7 @@ function toonTussenstand() {
       'Hier was vuren meestal raak: <strong>9 van de 10</strong> meldingen waren echt een vijand.',
       '<strong>Maar nu verandert alles.</strong>'
     ], 0.3) +
-    revealHtml(MISSIES[1].regels, 1.6);
+    revealHtml(MISSIES[1].regels, 2.4);
   document.getElementById('brief-start').textContent = 'Start missie 2 →';
   gameScreen('game-brief');
 }
@@ -820,30 +820,30 @@ function toonDebrief() {
 
   document.getElementById('debrief-titel').textContent = 'Debrief';
 
-  let html = `<div class="debrief-punch reveal-line" style="animation-delay:0.2s">
+  let html = `<div class="debrief-punch reveal-line" style="animation-delay:0.3s">
     <div class="groot"><span id="punch-num">0</span> burger${burgersGeraakt === 1 ? '' : 's'} geraakt</div>
     <p>${burgersGeraakt === 0
       ? 'Geen burgers geraakt. Maar hoeveel vijanden liet je lopen?'
       : 'Elke burger kreeg van de computer een hoge score.'}</p>
   </div>`;
 
-  html += `<div class="reveal-line" style="animation-delay:0.9s">
+  html += `<div class="reveal-line" style="animation-delay:1.4s">
     <h3 style="font-size:0.95rem;margin:0 0 6px;">${MISSIES[0].naam}</h3>` + missieTabel(r1) +
     `<h3 style="font-size:0.95rem;margin:14px 0 6px;">${MISSIES[1].naam}</h3>` + missieTabel(r2) + `</div>`;
 
-  html += `<div class="debrief-les reveal-line" style="animation-delay:1.6s">
+  html += `<div class="debrief-les reveal-line" style="animation-delay:2.5s">
     <p style="margin:0 0 8px;"><strong>De computer was niet kapot.</strong></p>
     <p style="margin:0;">Zet een echte vijand naast een burger, en in <strong>${aucPct} van de 100 keer</strong>
     geeft de computer de vijand de hoogste score. Dat heet een AUC van 0,${aucPct}. Best goed.</p>
   </div>`;
 
-  html += `<div class="debrief-les reveal-line" style="animation-delay:2.3s">
+  html += `<div class="debrief-les reveal-line" style="animation-delay:3.6s">
     <p style="margin:0 0 8px;"><strong>Dit deed jij.</strong></p>
     <p style="margin:0 0 4px;">Vijanden uitgeschakeld: <strong>${vuurVijandTotaal} van de 10</strong>.</p>
     <p style="margin:0;">Burgers gespaard: <strong>${abortBurgerTotaal} van de 10</strong>.</p>
   </div>`;
 
-  html += `<div class="debrief-les reveal-line" style="animation-delay:3.0s">
+  html += `<div class="debrief-les reveal-line" style="animation-delay:4.7s">
     <p style="margin:0 0 8px;"><strong>Wat ging er dan mis? De omgeving.</strong></p>
     <p style="margin:0 0 4px;">In het oorlogsgebied was 9 van de 10 meldingen echt.</p>
     <p style="margin:0 0 4px;">Boven de stad was 9 van de 10 meldingen een burger.</p>
@@ -877,7 +877,7 @@ function toonDebrief() {
   nav.appendChild(btnKlaar);
 
   gameScreen('game-debrief');
-  setTimeout(() => telOp(document.getElementById('punch-num'), burgersGeraakt, 900), 400);
+  setTimeout(() => telOp(document.getElementById('punch-num'), burgersGeraakt, 1300), 600);
 }
 
 // Events
@@ -894,3 +894,8 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'v' || e.key === 'V') beslis(true);
   if (e.key === 'a' || e.key === 'A') beslis(false);
 });
+
+// Directe start vanaf het dashboard (kaart "Human in the Loop")
+if (new URLSearchParams(window.location.search).has('simulatie')) {
+  openGame();
+}
