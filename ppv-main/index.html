@@ -37,6 +37,16 @@
           </svg>
           Defensie Context
         </button>
+        <button id="game-button" class="welcome-button game-button">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+            <circle cx="12" cy="12" r="9"/>
+            <line x1="12" y1="3" x2="12" y2="8"/>
+            <line x1="12" y1="16" x2="12" y2="21"/>
+            <line x1="3" y1="12" x2="8" y2="12"/>
+            <line x1="16" y1="12" x2="21" y2="12"/>
+          </svg>
+          Simulatie: Human in the Loop
+        </button>
       </div>
       <div class="info-box">
         <p>Gebaseerd op Bayesiaanse statistiek</p>
@@ -596,8 +606,72 @@
 
         <div class="defense-nav">
           <button class="btn-back" data-defgoto="4">← Terug</button>
+          <button class="btn-next" id="defense-to-game">Ervaar het zelf →</button>
           <button class="btn-next btn-primary" id="defense-to-calc">Zelf rekenen →</button>
         </div>
+      </div>
+
+    </div>
+
+    <!-- Human-in-the-Loop Simulatie -->
+    <div id="game-overlay" class="game-overlay" style="display: none;">
+
+      <!-- Briefing -->
+      <div id="game-brief" class="game-screen active">
+        <div class="defense-badge">SIMULATIE</div>
+        <h1 id="brief-titel">Human in the Loop</h1>
+        <div class="game-brief-body" id="brief-body"></div>
+        <div class="defense-nav">
+          <button class="btn-back" id="game-exit">← Verlaten</button>
+          <button class="btn-next btn-primary" id="brief-start">Start missie →</button>
+        </div>
+      </div>
+
+      <!-- HUD -->
+      <div id="game-play" class="game-screen">
+        <div class="hud">
+          <div class="hud-top">
+            <span class="hud-missie" id="hud-missie"></span>
+            <span class="hud-teller" id="hud-teller"></span>
+          </div>
+          <div class="hud-viewport" id="hud-viewport">
+            <div class="hud-scanlines"></div>
+            <div class="hud-kruis">
+              <svg viewBox="0 0 200 200">
+                <circle cx="100" cy="100" r="70" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
+                <line x1="100" y1="10" x2="100" y2="45" stroke="currentColor" stroke-width="1.5"/>
+                <line x1="100" y1="155" x2="100" y2="190" stroke="currentColor" stroke-width="1.5"/>
+                <line x1="10" y1="100" x2="45" y2="100" stroke="currentColor" stroke-width="1.5"/>
+                <line x1="155" y1="100" x2="190" y2="100" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <div class="hud-doelwit" id="hud-doelwit">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="6" r="3.2"/>
+                <path d="M12 10c-3.5 0-5.5 2-5.5 5v7h11v-7c0-3-2-5-5.5-5z"/>
+              </svg>
+            </div>
+            <div class="hud-label">
+              <span class="hud-class">AI-CLASSIFICATIE: <strong>VIJAND</strong></span>
+              <span class="hud-sensor">sensor: "99% accuraat"</span>
+            </div>
+            <div class="hud-uitkomst" id="hud-uitkomst"></div>
+          </div>
+          <div class="hud-timerbar"><div class="hud-timervul" id="hud-timervul"></div></div>
+          <div class="hud-knoppen">
+            <button class="hud-btn hud-abort" id="btn-abort">AFBREKEN <span class="hud-key">A</span></button>
+            <button class="hud-btn hud-vuur" id="btn-vuur">VUUR <span class="hud-key">V</span></button>
+          </div>
+          <p class="hud-hint">Je hebt 3 seconden. Geen besluit = automatisch afgebroken.</p>
+        </div>
+      </div>
+
+      <!-- Debrief -->
+      <div id="game-debrief" class="game-screen">
+        <div class="defense-badge">DEBRIEF</div>
+        <h1 id="debrief-titel"></h1>
+        <div id="debrief-body"></div>
+        <div class="defense-nav" id="debrief-nav"></div>
       </div>
 
     </div>

@@ -1504,3 +1504,296 @@ body::before {
   font-family: 'Playfair Display', serif;
   font-weight: 600;
 }
+
+/* ===================================
+   Human-in-the-Loop Simulatie
+   =================================== */
+.welcome-button.game-button {
+  background: transparent;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 32px;
+  font-size: 0.9rem;
+}
+
+.welcome-button.game-button:hover {
+  background: var(--danger-bg);
+  transform: translateY(-2px);
+}
+
+.game-overlay {
+  display: flex;
+  flex-direction: column;
+  min-height: 500px;
+}
+
+.game-screen {
+  display: none;
+  padding: 30px;
+  flex: 1;
+  animation: fadeIn 0.3s ease;
+}
+
+.game-screen.active { display: block; }
+
+.game-screen h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  color: var(--text-primary);
+  margin: 0 0 12px;
+  font-weight: 600;
+}
+
+.game-brief-body p {
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  margin: 0 0 12px;
+  line-height: 1.65;
+}
+
+.game-brief-body .brief-blok {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--warning);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin: 14px 0;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+
+.game-brief-body .brief-blok strong { color: var(--text-primary); }
+
+/* HUD */
+.hud { max-width: 460px; margin: 0 auto; }
+
+.hud-top {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.hud-viewport {
+  position: relative;
+  background: #0d1117;
+  border-radius: var(--radius-sm);
+  height: 300px;
+  overflow: hidden;
+  border: 1px solid #1f2a33;
+}
+
+.hud-scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(88, 166, 255, 0.03) 3px, rgba(88, 166, 255, 0.03) 5px);
+  pointer-events: none;
+}
+
+.hud-kruis {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #3d5a6e;
+  pointer-events: none;
+}
+
+.hud-kruis svg { width: 220px; height: 220px; }
+
+.hud-doelwit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  width: 64px;
+  height: 64px;
+  color: #7d95a8;
+  filter: blur(1.2px);
+  animation: doelwit-drift 2.2s ease-in-out infinite alternate;
+}
+
+@keyframes doelwit-drift {
+  from { transform: translate(-54%, -57%); }
+  to   { transform: translate(-46%, -53%); }
+}
+
+.hud-doelwit svg { width: 100%; height: 100%; }
+
+.hud-label {
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  pointer-events: none;
+}
+
+.hud-class {
+  display: block;
+  font-size: 0.8rem;
+  color: #e05d5d;
+  letter-spacing: 1px;
+}
+
+.hud-sensor {
+  display: block;
+  font-size: 0.68rem;
+  color: #4d6577;
+  margin-top: 2px;
+}
+
+.hud-uitkomst {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 20px;
+}
+
+.hud-uitkomst.show { display: flex; }
+.hud-uitkomst.goed { background: rgba(5, 150, 105, 0.88); color: #fff; }
+.hud-uitkomst.fout { background: rgba(220, 38, 38, 0.92); color: #fff; }
+.hud-uitkomst.neutraal { background: rgba(217, 119, 6, 0.88); color: #fff; }
+
+.hud-timerbar {
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  margin: 12px 0;
+  overflow: hidden;
+}
+
+.hud-timervul {
+  height: 100%;
+  width: 100%;
+  background: var(--warning);
+  border-radius: 4px;
+}
+
+.hud-timervul.lopend {
+  transition: width 3s linear;
+  width: 0%;
+}
+
+.hud-knoppen {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.hud-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 16px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  transition: transform 0.1s, opacity 0.2s;
+  color: #fff;
+}
+
+.hud-btn:active { transform: scale(0.97); }
+.hud-btn:disabled { opacity: 0.45; cursor: default; }
+
+.hud-abort { background: #64748b; }
+.hud-abort:hover:not(:disabled) { background: #526075; }
+.hud-vuur { background: var(--danger); }
+.hud-vuur:hover:not(:disabled) { background: #b91c1c; }
+
+.hud-key {
+  display: inline-block;
+  font-size: 0.65rem;
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 3px;
+  padding: 1px 5px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.hud-hint {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 10px;
+}
+
+/* Debrief */
+.debrief-tabel {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 0.85rem;
+}
+
+.debrief-tabel th, .debrief-tabel td {
+  padding: 8px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.debrief-tabel th {
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.debrief-tabel td strong { font-family: 'JetBrains Mono', monospace; }
+.debrief-tabel .t-goed { color: var(--success); }
+.debrief-tabel .t-fout { color: var(--danger); }
+.debrief-tabel .t-neutraal { color: var(--warning); }
+
+.debrief-punch {
+  background: var(--danger-bg);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin: 16px 0;
+  text-align: center;
+}
+
+.debrief-punch .groot {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--danger);
+}
+
+.debrief-punch p { margin: 6px 0 0; color: var(--text-secondary); font-size: 0.88rem; }
+
+.debrief-les {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin: 14px 0;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+
+.debrief-les strong { color: var(--text-primary); }
+
+@media (max-width: 500px) {
+  .game-screen { padding: 20px; }
+  .hud-viewport { height: 240px; }
+}

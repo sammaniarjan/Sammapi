@@ -572,3 +572,255 @@ function renderDefenseGrid(containerId, tpCount, fpCount) {
     container.appendChild(dot);
   });
 }
+
+// ===================================
+// Human-in-the-Loop Simulatie
+// ===================================
+// Twee missies met exact dezelfde "99% accurate" sensor. Alleen de
+// omgeving (prevalentie) verschilt — en daarmee de PPV van elk alarm.
+// Missie 1: oorlogsgebied, PPV ~92% -> 9 van 10 alarmen echt vijand.
+// Missie 2: surveillance,  PPV ~9%  -> 1 van 10 alarmen echt vijand.
+
+const gameOverlay = document.getElementById('game-overlay');
+const gameButton = document.getElementById('game-button');
+const defenseToGame = document.getElementById('defense-to-game');
+
+const MISSIES = [
+  {
+    naam: 'MISSIE 1 — ACTIEF CONFLICTGEBIED',
+    kort: 'Missie 1: conflictgebied',
+    vijanden: 9, burgers: 1,
+    ppvTekst: '91,7%', prevalentieTekst: '10% van de gescande personen is vijandig',
+    briefing: `
+      <p>Je bent operator van een gewapende drone boven een <strong>actief conflictgebied</strong>.
+      Er wordt zwaar gevochten; vijandelijke eenheden bewegen door de sector.</p>
+      <div class="brief-blok">
+        <strong>Jouw rol — human in the loop:</strong> het AI-systeem markeert doelwitten.
+        Vóór elke aanval beslis jij binnen <strong>3 seconden</strong>: VUUR of AFBREKEN.
+        De fabrikant claimt dat de sensor "99% accuraat" is.
+      </div>
+      <p>Je krijgt 10 alarmen te zien. Op het beeld is niets te onderscheiden —
+      je hebt alleen de classificatie van het systeem en je kennis van de context.</p>`
+  },
+  {
+    naam: 'MISSIE 2 — ROUTINE SURVEILLANCE',
+    kort: 'Missie 2: surveillance',
+    vijanden: 1, burgers: 9,
+    ppvTekst: '9,0%', prevalentieTekst: '0,1% van de gescande personen is vijandig',
+    briefing: `
+      <p>Nieuwe inzet: <strong>routine surveillance boven bewoond gebied</strong> tijdens een
+      vredesmissie. Er zijn nauwelijks vijandelijke activiteiten gemeld.</p>
+      <div class="brief-blok">
+        <strong>Zelfde systeem, zelfde sensor.</strong> Nog steeds "99% accuraat" volgens
+        de fabrikant. Nog steeds 3 seconden per beslissing.
+      </div>
+      <p>Opnieuw 10 alarmen. Denk aan wat je in het veld hebt gezien — en aan wat
+      je wéét over de omgeving.</p>`
+  }
+];
+
+let missieIdx = 0;
+let doelwitten = [];      // array van booleans: true = echt vijand
+let doelwitIdx = 0;
+let gameResultaten = [];  // per missie: {vuurVijand, vuurBurger, abortVijand, abortBurger, timeouts}
+let hudTimer = null;
+let hudActief = false;
+
+function gameScreen(id) {
+  document.querySelectorAll('.game-screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function openGame() {
+  welcomeScreen.style.display = 'none';
+  defenseOverlay.style.display = 'none';
+  mainApp.style.display = 'none';
+  gameOverlay.style.display = 'flex';
+  missieIdx = 0;
+  gameResultaten = [];
+  toonBriefing();
+}
+
+function sluitGame() {
+  stopHudTimer();
+  gameOverlay.style.display = 'none';
+  welcomeScreen.style.display = 'block';
+}
+
+function toonBriefing() {
+  const m = MISSIES[missieIdx];
+  document.getElementById('brief-titel').textContent = m.naam;
+  document.getElementById('brief-body').innerHTML = m.briefing;
+  document.getElementById('brief-start').textContent = 'Start missie →';
+  gameScreen('game-brief');
+}
+
+function startMissie() {
+  const m = MISSIES[missieIdx];
+  // Vaste aantallen (conform de PPV van het scenario), willekeurige volgorde
+  doelwitten = [];
+  for (let i = 0; i < m.vijanden; i++) doelwitten.push(true);
+  for (let i = 0; i < m.burgers; i++) doelwitten.push(false);
+  shuffle(doelwitten);
+  doelwitIdx = 0;
+  gameResultaten[missieIdx] = { vuurVijand: 0, vuurBurger: 0, abortVijand: 0, abortBurger: 0, timeouts: 0 };
+  gameScreen('game-play');
+  document.getElementById('hud-missie').textContent = m.kort;
+  volgendDoelwit();
+}
+
+function volgendDoelwit() {
+  const uitkomst = document.getElementById('hud-uitkomst');
+  uitkomst.className = 'hud-uitkomst';
+  uitkomst.textContent = '';
+  document.getElementById('hud-teller').textContent = 'doelwit ' + (doelwitIdx + 1) + '/10';
+  document.getElementById('btn-vuur').disabled = false;
+  document.getElementById('btn-abort').disabled = false;
+
+  // Timerbalk resetten en starten
+  const vul = document.getElementById('hud-timervul');
+  vul.classList.remove('lopend');
+  vul.style.width = '100%';
+  void vul.offsetWidth; // reflow forceert herstart van de transitie
+  vul.classList.add('lopend');
+
+  hudActief = true;
+  hudTimer = setTimeout(() => beslis(null), 3000);
+}
+
+function stopHudTimer() {
+  clearTimeout(hudTimer);
+  hudTimer = null;
+  hudActief = false;
+}
+
+function beslis(vuur) { // true = vuur, false = afbreken, null = timeout
+  if (!hudActief) return;
+  stopHudTimer();
+  document.getElementById('btn-vuur').disabled = true;
+  document.getElementById('btn-abort').disabled = true;
+  document.getElementById('hud-timervul').classList.remove('lopend');
+
+  const echtVijand = doelwitten[doelwitIdx];
+  const r = gameResultaten[missieIdx];
+  const uitkomst = document.getElementById('hud-uitkomst');
+
+  let cls, tekst;
+  if (vuur === true) {
+    if (echtVijand) { r.vuurVijand++; cls = 'goed'; tekst = 'DREIGING UITGESCHAKELD'; }
+    else { r.vuurBurger++; cls = 'fout'; tekst = 'BURGER GERAAKT\nHet doelwit was geen vijand.'; }
+  } else {
+    if (vuur === null) { r.timeouts++; }
+    if (echtVijand) { r.abortVijand++; cls = 'neutraal'; tekst = (vuur === null ? 'TE LAAT — AUTOMATISCH AFGEBROKEN\n' : 'AFGEBROKEN\n') + 'Het doelwit wás een vijand.'; }
+    else { r.abortBurger++; cls = 'goed'; tekst = (vuur === null ? 'TE LAAT — AUTOMATISCH AFGEBROKEN\n' : 'AFGEBROKEN\n') + 'Het doelwit was een burger.'; }
+  }
+
+  uitkomst.textContent = tekst;
+  uitkomst.className = 'hud-uitkomst show ' + cls;
+
+  doelwitIdx++;
+  setTimeout(() => {
+    if (doelwitIdx < doelwitten.length) {
+      volgendDoelwit();
+    } else if (missieIdx === 0) {
+      missieIdx = 1;
+      toonTussenstand();
+    } else {
+      toonDebrief();
+    }
+  }, 1400);
+}
+
+function missieTabel(r, m) {
+  return `<table class="debrief-tabel">
+    <tr><th>Jouw besluit</th><th>Werkelijkheid</th><th>Aantal</th></tr>
+    <tr><td>Vuur</td><td class="t-goed">vijand — terecht</td><td><strong>${r.vuurVijand}</strong></td></tr>
+    <tr><td>Vuur</td><td class="t-fout">burger — geraakt</td><td><strong>${r.vuurBurger}</strong></td></tr>
+    <tr><td>Afgebroken</td><td class="t-neutraal">vijand — ontsnapt</td><td><strong>${r.abortVijand}</strong></td></tr>
+    <tr><td>Afgebroken</td><td class="t-goed">burger — gespaard</td><td><strong>${r.abortBurger}</strong></td></tr>
+  </table>`;
+}
+
+function toonTussenstand() {
+  const r = gameResultaten[0];
+  const m = MISSIES[0];
+  document.getElementById('brief-titel').textContent = 'Tussenstand — ' + m.kort;
+  document.getElementById('brief-body').innerHTML =
+    missieTabel(r, m) +
+    `<p>In dit gebied was ${m.prevalentieTekst}: van de 10 alarmen waren er ${m.vijanden} echt.
+    Vuren op een alarm was hier meestal terecht.</p>
+    <div class="brief-blok"><strong>Nu verandert de context.</strong> Zelfde drone, zelfde sensor — ander gebied.</div>` +
+    MISSIES[1].briefing;
+  document.getElementById('brief-start').textContent = 'Start missie 2 →';
+  gameScreen('game-brief');
+}
+
+function toonDebrief() {
+  const r1 = gameResultaten[0], r2 = gameResultaten[1];
+  const burgersGeraakt = r1.vuurBurger + r2.vuurBurger;
+  const titel = document.getElementById('debrief-titel');
+  titel.textContent = 'Debrief: dezelfde sensor, een andere wereld';
+
+  let html = '<h3 style="font-size:0.95rem;margin:0 0 6px;">' + MISSIES[0].naam + '</h3>' + missieTabel(r1, MISSIES[0]);
+  html += '<h3 style="font-size:0.95rem;margin:16px 0 6px;">' + MISSIES[1].naam + '</h3>' + missieTabel(r2, MISSIES[1]);
+
+  html += `<div class="debrief-punch">
+    <div class="groot">${burgersGeraakt} burger${burgersGeraakt === 1 ? '' : 's'} geraakt</div>
+    <p>${burgersGeraakt === 0
+      ? 'Je hebt geen burgers geraakt — maar kijk hoeveel alarmen je daarvoor moest wantrouwen.'
+      : 'Elk van hen werd door een "99% accuraat" systeem als vijand aangemerkt.'}</p>
+  </div>`;
+
+  html += `<div class="debrief-les">
+    <p style="margin:0 0 10px;"><strong>Wat je zojuist voelde, is de base rate fallacy.</strong></p>
+    <p style="margin:0 0 10px;">In missie 1 (${MISSIES[0].prevalentieTekst}) was de PPV van een alarm
+    <strong>${MISSIES[0].ppvTekst}</strong>: 9 van de 10 alarmen klopten, en vuren leek een veilige strategie.</p>
+    <p style="margin:0 0 10px;">In missie 2 (${MISSIES[1].prevalentieTekst}) was de PPV van precies hetzelfde alarm
+    nog maar <strong>${MISSIES[1].ppvTekst}</strong>: 9 van de 10 alarmen waren burgers.
+    Wie in missie 2 net zo vuurt als in missie 1, raakt vooral onschuldigen.</p>
+    <p style="margin:0;">De sensor veranderde niet. De <strong>context</strong> veranderde —
+    en daarmee de betekenis van elk alarm. Dit is precies waarom "zinvolle menselijke tussenkomst"
+    meer vraagt dan op een knop drukken binnen 3 seconden: de mens moet de a-priorikans kennen.</p>
+  </div>`;
+
+  document.getElementById('debrief-body').innerHTML = html;
+
+  const nav = document.getElementById('debrief-nav');
+  nav.innerHTML = '';
+  const btnUitleg = document.createElement('button');
+  btnUitleg.className = 'btn-back';
+  btnUitleg.textContent = 'Bekijk de uitleg';
+  btnUitleg.addEventListener('click', () => {
+    gameOverlay.style.display = 'none';
+    defenseOverlay.style.display = 'flex';
+    goToDefenseStep(1);
+  });
+  const btnOpnieuw = document.createElement('button');
+  btnOpnieuw.className = 'btn-next';
+  btnOpnieuw.textContent = 'Opnieuw spelen';
+  btnOpnieuw.addEventListener('click', openGame);
+  const btnKlaar = document.createElement('button');
+  btnKlaar.className = 'btn-next btn-primary';
+  btnKlaar.textContent = 'Afsluiten';
+  btnKlaar.addEventListener('click', sluitGame);
+  nav.appendChild(btnUitleg);
+  nav.appendChild(btnOpnieuw);
+  nav.appendChild(btnKlaar);
+
+  gameScreen('game-debrief');
+}
+
+// Events
+gameButton.addEventListener('click', openGame);
+if (defenseToGame) defenseToGame.addEventListener('click', openGame);
+document.getElementById('game-exit').addEventListener('click', sluitGame);
+document.getElementById('brief-start').addEventListener('click', startMissie);
+document.getElementById('btn-vuur').addEventListener('click', () => beslis(true));
+document.getElementById('btn-abort').addEventListener('click', () => beslis(false));
+
+document.addEventListener('keydown', (e) => {
+  if (gameOverlay.style.display === 'none') return;
+  if (!document.getElementById('game-play').classList.contains('active')) return;
+  if (e.key === 'v' || e.key === 'V') beslis(true);
+  if (e.key === 'a' || e.key === 'A') beslis(false);
+});
