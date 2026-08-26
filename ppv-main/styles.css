@@ -1797,3 +1797,27 @@ body::before {
   .game-screen { padding: 20px; }
   .hud-viewport { height: 240px; }
 }
+
+/* Regels die een voor een in beeld komen */
+.brief-regel {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin: 12px 0;
+  line-height: 1.55;
+}
+
+.brief-regel strong { color: var(--text-primary); }
+
+.reveal-line {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: revealUp 0.5s ease forwards;
+}
+
+@keyframes revealUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-line { animation-duration: 0.01s; }
+}

@@ -577,52 +577,41 @@ function renderDefenseGrid(containerId, tpCount, fpCount) {
 // Human-in-the-Loop Simulatie
 // ===================================
 // Twee missies met dezelfde sensor. Per doelwit geeft het model een
-// eigen zekerheidsscore (zoals een echte classifier). De aantallen
-// per missie volgen de PPV van het scenario:
-//   Missie 1: oorlogsgebied, PPV ~92% -> 9 van 10 alarmen echt vijand.
-//   Missie 2: surveillance,  PPV ~9%  -> 1 van 10 alarmen echt vijand.
-// Scorepools zijn zo gekozen dat de sessie-AUC van de sensor 0,85 is.
+// eigen zekerheidsscore. De scorepools overlappen sterk, zodat de
+// missies qua scores hetzelfde aanvoelen (sessie-AUC: 0,72).
+//   Missie 1: oorlogsgebied, 9 van 10 meldingen echt vijand.
+//   Missie 2: surveillance,  1 van 10 meldingen echt vijand.
 
 const gameOverlay = document.getElementById('game-overlay');
 const gameButton = document.getElementById('game-button');
 const defenseToGame = document.getElementById('defense-to-game');
 
-const SCORES_VIJAND = [97, 95, 93, 91, 89, 88, 86, 84, 83, 79];
-const SCORES_BURGER = [90, 87, 85, 82, 80, 78, 76, 74, 72, 70];
+const SCORES_VIJAND = [98, 96, 93, 91, 89, 87, 85, 82, 79, 75];
+const SCORES_BURGER = [93, 90, 88, 85, 83, 81, 78, 75, 71, 67];
 
 const MISSIES = [
   {
-    naam: 'MISSIE 1 — ACTIEF CONFLICTGEBIED',
+    naam: 'MISSIE 1: CONFLICTGEBIED',
     kort: 'Missie 1: conflictgebied',
     vijanden: 9, burgers: 1,
-    ppvTekst: '91,7%', prevalentieTekst: '10% van de gescande personen is vijandig',
-    briefing: `
-      <p>Je bent operator van een gewapende drone boven een <strong>actief conflictgebied</strong>.
-      Er wordt zwaar gevochten; vijandelijke eenheden bewegen door de sector.</p>
-      <div class="brief-blok">
-        <strong>Jouw rol — human in the loop:</strong> het AI-systeem markeert doelwitten en geeft
-        per contact een <strong>zekerheidsscore</strong> — die verschilt per doelwit.
-        Vóór elke aanval beslis jij binnen <strong>3 seconden</strong>: VUUR of AFBREKEN.
-        De fabrikant claimt dat het systeem "99% accuraat" is.
-      </div>
-      <p>Je krijgt eerst één <strong>oefendoelwit</strong> (telt niet mee), daarna 10 echte alarmen.
-      Op het beeld is niets te onderscheiden — je hebt de score van het systeem en je kennis
-      van de context.</p>`
+    regels: [
+      'Je bestuurt een gewapende drone boven een <strong>oorlogsgebied</strong>.',
+      'Er wordt zwaar gevochten. Overal vijandelijke eenheden.',
+      'De computer wijst doelwitten aan, met een score. Hoe hoger, hoe zekerder.',
+      'Maar jij beslist: <strong>vuren of afbreken</strong>. Je hebt 3 seconden.',
+      'Eerst een oefendoelwit. Daarna telt elke keuze.'
+    ]
   },
   {
-    naam: 'MISSIE 2 — ROUTINE SURVEILLANCE',
+    naam: 'MISSIE 2: SURVEILLANCE',
     kort: 'Missie 2: surveillance',
     vijanden: 1, burgers: 9,
-    ppvTekst: '9,0%', prevalentieTekst: '0,1% van de gescande personen is vijandig',
-    briefing: `
-      <p>Nieuwe inzet: <strong>routine surveillance boven bewoond gebied</strong> tijdens een
-      vredesmissie. Er zijn nauwelijks vijandelijke activiteiten gemeld.</p>
-      <div class="brief-blok">
-        <strong>Zelfde systeem, zelfde sensor, zelfde soort scores.</strong> Nog steeds
-        "99% accuraat" volgens de fabrikant. Nog steeds 3 seconden per beslissing.
-      </div>
-      <p>Opnieuw 10 alarmen. Denk aan wat je in het veld hebt gezien — en aan wat
-      je wéét over de omgeving.</p>`
+    regels: [
+      'Nieuwe opdracht. Zelfde drone, zelfde computer.',
+      'Je vliegt nu boven een <strong>rustige stad</strong>. Vredesmissie.',
+      'Vijandelijke activiteit is hier zeldzaam.',
+      'Weer 10 meldingen. Jij beslist weer.'
+    ]
   }
 ];
 
@@ -639,6 +628,16 @@ function gameScreen(id) {
   document.getElementById(id).classList.add('active');
 }
 
+// Regels die een voor een in beeld komen
+function revealHtml(regels, startVertraging) {
+  let d = startVertraging || 0;
+  return regels.map(r => {
+    const html = '<p class="brief-regel reveal-line" style="animation-delay:' + d.toFixed(1) + 's">' + r + '</p>';
+    d += 0.55;
+    return html;
+  }).join('');
+}
+
 function openGame() {
   welcomeScreen.style.display = 'none';
   defenseOverlay.style.display = 'none';
@@ -648,7 +647,7 @@ function openGame() {
   gameResultaten = [];
   sessieDoelen = [];
   // Scorepools verdelen: 9 vijandscores + 1 burgerscore naar missie 1,
-  // de rest naar missie 2 — zo wordt elke poolwaarde precies één keer gebruikt.
+  // de rest naar missie 2. Elke poolwaarde wordt precies een keer gebruikt.
   const vs = [...SCORES_VIJAND]; shuffle(vs);
   const bs = [...SCORES_BURGER]; shuffle(bs);
   MISSIES[0].scores = { vijand: vs.slice(0, 9), burger: bs.slice(0, 1) };
@@ -665,8 +664,8 @@ function sluitGame() {
 function toonBriefing() {
   const m = MISSIES[missieIdx];
   document.getElementById('brief-titel').textContent = m.naam;
-  document.getElementById('brief-body').innerHTML = m.briefing;
-  document.getElementById('brief-start').textContent = missieIdx === 0 ? 'Start oefening →' : 'Start missie 2 →';
+  document.getElementById('brief-body').innerHTML = revealHtml(m.regels);
+  document.getElementById('brief-start').textContent = missieIdx === 0 ? 'Start →' : 'Start missie 2 →';
   gameScreen('game-brief');
 }
 
@@ -678,7 +677,7 @@ function startMissie() {
   shuffle(doelwitten);
   // Missie 1 begint met een oefendoelwit dat niet meetelt
   if (missieIdx === 0) {
-    doelwitten.unshift({ vijand: false, score: 88, oefening: true });
+    doelwitten.unshift({ vijand: false, score: 86, oefening: true });
   }
   doelwitIdx = 0;
   gameResultaten[missieIdx] = { vuurVijand: 0, vuurBurger: 0, abortVijand: 0, abortBurger: 0, timeouts: 0 };
@@ -695,7 +694,7 @@ function volgendDoelwit() {
 
   const echteIdx = doelwitten.filter((x, i) => i < doelwitIdx && !x.oefening).length;
   const echteTotaal = doelwitten.filter(x => !x.oefening).length;
-  document.getElementById('hud-missie').textContent = d.oefening ? 'OEFENING — telt niet mee' : m.kort;
+  document.getElementById('hud-missie').textContent = d.oefening ? 'OEFENING (telt niet mee)' : m.kort;
   document.getElementById('hud-teller').textContent = d.oefening ? 'oefendoelwit' : 'doelwit ' + (echteIdx + 1) + '/' + echteTotaal;
   document.getElementById('hud-score').textContent = '(' + d.score + '%)';
   document.getElementById('btn-vuur').disabled = false;
@@ -729,21 +728,21 @@ function beslis(vuur) { // true = vuur, false = afbreken, null = timeout
   const uitkomst = document.getElementById('hud-uitkomst');
 
   if (d.oefening) {
-    const keuze = vuur === true ? 'VUUR' : (vuur === null ? 'GEEN BESLUIT (automatisch afgebroken)' : 'AFBREKEN');
-    uitkomst.textContent = 'OEFENING VOLTOOID\nJe koos: ' + keuze + '.\nVanaf nu telt elke beslissing.';
+    const keuze = vuur === true ? 'VUUR' : (vuur === null ? 'GEEN BESLUIT' : 'AFBREKEN');
+    uitkomst.textContent = 'OEFENING KLAAR\nJe koos: ' + keuze + '.\nVanaf nu telt elke keuze.';
     uitkomst.className = 'hud-uitkomst show neutraal';
   } else {
     sessieDoelen.push({ vijand: d.vijand, score: d.score });
     const r = gameResultaten[missieIdx];
     let cls, tekst;
     if (vuur === true) {
-      if (d.vijand) { r.vuurVijand++; cls = 'goed'; tekst = 'DREIGING UITGESCHAKELD\nScore was ' + d.score + '%.'; }
-      else { r.vuurBurger++; cls = 'fout'; tekst = 'BURGER GERAAKT\nHet systeem gaf ' + d.score + '% zekerheid — en zat ernaast.'; }
+      if (d.vijand) { r.vuurVijand++; cls = 'goed'; tekst = 'RAAK. DREIGING UITGESCHAKELD\nScore was ' + d.score + '%.'; }
+      else { r.vuurBurger++; cls = 'fout'; tekst = 'BURGER GERAAKT\nDe computer gaf ' + d.score + '%. De computer zat ernaast.'; }
     } else {
       if (vuur === null) r.timeouts++;
-      const kop = vuur === null ? 'TE LAAT — AUTOMATISCH AFGEBROKEN\n' : 'AFGEBROKEN\n';
-      if (d.vijand) { r.abortVijand++; cls = 'neutraal'; tekst = kop + 'Het doelwit wás een vijand (score ' + d.score + '%).'; }
-      else { r.abortBurger++; cls = 'goed'; tekst = kop + 'Het doelwit was een burger (score ' + d.score + '%).'; }
+      const kop = vuur === null ? 'TE LAAT. AUTOMATISCH AFGEBROKEN\n' : 'AFGEBROKEN\n';
+      if (d.vijand) { r.abortVijand++; cls = 'neutraal'; tekst = kop + 'Dit was wel een vijand. Score ' + d.score + '%.'; }
+      else { r.abortBurger++; cls = 'goed'; tekst = kop + 'Dit was een burger. Score ' + d.score + '%.'; }
     }
     uitkomst.textContent = tekst;
     uitkomst.className = 'hud-uitkomst show ' + cls;
@@ -764,16 +763,16 @@ function beslis(vuur) { // true = vuur, false = afbreken, null = timeout
 
 function missieTabel(r) {
   return `<table class="debrief-tabel">
-    <tr><th>Jouw besluit</th><th>Werkelijkheid</th><th>Aantal</th></tr>
-    <tr><td>Vuur</td><td class="t-goed">vijand — terecht</td><td><strong>${r.vuurVijand}</strong></td></tr>
-    <tr><td>Vuur</td><td class="t-fout">burger — geraakt</td><td><strong>${r.vuurBurger}</strong></td></tr>
-    <tr><td>Afgebroken</td><td class="t-neutraal">vijand — ontsnapt</td><td><strong>${r.abortVijand}</strong></td></tr>
-    <tr><td>Afgebroken</td><td class="t-goed">burger — gespaard</td><td><strong>${r.abortBurger}</strong></td></tr>
+    <tr><th>Jouw keuze</th><th>Werkelijkheid</th><th>Aantal</th></tr>
+    <tr><td>Vuur</td><td class="t-goed">vijand, terecht</td><td><strong>${r.vuurVijand}</strong></td></tr>
+    <tr><td>Vuur</td><td class="t-fout">burger, geraakt</td><td><strong>${r.vuurBurger}</strong></td></tr>
+    <tr><td>Afgebroken</td><td class="t-neutraal">vijand, ontsnapt</td><td><strong>${r.abortVijand}</strong></td></tr>
+    <tr><td>Afgebroken</td><td class="t-goed">burger, gespaard</td><td><strong>${r.abortBurger}</strong></td></tr>
   </table>`;
 }
 
 // Mann-Whitney: kans dat een willekeurige vijand een hogere score
-// heeft dan een willekeurige burger (ties tellen half mee).
+// heeft dan een willekeurige burger (gelijke scores tellen half mee).
 function berekenAuc(doelen) {
   const v = doelen.filter(d => d.vijand).map(d => d.score);
   const b = doelen.filter(d => !d.vijand).map(d => d.score);
@@ -788,64 +787,69 @@ function berekenAuc(doelen) {
 
 function toonTussenstand() {
   const r = gameResultaten[0];
-  const m = MISSIES[0];
-  document.getElementById('brief-titel').textContent = 'Tussenstand — ' + m.kort;
+  document.getElementById('brief-titel').textContent = 'Missie 1 zit erop';
   document.getElementById('brief-body').innerHTML =
     missieTabel(r) +
-    `<p>In dit gebied was ${m.prevalentieTekst}: van de 10 alarmen waren er ${m.vijanden} echt.
-    Vuren op een alarm was hier meestal terecht — zeker bij hoge scores.</p>
-    <div class="brief-blok"><strong>Nu verandert de context.</strong> Zelfde drone, zelfde sensor,
-    zelfde soort scores — ander gebied.</div>` +
-    MISSIES[1].briefing;
+    revealHtml([
+      'Hier was vuren meestal raak: <strong>9 van de 10</strong> meldingen waren echt een vijand.',
+      '<strong>Maar nu verandert alles.</strong>'
+    ], 0.3) +
+    revealHtml(MISSIES[1].regels, 1.6);
   document.getElementById('brief-start').textContent = 'Start missie 2 →';
   gameScreen('game-brief');
+}
+
+// Teller die oploopt naar de eindwaarde
+function telOp(el, naar, duurMs) {
+  const start = performance.now();
+  function stap(nu) {
+    const t = Math.min(1, (nu - start) / duurMs);
+    el.textContent = Math.round(t * naar);
+    if (t < 1) requestAnimationFrame(stap);
+  }
+  requestAnimationFrame(stap);
 }
 
 function toonDebrief() {
   const r1 = gameResultaten[0], r2 = gameResultaten[1];
   const burgersGeraakt = r1.vuurBurger + r2.vuurBurger;
-  const vijandenTotaal = MISSIES[0].vijanden + MISSIES[1].vijanden;   // 10
-  const burgersTotaal = MISSIES[0].burgers + MISSIES[1].burgers;      // 10
   const vuurVijandTotaal = r1.vuurVijand + r2.vuurVijand;
   const abortBurgerTotaal = r1.abortBurger + r2.abortBurger;
-  const sens = Math.round(vuurVijandTotaal / vijandenTotaal * 100);
-  const spec = Math.round(abortBurgerTotaal / burgersTotaal * 100);
   const auc = berekenAuc(sessieDoelen);
-  const aucTekst = auc === null ? '—' : auc.toFixed(2).replace('.', ',');
+  const aucPct = auc === null ? null : Math.round(auc * 100);
 
-  document.getElementById('debrief-titel').textContent = 'Debrief: dezelfde sensor, een andere wereld';
+  document.getElementById('debrief-titel').textContent = 'Debrief';
 
-  let html = '<h3 style="font-size:0.95rem;margin:0 0 6px;">' + MISSIES[0].naam + '</h3>' + missieTabel(r1);
-  html += '<h3 style="font-size:0.95rem;margin:16px 0 6px;">' + MISSIES[1].naam + '</h3>' + missieTabel(r2);
-
-  html += `<div class="debrief-punch">
-    <div class="groot">${burgersGeraakt} burger${burgersGeraakt === 1 ? '' : 's'} geraakt</div>
+  let html = `<div class="debrief-punch reveal-line" style="animation-delay:0.2s">
+    <div class="groot"><span id="punch-num">0</span> burger${burgersGeraakt === 1 ? '' : 's'} geraakt</div>
     <p>${burgersGeraakt === 0
-      ? 'Je hebt geen burgers geraakt — maar tel ook de vijanden die je daarvoor moest laten ontsnappen.'
-      : 'Elk van hen kreeg van het systeem een hoge zekerheidsscore.'}</p>
+      ? 'Geen burgers geraakt. Maar hoeveel vijanden liet je lopen?'
+      : 'Elke burger kreeg van de computer een hoge score.'}</p>
   </div>`;
 
-  html += `<div class="debrief-les">
-    <p style="margin:0 0 10px;"><strong>De sensor was echt goed: AUC ${aucTekst}.</strong></p>
-    <p style="margin:0 0 10px;">Per doelwit gaf het model een andere zekerheidsscore. De AUC — de kans dat
-    een willekeurige echte vijand een hogere score krijgt dan een willekeurige burger — was in deze
-    sessie <strong>${aucTekst}</strong>. Dat is een prima onderscheidend model; het probleem lag niet bij de techniek.</p>
-    <p style="margin:0;">Jouw beslissingen kwamen neer op een <strong>sensitiviteit van ${sens}%</strong>
-    (${vuurVijandTotaal} van de ${vijandenTotaal} vijanden uitgeschakeld) en een
-    <strong>specificiteit van ${spec}%</strong> (${abortBurgerTotaal} van de ${burgersTotaal} burgers gespaard) —
-    jouw eigen punt op de ROC-curve.</p>
+  html += `<div class="reveal-line" style="animation-delay:0.9s">
+    <h3 style="font-size:0.95rem;margin:0 0 6px;">${MISSIES[0].naam}</h3>` + missieTabel(r1) +
+    `<h3 style="font-size:0.95rem;margin:14px 0 6px;">${MISSIES[1].naam}</h3>` + missieTabel(r2) + `</div>`;
+
+  html += `<div class="debrief-les reveal-line" style="animation-delay:1.6s">
+    <p style="margin:0 0 8px;"><strong>De computer was niet kapot.</strong></p>
+    <p style="margin:0;">Zet een echte vijand naast een burger, en in <strong>${aucPct} van de 100 keer</strong>
+    geeft de computer de vijand de hoogste score. Dat heet een AUC van 0,${aucPct}. Best goed.</p>
   </div>`;
 
-  html += `<div class="debrief-les">
-    <p style="margin:0 0 10px;"><strong>Wat je zojuist voelde, is de base rate fallacy.</strong></p>
-    <p style="margin:0 0 10px;">In missie 1 (${MISSIES[0].prevalentieTekst}) was de PPV van een alarm
-    <strong>${MISSIES[0].ppvTekst}</strong>: 9 van de 10 alarmen klopten, en vuren op hoge scores werkte.</p>
-    <p style="margin:0 0 10px;">In missie 2 (${MISSIES[1].prevalentieTekst}) was de PPV van hetzelfde soort alarm
-    nog maar <strong>${MISSIES[1].ppvTekst}</strong>: 9 van de 10 alarmen waren burgers — ook alarmen met
-    hoge scores. Zelfs wie de scores slim gebruikt, raakt hier burgers of laat de enige echte vijand lopen.</p>
-    <p style="margin:0;">Een goede AUC beschermt niet tegen een lage a-priorikans; hij verschuift alleen
-    wáár je de grens legt. Dit is precies waarom "zinvolle menselijke tussenkomst" meer vraagt dan op een
-    knop drukken binnen 3 seconden: de mens moet de context — de prevalentie — kennen en meewegen.</p>
+  html += `<div class="debrief-les reveal-line" style="animation-delay:2.3s">
+    <p style="margin:0 0 8px;"><strong>Dit deed jij.</strong></p>
+    <p style="margin:0 0 4px;">Vijanden uitgeschakeld: <strong>${vuurVijandTotaal} van de 10</strong>.</p>
+    <p style="margin:0;">Burgers gespaard: <strong>${abortBurgerTotaal} van de 10</strong>.</p>
+  </div>`;
+
+  html += `<div class="debrief-les reveal-line" style="animation-delay:3.0s">
+    <p style="margin:0 0 8px;"><strong>Wat ging er dan mis? De omgeving.</strong></p>
+    <p style="margin:0 0 4px;">In het oorlogsgebied was 9 van de 10 meldingen echt.</p>
+    <p style="margin:0 0 4px;">Boven de stad was 9 van de 10 meldingen een burger.</p>
+    <p style="margin:0 0 8px;">Zelfde computer. Zelfde soort scores. Andere wereld.</p>
+    <p style="margin:0;">Daarom mag een mens nooit blind op een score vertrouwen.
+    <strong>Je moet weten waar je bent.</strong></p>
   </div>`;
 
   document.getElementById('debrief-body').innerHTML = html;
@@ -854,7 +858,7 @@ function toonDebrief() {
   nav.innerHTML = '';
   const btnUitleg = document.createElement('button');
   btnUitleg.className = 'btn-back';
-  btnUitleg.textContent = 'Bekijk de uitleg';
+  btnUitleg.textContent = 'Hoe zit dit?';
   btnUitleg.addEventListener('click', () => {
     gameOverlay.style.display = 'none';
     defenseOverlay.style.display = 'flex';
@@ -873,6 +877,7 @@ function toonDebrief() {
   nav.appendChild(btnKlaar);
 
   gameScreen('game-debrief');
+  setTimeout(() => telOp(document.getElementById('punch-num'), burgersGeraakt, 900), 400);
 }
 
 // Events
