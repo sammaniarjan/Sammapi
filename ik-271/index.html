@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IK-271 Uitschrijven</title>
-<meta name="description" content="Formulier IK-271: verzoek tot uitschrijving. Speciaal voor de AMA's.">
+<meta name="description" content="Instructiekaart IK-271: uitschrijven bij Defensie. Speciaal voor de AMA's.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23154273'/><text x='50' y='63' font-size='34' text-anchor='middle' fill='white' font-family='Verdana' font-weight='bold'>271</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -178,6 +178,15 @@ input:focus, select:focus { outline: 3px solid var(--oranje); outline-offset: 1p
 }
 .pagina-voet a { color: var(--linkblauw); }
 
+.ik-meta { font-size: 0.74rem; color: var(--muted); margin-bottom: 14px; }
+.ik-body h3 { font-size: 0.92rem; margin: 14px 0 6px; color: var(--donkerblauw); }
+.ik-body h3:first-of-type { margin-top: 0; }
+.ik-body p { font-size: 0.88rem; margin-bottom: 8px; }
+.ik-body ul, .ik-body ol { font-size: 0.88rem; padding-left: 22px; margin-bottom: 8px; }
+.ik-body li { margin-bottom: 4px; }
+.terug-link { margin-bottom: 12px; }
+.terug-link a { font-size: 0.82rem; color: var(--linkblauw); }
+
 .scherm { display: none; }
 .scherm.actief { display: block; }
 </style>
@@ -190,19 +199,74 @@ input:focus, select:focus { outline: 3px solid var(--oranje); outline-offset: 1p
 </div>
 <header class="mast-banner">
     <div class="inner">
-        <h1>Formulier IK-271 &mdash; Verzoek tot uitschrijving</h1>
+        <h1>IK-271 &mdash; Uitschrijven</h1>
         <div class="sub">Speciaal voor AMA's die denken dat ze weg kunnen</div>
     </div>
 </header>
 
 <div class="wrap">
 
-    <!-- ══════════ FORMULIER ══════════ -->
-    <div class="scherm actief" id="scherm-formulier">
+    <!-- ══════════ INSTRUCTIEKAART ══════════ -->
+    <div class="scherm actief" id="scherm-ik">
+        <div class="card">
+            <div class="card-kop">Instructiekaart IK-271 &mdash; Uitschrijven bij Defensie</div>
+            <div class="card-body ik-body">
+                <p class="ik-meta">Vastgesteld: onbekend &middot; Versie 14 (wijzigingen t.o.v. versie 13: geen) &middot; Rubricering: iedereen weet dit al</p>
 
-        <div class="intro-notitie">
-            Vul dit formulier volledig en naar waarheid in. Onvolledige aanvragen worden
-            conform vaste werkwijze kwijtgeraakt.
+                <h3>1. Doel</h3>
+                <p>Deze instructiekaart beschrijft hoe u zich uitschrijft bij Defensie.
+                De kaart is volledig, juist en actueel. Neem dit aan.</p>
+
+                <h3>2. Voorwaarden</h3>
+                <ul>
+                    <li>U beschikt over een dienstverband. Controleren is niet nodig; het is er.</li>
+                    <li>U voert de rang die u werkelijk heeft. Vult u kapitein in terwijl u
+                    officieel nog vaandrig bent, dan bent u af.</li>
+                    <li>Uw trippelvetsaldo wordt ambtshalve vastgesteld. Zelf tellen wordt
+                    afgeraden en genegeerd.</li>
+                </ul>
+
+                <h3>3. Werkwijze</h3>
+                <ol>
+                    <li>Open formulier 271-66-1204-B (bijlage A). Gebruik uitsluitend de meest
+                    recente versie; welke dat is, wordt niet bekendgemaakt.</li>
+                    <li>Vul alle velden in. Ja, allemaal.</li>
+                    <li>Controleer vakje 2.4 ("Ik ben snaak"). Wij controleren mee.</li>
+                    <li>Dien het formulier in en noteer het kenmerk.</li>
+                    <li>Wacht.</li>
+                </ol>
+
+                <h3>4. Tijdsverloop</h3>
+                <p>De uitslag volgt volgend jaar dinsdag. Eerder informeren naar de status
+                verlengt de behandeltermijn (zie punt 5).</p>
+
+                <h3>5. Bijzonderheden</h3>
+                <ul>
+                    <li>Bezwaar maken is mogelijk en zinloos. Beide zijn proefondervindelijk vastgesteld.</li>
+                    <li>Voor snaken geldt aanvullend: eens snaak, altijd snaak.</li>
+                    <li>Bij twijfel: gewoon blijven.</li>
+                </ul>
+
+                <div style="margin-top:16px;">
+                    <button class="btn" id="btn-naar-formulier" style="background: var(--linkblauw);">Naar formulier 271-66-1204-B</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════ FORMULIER ══════════ -->
+    <div class="scherm" id="scherm-formulier">
+
+        <div class="terug-link"><a href="#" id="link-naar-ik">&lsaquo; Instructiekaart IK-271</a></div>
+
+        <div class="card">
+            <div class="card-kop">Formulier 271-66-1204-B &mdash; Verzoek tot uitschrijving (bijlage A bij IK-271)</div>
+            <div class="card-body">
+                <div class="intro-notitie" style="margin-bottom:0;">
+                    Vul dit formulier volledig en naar waarheid in. Onvolledige aanvragen worden
+                    conform vaste werkwijze kwijtgeraakt.
+                </div>
+            </div>
         </div>
 
         <div class="card">
@@ -385,7 +449,7 @@ function berekenKosten() {
     regels.push(['Fasetoeslag FPS (factor ' + String(faseFactor).replace('.', ',') + ')', faseToeslag]);
     const slijtage = Math.max(0, leeftijd - 18) * 87;
     regels.push(['Slijtage rijksmaterieel (' + Math.max(0, leeftijd - 18) + ' dienstbare jaren × 87)', slijtage]);
-    regels.push(['Administratiekosten formulier IK-271', 271]);
+    regels.push(['Administratiekosten formulier 271-66-1204-B', 271]);
     regels.push(['Verloren baret (standaardaanname)', 250]);
     if (snaak) {
         regels.push(['Snaaktoeslag (art. 5NA-AK)', 271]);
@@ -475,7 +539,7 @@ function volgendJaarDinsdag() {
 function toonOntvangst() {
     $('#uitslag-datum').textContent = volgendJaarDinsdag();
     $('#ontvangst-kenmerk').textContent =
-        'Kenmerk: IK-271/' + new Date().getFullYear() + '/' +
+        'Kenmerk: 271-66-1204-B/' + new Date().getFullYear() + '/' +
         String(Math.floor(Math.random() * 90000) + 10000) +
         ' · Status: onderin de stapel';
     toonScherm('scherm-ontvangst');
@@ -515,7 +579,7 @@ function toonBesluit() {
     }
 
     $('#besluit-kenmerk').textContent =
-        'Kenmerk: IK-271/' + new Date().getFullYear() + '/' +
+        'Kenmerk: 271-66-1204-B/' + new Date().getFullYear() + '/' +
         String(Math.floor(Math.random() * 90000) + 10000) +
         ' · Behandeld door: vacature';
 
@@ -539,6 +603,12 @@ $('#btn-bezwaar').addEventListener('click', () => {
 
 $('#btn-opnieuw').addEventListener('click', () => {
     toonScherm('scherm-formulier');
+});
+
+$('#btn-naar-formulier').addEventListener('click', () => toonScherm('scherm-formulier'));
+$('#link-naar-ik').addEventListener('click', (e) => {
+    e.preventDefault();
+    toonScherm('scherm-ik');
 });
 </script>
 </body>
