@@ -166,6 +166,39 @@ input.veld:focus { outline: none; border-color: var(--accent); }
     font-size: 0.78rem; color: var(--muted);
     text-align: center; margin-top: 24px;
 }
+
+.help-list .help-text { margin-bottom: 8px; }
+
+.formule-keuze { display: flex; gap: 8px; margin-bottom: 12px; }
+.fk-btn {
+    font: inherit; font-size: 0.8rem; font-weight: 600;
+    padding: 7px 14px; border-radius: 50px; cursor: pointer;
+    background: transparent; color: var(--tekst-2);
+    border: 1px solid var(--rand);
+    transition: all 0.2s;
+}
+.fk-btn:hover { border-color: var(--accent); color: var(--accent); }
+.fk-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+.urine-doelen {
+    margin-top: 14px; border-top: 1px solid var(--rand-licht); padding-top: 12px;
+    font-size: 0.85rem; color: var(--tekst-2);
+}
+.urine-doelen ul { padding-left: 20px; margin-top: 6px; }
+.urine-doelen li { margin-bottom: 3px; }
+
+.verwijs-lijst { display: flex; flex-direction: column; gap: 7px; }
+.verwijs-lijst label {
+    display: flex; align-items: flex-start; gap: 9px;
+    font-size: 0.86rem; font-weight: 500; color: var(--tekst);
+    cursor: pointer; margin: 0;
+}
+.verwijs-lijst input { width: auto; margin-top: 3px; accent-color: var(--accent); }
+.verwijs-advies {
+    margin-top: 12px; padding: 12px 16px; border-radius: 10px;
+    background: var(--rood-bg); border: 1px solid rgba(220, 38, 38, 0.3);
+    font-size: 0.88rem; color: var(--rood); font-weight: 600;
+}
 </style>
 </head>
 <body>
@@ -179,6 +212,17 @@ input.veld:focus { outline: none; border-color: var(--accent); }
     <div class="app-head">
         <h1>Brandwonden</h1>
         <div class="sub">Rule of nines &rarr; TBSA &rarr; Parkland &middot; volwassene &middot; werkt volledig lokaal</div>
+    </div>
+
+    <div class="card">
+        <h3>Eerste opvang</h3>
+        <div class="help-list">
+            <p class="help-text"><strong>Koelen:</strong> circa 10 minuten met lauw, zacht stromend leidingwater. Geen ijs of ijskoud water.</p>
+            <p class="help-text"><strong>Chemisch letsel:</strong> langdurig blijven spoelen met water en beschermende handschoenen dragen.</p>
+            <p class="help-text"><strong>Voorkom onderkoeling:</strong> koel de wond, niet de patiënt. Dek na het koelen af (huishoudfolie of schone doek), zeker bij kinderen en grote wonden.</p>
+            <p class="help-text"><strong>Verwijder</strong> knellende kleding en sieraden voordat oedeem ontstaat.</p>
+            <p class="help-text"><strong>Denk aan inhalatieletsel</strong> bij brand in een afgesloten ruimte, roet in mond of neus, verschroeide neusharen, heesheid of stridor. Overleg dan vroeg over de luchtweg.</p>
+        </div>
     </div>
 
     <div class="card">
@@ -229,6 +273,8 @@ input.veld:focus { outline: none; border-color: var(--accent); }
             <span class="hint">1% &asymp; handpalm + vingers van de pati&euml;nt, voor verspreide kleinere wonden</span>
         </div>
 
+        <p class="help-text" style="margin-top:12px;"><em>Het figuur geldt voor volwassenen. Bij kinderen telt het hoofd zwaarder en de benen lichter; gebruik daar een kinderschema of de handpalmregel.</em></p>
+
         <div class="tbsa-box">
             <div class="waarde" id="tbsa">0%</div>
             <div class="label">totaal verbrand lichaamsoppervlak (2e/3e-graads)</div>
@@ -238,8 +284,12 @@ input.veld:focus { outline: none; border-color: var(--accent); }
     </div>
 
     <div class="card">
-        <h3>Parkland-formule</h3>
-        <div class="card-sub">Vochtresuscitatie met kristallo&iuml;den (Ringerlactaat) in de eerste 24 uur, gerekend vanaf het moment van verbranding.</div>
+        <h3>Vochtresuscitatie</h3>
+        <div class="card-sub">Kristallo&iuml;den (Ringerlactaat/Hartmann) in de eerste 24 uur, gerekend vanaf het moment van verbranding. Indicatie: vanaf &plusmn;15% TVLO bij volwassenen, &plusmn;10% bij kinderen.</div>
+        <div class="formule-keuze">
+            <button class="fk-btn active" data-factor="3">Richtlijn NL: 3 ml</button>
+            <button class="fk-btn" data-factor="4">Klassiek Parkland: 4 ml</button>
+        </div>
         <label class="veld-label" for="gewicht">Gewicht pati&euml;nt (kg)</label>
         <input class="veld" type="number" id="gewicht" min="1" step="1" placeholder="bijv. 80">
         <div class="parkland-rows" id="parkland-rows" hidden>
@@ -250,13 +300,39 @@ input.veld:focus { outline: none; border-color: var(--accent); }
             <div class="parkland-row"><span>&nbsp;&nbsp;&rarr; tempo volgende 16 uur</span><strong id="pk-16u-rate">--</strong></div>
         </div>
         <div class="opmerking" id="pk-opmerking" hidden></div>
+        <div class="urine-doelen">
+            <strong>Stuur bij op urineproductie</strong> (de formule is alleen een startpunt):
+            <ul>
+                <li>volwassenen: 0,5 ml/kg per uur (&plusmn;30&ndash;50 ml/uur)</li>
+                <li>kinderen tot 30 kg: 1&ndash;2 ml/kg per uur, plus onderhoudsvocht</li>
+                <li>rode of donkere urine (myoglobinurie, denk aan elektrisch letsel): ruimere diurese nastreven</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Overleg met een brandwondencentrum</h3>
+        <div class="card-sub">Vink aan wat van toepassing is. Bij &eacute;&eacute;n of meer criteria: laagdrempelig overleggen.</div>
+        <div class="verwijs-lijst">
+            <label><input type="checkbox" class="vw"> Volledige dikte (3e-graads) &ge;5% TVLO</label>
+            <label><input type="checkbox" class="vw"> Functioneel gebied: gelaat, handen, voeten, genitali&euml;n, perineum of groot gewricht</label>
+            <label><input type="checkbox" class="vw"> Circulaire brandwond aan hals, romp of ledemaat</label>
+            <label><input type="checkbox" class="vw"> Elektriciteit (incl. bliksem)</label>
+            <label><input type="checkbox" class="vw"> Chemisch letsel</label>
+            <label><input type="checkbox" class="vw"> (Vermoeden van) inhalatieletsel</label>
+            <label><input type="checkbox" class="vw"> Begeleidend trauma of relevante comorbiditeit</label>
+            <label><input type="checkbox" class="vw"> Leeftijd &le;1 jaar of &ge;75 jaar</label>
+            <label><input type="checkbox" class="vw"> Twijfel over de toedracht (denk aan toegebracht letsel)</label>
+        </div>
+        <div class="verwijs-advies" id="verwijs-advies" hidden></div>
     </div>
 
     <div class="card">
         <h3>Uitleg</h3>
-        <div class="formule">Parkland: 4 ml &times; gewicht (kg) &times; TBSA (%)</div>
-        <p class="help-text">De helft van het volume gaat in de <strong>eerste 8 uur na de verbranding</strong> (niet na aankomst!), de andere helft in de 16 uur daarna. Alleen 2e- en 3e-graads brandwonden tellen mee voor de TBSA.</p>
-        <p class="help-text">Rule of nines (volwassene): hoofd 9%, romp voor 18%, romp achter 18%, elke arm 9%, elk been 18%, perineum 1%. De formule is een startpunt &mdash; stuur bij op urineproductie en kliniek.</p>
+        <div class="formule">startvolume = 3 ml &times; gewicht (kg) &times; TVLO (%)</div>
+        <p class="help-text">De Nederlandse richtlijn start bewust met een lager volume (3 ml) dan de klassieke Parkland-formule (4 ml): een hoger startvolume leidt vaak tot te veel vocht in de eerste 24 uur. In beide gevallen gaat de helft in de <strong>eerste 8 uur na de verbranding</strong> (niet na aankomst!), de rest in de 16 uur daarna, en stuur je bij op urineproductie.</p>
+        <p class="help-text">Alleen 2e- en 3e-graads brandwonden tellen mee voor het TVLO. Rule of nines (volwassene): hoofd 9%, romp voor 18%, romp achter 18%, elke arm 9%, elk been 18%, perineum 1%. Handpalm + vingers van de pati&euml;nt is ongeveer 1%.</p>
+        <p class="help-text">Verwijscriteria qua grootte: &ge;10% TVLO bij volwassenen en &ge;5% bij kinderen is op zichzelf al reden om met een brandwondencentrum te overleggen.</p>
     </div>
 
     <p class="disclaimer">Rekentool voor onderwijsdoeleinden. Volg voor pati&euml;ntenzorg het lokale protocol en titreer op klinische respons.</p>
@@ -265,6 +341,16 @@ input.veld:focus { outline: none; border-color: var(--accent); }
 <script>
 'use strict';
 const $ = (sel) => document.querySelector(sel);
+
+let vochtFactor = 3; // NL-richtlijn startformule; 4 = klassieke Parkland
+
+document.querySelectorAll('.fk-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.fk-btn').forEach(b => b.classList.toggle('active', b === btn));
+        vochtFactor = parseInt(btn.dataset.factor, 10);
+        update();
+    });
+});
 
 const REGIOS = {
     'hoofd':       { naam: 'Hoofd/hals', pct: 9 },
@@ -331,6 +417,8 @@ function update() {
         lijst.appendChild(row);
     }
 
+    updateVerwijs();
+
     // Parkland
     const kg = parseFloat($('#gewicht').value);
     const rows = $('#parkland-rows'), opm = $('#pk-opmerking');
@@ -339,7 +427,7 @@ function update() {
         opm.hidden = true;
         return;
     }
-    const totaal = 4 * kg * tbsa;
+    const totaal = vochtFactor * kg * tbsa;
     $('#pk-totaal').textContent = fmtMl(totaal);
     $('#pk-8u').textContent = fmtMl(totaal / 2);
     $('#pk-8u-rate').textContent = Math.round(totaal / 2 / 8) + ' ml/u';
@@ -348,12 +436,31 @@ function update() {
     rows.hidden = false;
 
     if (tbsa < 15) {
-        opm.textContent = 'Bij een TBSA onder de ~15% is formele Parkland-resuscitatie meestal niet nodig; orale of standaard iv-vochttoediening volstaat vaak. Volg het lokale protocol.';
+        opm.textContent = 'Formele vochtresuscitatie is geïndiceerd vanaf ±15% TVLO bij volwassenen (±10% bij kinderen). Daaronder volstaat meestal orale of standaard iv-vochttoediening; volg het lokale protocol.';
         opm.hidden = false;
     } else {
         opm.hidden = true;
     }
 }
+
+function updateVerwijs() {
+    const advies = $('#verwijs-advies');
+    if (!advies) return;
+    const aangevinkt = document.querySelectorAll('.vw:checked').length;
+    const tbsa = tbsaTotaal();
+    const tbsaCriterium = tbsa >= 10;
+    if (aangevinkt > 0 || tbsaCriterium) {
+        advies.textContent = (tbsaCriterium
+            ? 'TVLO is ' + fmtPct(tbsa) + ' (criterium: ≥10% bij volwassenen, ≥5% bij kinderen). '
+            : '') +
+            'Eén of meer verwijscriteria zijn van toepassing: overleg laagdrempelig met een brandwondencentrum.';
+        advies.hidden = false;
+    } else {
+        advies.hidden = true;
+    }
+}
+
+document.querySelectorAll('.vw').forEach(cb => cb.addEventListener('change', updateVerwijs));
 
 $('#extra').addEventListener('input', update);
 $('#gewicht').addEventListener('input', update);
