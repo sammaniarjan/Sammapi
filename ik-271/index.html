@@ -59,7 +59,7 @@ body {
 .mast-top .label { font-size: 0.82rem; color: var(--tekst-2); }
 
 .mast-banner { background: var(--oranje); }
-.mast-banner .inner, .wrap { max-width: 720px; margin: 0 auto; width: 100%; }
+.mast-banner .inner, .wrap { max-width: 900px; margin: 0 auto; width: 100%; }
 .mast-banner .inner { padding: 14px 16px; }
 .mast-banner h1 { color: #fff; font-size: 1.35rem; font-weight: 700; }
 .mast-banner .sub { color: #fff; font-size: 0.82rem; opacity: 0.95; }
@@ -111,7 +111,10 @@ input:focus, select:focus { outline: 3px solid var(--oranje); outline-offset: 1p
 .check-veld .check-tekst { font-size: 0.88rem; }
 .check-veld .check-sub { font-size: 0.76rem; color: var(--muted); }
 
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+.grid-2:last-child { margin-bottom: 0; }
+.grid-2 .veld { display: flex; flex-direction: column; margin-bottom: 0; }
+.grid-2 .veld input, .grid-2 .veld select { margin-top: auto; }
 @media (max-width: 520px) { .grid-2 { grid-template-columns: 1fr; } }
 
 /* Kostenoverzicht */
@@ -170,7 +173,7 @@ input:focus, select:focus { outline: 3px solid var(--oranje); outline-offset: 1p
 .bezwaar-teller { font-size: 0.8rem; color: var(--muted); margin-top: 8px; font-style: italic; }
 
 .pagina-voet {
-    max-width: 720px; margin: 0 auto; padding: 0 16px 32px;
+    max-width: 900px; margin: 0 auto; padding: 0 16px 32px;
     font-size: 0.76rem; color: var(--muted);
 }
 .pagina-voet a { color: var(--linkblauw); }
@@ -269,7 +272,7 @@ input:focus, select:focus { outline: 3px solid var(--oranje); outline-offset: 1p
         <div class="card">
             <div class="card-kop">3. Terug te betalen opleidingskosten</div>
             <div class="card-body">
-                <div id="kosten-leeg" class="kosten-leeg">Vul fase, jaars en geboortejaar in voor de berekening.</div>
+                <div id="kosten-leeg" class="kosten-leeg">Vul fase, ervaring en geboortejaar in voor de berekening.</div>
                 <div id="kosten-inhoud" hidden>
                     <table class="kosten-tabel" id="kosten-tabel"></table>
                     <div class="kosten-euro" id="kosten-euro"></div>
