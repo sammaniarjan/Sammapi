@@ -233,15 +233,14 @@ input:focus, select:focus { outline: 3px solid var(--oranje); outline-offset: 1p
                         </select>
                     </div>
                     <div class="veld">
-                        <label for="jaars">Hoeveelstejaars</label>
-                        <select id="jaars">
+                        <label for="ervaring">Ervaring als arts</label>
+                        <select id="ervaring">
                             <option value="">&mdash; kies &mdash;</option>
-                            <option value="1">1e jaars (nog vol goede moed)</option>
-                            <option value="2">2e jaars</option>
-                            <option value="3">3e jaars</option>
-                            <option value="4">4e jaars</option>
-                            <option value="5">5e jaars</option>
-                            <option value="6">6e jaars (co-schappen, dus onvindbaar)</option>
+                            <option value="ballenbak">Net uit de ballenbak</option>
+                            <option value="anios">&gt;2 jaar ANIOS, dus ik denk dat ik al heel veel weet</option>
+                            <option value="phd">PhD gedaan: ik weet heel veel maar kan niks</option>
+                            <option value="aios">AIOS geweest: kan alles, mag niks</option>
+                            <option value="veteraan">Al zo lang arts dat ik weer alles durf</option>
                         </select>
                     </div>
                 </div>
@@ -259,7 +258,7 @@ input:focus, select:focus { outline: 3px solid var(--oranje); outline-offset: 1p
                 <label class="check-veld" for="snaak">
                     <input type="checkbox" id="snaak">
                     <span>
-                        <span class="check-tekst"><strong>Ik ben een snaak</strong></span><br>
+                        <span class="check-tekst"><strong>Ik ben snaak</strong></span><br>
                         <span class="check-sub">Aankruisen indien van toepassing. Wij weten het toch al.</span>
                     </span>
                 </label>
@@ -292,6 +291,24 @@ input:focus, select:focus { outline: 3px solid var(--oranje); outline-offset: 1p
             <div class="card-body verwerking">
                 <div class="spinner"></div>
                 <div class="verwerking-stap" id="verwerking-stap">Verzoek indienen&hellip;</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════ ONTVANGSTBEVESTIGING ══════════ -->
+    <div class="scherm" id="scherm-ontvangst">
+        <div class="card">
+            <div class="card-kop">Ontvangstbevestiging</div>
+            <div class="card-body">
+                <div class="besluit-tekst">
+                    <p>Uw verzoek is in goede orde ontvangen en geregistreerd.</p>
+                    <p>U ontvangt de uitslag <strong>volgend jaar dinsdag</strong> (<span id="uitslag-datum"></span>).</p>
+                    <p>Eerder informeren naar de status verlengt de behandeltermijn.</p>
+                </div>
+                <div class="besluit-kenmerk" id="ontvangst-kenmerk"></div>
+                <div style="margin-top:16px;">
+                    <button class="btn-sec btn" id="btn-niet-wachten">Dat wacht ik niet af</button>
+                </div>
             </div>
         </div>
     </div>
@@ -333,13 +350,21 @@ function toonScherm(id) {
 function fmt(n) { return Math.round(n).toLocaleString('nl-NL'); }
 
 /* ---------- Kostenberekening (volstrekt officieel) ---------- */
+const ERVARING = {
+    ballenbak: { kort: 'net uit de ballenbak', vetjes: 1274, extra: ['Opstartkosten (alles nog heel)', 137] },
+    anios:     { kort: '>2 jaar ANIOS', vetjes: 3822, extra: ['Correctie zelfoverschatting', 271] },
+    phd:       { kort: 'PhD, weet veel, kan niks', vetjes: 5096, extra: ['Toeslag ongebruikte statistiekkennis', 314] },
+    aios:      { kort: 'AIOS: kan alles, mag niks', vetjes: 4462, extra: ['Compensatie ingeleverde autonomie', 188] },
+    veteraan:  { kort: 'durft weer alles', vetjes: 6021, extra: ['Risico-opslag herwonnen zelfvertrouwen', 421] }
+};
+
 function berekenKosten() {
     const fase = parseInt($('#fase').value, 10);
-    const jaars = parseInt($('#jaars').value, 10);
+    const erv = ERVARING[$('#ervaring').value];
     const gj = parseInt($('#geboortejaar').value, 10);
     const snaak = $('#snaak').checked;
 
-    if (!fase || !jaars || !gj || gj < 1940 || gj > 2010) {
+    if (!fase || !erv || !gj || gj < 1940 || gj > 2010) {
         $('#kosten-leeg').hidden = false;
         $('#kosten-inhoud').hidden = true;
         return null;
@@ -349,8 +374,9 @@ function berekenKosten() {
     const leeftijd = new Date().getFullYear() - gj;
 
     const regels = [];
-    const basis = jaars * 1274;
-    regels.push(['Genoten opleiding (' + jaars + ' jaar × 1.274 stuks)', basis]);
+    const basis = erv.vetjes;
+    regels.push(['Ervaringscategorie (' + erv.kort + ')', basis]);
+    regels.push([erv.extra[0], erv.extra[1]]);
     const faseToeslag = Math.round(basis * (faseFactor - 1));
     regels.push(['Fasetoeslag FPS (factor ' + String(faseFactor).replace('.', ',') + ')', faseToeslag]);
     const slijtage = Math.max(0, leeftijd - 18) * 87;
@@ -380,7 +406,7 @@ function updateKosten() {
         '. Betaling in natura (frituren) is bespreekbaar.';
 }
 
-['fase', 'jaars', 'geboortejaar'].forEach(id => $('#' + id).addEventListener('input', updateKosten));
+['fase', 'ervaring', 'geboortejaar'].forEach(id => $('#' + id).addEventListener('input', updateKosten));
 $('#snaak').addEventListener('change', updateKosten);
 
 /* ---------- Verwerking & besluit ---------- */
@@ -409,7 +435,7 @@ function veldenGeldig() {
     return $('#naam').value.trim().length > 0 &&
         $('#geboortejaar').value &&
         $('#fase').value &&
-        $('#jaars').value &&
+        $('#ervaring').value &&
         $('#reden').value;
 }
 
@@ -430,10 +456,28 @@ $('#btn-uitschrijven').addEventListener('click', () => {
             stapEl.textContent = STAPPEN[i];
         } else {
             clearInterval(interval);
-            toonBesluit();
+            toonOntvangst();
         }
     }, 950);
 });
+
+function volgendJaarDinsdag() {
+    const d = new Date();
+    d.setFullYear(d.getFullYear() + 1);
+    while (d.getDay() !== 2) d.setDate(d.getDate() + 1);
+    return d.toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+function toonOntvangst() {
+    $('#uitslag-datum').textContent = volgendJaarDinsdag();
+    $('#ontvangst-kenmerk').textContent =
+        'Kenmerk: IK-271/' + new Date().getFullYear() + '/' +
+        String(Math.floor(Math.random() * 90000) + 10000) +
+        ' · Status: onderin de stapel';
+    toonScherm('scherm-ontvangst');
+}
+
+$('#btn-niet-wachten').addEventListener('click', toonBesluit);
 
 function toonBesluit() {
     const naam = $('#naam').value.trim();
@@ -450,8 +494,8 @@ function toonBesluit() {
         stempel.classList.remove('groen');
         tekst.innerHTML =
             '<p>Geachte ' + esc(naam) + ',</p>' +
-            '<p>Bij controle van uw dossier is vakje 2.4 aangetroffen: <strong>"Ik ben een snaak"</strong>.</p>' +
-            '<p>Conform vaste jurisprudentie geldt: <strong>eens een snaak, altijd een snaak</strong>. ' +
+            '<p>Bij controle van uw dossier is vakje 2.4 aangetroffen: <strong>"Ik ben snaak"</strong>.</p>' +
+            '<p>Conform vaste jurisprudentie geldt: <strong>eens snaak, altijd snaak</strong>. ' +
             'Snaken kunnen zich niet uitschrijven; zij kunnen hoogstens tijdelijk elders verblijven.</p>' +
             '<p>Uw terug te betalen saldo van <strong>' + fmt(k.totaal) + ' trippelvetjes</strong> blijft onverminderd van kracht en groeit dagelijks met de gebruikelijke rente (1 vetje per appèl).</p>';
     } else {
