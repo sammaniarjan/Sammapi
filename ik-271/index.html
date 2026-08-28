@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IK-271 Uitschrijven</title>
+<meta name="description" content="Formulier IK-271: verzoek tot uitschrijving. Satire, speciaal voor de AMA's.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23154273'/><text x='50' y='63' font-size='34' text-anchor='middle' fill='white' font-family='Verdana' font-weight='bold'>271</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* Rijkshuisstijl-geinspireerd, zelfde toon als Tascheck:
+   wit vlak, oranje banner, donkerblauw, geen decoratie. */
+:root {
+    --oranje: #E17000;
+    --donkerblauw: #154273;
+    --linkblauw: #01689B;
+    --linkblauw-donker: #01496E;
+    --rood: #D52B1E;
+    --rood-bg: #F9E1DF;
+    --geel-bg: #FBF3E1;
+    --geel-tekst: #94710A;
+    --groen: #39870C;
+    --groen-bg: #E8F2E1;
+    --bg: #F3F3F3;
+    --vlak: #FFFFFF;
+    --tekst: #282828;
+    --tekst-2: #535353;
+    --muted: #696969;
+    --rand: #CCCCCC;
+    --rand-licht: #E6E6E6;
+    --schaduw: 0 1px 4px rgba(0,0,0,0.10);
+    color-scheme: light;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Source Sans 3', 'Segoe UI', Verdana, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--tekst);
+    line-height: 1.55;
+    min-height: 100vh;
+    font-variant-numeric: tabular-nums;
+}
+
+.mast-top {
+    background: var(--vlak);
+    border-bottom: 1px solid var(--rand-licht);
+    padding: 8px 16px;
+    display: flex; align-items: center; gap: 10px;
+}
+.mast-mark {
+    width: 26px; height: 26px; flex-shrink: 0;
+    background: var(--donkerblauw); color: #fff;
+    font-size: 0.62rem; font-weight: 700;
+    display: grid; place-items: center;
+}
+.mast-top .label { font-size: 0.82rem; color: var(--tekst-2); }
+
+.mast-banner { background: var(--oranje); }
+.mast-banner .inner, .wrap { max-width: 720px; margin: 0 auto; width: 100%; }
+.mast-banner .inner { padding: 14px 16px; }
+.mast-banner h1 { color: #fff; font-size: 1.35rem; font-weight: 700; }
+.mast-banner .sub { color: #fff; font-size: 0.82rem; opacity: 0.95; }
+
+.wrap { padding: 20px 16px 48px; }
+
+.card {
+    background: var(--vlak);
+    border: 1px solid var(--rand-licht);
+    box-shadow: var(--schaduw);
+    margin-bottom: 16px;
+}
+.card-kop {
+    background: var(--donkerblauw); color: #fff;
+    padding: 9px 16px;
+    font-size: 0.85rem; font-weight: 700;
+    letter-spacing: 0.3px;
+}
+.card-body { padding: 16px; }
+
+.intro-notitie {
+    background: var(--geel-bg);
+    border-left: 4px solid var(--oranje);
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    color: var(--geel-tekst);
+    margin-bottom: 16px;
+}
+
+.veld { margin-bottom: 14px; }
+.veld label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 3px; }
+.veld .toelichting { font-size: 0.76rem; color: var(--muted); margin-bottom: 4px; }
+input[type="text"], input[type="number"], select {
+    font: inherit; width: 100%;
+    color: var(--tekst); background: var(--vlak);
+    border: 1px solid var(--rand); border-radius: 2px;
+    padding: 8px 10px;
+}
+input:focus, select:focus { outline: 3px solid var(--oranje); outline-offset: 1px; border-color: var(--linkblauw); }
+
+.check-veld {
+    display: flex; align-items: flex-start; gap: 10px;
+    background: var(--bg);
+    border: 1px solid var(--rand-licht);
+    padding: 10px 12px;
+    cursor: pointer;
+}
+.check-veld input { width: auto; margin-top: 3px; accent-color: var(--linkblauw); }
+.check-veld .check-tekst { font-size: 0.88rem; }
+.check-veld .check-sub { font-size: 0.76rem; color: var(--muted); }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 520px) { .grid-2 { grid-template-columns: 1fr; } }
+
+/* Kostenoverzicht */
+.kosten-tabel { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.kosten-tabel td { padding: 6px 4px; border-bottom: 1px solid var(--rand-licht); }
+.kosten-tabel td:last-child { text-align: right; font-weight: 600; white-space: nowrap; }
+.kosten-tabel tr.totaal td {
+    border-top: 2px solid var(--donkerblauw); border-bottom: none;
+    font-weight: 700; font-size: 0.95rem; padding-top: 10px;
+}
+.kosten-euro { font-size: 0.78rem; color: var(--muted); text-align: right; margin-top: 6px; }
+.kosten-leeg { font-size: 0.85rem; color: var(--muted); font-style: italic; }
+
+.btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    font: inherit; font-weight: 700; font-size: 0.95rem;
+    padding: 12px 24px; border-radius: 2px;
+    border: none; cursor: pointer;
+    background: var(--rood); color: #fff;
+    width: 100%;
+}
+.btn:hover { background: #B02318; }
+.btn:disabled { opacity: 0.5; cursor: default; }
+.btn-sec {
+    background: var(--vlak); color: var(--linkblauw);
+    border: 1px solid var(--linkblauw); font-weight: 600;
+    width: auto; padding: 9px 18px; font-size: 0.88rem;
+}
+.btn-sec:hover { background: #F0F6F9; }
+
+.fout { background: var(--rood-bg); color: var(--rood); font-size: 0.85rem; padding: 8px 12px; margin-top: 10px; }
+
+/* Verwerking */
+.verwerking { text-align: center; padding: 30px 16px; }
+.spinner {
+    width: 36px; height: 36px; margin: 0 auto 16px;
+    border: 4px solid var(--rand-licht); border-top-color: var(--donkerblauw);
+    border-radius: 50%;
+    animation: draai 0.9s linear infinite;
+}
+@keyframes draai { to { transform: rotate(360deg); } }
+.verwerking-stap { font-size: 0.9rem; color: var(--tekst-2); min-height: 1.5em; }
+
+/* Besluit */
+.besluit-stempel {
+    display: inline-block;
+    border: 4px solid var(--rood); color: var(--rood);
+    font-size: 1.5rem; font-weight: 700; letter-spacing: 2px;
+    padding: 6px 22px;
+    transform: rotate(-4deg);
+    margin: 6px 0 16px;
+}
+.besluit-stempel.groen { border-color: var(--groen); color: var(--groen); }
+.besluit-tekst p { font-size: 0.9rem; margin-bottom: 10px; }
+.besluit-kenmerk { font-size: 0.76rem; color: var(--muted); margin-top: 14px; }
+.bezwaar-teller { font-size: 0.8rem; color: var(--muted); margin-top: 8px; font-style: italic; }
+
+.pagina-voet {
+    max-width: 720px; margin: 0 auto; padding: 0 16px 32px;
+    font-size: 0.76rem; color: var(--muted);
+}
+.pagina-voet a { color: var(--linkblauw); }
+
+.scherm { display: none; }
+.scherm.actief { display: block; }
+</style>
+</head>
+<body>
+
+<div class="mast-top">
+    <span class="mast-mark" aria-hidden="true">271</span>
+    <span class="label">Bureau Uitstroom &amp; Spijtoptanten (satire)</span>
+</div>
+<header class="mast-banner">
+    <div class="inner">
+        <h1>Formulier IK-271 &mdash; Verzoek tot uitschrijving</h1>
+        <div class="sub">Speciaal voor AMA's die denken dat ze weg kunnen</div>
+    </div>
+</header>
+
+<div class="wrap">
+
+    <!-- ══════════ FORMULIER ══════════ -->
+    <div class="scherm actief" id="scherm-formulier">
+
+        <div class="intro-notitie">
+            Vul dit formulier volledig en naar waarheid in. Onvolledige aanvragen worden
+            conform vaste werkwijze kwijtgeraakt.
+        </div>
+
+        <div class="card">
+            <div class="card-kop">1. Persoonsgegevens</div>
+            <div class="card-body">
+                <div class="grid-2">
+                    <div class="veld">
+                        <label for="naam">Naam</label>
+                        <input type="text" id="naam" autocomplete="off" placeholder="Rang mag je zelf verzinnen">
+                    </div>
+                    <div class="veld">
+                        <label for="geboortejaar">Geboortejaar</label>
+                        <input type="number" id="geboortejaar" min="1940" max="2010" placeholder="bijv. 1998">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-kop">2. Dienstverband</div>
+            <div class="card-body">
+                <div class="grid-2">
+                    <div class="veld">
+                        <label for="fase">Fase contract (FPS)</label>
+                        <select id="fase">
+                            <option value="">&mdash; kies &mdash;</option>
+                            <option value="1">Fase 1</option>
+                            <option value="2">Fase 2</option>
+                            <option value="3">Fase 3 (gecondoleerd)</option>
+                            <option value="4">Weet ik niet, ik teken gewoon alles</option>
+                        </select>
+                    </div>
+                    <div class="veld">
+                        <label for="jaars">Hoeveelstejaars</label>
+                        <select id="jaars">
+                            <option value="">&mdash; kies &mdash;</option>
+                            <option value="1">1e jaars (nog vol goede moed)</option>
+                            <option value="2">2e jaars</option>
+                            <option value="3">3e jaars</option>
+                            <option value="4">4e jaars</option>
+                            <option value="5">5e jaars</option>
+                            <option value="6">6e jaars (co-schappen, dus onvindbaar)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="veld">
+                    <label for="reden">Reden van uitschrijving</label>
+                    <select id="reden">
+                        <option value="">&mdash; kies &mdash;</option>
+                        <option>Het burgerleven lonkt</option>
+                        <option>Ik wil mijn haar terug</option>
+                        <option>Structureel te weinig trippelvetjes</option>
+                        <option>Ik dacht dat BIUPAMA een vakantiepark was</option>
+                        <option>Geheim (dan blijft het spannend)</option>
+                    </select>
+                </div>
+                <label class="check-veld" for="snaak">
+                    <input type="checkbox" id="snaak">
+                    <span>
+                        <span class="check-tekst"><strong>Ik ben een snaak</strong></span><br>
+                        <span class="check-sub">Aankruisen indien van toepassing. Wij weten het toch al.</span>
+                    </span>
+                </label>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-kop">3. Terug te betalen opleidingskosten</div>
+            <div class="card-body">
+                <div id="kosten-leeg" class="kosten-leeg">Vul fase, jaars en geboortejaar in voor de berekening.</div>
+                <div id="kosten-inhoud" hidden>
+                    <table class="kosten-tabel" id="kosten-tabel"></table>
+                    <div class="kosten-euro" id="kosten-euro"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <button class="btn" id="btn-uitschrijven">UITSCHRIJVEN</button>
+                <div class="fout" id="form-fout" hidden>Vul eerst alle velden in. Ja, allemaal. Dit is Defensie.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════ VERWERKING ══════════ -->
+    <div class="scherm" id="scherm-verwerking">
+        <div class="card">
+            <div class="card-kop">Uw verzoek wordt verwerkt</div>
+            <div class="card-body verwerking">
+                <div class="spinner"></div>
+                <div class="verwerking-stap" id="verwerking-stap">Verzoek indienen&hellip;</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════ BESLUIT ══════════ -->
+    <div class="scherm" id="scherm-besluit">
+        <div class="card">
+            <div class="card-kop">Besluit op uw verzoek</div>
+            <div class="card-body">
+                <div class="besluit-stempel" id="besluit-stempel">AFGEWEZEN</div>
+                <div class="besluit-tekst" id="besluit-tekst"></div>
+                <div class="besluit-kenmerk" id="besluit-kenmerk"></div>
+                <div style="margin-top:16px; display:flex; gap:8px; flex-wrap:wrap;">
+                    <button class="btn-sec btn" id="btn-bezwaar">Bezwaar maken</button>
+                    <button class="btn-sec btn" id="btn-opnieuw">Opnieuw proberen</button>
+                </div>
+                <div class="bezwaar-teller" id="bezwaar-teller" hidden></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="pagina-voet">
+    Dit formulier is satire en heeft geen enkele officiële status. Aan dit formulier kunnen
+    geen rechten worden ontleend. Zeker niet. &middot; <a href="../index.html">Terug naar het dashboard</a>
+</div>
+
+<script>
+'use strict';
+const $ = (sel) => document.querySelector(sel);
+
+const PRIJS_TRIPPELVETJE = 1.85; // euro, kantineprijspeil
+
+function toonScherm(id) {
+    document.querySelectorAll('.scherm').forEach(s => s.classList.toggle('actief', s.id === id));
+    window.scrollTo(0, 0);
+}
+
+function fmt(n) { return Math.round(n).toLocaleString('nl-NL'); }
+
+/* ---------- Kostenberekening (volstrekt officieel) ---------- */
+function berekenKosten() {
+    const fase = parseInt($('#fase').value, 10);
+    const jaars = parseInt($('#jaars').value, 10);
+    const gj = parseInt($('#geboortejaar').value, 10);
+    const snaak = $('#snaak').checked;
+
+    if (!fase || !jaars || !gj || gj < 1940 || gj > 2010) {
+        $('#kosten-leeg').hidden = false;
+        $('#kosten-inhoud').hidden = true;
+        return null;
+    }
+
+    const faseFactor = { 1: 1, 2: 1.5, 3: 2.25, 4: 3.14 }[fase];
+    const leeftijd = new Date().getFullYear() - gj;
+
+    const regels = [];
+    const basis = jaars * 1274;
+    regels.push(['Genoten opleiding (' + jaars + ' jaar × 1.274 stuks)', basis]);
+    const faseToeslag = Math.round(basis * (faseFactor - 1));
+    regels.push(['Fasetoeslag FPS (factor ' + String(faseFactor).replace('.', ',') + ')', faseToeslag]);
+    const slijtage = Math.max(0, leeftijd - 18) * 87;
+    regels.push(['Slijtage rijksmaterieel (' + Math.max(0, leeftijd - 18) + ' dienstbare jaren × 87)', slijtage]);
+    regels.push(['Administratiekosten formulier IK-271', 271]);
+    regels.push(['Verloren baret (standaardaanname)', 250]);
+    if (snaak) {
+        regels.push(['Snaaktoeslag (art. 5NA-AK)', 271]);
+    }
+
+    const totaal = regels.reduce((s, r) => s + r[1], 0);
+    return { regels, totaal };
+}
+
+function updateKosten() {
+    const k = berekenKosten();
+    if (!k) return;
+    $('#kosten-leeg').hidden = true;
+    $('#kosten-inhoud').hidden = false;
+    const rows = k.regels.map(r =>
+        '<tr><td>' + r[0] + '</td><td>' + fmt(r[1]) + '</td></tr>').join('');
+    $('#kosten-tabel').innerHTML = rows +
+        '<tr class="totaal"><td>Totaal terug te betalen</td><td>' + fmt(k.totaal) + ' trippelvetjes</td></tr>';
+    $('#kosten-euro').textContent = 'Ter indicatie: ' + fmt(k.totaal) + ' × €' +
+        PRIJS_TRIPPELVETJE.toFixed(2).replace('.', ',') + ' = €' +
+        (k.totaal * PRIJS_TRIPPELVETJE).toLocaleString('nl-NL', { maximumFractionDigits: 0 }) +
+        '. Betaling in natura (frituren) is bespreekbaar.';
+}
+
+['fase', 'jaars', 'geboortejaar'].forEach(id => $('#' + id).addEventListener('input', updateKosten));
+$('#snaak').addEventListener('change', updateKosten);
+
+/* ---------- Verwerking & besluit ---------- */
+const STAPPEN = [
+    'Verzoek indienen…',
+    'Doorsturen naar P&O…',
+    'Wachten op paraaf…',
+    'Paraaf kwijt. Opnieuw wachten op paraaf…',
+    'Formulier per abuis in de papierversnipperaar…',
+    'Kopie teruggevonden in de kazerne-kantine…',
+    'Trippelvetjes hertellen…',
+    'Besluit opstellen…'
+];
+
+const AFWIJZINGEN = [
+    'Uitschrijven is uitsluitend mogelijk op 31 februari, tussen 03:00 en 03:15 uur, in persoon, op een nader te bepalen locatie die wij u niet meedelen.',
+    'Uw verzoek is in de verkeerde bak beland. De juiste bak bestaat niet.',
+    'Er is een openstaande schuld van {N} trippelvetjes geconstateerd. Verzoeken met openstaande vetjes worden niet in behandeling genomen.',
+    'Uit ons systeem blijkt dat u ooit "best gezellig eigenlijk" heeft gezegd tijdens een oefening. Daarmee heeft u zich voor onbepaalde tijd verbonden.',
+    'Het formulier is correct ingevuld. Dit wekt argwaan. Uw verzoek is doorgestuurd naar de afdeling Contra-inlichtingen.'
+];
+
+let bezwaren = 0;
+
+function veldenGeldig() {
+    return $('#naam').value.trim().length > 0 &&
+        $('#geboortejaar').value &&
+        $('#fase').value &&
+        $('#jaars').value &&
+        $('#reden').value;
+}
+
+$('#btn-uitschrijven').addEventListener('click', () => {
+    if (!veldenGeldig()) {
+        $('#form-fout').hidden = false;
+        return;
+    }
+    $('#form-fout').hidden = true;
+    toonScherm('scherm-verwerking');
+
+    let i = 0;
+    const stapEl = $('#verwerking-stap');
+    stapEl.textContent = STAPPEN[0];
+    const interval = setInterval(() => {
+        i++;
+        if (i < STAPPEN.length) {
+            stapEl.textContent = STAPPEN[i];
+        } else {
+            clearInterval(interval);
+            toonBesluit();
+        }
+    }, 950);
+});
+
+function toonBesluit() {
+    const naam = $('#naam').value.trim();
+    const snaak = $('#snaak').checked;
+    const k = berekenKosten();
+    const stempel = $('#besluit-stempel');
+    const tekst = $('#besluit-tekst');
+
+    bezwaren = 0;
+    $('#bezwaar-teller').hidden = true;
+
+    if (snaak) {
+        stempel.textContent = 'NIET ONTVANKELIJK';
+        stempel.classList.remove('groen');
+        tekst.innerHTML =
+            '<p>Geachte ' + esc(naam) + ',</p>' +
+            '<p>Bij controle van uw dossier is vakje 2.4 aangetroffen: <strong>"Ik ben een snaak"</strong>.</p>' +
+            '<p>Conform vaste jurisprudentie geldt: <strong>eens een snaak, altijd een snaak</strong>. ' +
+            'Snaken kunnen zich niet uitschrijven; zij kunnen hoogstens tijdelijk elders verblijven.</p>' +
+            '<p>Uw terug te betalen saldo van <strong>' + fmt(k.totaal) + ' trippelvetjes</strong> blijft onverminderd van kracht en groeit dagelijks met de gebruikelijke rente (1 vetje per appèl).</p>';
+    } else {
+        const afwijzing = AFWIJZINGEN[Math.floor(Math.random() * AFWIJZINGEN.length)]
+            .replace('{N}', fmt(k.totaal));
+        stempel.textContent = 'AFGEWEZEN';
+        stempel.classList.remove('groen');
+        tekst.innerHTML =
+            '<p>Geachte ' + esc(naam) + ',</p>' +
+            '<p>Uw verzoek tot uitschrijving is zorgvuldig beoordeeld en vervolgens <strong>afgewezen</strong>.</p>' +
+            '<p>' + afwijzing + '</p>' +
+            '<p>Wij danken u voor uw begrip en zien u maandag gewoon op appèl.</p>';
+    }
+
+    $('#besluit-kenmerk').textContent =
+        'Kenmerk: IK-271/' + new Date().getFullYear() + '/' +
+        String(Math.floor(Math.random() * 90000) + 10000) +
+        ' · Behandeld door: vacature';
+
+    toonScherm('scherm-besluit');
+}
+
+function esc(s) {
+    const d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+}
+
+$('#btn-bezwaar').addEventListener('click', () => {
+    bezwaren++;
+    const t = $('#bezwaar-teller');
+    t.hidden = false;
+    t.textContent = bezwaren === 1
+        ? 'Uw bezwaar is genoteerd. Het maakt niets uit.'
+        : 'Uw ' + bezwaren + 'e bezwaar is genoteerd. Het maakt nog steeds niets uit.';
+});
+
+$('#btn-opnieuw').addEventListener('click', () => {
+    toonScherm('scherm-formulier');
+});
+</script>
+</body>
+</html>
