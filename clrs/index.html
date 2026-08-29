@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ogen laseren (CLRS)</title>
+<meta name="description" content="Keuzehulp: kom ik in aanmerking voor ooglaseren (CLRS) via Defensie?">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23154273'/><ellipse cx='50' cy='50' rx='30' ry='19' fill='none' stroke='white' stroke-width='6'/><circle cx='50' cy='50' r='9' fill='white'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* Rijkshuisstijl-geinspireerd, zelfde toon als Tascheck. */
+:root {
+    --oranje: #E17000;
+    --donkerblauw: #154273;
+    --linkblauw: #01689B;
+    --linkblauw-donker: #01496E;
+    --rood: #D52B1E;
+    --rood-bg: #F9E1DF;
+    --groen: #39870C;
+    --groen-bg: #E8F2E1;
+    --bg: #F3F3F3;
+    --vlak: #FFFFFF;
+    --tekst: #282828;
+    --tekst-2: #535353;
+    --muted: #696969;
+    --rand: #CCCCCC;
+    --rand-licht: #E6E6E6;
+    --schaduw: 0 1px 4px rgba(0,0,0,0.10);
+    color-scheme: light;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Source Sans 3', 'Segoe UI', Verdana, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--tekst);
+    line-height: 1.55;
+    min-height: 100vh;
+}
+
+.mast-top {
+    background: var(--vlak);
+    border-bottom: 1px solid var(--rand-licht);
+    padding: 8px 16px;
+    display: flex; align-items: center; gap: 10px;
+}
+.mast-mark {
+    width: 26px; height: 26px; flex-shrink: 0;
+    background: var(--donkerblauw); color: #fff;
+    font-size: 0.55rem; font-weight: 700;
+    display: grid; place-items: center;
+}
+.mast-top .label { font-size: 0.82rem; color: var(--tekst-2); }
+
+.mast-banner { background: var(--oranje); }
+.mast-banner .inner, .wrap { max-width: 720px; margin: 0 auto; width: 100%; }
+.mast-banner .inner { padding: 14px 16px; }
+.mast-banner h1 { color: #fff; font-size: 1.35rem; font-weight: 700; }
+.mast-banner .sub { color: #fff; font-size: 0.82rem; opacity: 0.95; }
+
+.wrap { padding: 20px 16px 48px; }
+
+.card {
+    background: var(--vlak);
+    border: 1px solid var(--rand-licht);
+    box-shadow: var(--schaduw);
+    margin-bottom: 16px;
+}
+.card-kop {
+    background: var(--donkerblauw); color: #fff;
+    padding: 9px 16px;
+    font-size: 0.85rem; font-weight: 700;
+    letter-spacing: 0.3px;
+}
+.card-body { padding: 16px; }
+.card-body > p { font-size: 0.88rem; margin-bottom: 8px; }
+.card-body > p:last-child { margin-bottom: 0; }
+
+.vraag { margin-bottom: 18px; }
+.vraag:last-child { margin-bottom: 0; }
+.vraag-tekst { font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; }
+.vraag-sub { font-size: 0.8rem; color: var(--muted); margin-bottom: 8px; }
+
+.janee { display: flex; gap: 8px; }
+.jn-btn {
+    font: inherit; font-size: 0.9rem; font-weight: 600;
+    padding: 10px 28px; border-radius: 2px; cursor: pointer;
+    background: var(--vlak); color: var(--linkblauw);
+    border: 1px solid var(--linkblauw);
+}
+.jn-btn:hover { background: #F0F6F9; }
+.jn-btn:focus-visible { outline: 3px solid var(--oranje); outline-offset: 1px; }
+.jn-btn.actief {
+    background: var(--donkerblauw); border-color: var(--donkerblauw); color: #fff;
+}
+
+.uitkomst { padding: 14px 16px; font-size: 0.92rem; }
+.uitkomst.wacht { color: var(--muted); font-style: italic; }
+.uitkomst.ja {
+    background: var(--groen-bg);
+    border-left: 4px solid var(--groen);
+    color: var(--tekst);
+}
+.uitkomst.nee {
+    background: var(--rood-bg);
+    border-left: 4px solid var(--rood);
+    color: var(--tekst);
+}
+.uitkomst strong { display: block; margin-bottom: 4px; }
+.uitkomst.ja strong { color: var(--groen); }
+.uitkomst.nee strong { color: var(--rood); }
+
+.pagina-voet {
+    max-width: 720px; margin: 0 auto; padding: 0 16px 32px;
+    font-size: 0.76rem; color: var(--muted);
+}
+.pagina-voet a { color: var(--linkblauw); }
+</style>
+</head>
+<body>
+
+<div class="mast-top">
+    <span class="mast-mark" aria-hidden="true">CLRS</span>
+    <span class="label">Refractiechirurgie</span>
+</div>
+<header class="mast-banner">
+    <div class="inner">
+        <h1>Ogen laseren (CLRS)</h1>
+        <div class="sub">Kom ik in aanmerking via Defensie?</div>
+    </div>
+</header>
+
+<div class="wrap">
+
+    <div class="card">
+        <div class="card-kop">Keuzehulp</div>
+        <div class="card-body">
+            <div class="vraag">
+                <div class="vraag-tekst">1. Ben je vlieger?</div>
+                <div class="janee" data-vraag="vlieger">
+                    <button class="jn-btn" data-antwoord="ja">Ja</button>
+                    <button class="jn-btn" data-antwoord="nee">Nee</button>
+                </div>
+            </div>
+            <div class="vraag">
+                <div class="vraag-tekst">2. Is ooglaseren nodig voor het uitoefenen van je functie?</div>
+                <div class="vraag-sub">Bijvoorbeeld omdat een bril of lenzen je functie-uitoefening belemmeren.</div>
+                <div class="janee" data-vraag="functie">
+                    <button class="jn-btn" data-antwoord="ja">Ja</button>
+                    <button class="jn-btn" data-antwoord="nee">Nee</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-kop">Uitkomst</div>
+        <div class="uitkomst wacht" id="uitkomst">Beantwoord beide vragen.</div>
+    </div>
+
+</div>
+
+<div class="pagina-voet">
+    <a href="../index.html">Terug naar het dashboard</a>
+</div>
+
+<script>
+'use strict';
+const antwoorden = { vlieger: null, functie: null };
+
+document.querySelectorAll('.janee').forEach(groep => {
+    groep.querySelectorAll('.jn-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            groep.querySelectorAll('.jn-btn').forEach(b => b.classList.toggle('actief', b === btn));
+            antwoorden[groep.dataset.vraag] = btn.dataset.antwoord === 'ja';
+            toonUitkomst();
+        });
+    });
+});
+
+function toonUitkomst() {
+    const el = document.getElementById('uitkomst');
+    if (antwoorden.vlieger === null || antwoorden.functie === null) {
+        el.className = 'uitkomst wacht';
+        el.textContent = 'Beantwoord beide vragen.';
+        return;
+    }
+    if (antwoorden.vlieger || antwoorden.functie) {
+        el.className = 'uitkomst ja';
+        el.innerHTML = '<strong>Je komt mogelijk in aanmerking.</strong>' +
+            'Maak een afspraak met een arts van het EGB om de mogelijkheden voor CLRS te bespreken.';
+    } else {
+        el.className = 'uitkomst nee';
+        el.innerHTML = '<strong>Helaas, nee.</strong>' +
+            'Ooglaseren via Defensie is alleen mogelijk als je vlieger bent of als het nodig is voor het uitoefenen van je functie.';
+    }
+}
+</script>
+</body>
+</html>
