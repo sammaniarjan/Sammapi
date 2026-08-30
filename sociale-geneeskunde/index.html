@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Sociale geneeskunde</title>
+<meta name="description" content="Interactieve lesmodule sociale geneeskunde: gezondheid en werk, wetgeving rond verzuim, en sociaal-medisch handelen in de defensiecontext. Voor onderwijsdoeleinden.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23e2d9cc'/><circle cx='50' cy='34' r='12' fill='none' stroke='%2365a30d' stroke-width='7'/><path d='M28 82c0-14 10-24 22-24s22 10 22 24' fill='none' stroke='%2365a30d' stroke-width='7' stroke-linecap='round'/><path d='M14 60c4-8 10-12 16-13M86 60c-4-8-10-12-16-13' fill='none' stroke='%232c3e36' stroke-width='6' stroke-linecap='round'/></svg>">
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --bg: #e2d9cc;
+    --vlak: #ffffff;
+    --vlak-zacht: #f7f3ed;
+    --tekst: #2c3e36;
+    --tekst-2: #6b7b6f;
+    --muted: #9aa69e;
+    --rand: #d5cdc2;
+    --rand-licht: #e3dbd0;
+    --accent: #4d7c0f;
+    --accent-donker: #3f6212;
+    --accent-bg: rgba(77, 124, 15, 0.08);
+    --groen: #059669;
+    --groen-bg: rgba(5, 150, 105, 0.1);
+    --oranje: #d97706;
+    --rood: #dc2626;
+    --rood-bg: rgba(220, 38, 38, 0.08);
+}
+
+body {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--tekst);
+    line-height: 1.55;
+    min-height: 100vh;
+}
+
+.wrap { max-width: 680px; margin: 0 auto; padding: 16px 16px 60px; }
+
+.back-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--tekst-2); text-decoration: none;
+    font-size: 0.88rem; padding: 10px 0;
+}
+.back-link:hover { color: var(--accent); }
+.back-link svg { width: 17px; height: 17px; }
+
+.app-head { margin: 8px 0 18px; }
+.app-head h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem; font-weight: 600;
+}
+.app-head .sub { color: var(--tekst-2); font-size: 0.88rem; }
+
+.card {
+    background: var(--vlak);
+    border: 1px solid var(--rand-licht);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 14px;
+}
+.card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; font-weight: 600; margin-bottom: 10px;
+}
+.card p { font-size: 0.92rem; margin-bottom: 8px; }
+.card p:last-child { margin-bottom: 0; }
+.card ul, .card ol { margin: 6px 0 10px 20px; font-size: 0.92rem; }
+.card li { margin-bottom: 4px; }
+.zacht { color: var(--tekst-2); font-size: 0.85rem; }
+
+.quote {
+    background: var(--vlak-zacht);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 14px;
+    margin: 10px 0;
+    font-size: 0.92rem;
+    font-style: italic;
+}
+.mono { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+table.mini { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.87rem; }
+table.mini td, table.mini th { padding: 6px 8px; border-bottom: 1px solid var(--rand-licht); text-align: left; vertical-align: top; }
+table.mini th { color: var(--tekst-2); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.4px; }
+table.mini td:first-child { font-weight: 700; white-space: nowrap; }
+
+/* ------- moduleoverzicht ------- */
+.intro-note {
+    display: flex; gap: 10px; align-items: flex-start;
+    background: var(--accent-bg);
+    border: 1px solid rgba(77, 124, 15, 0.2);
+    border-radius: 12px; padding: 12px 14px;
+    font-size: 0.86rem; margin-bottom: 16px;
+}
+.intro-note svg { flex-shrink: 0; margin-top: 2px; }
+
+.mod-lijst { display: flex; flex-direction: column; gap: 10px; }
+.mod-item {
+    display: grid; grid-template-columns: 34px 1fr auto;
+    gap: 12px; align-items: center;
+    background: var(--vlak);
+    border: 1px solid var(--rand-licht);
+    border-radius: 12px; padding: 13px 16px;
+    cursor: pointer; text-align: left;
+    font: inherit; color: inherit; width: 100%;
+    transition: all 0.2s;
+}
+.mod-item:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(44, 62, 54, 0.08); border-color: #c4b8aa; }
+.mod-nr {
+    width: 34px; height: 34px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--vlak-zacht); border: 1px solid var(--rand);
+    font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; font-weight: 700;
+    color: var(--tekst-2);
+}
+.mod-item.af .mod-nr { background: var(--groen-bg); border-color: rgba(5, 150, 105, 0.35); color: var(--groen); }
+.mod-titel { font-weight: 600; font-size: 0.93rem; }
+.mod-sub { font-size: 0.78rem; color: var(--tekst-2); }
+.mod-score {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+    color: var(--muted); white-space: nowrap;
+}
+.mod-item.af .mod-score { color: var(--groen); font-weight: 700; }
+
+.mod-item.special { border-style: dashed; }
+.mod-item.special .mod-nr { background: var(--accent-bg); border-color: rgba(77, 124, 15, 0.3); color: var(--accent); }
+
+.voortgang-balkje {
+    height: 6px; border-radius: 4px; background: var(--rand-licht);
+    overflow: hidden; margin: 6px 0 2px;
+}
+.voortgang-balkje > div { height: 100%; background: var(--groen); border-radius: 4px; transition: width 0.5s; }
+
+/* ------- oefenscherm ------- */
+.oefen-top { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.oefen-top .stop {
+    font: inherit; font-size: 0.8rem; color: var(--tekst-2);
+    background: none; border: 1px solid var(--rand); border-radius: 50px;
+    padding: 5px 13px; cursor: pointer;
+}
+.oefen-top .stop:hover { border-color: var(--rood); color: var(--rood); }
+.balk { flex: 1; height: 8px; border-radius: 4px; background: rgba(44, 62, 54, 0.1); overflow: hidden; }
+.balk > div { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.4s ease; }
+
+.item-kaart {
+    background: var(--vlak);
+    border: 1px solid var(--rand-licht);
+    border-radius: 14px;
+    padding: 20px;
+    animation: verschijn 0.35s ease;
+}
+@keyframes verschijn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+.item-label {
+    display: inline-block; font-size: 0.68rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.8px;
+    color: var(--accent); background: var(--accent-bg);
+    padding: 3px 10px; border-radius: 50px; margin-bottom: 12px;
+}
+.item-label.herhaal { color: var(--oranje); background: rgba(217, 119, 6, 0.1); }
+.vraag-tekst { font-size: 1.02rem; font-weight: 600; margin-bottom: 14px; }
+
+.opties { display: flex; flex-direction: column; gap: 8px; }
+.optie {
+    font: inherit; font-size: 0.9rem; text-align: left;
+    background: var(--vlak-zacht); color: var(--tekst);
+    border: 1px solid var(--rand); border-radius: 10px;
+    padding: 11px 14px; cursor: pointer; transition: all 0.15s;
+}
+.optie:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-bg); }
+.optie:disabled { cursor: default; }
+.optie.goed { background: var(--groen-bg); border-color: var(--groen); color: var(--groen); font-weight: 600; }
+.optie.fout { background: var(--rood-bg); border-color: var(--rood); color: var(--rood); }
+.optie.gemist { border-color: var(--groen); border-style: dashed; color: var(--groen); }
+.optie.gekozen { border-color: var(--accent); background: var(--accent-bg); font-weight: 600; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.chip {
+    font: inherit; font-size: 0.86rem; font-weight: 500;
+    background: var(--vlak-zacht); border: 1px solid var(--rand);
+    border-radius: 50px; padding: 8px 15px; cursor: pointer; transition: all 0.15s;
+}
+.chip:hover:not(:disabled) { border-color: var(--accent); }
+.chip:disabled { opacity: 0.35; cursor: default; }
+.volg-lijst { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; min-height: 20px; }
+.volg-rij {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--vlak-zacht); border: 1px solid var(--rand);
+    border-radius: 10px; padding: 8px 12px; font-size: 0.9rem; cursor: pointer;
+}
+.volg-rij .nr { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; font-weight: 700; color: var(--tekst-2); width: 18px; }
+.volg-rij.goed { border-color: var(--groen); background: var(--groen-bg); cursor: default; }
+.volg-rij.fout { border-color: var(--rood); background: var(--rood-bg); cursor: default; }
+
+.koppel-kolommen { display: grid; grid-template-columns: auto 1fr; gap: 8px; }
+.koppel-links .chip { font-family: 'JetBrains Mono', monospace; font-weight: 700; width: 100%; }
+.koppel-kolommen > div { display: flex; flex-direction: column; gap: 8px; }
+.koppel-kolommen .chip { text-align: left; border-radius: 10px; }
+.chip.actief { border-color: var(--accent); background: var(--accent-bg); }
+.chip.vast { border-color: var(--groen); background: var(--groen-bg); color: var(--groen); cursor: default; }
+.chip.schud { animation: schud 0.35s; border-color: var(--rood); }
+@keyframes schud { 0%,100% { transform: none; } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+
+.sorteer-item {
+    background: var(--vlak-zacht); border: 1px solid var(--rand);
+    border-radius: 10px; padding: 14px; font-size: 0.95rem; font-weight: 600;
+    text-align: center; margin-bottom: 12px;
+}
+.sorteer-knoppen { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.sorteer-knoppen .optie { text-align: center; font-weight: 600; }
+.sorteer-telling { text-align: center; font-size: 0.78rem; color: var(--muted); margin-top: 10px; font-family: 'JetBrains Mono', monospace; }
+
+.feedback {
+    margin-top: 14px; border-radius: 10px; padding: 12px 14px;
+    font-size: 0.88rem; animation: verschijn 0.3s ease;
+}
+.feedback.ok { background: var(--groen-bg); border: 1px solid rgba(5, 150, 105, 0.3); }
+.feedback.nee { background: var(--rood-bg); border: 1px solid rgba(220, 38, 38, 0.25); }
+.feedback .kop { font-weight: 700; margin-bottom: 4px; }
+.feedback.ok .kop { color: var(--groen); }
+.feedback.nee .kop { color: var(--rood); }
+
+.knop {
+    font: inherit; font-size: 0.92rem; font-weight: 600;
+    background: var(--accent); color: #fff;
+    border: none; border-radius: 10px;
+    padding: 11px 22px; cursor: pointer; transition: all 0.2s;
+}
+.knop:hover { background: var(--accent-donker); }
+.knop:disabled { opacity: 0.4; cursor: default; }
+.knop.rustig { background: transparent; color: var(--tekst-2); border: 1px solid var(--rand); }
+.knop.rustig:hover { border-color: var(--accent); color: var(--accent); background: transparent; }
+.knop-rij { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+
+.flits-antwoord {
+    background: var(--vlak-zacht); border: 1px solid var(--rand);
+    border-radius: 10px; padding: 14px; font-size: 0.9rem; margin-top: 12px;
+    animation: verschijn 0.3s ease;
+}
+
+/* ------- klaar-scherm ------- */
+.klaar-kop { text-align: center; padding: 10px 0 4px; }
+.klaar-kop .cijfer {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2.6rem; font-weight: 700; line-height: 1.2;
+}
+.klaar-kop .cijfer.top { color: var(--groen); }
+.klaar-kop .cijfer.matig { color: var(--oranje); }
+.klaar-kop .cijfer.laag { color: var(--rood); }
+.klaar-kop .toelichting { color: var(--tekst-2); font-size: 0.9rem; margin-top: 4px; }
+.fout-lijstje { margin-top: 14px; }
+.fout-lijstje .rij {
+    display: flex; gap: 10px; align-items: flex-start;
+    padding: 8px 0; border-top: 1px solid var(--rand-licht); font-size: 0.86rem;
+}
+.fout-lijstje .rij svg { flex-shrink: 0; margin-top: 3px; }
+
+.voet {
+    text-align: center; margin-top: 30px;
+    font-size: 0.78rem; color: var(--muted);
+}
+.voet a { color: var(--tekst-2); }
+
+@media (max-width: 520px) {
+    .sorteer-knoppen { grid-template-columns: 1fr; }
+    .koppel-kolommen { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+    <a href="../index.html" class="back-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Dashboard
+    </a>
+    <div class="app-head">
+        <h1>Sociale geneeskunde</h1>
+        <div class="sub">Gezondheid en werk, wetgeving en de defensiecontext</div>
+    </div>
+    <div id="app"></div>
+    <div class="voet">Persoonlijk studieproject, geen offici&euml;le uitgave. Onderwijsmateriaal; controleer actuele wet- en regelgeving en interne Defensie-voorschriften altijd bij de bron.</div>
+</div>
+
+<script>
+'use strict';
+
+/* ============================================================
+   Didactische opzet:
+   - korte leerblokken, direct gevolgd door ophaal-oefeningen
+     (retrieval practice / testing effect)
+   - directe, uitleggende feedback bij elk antwoord
+   - fout beantwoorde items komen dezelfde sessie terug
+   - eindtoets mengt vragen uit alle modules (interleaving)
+   - zelftest met open vragen en zelfbeoordeling
+   ============================================================ */
+
+const OPSLAG = 'socgen-voortgang';
+
+function laadVoortgang() {
+    try { return JSON.parse(localStorage.getItem(OPSLAG)) || {}; } catch (e) { return {}; }
+}
+function bewaarVoortgang(v) {
+    try { localStorage.setItem(OPSLAG, JSON.stringify(v)); } catch (e) {}
+}
+function schud(a) {
+    const b = a.slice();
+    for (let i = b.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [b[i], b[j]] = [b[j], b[i]];
+    }
+    return b;
+}
+
+/* ---------------- inhoud ---------------- */
+
+const MODULES = [
+{
+    id: 'waarom', titel: 'Waarom JESIP bestaat', sub: 'Aanleiding en doel',
+    items: [
+    { t: 'leer', kop: 'Steeds hetzelfde patroon', html: `
+        <p>JESIP staat voor <strong>Joint Emergency Services Interoperability Principles</strong> (VK, opgericht 2012; de Joint Doctrine is inmiddels aan de derde editie toe).</p>
+        <p>De aanleiding: onderzoeken naar grote incidenten &mdash; 7/7 (Londen 2005), Lakanal House, Manchester Arena (Kerslake Report), Grenfell Tower &mdash; kwamen telkens tot dezelfde bevindingen. Niet gebrek aan vakmanschap per dienst, maar gebrek aan <em>samenwerking tussen</em> diensten:</p>
+        <ul>
+            <li>onvoldoende gezamenlijk beeld van de situatie;</li>
+            <li>diensten die niet fysiek bij elkaar stonden en langs elkaar heen werkten;</li>
+            <li>onbegrepen communicatie: jargon en afkortingen;</li>
+            <li>risico-inschattingen die nooit met elkaar werden vergeleken.</li>
+        </ul>` },
+    { t: 'leer', kop: 'De strapline', html: `
+        <p>Dit zinnetje moet je letterlijk kennen. Het is zowel het doel van JESIP als geheel als het doel van het Joint Decision Model:</p>
+        <div class="quote">Improving the way we work together when responding to incidents so that we can get better at <strong>working together, saving lives, reducing harm.</strong></div>
+        <p class="zacht">Zie je in een antwoordoptie &ldquo;reducing costs&rdquo;, &ldquo;saving reputation&rdquo;, &ldquo;responding quickly&rdquo; of &ldquo;working smartly&rdquo;? Fout. Samenwerken, levens redden, schade beperken &mdash; niets anders.</p>` },
+    { t: 'mc', toets: true, vraag: 'Waar staat JESIP voor?',
+        opties: [
+            { tekst: 'Joint Emergency Services Interoperability Principles', goed: true },
+            { tekst: 'Joint Emergency Support and Incident Procedures' },
+            { tekst: 'Joint European Safety and Interoperability Programme' },
+            { tekst: 'Joint Emergency Services Incident Protocol' }
+        ],
+        uitleg: 'Interoperability is het kernwoord: het gaat om samenwerking t&uacute;ssen diensten, niet om procedures binnen &eacute;&eacute;n dienst.' },
+    { t: 'mc', toets: true, vraag: 'Maak de strapline af: &ldquo;&hellip;so that we can get better at&hellip;&rdquo;',
+        opties: [
+            { tekst: 'working together, saving lives, reducing harm', goed: true },
+            { tekst: 'working together, saving costs, responding quickly' },
+            { tekst: 'working smartly, saving lives, protecting reputation' },
+            { tekst: 'responding quickly, saving lives, reducing risk' }
+        ],
+        uitleg: 'Levens en schade zijn de enige metrieken. Kosten, reputatie en snelheid komen in de doctrine niet voor als doel.' },
+    { t: 'meer', toets: true, vraag: 'Welke bevindingen kwamen telkens terug in de onderzoeken die tot JESIP leidden? Selecteer alles wat klopt.',
+        opties: [
+            { tekst: 'Onvoldoende gezamenlijk beeld van de situatie', goed: true },
+            { tekst: 'Diensten stonden niet fysiek bij elkaar', goed: true },
+            { tekst: 'Communicatie werd niet begrepen door jargon en afkortingen', goed: true },
+            { tekst: 'Risico-inschattingen werden nooit met elkaar vergeleken', goed: true },
+            { tekst: 'Gebrek aan vakmanschap binnen de afzonderlijke diensten' },
+            { tekst: 'Te weinig materieel en mensen ter plaatse' }
+        ],
+        uitleg: 'De diensten deden hun eigen werk goed; het probleem zat telkens in de samenwerking ertussen. Daarom richt JESIP zich uitsluitend daarop.' }
+    ]
+},
+{
+    id: 'major', titel: 'Wat is een major incident?', sub: 'Definitie, standby en declareren',
+    items: [
+    { t: 'leer', kop: 'De definitie, in drie elementen', html: `
+        <div class="quote">An event or situation with a range of serious consequences which requires special arrangements to be implemented by one or more emergency responder agency.</div>
+        <table class="mini">
+            <tr><td>1</td><td><em>A range of serious consequences</em> &mdash; consequenties in meervoud; breder dan alleen &ldquo;bedreiging voor leven&rdquo;.</td></tr>
+            <tr><td>2</td><td><em>Special arrangements</em> &mdash; je treedt buiten de normale werkwijze. Dit is h&eacute;t onderscheidende kenmerk.</td></tr>
+            <tr><td>3</td><td><em>One or more agency</em> &mdash; &eacute;&eacute;n dienst is genoeg; het hoeft geen tri-service incident te zijn.</td></tr>
+        </table>
+        <p class="zacht">Veelgemaakte fout: &ldquo;an event that threatens the stability of the community&hellip;&rdquo; klinkt plausibel, maar dat is de definitie van een <em>civil emergency</em> (Civil Contingencies Act).</p>` },
+    { t: 'leer', kop: 'Standby, declared en wie dat mag', html: `
+        <ul>
+            <li><strong>Standby</strong> &mdash; je vermoedt dat het zich tot een major incident ontwikkelt; diensten bereiden zich voor, de volledige respons wordt nog niet uitgerold.</li>
+            <li><strong>Declared</strong> &mdash; de volledige respons komt op gang: vanuit elke emergency service &eacute;n overige responder agencies (lokale overheid, utility companies, HM Coastguard, vrijwilligersorganisaties).</li>
+        </ul>
+        <p>Wat declareren <strong>niet</strong> doet: het autoriseert geen &ldquo;blue lights&rdquo; (aparte, bestaande bevoegdheid), geeft geen automatische prioriteit boven andere incidenten, en verplicht geen enkele dienst om ter plaatse te komen.</p>
+        <p><strong>Iedereen kan declareren</strong> &mdash; ook een individuele responder, zonder minimum rang. Wie declareert, geeft het meteen door via M/ETHANE.</p>` },
+    { t: 'mc', toets: true, vraag: 'Welke formulering is de JESIP-definitie van een major incident?',
+        opties: [
+            { tekst: 'An event or situation with a range of serious consequences which requires special arrangements to be implemented by one or more emergency responder agency', goed: true },
+            { tekst: 'An event or situation that threatens the stability of the community and requires special measures' },
+            { tekst: 'An event with serious consequences which requires the general resources of two or more emergency services' },
+            { tekst: 'An event that threatens life and requires the attendance of all three emergency services' }
+        ],
+        uitleg: 'Let op de drie elementen: a range of serious consequences, special arrangements, one or more agency. De &ldquo;stability of the community&rdquo;-variant is de definitie van een civil emergency.' },
+    { t: 'mc', toets: true, vraag: 'Wie mag een major incident declareren?',
+        opties: [
+            { tekst: 'Iedere responder, ongeacht rang', goed: true },
+            { tekst: 'Alleen de Gold Commander' },
+            { tekst: 'Alleen de hoogste officier ter plaatse' },
+            { tekst: 'Alleen de control room, op basis van meerdere meldingen' }
+        ],
+        uitleg: 'Er is geen minimum rang. Wel geldt: wie declareert, geeft het onmiddellijk door via een M/ETHANE-melding.' },
+    { t: 'mc', toets: true, vraag: 'Wat gebeurt er als een major incident wordt gedeclareerd?',
+        opties: [
+            { tekst: 'Het triggert een respons vanuit elke emergency service en overige responder agencies', goed: true },
+            { tekst: 'Alle diensten zijn verplicht om ter plaatse te komen' },
+            { tekst: 'Het incident krijgt automatisch prioriteit boven alle andere incidenten' },
+            { tekst: 'Responders mogen vanaf dat moment met blue lights and sirens rijden' }
+        ],
+        uitleg: 'De respons is per dienst passend; prioritering blijft een besluit van control rooms en commanders, en optische en geluidssignalen zijn een aparte, altijd al bestaande bevoegdheid.' },
+    { t: 'mc', vraag: 'Wat betekent &ldquo;major incident standby&rdquo;?',
+        opties: [
+            { tekst: 'Je vermoedt dat het zich tot een major incident ontwikkelt; diensten bereiden zich voor, maar de volledige respons wordt niet uitgerold', goed: true },
+            { tekst: 'Het major incident is afgeschaald maar kan opnieuw opleven' },
+            { tekst: 'Alle diensten staan klaar op een uitgangsstelling tot Gold toestemming geeft' },
+            { tekst: 'Een tweede dienst neemt de co&ouml;rdinatie over van de eerste' }
+        ],
+        uitleg: 'Standby is de voorbereidingsstand: je waarschuwt vast, zodat de opschaling geen koude start is als het toch een declared major incident wordt.' }
+    ]
+},
+{
+    id: 'principes', titel: 'De vijf principes', sub: 'Handelingen en uitkomsten',
+    items: [
+    { t: 'leer', kop: 'Vijf principes, vaste volgorde', html: `
+        <ol>
+            <li><strong>Co-locate</strong> &mdash; kom fysiek bij elkaar, zo snel als veilig en praktisch kan.</li>
+            <li><strong>Communicate</strong> &mdash; helder en eenvoudig; geen jargon of afkortingen.</li>
+            <li><strong>Co-ordinate</strong> &mdash; wie doet wat, wie is leidend, welke prioriteiten en tijdlijnen.</li>
+            <li><strong>Jointly understand risk</strong> &mdash; deel risico-inschattingen tussen diensten.</li>
+            <li><strong>Shared Situational Awareness</strong> &mdash; bouw een gedeeld beeld op.</li>
+        </ol>
+        <p class="zacht">Volgorde-logica: de eerste drie zijn <em>handelingen</em>, de laatste twee zijn <em>uitkomsten</em> die je met die handelingen bereikt.</p>` },
+    { t: 'volgorde', toets: true, vraag: 'Zet de vijf JESIP-principes in de juiste volgorde.',
+        items: ['Co-locate', 'Communicate', 'Co-ordinate', 'Jointly understand risk', 'Shared Situational Awareness'],
+        uitleg: 'Eerst de drie handelingen (co-locate, communicate, co-ordinate), dan de twee uitkomsten (jointly understand risk, shared situational awareness).' },
+    { t: 'sorteer', vraag: 'Is dit principe een handeling of een uitkomst?',
+        cats: ['Handeling', 'Uitkomst'],
+        items: [
+            { tekst: 'Co-locate', cat: 0 },
+            { tekst: 'Jointly understand risk', cat: 1 },
+            { tekst: 'Communicate', cat: 0 },
+            { tekst: 'Shared Situational Awareness', cat: 1 },
+            { tekst: 'Co-ordinate', cat: 0 }
+        ],
+        uitleg: 'De handelingen doe je; de uitkomsten ontstaan doordat je ze doet. Dat verklaart meteen waarom de volgorde vastligt.' },
+    { t: 'meer', toets: true, vraag: 'Wat moet het toepassen van de vijf principes opleveren? Selecteer alles wat klopt.',
+        opties: [
+            { tekst: 'Informatie &eacute;n oordelen delen over hazards, risks en threats', goed: true },
+            { tekst: 'Het clear and simple houden', goed: true },
+            { tekst: 'Zorgen dat iedereen begrijpt wie wat doet', goed: true },
+            { tekst: 'Zorgen dat iedereen de gedeelde informatie ook daadwerkelijk begrijpt', goed: true },
+            { tekst: 'Het clear and simple houden met gevestigd hulpdienstjargon en afkortingen' },
+            { tekst: 'Zorgen dat je eigen dienst haar rol begrijpt' }
+        ],
+        uitleg: 'De jargon-optie is intern tegenstrijdig: jargon is precies wat JESIP wil uitbannen. En &ldquo;je eigen dienst&rdquo; is te smal; het gaat juist over de grens tussen diensten heen.' },
+    { t: 'mc', vraag: 'Een antwoordoptie noemt &ldquo;forming, storming, norming, performing&rdquo;. Wat is dat?',
+        opties: [
+            { tekst: 'Het teamontwikkelingsmodel van Tuckman; het heeft niets met JESIP te maken', goed: true },
+            { tekst: 'De vier fasen van gezamenlijke opschaling volgens de Joint Doctrine' },
+            { tekst: 'De informele benaming van de JDM-cyclus' },
+            { tekst: 'Het briefingmodel dat naast IIMARCH wordt gebruikt' }
+        ],
+        uitleg: 'Klassieke afleider, net als &ldquo;run, hide, tell&rdquo; (publieksadvies bij aanslagen). Beide zijn geen JESIP-principes.' }
+    ]
+},
+{
+    id: 'ssa', titel: 'Shared Situational Awareness', sub: 'Het gedeelde beeld',
+    items: [
+    { t: 'leer', kop: 'De definitie', html: `
+        <div class="quote">A common understanding of the circumstances, immediate consequences and any possible future consequences, along with an appreciation of the available capabilities and priorities of the responder agencies involved.</div>
+        <p>Drie dingen die hierop getoetst worden:</p>
+        <ul>
+            <li><strong>Common</strong>, niet &ldquo;for your own agency&rdquo; &mdash; per definitie dienstoverstijgend.</li>
+            <li>Het omvat <strong>future consequences</strong> &mdash; vooruitkijken hoort erbij.</li>
+            <li>Het gaat verder dan het schouwtoneel: ook <strong>capabilities en prioriteiten</strong> van de andere diensten.</li>
+        </ul>
+        <p class="zacht">Betrouwbare heuristiek: staat het woord <strong>&ldquo;only&rdquo;</strong> in een SSA-antwoordoptie, dan is die optie vrijwel altijd fout. En SSA is geen momentopname maar een continu proces: het beeld verandert, dus je herhaalt de cyclus.</p>` },
+    { t: 'mc', toets: true, vraag: 'Wat is Shared Situational Awareness?',
+        opties: [
+            { tekst: 'Een gemeenschappelijk begrip van de omstandigheden, de directe en mogelijke toekomstige gevolgen, plus de capabilities en prioriteiten van de betrokken diensten', goed: true },
+            { tekst: 'Een actueel beeld van wat er op dit moment op de incidentlocatie gebeurt' },
+            { tekst: 'Het situatiebeeld dat elke dienst voor haar eigen inzet bijhoudt' },
+            { tekst: 'De gezamenlijke logging van alle besluiten tijdens het incident' }
+        ],
+        uitleg: 'Drie kenmerken: common (dienstoverstijgend), inclusief toekomstige gevolgen, en inclusief capabilities en prioriteiten van de andere diensten.' },
+    { t: 'mc', toets: true, vraag: 'Welk woord in een antwoordoptie is bij SSA-vragen vrijwel altijd een rode vlag?',
+        opties: [
+            { tekst: '&ldquo;Only&rdquo;', goed: true },
+            { tekst: '&ldquo;Common&rdquo;' },
+            { tekst: '&ldquo;Future&rdquo;' },
+            { tekst: '&ldquo;Priorities&rdquo;' }
+        ],
+        uitleg: 'JESIP gaat over grenzen heen. Opties die iets beperken tot &eacute;&eacute;n dienst, &eacute;&eacute;n aspect of &eacute;&eacute;n moment zijn vrijwel altijd fout.' },
+    { t: 'mc', vraag: 'Is SSA een momentopname of een proces?',
+        opties: [
+            { tekst: 'Een continu proces: het beeld verandert, dus je herhaalt de cyclus', goed: true },
+            { tekst: 'Een momentopname die bij de eerste gezamenlijke briefing wordt vastgelegd' },
+            { tekst: 'Een proces dat stopt zodra alle diensten ter plaatse zijn' },
+            { tekst: 'Een product dat de Gold Commander eenmalig vaststelt' }
+        ],
+        uitleg: 'Het incident ontwikkelt zich; het gedeelde beeld moet mee-ontwikkelen. Vandaar dat SSA-opbouw telkens opnieuw gebeurt, onder meer via herhaalde M/ETHANE-updates.' }
+    ]
+},
+{
+    id: 'methane', titel: 'M/ETHANE', sub: 'Het gedeelde meldformat',
+    items: [
+    { t: 'leer', kop: 'Zeven letters', html: `
+        <table class="mini">
+            <tr><td class="mono">M</td><td><strong>Major incident</strong> &mdash; declared or standby. Alleen deze letter erbij bij een major incident.</td></tr>
+            <tr><td class="mono">E</td><td><strong>Exact location</strong> &mdash; zo precies mogelijk: grid ref, postcode, kilometerpaal.</td></tr>
+            <tr><td class="mono">T</td><td><strong>Type of incident</strong> &mdash; botsing, brand, instorting, aanslag.</td></tr>
+            <tr><td class="mono">H</td><td><strong>Hazards</strong> &mdash; aanwezig &eacute;n potentieel.</td></tr>
+            <tr><td class="mono">A</td><td><strong>Access</strong> &mdash; toegangs- &eacute;n uitgangsroutes, obstakels.</td></tr>
+            <tr><td class="mono">N</td><td><strong>Number of casualties</strong> &mdash; aantal, type, ernst.</td></tr>
+            <tr><td class="mono">E</td><td><strong>Emergency services</strong> &mdash; aanwezig en aanvullend benodigd.</td></tr>
+        </table>
+        <p class="zacht">De M is de schakelaar: <strong>M/ETHANE</strong> bij een major incident (declared of standby), <strong>ETHANE</strong> &mdash; dezelfde structuur zonder M &mdash; voor alle andere incidenten. Vergeet ETHANE-meldingen bij kleinere incidenten dus niet.</p>` },
+    { t: 'leer', kop: 'Wat de melding bereikt en wie hem gebruikt', html: `
+        <p>E&eacute;n M/ETHANE-melding doet alles tegelijk: bevestigt de majorincident-status en de exacte locatie, verduidelijkt het incidenttype, signaleert hazards, beschrijft aanrijroutes en slachtoffers, vraagt aanvullende hulpverleners aan &mdash; <strong>en begint daarmee het opbouwen van shared situational awareness</strong>. Die laatste functie maakt het een JESIP-instrument en niet slechts een meldformulier.</p>
+        <p>Versturen mag via radio, telefoon, sms of e-mail: het middel doet er niet toe, zolang de structuur gevolgd wordt en het snel aankomt.</p>
+        <p>De informatie wordt gebruikt door de drie commandoniveaus binnen je eigen dienst:</p>
+        <table class="mini">
+            <tr><th>Niveau</th><th>Naam</th><th>Rol</th></tr>
+            <tr><td>Strategic</td><td>Gold</td><td>Zet de gezamenlijke strategische richting</td></tr>
+            <tr><td>Tactical</td><td>Silver</td><td>Vertegenwoordigt de eigen dienst in het gezamenlijk ontwikkelen, uitvoeren en evalueren van het responsplan</td></tr>
+            <tr><td>Operational</td><td>Bronze</td><td>Voert het responsplan ter plaatse uit namens de eigen dienst</td></tr>
+        </table>
+        <p class="zacht">De niveaus zijn functioneel, niet rang-gebonden. Politieke leiders en regeringsvertegenwoordigers vallen buiten deze keten en zijn dus altijd de foute optie.</p>` },
+    { t: 'koppel', toets: true, vraag: 'Koppel elke letter aan de juiste betekenis.',
+        paren: [
+            ['M', 'Major incident &mdash; declared or standby'],
+            ['E', 'Exact location'],
+            ['T', 'Type of incident'],
+            ['H', 'Hazards &mdash; aanwezig &eacute;n potentieel'],
+            ['A', 'Access &mdash; routes en obstakels'],
+            ['N', 'Number of casualties'],
+            ['E&nbsp;', 'Emergency services &mdash; aanwezig en benodigd']
+        ],
+        uitleg: 'Let op de twee E&rsquo;s: de eerste is Exact location, de laatste is Emergency services.' },
+    { t: 'meer', toets: true, vraag: 'Welke van deze elementen horen N&Iacute;ET in M/ETHANE thuis?',
+        opties: [
+            { tekst: 'Accountability', goed: true },
+            { tekst: 'Number of vehicles', goed: true },
+            { tekst: 'Emergency plans', goed: true },
+            { tekst: 'Hospitals on standby', goed: true },
+            { tekst: 'Hazards' },
+            { tekst: 'Access' }
+        ],
+        uitleg: 'Afleiders lijken vaak op de echte elementen (Number of vehicles vs. Number of casualties, Emergency plans vs. Emergency services). Ook &ldquo;Expected outcome&rdquo; en &ldquo;Time&rdquo; duiken op als nep-elementen.' },
+    { t: 'mc', toets: true, vraag: 'Wat is het verschil tussen M/ETHANE en ETHANE?',
+        opties: [
+            { tekst: 'Dezelfde structuur; de M komt er alleen bij als het een major incident is (declared of standby). ETHANE gebruik je bij alle andere incidenten', goed: true },
+            { tekst: 'M/ETHANE is voor de politie, ETHANE voor ambulance en brandweer' },
+            { tekst: 'ETHANE is de verkorte versie voor als er weinig tijd is' },
+            { tekst: 'M/ETHANE is de eerste melding, ETHANE elke vervolgmelding' }
+        ],
+        uitleg: 'Je gebruikt altijd dezelfde structuur; de M is de schakelaar. Vergeet ETHANE-meldingen bij kleinere incidenten niet.' },
+    { t: 'mc', toets: true, vraag: 'Wat bereikt een goede M/ETHANE-melding?',
+        opties: [
+            { tekst: 'Bevestigt de majorincident-status en locatie, signaleert hazards, beschrijft routes en slachtoffers, vraagt hulp aan &eacute;n begint het opbouwen van shared situational awareness &mdash; alles tegelijk', goed: true },
+            { tekst: 'Bevestigt alleen formeel dat een major incident is gedeclareerd' },
+            { tekst: 'Vervangt de dynamic risk assessment van de eerste responder' },
+            { tekst: 'Draagt het commando over aan de control room' }
+        ],
+        uitleg: 'Het format is er juist op ontworpen om al deze functies in &eacute;&eacute;n keer te vervullen. Bij een &ldquo;alles van het bovenstaande&rdquo;-optie in dit domein: die is bijna altijd correct.' },
+    { t: 'koppel', toets: true, vraag: 'Koppel elk commandoniveau aan zijn rol.',
+        paren: [
+            ['Gold', 'Strategic: zet de gezamenlijke strategische richting'],
+            ['Silver', 'Tactical: vertegenwoordigt de eigen dienst in het gezamenlijke responsplan'],
+            ['Bronze', 'Operational: voert het responsplan ter plaatse uit']
+        ],
+        uitleg: 'Gold/silver/bronze is de informele variant van strategic/tactical/operational. De niveaus zeggen iets over het besluitvormingsniveau, niet over wie de hoogste rang heeft.' },
+    { t: 'mc', vraag: 'Via welke middelen mag je een M/ETHANE-melding versturen?',
+        opties: [
+            { tekst: 'Radio, telefoon, sms of e-mail: het middel doet er niet toe, zolang de structuur gevolgd wordt en het snel aankomt', goed: true },
+            { tekst: 'Alleen via de radio, want die is beveiligd' },
+            { tekst: 'Alleen mondeling aan de eigen control room' },
+            { tekst: 'Alleen via het formulier in het incident command systeem' }
+        ],
+        uitleg: 'Structuur en snelheid tellen, niet het kanaal. (Per post uiteraard niet; dat is de grap-afleider.)' }
+    ]
+},
+{
+    id: 'eerste', titel: 'Eerste ter plaatse', sub: 'Volgorde van handelen',
+    items: [
+    { t: 'leer', kop: 'Drie stappen, vaste volgorde', html: `
+        <ol>
+            <li><strong>Beoordeel op afstand, ga niet blind naar binnen.</strong> Je eigen veiligheid eerst.</li>
+            <li><strong>Stuur een M/ETHANE-melding naar je control/operations room.</strong> Dit is je eerste actieve handeling.</li>
+            <li>Pas daarna: <strong>hulpverlening</strong>, binnen je bevoegdheid en veiligheid.</li>
+        </ol>
+        <p>Waarom eerst melden? Jouw waarneming is de enige informatiebron die de hele responsketen op gang brengt. Ga je meteen behandelen, dan blijft iedereen achter je blind &mdash; en behandel je &eacute;&eacute;n slachtoffer terwijl de opschaling voor honderd stilstaat.</p>
+        <p class="zacht">En fundamenteel: JESIP kent g&eacute;&eacute;n commandant over alle diensten. Elke dienst behoudt haar eigen commandostructuur. &ldquo;De sc&egrave;ne overnemen en andere diensten aansturen&rdquo; is dus altijd fout.</p>` },
+    { t: 'volgorde', toets: true, vraag: 'Je bent als eerste ter plaatse bij een vermoedelijk major incident. Zet je handelingen in de juiste volgorde.',
+        items: ['Beoordeel de situatie op afstand, met je eigen veiligheid voorop', 'Stuur een M/ETHANE-melding naar je control room', 'Verleen hulp binnen je bevoegdheid en veiligheid'],
+        uitleg: 'Eerst kijken, dan melden, dan pas helpen. Jouw melding brengt de hele keten op gang; behandelen v&oacute;&oacute;r melden laat de opschaling stilstaan.' },
+    { t: 'mc', toets: true, vraag: 'Waarom stuur je de M/ETHANE-melding v&oacute;&oacute;rdat je slachtoffers gaat helpen?',
+        opties: [
+            { tekst: 'Jouw waarneming is de enige informatiebron die de hele responsketen op gang brengt', goed: true },
+            { tekst: 'Omdat je pas mag behandelen als de control room toestemming geeft' },
+            { tekst: 'Omdat de melding juridisch verplicht is voordat je handelt' },
+            { tekst: 'Omdat andere diensten anders je locatie niet kunnen loggen' }
+        ],
+        uitleg: 'Behandel je meteen, dan help je &eacute;&eacute;n slachtoffer terwijl de opschaling voor honderd stilstaat. Er is geen toestemmingsvereiste; het is een prioriteitskeuze.' },
+    { t: 'mc', toets: true, vraag: 'Je bent als eerste ter plaatse. Mag je de sc&egrave;ne overnemen en de andere aankomende diensten aansturen?',
+        opties: [
+            { tekst: 'Nee: geen enkele dienst commandeert een andere; elke dienst behoudt haar eigen commandostructuur', goed: true },
+            { tekst: 'Ja, tot een hogere rang van je eigen dienst arriveert' },
+            { tekst: 'Ja, want de eerste ter plaatse is automatisch Bronze Commander voor alle diensten' },
+            { tekst: 'Alleen als je een major incident hebt gedeclareerd' }
+        ],
+        uitleg: 'Dit is een fundamenteel punt, geen detail: JESIP kent geen enkele commandant over alle diensten. Co&ouml;rdinatie is iets anders dan commando.' }
+    ]
+},
+{
+    id: 'risico', titel: 'Joint understanding of risk', sub: 'E&eacute;n gezamenlijk risicobeeld',
+    items: [
+    { t: 'leer', kop: 'Waarom diensten risico&rsquo;s verschillend zien', html: `
+        <p>Diensten zien risico&rsquo;s verschillend <em>omdat hun rol verschilt</em>. Wat voor de brandweer een instortingsrisico is, is voor de ambulancedienst een toegankelijkheidsprobleem en voor de politie een afzettingsvraagstuk. Geen van die beelden is fout &mdash; ze zijn <strong>incompleet</strong>. Door de beoordelingen te delen ontstaat &eacute;&eacute;n gezamenlijk risicobeeld.</p>
+        <p>De vier kernoverwegingen (allemaal waar, ook de vierde die tegenstrijdig l&iacute;jkt):</p>
+        <ul>
+            <li>Diensten anticiperen risico&rsquo;s verschillend door hun werkrol.</li>
+            <li>Gedeelde risicobeelden leveren een gemeenschappelijk totaalbegrip op.</li>
+            <li>Het houdt responders veilig en beperkt schade aan publiek en omgeving.</li>
+            <li>Elke dienst voert nog steeds haar <em>eigen</em> dynamic risk assessment uit, volgens eigen werkwijze.</li>
+        </ul>
+        <p class="zacht">Die laatste is geen uitzondering op het joint principe maar de bouwsteen ervan: eerst je eigen DRA, dan delen, dan een gezamenlijk beeld. JESIP vervangt de eigen risicobeoordeling niet.</p>` },
+    { t: 'leer', kop: 'Terminologie', html: `
+        <table class="mini">
+            <tr><td>Hazard</td><td>Iets met de potentie schade te veroorzaken</td></tr>
+            <tr><td>Risk</td><td>De kans dat dat gebeurt &times; de ernst</td></tr>
+            <tr><td>Threat</td><td>Een opzettelijke, kwaadwillende bron van schade</td></tr>
+        </table>` },
+    { t: 'koppel', toets: true, vraag: 'Koppel de term aan de juiste definitie.',
+        paren: [
+            ['Hazard', 'Iets met de potentie om schade te veroorzaken'],
+            ['Risk', 'De kans op schade maal de ernst ervan'],
+            ['Threat', 'Een opzettelijke, kwaadwillende bron van schade']
+        ],
+        uitleg: 'Een gaslek is een hazard; de kans dat het ontsteekt maal de gevolgen is het risk; een aanslagpleger is een threat.' },
+    { t: 'mc', toets: true, vraag: 'Waarom beoordelen diensten hetzelfde incident verschillend op risico?',
+        opties: [
+            { tekst: 'Omdat hun werkrol verschilt; elk beeld klopt maar is incompleet, en pas samen ontstaat het totaalbeeld', goed: true },
+            { tekst: 'Omdat sommige diensten beter zijn opgeleid in risicobeoordeling dan andere' },
+            { tekst: 'Omdat elke dienst een andere risicomatrix hanteert en die matrices niet compatibel zijn' },
+            { tekst: 'Omdat de diensten verschillende informatie achterhouden voor elkaar' }
+        ],
+        uitleg: 'Instortingsrisico voor de brandweer, toegankelijkheid voor de ambulance, afzetting voor de politie: geen van die beelden is fout, ze zijn incompleet. Daarom deel je ze.' },
+    { t: 'mc', toets: true, vraag: 'Vervangt de joint understanding of risk de eigen dynamic risk assessment van je dienst?',
+        opties: [
+            { tekst: 'Nee: elke dienst blijft haar eigen DRA doen; die eigen beoordelingen zijn juist de bouwstenen van het gezamenlijke beeld', goed: true },
+            { tekst: 'Ja, zodra er een gezamenlijk risicobeeld is, vervalt de eigen beoordeling' },
+            { tekst: 'Ja, de dienst met het hoogste risico neemt de beoordeling over voor iedereen' },
+            { tekst: 'Nee, maar de eigen DRA mag pas na de gezamenlijke beoordeling worden gedaan' }
+        ],
+        uitleg: 'Eerst je eigen DRA, dan delen, dan een gezamenlijk beeld. JESIP vervangt de eigen risicobeoordeling niet.' },
+    { t: 'mc', vraag: 'Een toetsvraag luidt: &ldquo;waarom is joint understanding of risk belangrijk?&rdquo; Wat voor antwoord zoekt zo&rsquo;n vraag?',
+        opties: [
+            { tekst: 'Het mechanisme: gedeelde beoordelingen leveren een gemeenschappelijk totaalbegrip op, houden responders veilig en beperken schade', goed: true },
+            { tekst: 'De uitkomst: het besluit om resources in te zetten' },
+            { tekst: 'De procedure: welk formulier je invult om risico&rsquo;s te delen' },
+            { tekst: 'De historie: welke incidenten tot het principe hebben geleid' }
+        ],
+        uitleg: 'Het inzetbesluit is een gevolg van gezamenlijk risicobegrip, niet de reden waarom het belangrijk is. &ldquo;Waarom belangrijk&rdquo;-vragen willen het mechanisme, niet de uitkomst.' }
+    ]
+},
+{
+    id: 'jdm', titel: 'Het Joint Decision Model', sub: 'Vijf stappen, cyclisch',
+    items: [
+    { t: 'leer', kop: 'Het model', html: `
+        <p>Een gezamenlijk besluitvormingsmodel dat alle diensten delen. In het midden staat het doel: <strong>working together, saving lives, reducing harm</strong>. Daaromheen vijf stappen, met de klok mee, cyclisch:</p>
+        <ol>
+            <li><strong>Gather information and intelligence</strong> &mdash; wat weten we, wat niet, wat is de bron?</li>
+            <li><strong>Assess risks and develop a working strategy</strong></li>
+            <li><strong>Consider powers, policies and procedures</strong> &mdash; welke bevoegdheden en kaders gelden?</li>
+            <li><strong>Identify options and contingencies</strong> &mdash; welke opties, en wat als het misgaat?</li>
+            <li><strong>Take action and review what happened</strong> &mdash; uitvoeren, evalueren, terug naar stap 1.</li>
+        </ol>
+        <p class="zacht">Ezelsbrug: <em>Gather &rarr; Assess &rarr; Consider &rarr; Identify &rarr; Act.</em> Informatie v&oacute;&oacute;r besluit, kaders v&oacute;&oacute;r opties, opties v&oacute;&oacute;r actie. Het model is cyclisch (bij een langlopend incident doorloop je het tientallen keren) en bruikbaar op elk commandoniveau, ook door een individuele responder.</p>` },
+    { t: 'volgorde', toets: true, vraag: 'Zet de vijf JDM-stappen in de juiste volgorde.',
+        items: ['Gather information and intelligence', 'Assess risks and develop a working strategy', 'Consider powers, policies and procedures', 'Identify options and contingencies', 'Take action and review what happened'],
+        uitleg: 'Je kunt geen risico beoordelen zonder informatie, geen opties bedenken zonder je bevoegdheden te kennen, en niet handelen zonder opties.' },
+    { t: 'mc', toets: true, vraag: 'Wat staat er in het midden van het Joint Decision Model?',
+        opties: [
+            { tekst: 'Working together, saving lives, reducing harm', goed: true },
+            { tekst: 'Shared situational awareness' },
+            { tekst: 'De Gold Commander' },
+            { tekst: 'Command, control, co-ordination' }
+        ],
+        uitleg: 'Hetzelfde doel als de JESIP-strapline. Elke stap van de cyclus draait om dat midden.' },
+    { t: 'mc', toets: true, vraag: 'Een antwoordoptie geeft een JDM-volgorde die begint met &ldquo;take action&rdquo;. Waarom is die op logische gronden al fout?',
+        opties: [
+            { tekst: 'Je kunt niet handelen zonder opties, geen opties bedenken zonder kaders, en geen risico beoordelen zonder informatie', goed: true },
+            { tekst: 'Omdat de doctrine voorschrijft dat Gold altijd eerst toestemming geeft' },
+            { tekst: 'Omdat &ldquo;take action&rdquo; alleen op operational niveau is toegestaan' },
+            { tekst: 'Die volgorde kan wel kloppen bij een zeer acuut incident' }
+        ],
+        uitleg: 'De volgorde hoef je niet te stampen; je kunt hem afleiden. Informatie v&oacute;&oacute;r besluit, kaders v&oacute;&oacute;r opties, opties v&oacute;&oacute;r actie.' },
+    { t: 'mc', vraag: 'Wat gebeurt er na stap 5 (take action and review)?',
+        opties: [
+            { tekst: 'Je begint opnieuw bij stap 1: het model is cyclisch', goed: true },
+            { tekst: 'Het model is afgerond; bij nieuwe ontwikkelingen start een nieuw model' },
+            { tekst: 'De uitkomst gaat ter goedkeuring naar het strategische niveau' },
+            { tekst: 'Je schakelt over op het IIMARCH-model' }
+        ],
+        uitleg: 'Bij een langlopend incident doorloop je de cyclus tientallen keren, op elk commandoniveau.' }
+    ]
+},
+{
+    id: 'mims', titel: 'Verdieping: MIMS-aansluiting', sub: 'IIMARCH, JOL en CSCATTT',
+    items: [
+    { t: 'leer', kop: 'Aanpalende JESIP-instrumenten', html: `
+        <ul>
+            <li><strong>IIMARCH</strong> &mdash; het gezamenlijke briefingmodel: Information, Intent, Method, Administration, Risk assessment, Communications, Humanitarian issues. Waar M/ETHANE de <em>melding</em> structureert, structureert IIMARCH de <em>briefing</em>.</li>
+            <li><strong>Joint Organisational Learning (JOL)</strong> &mdash; lessen uit incidenten en oefeningen tussen diensten delen, via JOL Online. Het antwoord op de constatering dat dezelfde fouten telkens terugkeerden.</li>
+            <li><strong>Common terminology</strong> &mdash; een gezamenlijk lexicon, omdat dezelfde term per dienst iets anders kan betekenen (&ldquo;casualty&rdquo; betekent voor de ambulancedienst iets anders dan voor de politie).</li>
+        </ul>` },
+    { t: 'leer', kop: 'CSCATTT: de medische structuur van MIMS', html: `
+        <table class="mini">
+            <tr><td class="mono">C</td><td>Command and control</td></tr>
+            <tr><td class="mono">S</td><td>Safety &mdash; self, scene, survivors, in die volgorde</td></tr>
+            <tr><td class="mono">C</td><td>Communication</td></tr>
+            <tr><td class="mono">A</td><td>Assessment</td></tr>
+            <tr><td class="mono">T</td><td>Triage</td></tr>
+            <tr><td class="mono">T</td><td>Treatment</td></tr>
+            <tr><td class="mono">T</td><td>Transport</td></tr>
+        </table>
+        <p>De eerste vier (CSCA) zijn <strong>management</strong>, de laatste drie (TTT) zijn <strong>support</strong>. Merk op hoe strak dit op JESIP aansluit: command &asymp; co-ordinate, communication &asymp; M/ETHANE, assessment &asymp; shared situational awareness, safety &asymp; joint understanding of risk. Dezelfde logica in een medisch jasje.</p>
+        <p class="zacht">Let op: de VK-triagesystematiek is de afgelopen jaren gewijzigd (Ten Second Triage naast de klassieke sieve/sort). Check welke versie jouw cursusmateriaal hanteert.</p>` },
+    { t: 'volgorde', toets: true, vraag: 'Zet de CSCATTT-elementen in de juiste volgorde.',
+        items: ['Command and control', 'Safety', 'Communication', 'Assessment', 'Triage', 'Treatment', 'Transport'],
+        uitleg: 'Eerst de management-laag (CSCA), dan de support-laag (TTT). Zonder command, safety, communicatie en beeldvorming heeft behandelen geen structuur.' },
+    { t: 'sorteer', vraag: 'Hoort dit CSCATTT-element bij management of bij support?',
+        cats: ['Management', 'Support'],
+        items: [
+            { tekst: 'Command and control', cat: 0 },
+            { tekst: 'Triage', cat: 1 },
+            { tekst: 'Assessment', cat: 0 },
+            { tekst: 'Transport', cat: 1 },
+            { tekst: 'Safety', cat: 0 },
+            { tekst: 'Treatment', cat: 1 },
+            { tekst: 'Communication', cat: 0 }
+        ],
+        uitleg: 'CSCA is management, TTT is support. De support-laag kan pas goed draaien als de management-laag staat.' },
+    { t: 'mc', toets: true, vraag: 'Wat is het verschil tussen M/ETHANE en IIMARCH?',
+        opties: [
+            { tekst: 'M/ETHANE structureert de melding, IIMARCH structureert de briefing', goed: true },
+            { tekst: 'M/ETHANE is voor major incidents, IIMARCH voor gewone incidenten' },
+            { tekst: 'IIMARCH is de opvolger van M/ETHANE in de derde editie van de doctrine' },
+            { tekst: 'M/ETHANE is medisch, IIMARCH is politie-specifiek' }
+        ],
+        uitleg: 'IIMARCH: Information, Intent, Method, Administration, Risk assessment, Communications, Humanitarian issues. Beide zijn gezamenlijke JESIP-instrumenten met elk hun eigen moment.' },
+    { t: 'mc', toets: true, vraag: 'In welke volgorde beoordeel je Safety binnen CSCATTT?',
+        opties: [
+            { tekst: 'Self, scene, survivors', goed: true },
+            { tekst: 'Survivors, scene, self' },
+            { tekst: 'Scene, self, survivors' },
+            { tekst: 'Self, survivors, scene' }
+        ],
+        uitleg: 'Eigen veiligheid eerst, dan de sc&egrave;ne, dan pas de slachtoffers. Dezelfde logica als bij de eerste responder ter plaatse: een uitgevallen hulpverlener helpt niemand.' }
+    ]
+},
+{
+    id: 'valstrik', titel: 'Valstrik-trainer', sub: 'Herken de foute optie',
+    items: [
+    { t: 'leer', kop: 'Zeven patronen', html: `
+        <p>De foute antwoordopties in dit domein volgen vaste patronen:</p>
+        <ol>
+            <li>De letterlijke doctrineformulering wint van de operationeel plausibele.</li>
+            <li>&ldquo;Only&rdquo; is een rode vlag: JESIP gaat over grenzen heen.</li>
+            <li>&ldquo;All of the above&rdquo; is hier vaak correct: M/ETHANE en de vijf principes vervullen bewust meerdere functies tegelijk.</li>
+            <li>Alles met kosten, reputatie of snelheid als doel is fout.</li>
+            <li>Jargon is nooit het juiste antwoord.</li>
+            <li>Geen enkele dienst commandeert een andere.</li>
+            <li>Let op interne tegenstrijdigheid in lange opties: vaak &eacute;&eacute;n correct fragment plus &eacute;&eacute;n dat het weerspreekt.</li>
+        </ol>
+        <p class="zacht">Nu oefenen: bij elke stelling hieronder bepaal je waarom hij fout (of juist goed) is.</p>` },
+    { t: 'mc', vraag: 'Toetsoptie: &ldquo;Keeping it clear and simple using established emergency service jargon and abbreviations.&rdquo; Waarom is dit fout?',
+        opties: [
+            { tekst: 'De optie is intern tegenstrijdig: jargon is precies wat JESIP wil uitbannen', goed: true },
+            { tekst: 'Omdat afkortingen alleen binnen de eigen dienst zijn toegestaan' },
+            { tekst: 'De optie is niet fout: gevestigd jargon versnelt de communicatie' },
+            { tekst: 'Omdat &ldquo;clear and simple&rdquo; geen doctrineterm is' }
+        ],
+        uitleg: 'Patroon 5 en 7: het eerste fragment (clear and simple) klopt, het tweede (jargon) weerspreekt het. E&eacute;n fout fragment maakt de hele optie fout.' },
+    { t: 'mc', vraag: 'Toetsoptie: &ldquo;&hellip;so that we can get better at working together, saving costs, reducing harm.&rdquo; Waarom fout?',
+        opties: [
+            { tekst: 'Kosten zijn nooit het doel: het is saving lives', goed: true },
+            { tekst: 'De volgorde van de drie elementen klopt niet' },
+            { tekst: 'Er hoort &ldquo;responding quickly&rdquo; te staan' },
+            { tekst: 'De optie is correct: doelmatigheid hoort bij goede hulpverlening' }
+        ],
+        uitleg: 'Patroon 4: kosten, reputatie en snelheid komen in de doctrine niet als doel voor. Levens en schade zijn de enige metrieken.' },
+    { t: 'mc', vraag: 'Toetsoptie: &ldquo;Shared situational awareness: a common understanding of the incident for your own agency only.&rdquo; Waarom fout?',
+        opties: [
+            { tekst: '&ldquo;Only&rdquo; plus &ldquo;your own agency&rdquo;: SSA is per definitie dienstoverstijgend', goed: true },
+            { tekst: 'Omdat SSA alleen op strategisch niveau bestaat' },
+            { tekst: 'Omdat &ldquo;common understanding&rdquo; niet de doctrineterm is' },
+            { tekst: 'De optie is correct: elk agency bouwt zijn eigen SSA op' }
+        ],
+        uitleg: 'Patroon 2: het woord &ldquo;only&rdquo; beperkt iets wat juist gedeeld moet zijn. Vrijwel altijd fout bij SSA-vragen.' },
+    { t: 'mc', vraag: 'Toetsoptie: &ldquo;Als eerste ter plaatse neem je het commando over alle aanwezige diensten.&rdquo; Waarom fout?',
+        opties: [
+            { tekst: 'Geen enkele dienst commandeert een andere; elke dienst behoudt haar eigen commandostructuur', goed: true },
+            { tekst: 'Alleen fout omdat je daarvoor minimaal Silver moet zijn' },
+            { tekst: 'Alleen fout als het major incident nog niet is gedeclareerd' },
+            { tekst: 'De optie is correct: iemand moet toch de leiding nemen' }
+        ],
+        uitleg: 'Patroon 6, een fundamenteel punt. JESIP regelt co&ouml;rdinatie tussen gelijkwaardige commandostructuren, geen overkoepelend commando.' },
+    { t: 'mc', vraag: 'Bij een vraag over wat M/ETHANE bereikt staat als optie &ldquo;all of the above&rdquo;. Wat is verstandig?',
+        opties: [
+            { tekst: 'Serieus overwegen: het format is juist ontworpen om al die functies tegelijk te vervullen', goed: true },
+            { tekst: 'Altijd vermijden: &ldquo;all of the above&rdquo; is een klassieke afleider' },
+            { tekst: 'Alleen kiezen als je minstens twee opties zeker weet' },
+            { tekst: 'Kiezen op basis van de langste andere optie' }
+        ],
+        uitleg: 'Patroon 3: in dit domein is &ldquo;all of the above&rdquo; vaak correct, juist omdat M/ETHANE en de vijf principes meerdere functies tegelijk vervullen.' }
+    ]
+}
+];
+
+const ZELFTEST = {
+    id: 'zelftest', titel: 'Zelftest zonder opties',
+    sub: 'Formuleer eerst zelf het antwoord, beoordeel dan jezelf',
+    items: [
+        { t: 'flits', vraag: 'Geef de definitie van een major incident, letterlijk, in drie elementen.',
+          antwoord: '<em>An event or situation with a range of serious consequences which requires special arrangements to be implemented by one or more emergency responder agency.</em><br><br>De drie elementen: (1) a range of serious consequences, (2) special arrangements, (3) one or more agency.' },
+        { t: 'flits', vraag: 'Noem de vijf principes in volgorde en zeg welke handelingen zijn en welke uitkomsten.',
+          antwoord: '1. Co-locate, 2. Communicate, 3. Co-ordinate (handelingen) &mdash; 4. Jointly understand risk, 5. Shared Situational Awareness (uitkomsten).' },
+        { t: 'flits', vraag: 'Schrijf M/ETHANE volledig uit en leg uit wanneer je de M weglaat.',
+          antwoord: 'Major incident (declared or standby), Exact location, Type of incident, Hazards, Access, Number of casualties, Emergency services.<br><br>De M vervalt bij alle incidenten die geen major incident zijn: dan is het een ETHANE-melding met dezelfde structuur.' },
+        { t: 'flits', vraag: 'Noem de vijf JDM-stappen in volgorde en verklaar waarom die volgorde noodzakelijk is.',
+          antwoord: '1. Gather information and intelligence, 2. Assess risks and develop a working strategy, 3. Consider powers, policies and procedures, 4. Identify options and contingencies, 5. Take action and review what happened.<br><br>Je kunt geen risico beoordelen zonder informatie, geen opties bedenken zonder je bevoegdheden te kennen, en niet handelen zonder opties.' },
+        { t: 'flits', vraag: 'Wat gebeurt er w&eacute;l en wat gebeurt er n&iacute;et als je een major incident declareert?',
+          antwoord: 'W&eacute;l: een respons vanuit elke emergency service en overige responder agencies.<br><br>Ni&eacute;t: geen autorisatie voor blue lights (aparte bevoegdheid), geen automatische prioriteit boven andere incidenten, geen verplichting voor elke dienst om ter plaatse te komen.' },
+        { t: 'flits', vraag: 'Wat zijn je eerste drie handelingen als eerste ter plaatse, en waarom in die volgorde?',
+          antwoord: '1. Beoordeel op afstand (eigen veiligheid eerst), 2. stuur een M/ETHANE-melding naar je control room, 3. verleen hulp binnen bevoegdheid en veiligheid.<br><br>Jouw waarneming is de enige bron die de hele responsketen op gang brengt; behandelen v&oacute;&oacute;r melden laat de opschaling stilstaan.' },
+        { t: 'flits', vraag: 'Waarom moet elke dienst haar eigen risicobeoordeling blijven doen als er toch een joint understanding of risk is?',
+          antwoord: 'De eigen dynamic risk assessments zijn de bouwstenen van het gezamenlijke beeld: eerst je eigen DRA, dan delen, dan &eacute;&eacute;n gezamenlijk risicobeeld. JESIP vervangt de eigen beoordeling niet; elk rolgebonden beeld is incompleet maar niet fout.' },
+        { t: 'flits', vraag: 'Welke drie commandoniveaus gebruiken jouw M/ETHANE-melding, en wat doet elk?',
+          antwoord: 'Strategic (Gold): zet de gezamenlijke strategische richting. Tactical (Silver): vertegenwoordigt de eigen dienst in het gezamenlijk ontwikkelen, uitvoeren en evalueren van het responsplan. Operational (Bronze): voert het responsplan ter plaatse uit namens de eigen dienst.' }
+    ]
+};
+
+/* ---------------- app-status ---------------- */
+
+const app = document.getElementById('app');
+let sessie = null; // { moduleId, titel, wachtrij, idx, goedEersteKeer, totaalVragen, fouten: [vraagtekst] }
+
+function isVraag(item) { return item.t !== 'leer'; }
+
+/* ---------------- overzicht ---------------- */
+
+function toonOverzicht() {
+    sessie = null;
+    const v = laadVoortgang();
+    const klaar = MODULES.filter(m => v[m.id] && v[m.id].af).length;
+    const pct = Math.round(100 * klaar / MODULES.length);
+
+    let html = `
+    <div class="intro-note">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4d7c0f" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        <div>Korte uitleg, direct oefenen, en wat je fout doet komt dezelfde sessie terug. Sluit af met de gemengde eindtoets: pas als je vragen door elkaar aankunt, zit de stof er echt in.</div>
+    </div>
+    <div class="card" style="padding:14px 18px;">
+        <div style="display:flex; justify-content:space-between; font-size:0.82rem;">
+            <span style="font-weight:600;">Voortgang</span>
+            <span class="mono" style="color:var(--tekst-2);">${klaar}/${MODULES.length} modules</span>
+        </div>
+        <div class="voortgang-balkje"><div style="width:${pct}%"></div></div>
+    </div>
+    <div class="mod-lijst">`;
+
+    MODULES.forEach((m, i) => {
+        const st = v[m.id];
+        const af = st && st.af;
+        const score = st && st.score != null ? `${st.score}%` : '';
+        html += `
+        <button class="mod-item ${af ? 'af' : ''}" data-mod="${m.id}">
+            <span class="mod-nr">${af ? '&#10003;' : i + 1}</span>
+            <span><span class="mod-titel">${m.titel}</span><br><span class="mod-sub">${m.sub}</span></span>
+            <span class="mod-score">${score}</span>
+        </button>`;
+    });
+
+    const zt = v['zelftest'];
+    const et = v['eindtoets'];
+    html += `
+        <button class="mod-item special ${zt && zt.af ? 'af' : ''}" data-mod="zelftest">
+            <span class="mod-nr">?</span>
+            <span><span class="mod-titel">Zelftest zonder opties</span><br><span class="mod-sub">Acht open vragen; kun je deze, dan zit de module goed</span></span>
+            <span class="mod-score">${zt && zt.score != null ? zt.score + '%' : ''}</span>
+        </button>
+        <button class="mod-item special ${et && et.af ? 'af' : ''}" data-mod="eindtoets">
+            <span class="mod-nr">&#9733;</span>
+            <span><span class="mod-titel">Eindtoets</span><br><span class="mod-sub">Twaalf vragen uit alle modules, door elkaar</span></span>
+            <span class="mod-score">${et && et.score != null ? et.score + '%' : ''}</span>
+        </button>
+    </div>`;
+
+    app.innerHTML = html;
+    app.querySelectorAll('.mod-item').forEach(b => {
+        b.addEventListener('click', () => startModule(b.dataset.mod));
+    });
+}
+
+/* ---------------- sessie ---------------- */
+
+function startModule(id) {
+    let titel, items;
+    if (id === 'zelftest') {
+        titel = ZELFTEST.titel;
+        items = ZELFTEST.items.slice();
+    } else if (id === 'eindtoets') {
+        titel = 'Eindtoets';
+        const pool = [];
+        MODULES.forEach(m => m.items.forEach(it => { if (it.toets) pool.push({ ...it, bron: m.titel }); }));
+        items = schud(pool).slice(0, 12);
+    } else {
+        const m = MODULES.find(x => x.id === id);
+        titel = m.titel;
+        items = m.items.slice();
+    }
+    sessie = {
+        moduleId: id, titel,
+        wachtrij: items.map(it => ({ ...it })),
+        idx: 0,
+        goed: 0,
+        totaalVragen: items.filter(isVraag).length,
+        fouten: []
+    };
+    toonItem();
+}
+
+function balkHtml() {
+    const s = sessie;
+    const pct = Math.round(100 * s.idx / s.wachtrij.length);
+    return `
+    <div class="oefen-top">
+        <button class="stop" id="stop-knop">Stoppen</button>
+        <div class="balk"><div style="width:${pct}%"></div></div>
+        <span class="mono" style="font-size:0.76rem; color:var(--tekst-2);">${Math.min(s.idx + 1, s.wachtrij.length)}/${s.wachtrij.length}</span>
+    </div>`;
+}
+
+function koppelStop() {
+    document.getElementById('stop-knop').addEventListener('click', () => {
+        if (confirm('Stoppen? De voortgang van deze module wordt niet opgeslagen.')) toonOverzicht();
+    });
+}
+
+function labelVoor(item) {
+    if (item.herhaling) return '<span class="item-label herhaal">Herhaling</span>';
+    const namen = { leer: 'Leren', mc: 'Kies het juiste antwoord', meer: 'Selecteer alles wat klopt', volgorde: 'Zet in de juiste volgorde', koppel: 'Koppel de paren', sorteer: 'Sorteer', flits: 'Formuleer zelf het antwoord' };
+    return `<span class="item-label">${namen[item.t] || ''}</span>`;
+}
+
+function toonItem() {
+    const s = sessie;
+    if (s.idx >= s.wachtrij.length) { toonKlaar(); return; }
+    const item = s.wachtrij[s.idx];
+    const render = { leer: renderLeer, mc: renderMc, meer: renderMeer, volgorde: renderVolgorde, koppel: renderKoppel, sorteer: renderSorteer, flits: renderFlits }[item.t];
+    app.innerHTML = balkHtml() + '<div class="item-kaart" id="kaart"></div>';
+    koppelStop();
+    render(item, document.getElementById('kaart'));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function registreer(item, wasGoed) {
+    const s = sessie;
+    if (isVraag(item) && !item.herhaling) {
+        if (wasGoed) s.goed++;
+        else {
+            s.fouten.push(item.vraag);
+            s.wachtrij.push({ ...item, herhaling: true });
+        }
+    }
+}
+
+function verderKnop(kaart) {
+    const rij = document.createElement('div');
+    rij.className = 'knop-rij';
+    const k = document.createElement('button');
+    k.className = 'knop';
+    k.textContent = 'Verder';
+    k.addEventListener('click', () => { sessie.idx++; toonItem(); });
+    rij.appendChild(k);
+    kaart.appendChild(rij);
+    k.focus();
+}
+
+function feedbackBlok(kaart, ok, uitleg) {
+    const f = document.createElement('div');
+    f.className = 'feedback ' + (ok ? 'ok' : 'nee');
+    f.innerHTML = `<div class="kop">${ok ? 'Goed!' : 'Niet helemaal.'}</div>${uitleg || ''}`;
+    kaart.appendChild(f);
+}
+
+/* ---------------- renderers ---------------- */
+
+function renderLeer(item, kaart) {
+    kaart.innerHTML = `${labelVoor(item)}<h3 style="font-family:'Playfair Display',serif; font-size:1.15rem; margin-bottom:10px;">${item.kop}</h3>${item.html}`;
+    verderKnop(kaart);
+}
+
+function renderMc(item, kaart) {
+    kaart.innerHTML = `${labelVoor(item)}<div class="vraag-tekst">${item.vraag}</div>`;
+    const houder = document.createElement('div');
+    houder.className = 'opties';
+    kaart.appendChild(houder);
+    const opties = schud(item.opties);
+    opties.forEach(o => {
+        const b = document.createElement('button');
+        b.className = 'optie';
+        b.innerHTML = o.tekst;
+        b.addEventListener('click', () => {
+            houder.querySelectorAll('.optie').forEach(x => x.disabled = true);
+            const ok = !!o.goed;
+            houder.querySelectorAll('.optie').forEach((x, i) => {
+                if (opties[i].goed) x.classList.add(ok ? 'goed' : 'gemist');
+            });
+            if (!ok) b.classList.add('fout');
+            else b.classList.add('goed');
+            registreer(item, ok);
+            feedbackBlok(kaart, ok, item.uitleg);
+            verderKnop(kaart);
+        });
+        houder.appendChild(b);
+    });
+}
+
+function renderMeer(item, kaart) {
+    kaart.innerHTML = `${labelVoor(item)}<div class="vraag-tekst">${item.vraag}</div>`;
+    const houder = document.createElement('div');
+    houder.className = 'opties';
+    kaart.appendChild(houder);
+    const opties = schud(item.opties);
+    const gekozen = new Set();
+    opties.forEach((o, i) => {
+        const b = document.createElement('button');
+        b.className = 'optie';
+        b.innerHTML = o.tekst;
+        b.addEventListener('click', () => {
+            if (b.disabled) return;
+            if (gekozen.has(i)) { gekozen.delete(i); b.classList.remove('gekozen'); }
+            else { gekozen.add(i); b.classList.add('gekozen'); }
+        });
+        houder.appendChild(b);
+    });
+    const rij = document.createElement('div');
+    rij.className = 'knop-rij';
+    const check = document.createElement('button');
+    check.className = 'knop';
+    check.textContent = 'Controleer';
+    check.addEventListener('click', () => {
+        if (gekozen.size === 0) return;
+        let ok = true;
+        houder.querySelectorAll('.optie').forEach((b, i) => {
+            b.disabled = true;
+            b.classList.remove('gekozen');
+            const moet = !!opties[i].goed, koos = gekozen.has(i);
+            if (moet && koos) b.classList.add('goed');
+            else if (moet && !koos) { b.classList.add('gemist'); ok = false; }
+            else if (!moet && koos) { b.classList.add('fout'); ok = false; }
+        });
+        rij.remove();
+        registreer(item, ok);
+        feedbackBlok(kaart, ok, item.uitleg);
+        verderKnop(kaart);
+    });
+    rij.appendChild(check);
+    kaart.appendChild(rij);
+}
+
+function renderVolgorde(item, kaart) {
+    kaart.innerHTML = `${labelVoor(item)}<div class="vraag-tekst">${item.vraag}</div>
+        <div class="volg-lijst" id="volg-lijst"></div>
+        <p class="zacht" style="margin-bottom:8px;">Tik de onderdelen aan in de juiste volgorde. Tik een geplaatst onderdeel aan om het terug te leggen.</p>
+        <div class="chips" id="volg-chips"></div>`;
+    const lijst = kaart.querySelector('#volg-lijst');
+    const chipsDiv = kaart.querySelector('#volg-chips');
+    const bron = schud(item.items.map((tekst, i) => ({ tekst, i })));
+    let keuze = [];
+    let klaar = false;
+
+    const rij = document.createElement('div');
+    rij.className = 'knop-rij';
+    const check = document.createElement('button');
+    check.className = 'knop';
+    check.textContent = 'Controleer';
+    check.disabled = true;
+    rij.appendChild(check);
+    kaart.appendChild(rij);
+
+    function teken() {
+        lijst.innerHTML = '';
+        keuze.forEach((k, pos) => {
+            const r = document.createElement('div');
+            r.className = 'volg-rij';
+            r.innerHTML = `<span class="nr">${pos + 1}</span><span>${k.tekst}</span>`;
+            if (!klaar) r.addEventListener('click', () => { keuze.splice(pos, 1); teken(); });
+            lijst.appendChild(r);
+        });
+        chipsDiv.innerHTML = '';
+        bron.forEach(k => {
+            if (keuze.includes(k)) return;
+            const c = document.createElement('button');
+            c.className = 'chip';
+            c.innerHTML = k.tekst;
+            c.addEventListener('click', () => { keuze.push(k); teken(); });
+            chipsDiv.appendChild(c);
+        });
+        check.disabled = keuze.length !== item.items.length;
+    }
+    teken();
+
+    check.addEventListener('click', () => {
+        klaar = true;
+        let ok = true;
+        lijst.querySelectorAll('.volg-rij').forEach((r, pos) => {
+            const juist = keuze[pos].i === pos;
+            r.classList.add(juist ? 'goed' : 'fout');
+            if (!juist) ok = false;
+        });
+        chipsDiv.remove();
+        rij.remove();
+        registreer(item, ok);
+        const extra = ok ? '' : `<br><br><strong>Juiste volgorde:</strong><ol style="margin:6px 0 0 20px;">${item.items.map(t => `<li>${t}</li>`).join('')}</ol>`;
+        feedbackBlok(kaart, ok, (item.uitleg || '') + extra);
+        verderKnop(kaart);
+    });
+}
+
+function renderKoppel(item, kaart) {
+    kaart.innerHTML = `${labelVoor(item)}<div class="vraag-tekst">${item.vraag}</div>
+        <div class="koppel-kolommen"><div id="kop-links"></div><div id="kop-rechts"></div></div>`;
+    const linksDiv = kaart.querySelector('#kop-links');
+    const rechtsDiv = kaart.querySelector('#kop-rechts');
+    linksDiv.parentElement.classList.add('koppel-kolommen');
+    linksDiv.classList.add('koppel-links');
+
+    const links = item.paren.map((p, i) => ({ tekst: p[0], i }));
+    const rechts = schud(item.paren.map((p, i) => ({ tekst: p[1], i })));
+    let actief = null;
+    let foutTeller = 0;
+    let vast = 0;
+
+    function maakChip(k, kant, houder) {
+        const c = document.createElement('button');
+        c.className = 'chip';
+        c.innerHTML = k.tekst;
+        c.dataset.i = k.i;
+        c.dataset.kant = kant;
+        c.addEventListener('click', () => {
+            if (c.classList.contains('vast')) return;
+            if (!actief) { actief = c; c.classList.add('actief'); return; }
+            if (actief === c) { c.classList.remove('actief'); actief = null; return; }
+            if (actief.dataset.kant === kant) {
+                actief.classList.remove('actief');
+                actief = c; c.classList.add('actief'); return;
+            }
+            if (actief.dataset.i === c.dataset.i) {
+                actief.classList.remove('actief');
+                actief.classList.add('vast'); c.classList.add('vast');
+                actief = null; vast++;
+                if (vast === item.paren.length) klaarKoppel();
+            } else {
+                foutTeller++;
+                c.classList.add('schud'); actief.classList.add('schud');
+                const a = actief;
+                setTimeout(() => { c.classList.remove('schud'); a.classList.remove('schud'); a.classList.remove('actief'); }, 380);
+                actief = null;
+            }
+        });
+        houder.appendChild(c);
+    }
+    links.forEach(k => maakChip(k, 'L', linksDiv));
+    rechts.forEach(k => maakChip(k, 'R', rechtsDiv));
+
+    function klaarKoppel() {
+        const ok = foutTeller === 0;
+        registreer(item, ok);
+        const extra = ok ? '' : `<br>Je had ${foutTeller} misser${foutTeller === 1 ? '' : 's'}; dit item komt straks terug.`;
+        feedbackBlok(kaart, ok, (item.uitleg || '') + extra);
+        verderKnop(kaart);
+    }
+}
+
+function renderSorteer(item, kaart) {
+    kaart.innerHTML = `${labelVoor(item)}<div class="vraag-tekst">${item.vraag}</div>
+        <div class="sorteer-item" id="sort-item"></div>
+        <div class="sorteer-knoppen" id="sort-knoppen"></div>
+        <div class="sorteer-telling" id="sort-telling"></div>`;
+    const itemDiv = kaart.querySelector('#sort-item');
+    const knoppen = kaart.querySelector('#sort-knoppen');
+    const telling = kaart.querySelector('#sort-telling');
+    const volgorde = schud(item.items);
+    let pos = 0, foutTeller = 0, bezig = false;
+
+    item.cats.forEach((cat, ci) => {
+        const b = document.createElement('button');
+        b.className = 'optie';
+        b.textContent = cat;
+        b.addEventListener('click', () => {
+            if (bezig || pos >= volgorde.length) return;
+            bezig = true;
+            const juist = volgorde[pos].cat === ci;
+            if (!juist) foutTeller++;
+            b.classList.add(juist ? 'goed' : 'fout');
+            itemDiv.style.borderColor = juist ? 'var(--groen)' : 'var(--rood)';
+            setTimeout(() => {
+                b.classList.remove('goed', 'fout');
+                itemDiv.style.borderColor = '';
+                pos++;
+                bezig = false;
+                if (pos >= volgorde.length) klaarSorteer();
+                else teken();
+            }, juist ? 350 : 900);
+        });
+        knoppen.appendChild(b);
+    });
+
+    function teken() {
+        itemDiv.innerHTML = volgorde[pos].tekst;
+        telling.textContent = `${pos + 1}/${volgorde.length}`;
+    }
+    teken();
+
+    function klaarSorteer() {
+        itemDiv.remove(); knoppen.remove(); telling.remove();
+        const ok = foutTeller === 0;
+        registreer(item, ok);
+        const extra = ok ? '' : `<br>${foutTeller} van de ${volgorde.length} ging mis; dit item komt straks terug.`;
+        feedbackBlok(kaart, ok, (item.uitleg || '') + extra);
+        verderKnop(kaart);
+    }
+}
+
+function renderFlits(item, kaart) {
+    kaart.innerHTML = `${labelVoor(item)}<div class="vraag-tekst">${item.vraag}</div>
+        <p class="zacht">Zeg het antwoord hardop of schrijf het op voordat je het omdraait. Zelf ophalen werkt beter dan herlezen.</p>`;
+    const rij = document.createElement('div');
+    rij.className = 'knop-rij';
+    const toon = document.createElement('button');
+    toon.className = 'knop';
+    toon.textContent = 'Toon antwoord';
+    toon.addEventListener('click', () => {
+        rij.remove();
+        const a = document.createElement('div');
+        a.className = 'flits-antwoord';
+        a.innerHTML = item.antwoord;
+        kaart.appendChild(a);
+        const rij2 = document.createElement('div');
+        rij2.className = 'knop-rij';
+        const goedK = document.createElement('button');
+        goedK.className = 'knop';
+        goedK.textContent = 'Wist ik';
+        goedK.addEventListener('click', () => { registreer(item, true); sessie.idx++; toonItem(); });
+        const foutK = document.createElement('button');
+        foutK.className = 'knop rustig';
+        foutK.textContent = 'Nog oefenen';
+        foutK.addEventListener('click', () => { registreer(item, false); sessie.idx++; toonItem(); });
+        rij2.appendChild(goedK); rij2.appendChild(foutK);
+        kaart.appendChild(rij2);
+    });
+    rij.appendChild(toon);
+    kaart.appendChild(rij);
+}
+
+/* ---------------- afronding ---------------- */
+
+function toonKlaar() {
+    const s = sessie;
+    const score = s.totaalVragen ? Math.round(100 * s.goed / s.totaalVragen) : 100;
+    const klasse = score >= 80 ? 'top' : score >= 60 ? 'matig' : 'laag';
+    const boodschap = score >= 80
+        ? 'Sterk. Deze stof zit erin.'
+        : score >= 60
+            ? 'Goede basis; de herhaalde items verdienen nog een rondje.'
+            : 'Doe deze module binnenkort nog een keer; herhaald ophalen is precies hoe het blijft hangen.';
+
+    const v = laadVoortgang();
+    const vorige = v[s.moduleId] || {};
+    v[s.moduleId] = { af: true, score: Math.max(score, vorige.score || 0) };
+    bewaarVoortgang(v);
+
+    let foutenHtml = '';
+    if (s.fouten.length) {
+        foutenHtml = `<div class="fout-lijstje"><p class="zacht" style="margin-bottom:4px;"><strong>In &eacute;&eacute;n keer goed lukte nog niet bij:</strong></p>` +
+            s.fouten.map(f => `<div class="rij"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.5" stroke-linecap="round"><path d="M1 4v6h6M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg><span>${f}</span></div>`).join('') +
+            `</div>`;
+    }
+
+    app.innerHTML = `
+    <div class="card">
+        <div class="klaar-kop">
+            <div style="font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:600; margin-bottom:6px;">${s.titel} afgerond</div>
+            <div class="cijfer ${klasse}">${score}%</div>
+            <div class="toelichting">${s.goed} van ${s.totaalVragen} vragen in &eacute;&eacute;n keer goed &middot; ${boodschap}</div>
+        </div>
+        ${foutenHtml}
+        <div class="knop-rij" style="justify-content:center;">
+            <button class="knop" id="terug-knop">Naar het overzicht</button>
+            <button class="knop rustig" id="opnieuw-knop">Module opnieuw</button>
+        </div>
+    </div>`;
+    document.getElementById('terug-knop').addEventListener('click', toonOverzicht);
+    document.getElementById('opnieuw-knop').addEventListener('click', () => startModule(s.moduleId));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+toonOverzicht();
+</script>
+</body>
+</html>
