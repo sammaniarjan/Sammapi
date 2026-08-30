@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Colofon</title>
+<meta name="description" content="Over deze site: persoonlijk project, geen officiële uitgave, geen cookies of persoonsgegevens.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23e2d9cc'/><text x='50' y='66' font-size='48' text-anchor='middle' fill='%232c3e36' font-family='Georgia'>i</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --bg: #e2d9cc;
+    --vlak: #ffffff;
+    --tekst: #2c3e36;
+    --tekst-2: #6b7b6f;
+    --muted: #9aa69e;
+    --rand-licht: #e3dbd0;
+    --accent: #c45a3c;
+}
+
+body {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--tekst);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.wrap { max-width: 640px; margin: 0 auto; padding: 16px 16px 60px; }
+
+.back-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--tekst-2); text-decoration: none;
+    font-size: 0.88rem; padding: 10px 0;
+}
+.back-link:hover { color: var(--accent); }
+.back-link svg { width: 17px; height: 17px; }
+
+h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem; font-weight: 600;
+    margin: 8px 0 18px;
+}
+
+.card {
+    background: var(--vlak);
+    border: 1px solid var(--rand-licht);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 14px;
+}
+
+.card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; font-weight: 600; margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 0.9rem; color: var(--tekst-2); margin-bottom: 10px;
+}
+.card p:last-child { margin-bottom: 0; }
+.card ul { font-size: 0.9rem; color: var(--tekst-2); padding-left: 20px; margin-bottom: 10px; }
+.card li { margin-bottom: 5px; }
+.card strong { color: var(--tekst); }
+.card a { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+    <a href="../index.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Dashboard
+    </a>
+
+    <h1>Colofon</h1>
+
+    <div class="card">
+        <h2>Over deze site</h2>
+        <p>Deze site is een <strong>persoonlijk project</strong> van Arjan Sammani, gebouwd en
+        onderhouden op persoonlijke titel.</p>
+        <p>Dit is <strong>geen officiële uitgave van het Ministerie van Defensie</strong> of van
+        enige andere organisatie. Niets op deze site is namens Defensie gemaakt, goedgekeurd of
+        onderschreven. Enkele onderdelen zijn bovendien uitdrukkelijk niet serieus bedoeld.</p>
+    </div>
+
+    <div class="card">
+        <h2>Doel en gebruik</h2>
+        <p>De apps zijn hulpmiddelen voor eigen gebruik en studie, gedeeld binnen eigen kring.
+        De link is bedoeld voor wie hem rechtstreeks krijgt en <strong>in principe niet om verder
+        te verspreiden</strong>. De site wordt daarom ook niet geïndexeerd door zoekmachines.</p>
+    </div>
+
+    <div class="card">
+        <h2>Privacy</h2>
+        <p>Alle apps zijn <strong>statische pagina's</strong>. Dat betekent concreet:</p>
+        <ul>
+            <li>geen cookies, geen accounts, geen analytics of tracking;</li>
+            <li>geen verwerking of opslag van persoonsgegevens op een server;</li>
+            <li>alles wat een app bewaart (zoals tellingen of quizvoortgang) staat in de
+            localStorage van je eigen browser en verlaat je apparaat niet.</li>
+        </ul>
+        <p>Voor de volledigheid: de meeste pagina's laden hun lettertypen via Google Fonts en
+        de site wordt gehost via GitHub Pages; die partijen zien daarbij, zoals elke
+        hostingpartij, standaard verzoekgegevens zoals een IP-adres. Verder maakt geen enkele
+        app verbinding met een server.</p>
+    </div>
+
+    <div class="card">
+        <h2>Medische inhoud</h2>
+        <p>De medische rekenaars en naslag zijn bedoeld voor <strong>onderwijsdoeleinden</strong>.
+        Ze vervangen geen richtlijnen, lokale protocollen of klinisch oordeel. Controleer
+        berekeningen en co&ouml;rdinaten altijd via een tweede bron voordat je er iets mee doet.</p>
+    </div>
+
+    <div class="card">
+        <h2>Contact</h2>
+        <p>Vragen of opmerkingen: via
+        <a href="https://www.linkedin.com/in/arjan-sammani/" target="_blank" rel="noopener">LinkedIn</a>.</p>
+    </div>
+
+</div>
+</body>
+</html>
