@@ -64,6 +64,44 @@
             transition: color 0.8s ease;
         }
 
+        .app-section.inklapbaar .section-label {
+            cursor: pointer;
+            opacity: 0.6;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            user-select: none;
+            transition: opacity 0.2s ease, color 0.8s ease;
+        }
+
+        .app-section.inklapbaar .section-label:hover { opacity: 1; }
+
+        .app-section.inklapbaar .section-label .chevron {
+            display: inline-block;
+            transition: transform 0.25s ease;
+            font-size: 0.6rem;
+        }
+
+        .app-section.inklapbaar .apps-grid {
+            display: none;
+        }
+
+        .app-section.inklapbaar.open .apps-grid {
+            display: grid;
+            animation: sectieOpen 0.3s ease;
+        }
+
+        .app-section.inklapbaar.open .section-label { opacity: 1; }
+
+        .app-section.inklapbaar.open .section-label .chevron {
+            transform: rotate(90deg);
+        }
+
+        @keyframes sectieOpen {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .apps-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -786,8 +824,8 @@
 
                 </div>
             </div>
-            <div class="app-section">
-                <div class="section-label">Personeelszaken</div>
+            <div class="app-section inklapbaar" id="sectie-personeelszaken">
+                <div class="section-label" role="button" tabindex="0" aria-expanded="false">Personeelszaken <span class="chevron">&#9654;</span></div>
                 <div class="apps-grid">
                     <a href="ik-271/index.html" class="app-card ik271">
                         <div class="app-icon">
@@ -1047,6 +1085,26 @@
     }
 
     enterToggle.addEventListener('click', toggleTerminalMode);
+
+    // ===================================
+    // Inklapbare sectie Personeelszaken
+    // ===================================
+    (function () {
+        const sectie = document.getElementById('sectie-personeelszaken');
+        const label = sectie.querySelector('.section-label');
+        function toggle() {
+            const open = sectie.classList.toggle('open');
+            label.setAttribute('aria-expanded', open);
+        }
+        label.addEventListener('click', toggle);
+        label.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                e.stopPropagation(); // niet de terminal-mode Enter-toggle triggeren
+                toggle();
+            }
+        });
+    })();
     </script>
 </body>
 </html>
