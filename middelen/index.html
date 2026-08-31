@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Middelen</title>
+<meta name="description" content="Naslag: symptomen van intoxicatie, overdosering en onthouding per middel, plus de CAGE-screeningstest. Voor onderwijsdoeleinden.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23e2d9cc'/><rect x='30' y='18' width='40' height='64' rx='10' fill='none' stroke='%239333ea' stroke-width='7'/><line x1='30' y1='40' x2='70' y2='40' stroke='%239333ea' stroke-width='7'/><line x1='30' y1='60' x2='70' y2='60' stroke='%232c3e36' stroke-width='6'/></svg>">
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --bg: #e2d9cc;
+    --vlak: #ffffff;
+    --vlak-zacht: #f7f3ed;
+    --tekst: #2c3e36;
+    --tekst-2: #6b7b6f;
+    --muted: #9aa69e;
+    --rand: #d5cdc2;
+    --rand-licht: #e3dbd0;
+    --accent: #9333ea;
+    --accent-donker: #7e22ce;
+    --accent-bg: rgba(147, 51, 234, 0.08);
+    --groen: #059669;
+    --oranje: #d97706;
+    --rood: #dc2626;
+    --intox: #0284c7;
+    --overdosis: #dc2626;
+    --onthouding: #d97706;
+}
+
+body {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--tekst);
+    line-height: 1.55;
+    min-height: 100vh;
+}
+
+.wrap { max-width: 760px; margin: 0 auto; padding: 16px 16px 60px; }
+
+.back-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--tekst-2); text-decoration: none;
+    font-size: 0.88rem; padding: 10px 0;
+}
+.back-link:hover { color: var(--accent); }
+.back-link svg { width: 17px; height: 17px; }
+
+.app-head { margin: 8px 0 18px; }
+.app-head h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem; font-weight: 600;
+}
+.app-head .sub { color: var(--tekst-2); font-size: 0.88rem; }
+
+.card {
+    background: var(--vlak);
+    border: 1px solid var(--rand-licht);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 14px;
+}
+.card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem; font-weight: 600; margin-bottom: 10px;
+}
+.zacht { color: var(--tekst-2); font-size: 0.84rem; }
+
+/* weergave-schakelaar */
+.schakel { display: flex; gap: 8px; margin-bottom: 14px; }
+.schakel button {
+    font: inherit; font-size: 0.84rem; font-weight: 600;
+    padding: 8px 16px; border-radius: 50px; cursor: pointer;
+    background: transparent; color: var(--tekst-2);
+    border: 1px solid var(--rand); transition: all 0.2s;
+}
+.schakel button.actief { background: var(--accent); border-color: var(--accent); color: #fff; }
+.schakel button:hover:not(.actief) { border-color: var(--accent); color: var(--accent); }
+
+/* middelenkiezer */
+.kiezer { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.kiezer button {
+    font: inherit; font-size: 0.86rem; font-weight: 600;
+    padding: 8px 15px; border-radius: 50px; cursor: pointer;
+    background: var(--vlak); color: var(--tekst-2);
+    border: 1px solid var(--rand); transition: all 0.2s;
+}
+.kiezer button.actief { background: var(--accent); border-color: var(--accent); color: #fff; }
+.kiezer button:hover:not(.actief) { border-color: var(--accent); color: var(--accent); }
+
+.blok { border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid; }
+.blok:last-child { margin-bottom: 0; }
+.blok .kop {
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.8px; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 6px;
+}
+.blok ul { margin: 0 0 0 18px; font-size: 0.9rem; }
+.blok li { margin-bottom: 3px; }
+.blok .noot { font-size: 0.8rem; margin-top: 8px; padding-top: 8px; border-top: 1px dashed currentColor; opacity: 0.85; }
+.blok.b-intox { background: rgba(2, 132, 199, 0.06); border-color: rgba(2, 132, 199, 0.25); }
+.blok.b-intox .kop { color: var(--intox); }
+.blok.b-overdosis { background: rgba(220, 38, 38, 0.05); border-color: rgba(220, 38, 38, 0.25); }
+.blok.b-overdosis .kop { color: var(--overdosis); }
+.blok.b-onthouding { background: rgba(217, 119, 6, 0.06); border-color: rgba(217, 119, 6, 0.28); }
+.blok.b-onthouding .kop { color: var(--onthouding); }
+
+.middel-titel {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem; font-weight: 600; margin-bottom: 2px;
+}
+.middel-sub { color: var(--tekst-2); font-size: 0.84rem; margin-bottom: 12px; }
+
+/* vergelijkingstabel */
+.tabel-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table.groot { border-collapse: collapse; width: 100%; min-width: 860px; font-size: 0.8rem; }
+table.groot th, table.groot td {
+    border: 1px solid var(--rand-licht); padding: 8px 10px;
+    text-align: left; vertical-align: top;
+}
+table.groot thead th {
+    background: var(--vlak-zacht); font-size: 0.72rem;
+    text-transform: uppercase; letter-spacing: 0.5px; color: var(--tekst-2);
+    position: sticky; top: 0;
+}
+table.groot td:first-child { font-weight: 700; white-space: nowrap; background: var(--vlak-zacht); }
+table.groot td ul { margin: 0 0 0 14px; }
+table.groot td li { margin-bottom: 2px; }
+th.h-intox { border-bottom: 2px solid var(--intox) !important; }
+th.h-overdosis { border-bottom: 2px solid var(--overdosis) !important; }
+th.h-onthouding { border-bottom: 2px solid var(--onthouding) !important; }
+
+/* CAGE */
+.cage-vraag {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 12px 0; border-top: 1px solid var(--rand-licht);
+    cursor: pointer;
+}
+.cage-vraag:first-of-type { border-top: none; }
+.cage-letter {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; font-size: 0.95rem;
+    width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--vlak-zacht); border: 1px solid var(--rand);
+    color: var(--tekst-2); transition: all 0.2s;
+}
+.cage-vraag.aan .cage-letter { background: var(--accent); border-color: var(--accent); color: #fff; }
+.cage-tekst { font-size: 0.9rem; }
+.cage-tekst .en { color: var(--muted); font-size: 0.76rem; font-style: italic; }
+.cage-check {
+    margin-left: auto; flex-shrink: 0;
+    width: 22px; height: 22px; border-radius: 6px;
+    border: 2px solid var(--rand); transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+    color: transparent; font-weight: 700; font-size: 0.85rem;
+}
+.cage-vraag.aan .cage-check { background: var(--accent); border-color: var(--accent); color: #fff; }
+.cage-uitslag {
+    margin-top: 12px; border-radius: 10px; padding: 12px 14px;
+    font-size: 0.88rem; border: 1px solid;
+}
+.cage-uitslag .score { font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+.cage-uitslag.laag { background: rgba(5, 150, 105, 0.08); border-color: rgba(5, 150, 105, 0.3); }
+.cage-uitslag.midden { background: rgba(217, 119, 6, 0.08); border-color: rgba(217, 119, 6, 0.3); }
+.cage-uitslag.hoog { background: rgba(220, 38, 38, 0.07); border-color: rgba(220, 38, 38, 0.3); }
+
+.voet {
+    text-align: center; margin-top: 30px;
+    font-size: 0.78rem; color: var(--muted);
+}
+
+@media (max-width: 520px) {
+    .kiezer button { font-size: 0.8rem; padding: 7px 12px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+    <a href="../index.html" class="back-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Dashboard
+    </a>
+    <div class="app-head">
+        <h1>Middelen</h1>
+        <div class="sub">Intoxicatie, overdosering en onthouding per middel &middot; CAGE-screening</div>
+    </div>
+
+    <div class="schakel">
+        <button id="knop-per-middel" class="actief">Per middel</button>
+        <button id="knop-tabel">Alles in &eacute;&eacute;n tabel</button>
+    </div>
+
+    <div id="weergave-middel">
+        <div class="kiezer" id="kiezer"></div>
+        <div class="card" id="middel-kaart"></div>
+    </div>
+
+    <div id="weergave-tabel" hidden>
+        <div class="card" style="padding: 12px;">
+            <div class="tabel-scroll" id="tabel-houder"></div>
+            <p class="zacht" style="margin-top: 8px;">Schuif horizontaal voor alle kolommen.</p>
+        </div>
+    </div>
+
+    <div class="card" id="cage">
+        <h2>CAGE-screening (alcohol)</h2>
+        <p style="font-size: 0.88rem; margin-bottom: 10px;">Vier vragen; tik aan wat met &ldquo;ja&rdquo; wordt beantwoord.</p>
+        <div id="cage-vragen"></div>
+        <div class="cage-uitslag laag" id="cage-uitslag"></div>
+        <p class="zacht" style="margin-top: 10px;">De CAGE screent op problematisch alcoholgebruik; hij meet niet de hoeveelheid. Voor uitgebreidere screening bestaat de AUDIT(-C). Een positieve screening is een aanleiding voor een goed gesprek, geen diagnose.</p>
+    </div>
+
+    <div class="voet">Persoonlijk studieproject, geen offici&euml;le uitgave. Onderwijsmateriaal, geen behandelrichtlijn; raadpleeg bij een acute intoxicatie het Nationaal Vergiftigingen Informatie Centrum (NVIC) en actuele protocollen.</div>
+</div>
+
+<script>
+'use strict';
+
+const MIDDELEN = [
+{
+    id: 'nicotine', naam: 'Nicotine', sub: 'Roken, vapen, pleisters; ernstige intoxicatie vooral door e-liquid (kinderen!)',
+    intox: ['Misselijkheid en braken', 'Speekselvloed', 'Bleekheid, zweten', 'Duizeligheid, hoofdpijn', 'Tachycardie, aanvankelijk hypertensie', 'Tremor'],
+    overdosis: ['Bifasisch beeld: eerst stimulatie, dan bradycardie en hypotensie', 'Spierzwakte en fasciculaties', 'Convulsies', 'Ademhalingsdepressie tot verlamming'],
+    onthouding: ['Sterke craving', 'Prikkelbaarheid, rusteloosheid', 'Concentratieproblemen', 'Somberheid, angst', 'Toegenomen eetlust, gewichtstoename', 'Slaapstoornissen'],
+    nootOnthouding: 'Begint binnen uren; piek na 2 tot 3 dagen; craving kan weken aanhouden.'
+},
+{
+    id: 'alcohol', naam: 'Alcohol', sub: 'Onthouding kan levensbedreigend zijn: denk aan insulten en delirium tremens',
+    intox: ['Ontremming, verminderd oordeelsvermogen', 'Emotionele labiliteit, soms agressie', 'Dysartrie', 'Ataxie, vallen', 'Nystagmus', 'Verlengde reactietijd', 'Foetor alcoholicus'],
+    overdosis: ['Dalend bewustzijn tot coma', 'Ademhalingsdepressie', 'Aspiratierisico (braken bij gedaald bewustzijn)', 'Hypothermie', 'Hypoglykemie', 'Overlijden'],
+    onthouding: ['Tremor, zweten', 'Tachycardie, hypertensie', 'Misselijkheid, braken', 'Angst, agitatie, slapeloosheid (6&ndash;24 u)', 'Onthoudingsinsulten (12&ndash;48 u)', 'Delirium tremens (48&ndash;96 u): desori&euml;ntatie, hallucinaties, autonome ontregeling'],
+    nootOnthouding: 'Delirium tremens is levensbedreigend. Denk aan thiamine (preventie Wernicke) en gestructureerde bewaking (bv. CIWA-Ar).'
+},
+{
+    id: 'bdz', naam: 'Benzodiazepinen', sub: 'Solo zelden dodelijk; gevaarlijk in combinatie met alcohol of opio&iuml;den',
+    intox: ['Sufheid, slaperigheid', 'Dysartrie', 'Ataxie, verminderde co&ouml;rdinatie', 'Anterograde amnesie', 'Nystagmus', 'Paradoxale agitatie (vooral ouderen en kinderen)'],
+    overdosis: ['Diepe sedatie tot coma', 'Solo: vitale functies vaak relatief gespaard', 'In combinatie met alcohol of opio&iuml;den: ademhalingsdepressie en hypotensie', 'Antidotum flumazenil: terughoudend gebruiken (insultrisico bij gewenning)'],
+    onthouding: ['Angst, onrust (rebound)', 'Slapeloosheid', 'Tremor, zweten', 'Overgevoeligheid voor licht en geluid, perceptuele stoornissen', 'Spierpijn, spierkrampen', 'Insulten en delier bij abrupt staken na langdurig gebruik'],
+    nootOnthouding: 'Nooit abrupt staken na langdurig gebruik: afbouwen volgens schema, zo nodig via een langwerkend preparaat.'
+},
+{
+    id: 'cannabis', naam: 'Cannabis', sub: 'Op zichzelf niet letaal; het risico zit in angst, psychose en ongevallen',
+    intox: ['Euforie, ontspanning, lachbuien', 'Verstoorde tijdsbeleving', 'Rode conjunctivae', 'Toegenomen eetlust, droge mond', 'Tachycardie', 'Verminderde concentratie en motoriek', 'Angst, paniek, achterdocht'],
+    overdosis: ['Ernstige angst of paniekaanval', 'Acute psychotische symptomen', 'Orthostatische hypotensie, collaps', '(Chronisch gebruik) cannabino&iuml;d-hyperemesissyndroom', 'Bij kinderen na ingestie: sufheid tot coma'],
+    onthouding: ['Prikkelbaarheid, onrust', 'Slaapproblemen, levendige dromen', 'Verminderde eetlust', 'Sombere stemming', 'Craving'],
+    nootOnthouding: 'Begint na 1 tot 3 dagen, piek in de eerste week, kan enkele weken duren.'
+},
+{
+    id: 'xtc', naam: 'Ecstasy (MDMA)', sub: 'De gevaren: hyperthermie, hyponatri&euml;mie en serotoninesyndroom',
+    intox: ['Euforie, verhoogde empathie en energie', 'Mydriasis', 'Kaakklem, tandenknarsen (bruxisme)', 'Tachycardie, hypertensie', 'Zweten, droge mond', 'Neiging tot oplopende lichaamstemperatuur'],
+    overdosis: ['Hyperthermie (&gt; 40 &deg;C)', 'Serotoninesyndroom (agitatie, hyperreflexie, clonus)', 'Hyponatri&euml;mie door waterintoxicatie: hersenoedeem, insulten', 'Rabdomyolyse, acuut nierfalen', 'Hartritmestoornissen', 'Leverfalen, stollingsstoornissen (DIC)'],
+    onthouding: ['Geen klassiek lichamelijk onthoudingssyndroom', 'Wel na-effect (&ldquo;dinsdagdip&rdquo;): somberheid, vermoeidheid', 'Prikkelbaarheid', 'Concentratieproblemen, dagen na gebruik'],
+    nootOnthouding: 'Zowel te weinig als t&eacute; veel drinken is gevaarlijk: het advies is met mate, met elektrolyten, en afkoelen.'
+},
+{
+    id: 'cocaine', naam: 'Coca&iuml;ne', sub: 'Sympathicomimeticum: denk bij pijn op de borst aan coca&iuml;negebruik',
+    intox: ['Euforie, zelfoverschatting, energiek', 'Mydriasis', 'Tachycardie, hypertensie', 'Zweten', 'Verminderde eetlust en slaapbehoefte', 'Agitatie, achterdocht'],
+    overdosis: ['Pijn op de borst, coronairspasme, myocardinfarct', 'Hartritmestoornissen', 'Hypertensieve crisis, CVA', 'Insulten', 'Hyperthermie', 'Geagiteerd delier, rabdomyolyse'],
+    onthouding: ['&ldquo;Crash&rdquo;: uitputting en hypersomnie', 'Toegenomen eetlust', 'Sombere stemming, anhedonie', 'Soms su&iuml;cidale gedachten', 'Sterke craving'],
+    nootOnthouding: 'De onthouding is niet lichamelijk gevaarlijk, maar de somberheid en craving maken de terugvalkans groot.'
+},
+{
+    id: 'heroine', naam: 'Hero&iuml;ne (opio&iuml;den)', sub: 'De klassieke overdoseringstrias: coma, miosis, ademhalingsdepressie',
+    intox: ['Euforie, daarna sedatie (&ldquo;knikkebollen&rdquo;)', 'Miosis', 'Trage ademhaling', 'Bradycardie, hypotensie', 'Obstipatie', 'Jeuk'],
+    overdosis: ['Trias: coma + pinpointpupillen + ademhalingsdepressie', 'Cyanose, apneu', 'Longoedeem', 'Overlijden', 'Antidotum naloxon: cave kortere werkingsduur dan het opio&iuml;d, dus herhalen en bewaken'],
+    onthouding: ['Craving, onrust, slapeloosheid', 'Gapen, tranenvloed, loopneus', 'Mydriasis, kippenvel (&ldquo;cold turkey&rdquo;)', 'Spier- en botpijn', 'Buikkrampen, diarree, braken', 'Zweten, rillingen'],
+    nootOnthouding: 'Heftig maar op zichzelf niet levensbedreigend (anders dan bij alcohol en benzodiazepinen). Begint 6 tot 12 uur na de laatste dosis, piek na 2 tot 3 dagen.'
+}
+];
+
+const CAGE = [
+    { letter: 'C', tekst: 'Heeft u ooit het gevoel gehad dat u minder zou moeten drinken?', en: 'Cut down' },
+    { letter: 'A', tekst: 'Heeft u zich weleens ge&euml;rgerd aan kritiek van anderen op uw drinkgedrag?', en: 'Annoyed by criticism' },
+    { letter: 'G', tekst: 'Heeft u zich weleens schuldig gevoeld over uw drinken?', en: 'Guilty' },
+    { letter: 'E', tekst: 'Heeft u ooit &rsquo;s ochtends meteen alcohol gedronken om een kater te verminderen of de zenuwen te kalmeren?', en: 'Eye-opener' }
+];
+
+/* ---------- per middel ---------- */
+
+const kiezer = document.getElementById('kiezer');
+const kaart = document.getElementById('middel-kaart');
+let actiefMiddel = MIDDELEN[0].id;
+
+function lijst(items) { return '<ul>' + items.map(i => `<li>${i}</li>`).join('') + '</ul>'; }
+
+function toonMiddel(id) {
+    actiefMiddel = id;
+    kiezer.querySelectorAll('button').forEach(b => b.classList.toggle('actief', b.dataset.id === id));
+    const m = MIDDELEN.find(x => x.id === id);
+    kaart.innerHTML = `
+        <div class="middel-titel">${m.naam}</div>
+        <div class="middel-sub">${m.sub}</div>
+        <div class="blok b-intox"><div class="kop">Intoxicatie</div>${lijst(m.intox)}</div>
+        <div class="blok b-overdosis"><div class="kop">Overdosering</div>${lijst(m.overdosis)}</div>
+        <div class="blok b-onthouding"><div class="kop">Onthouding</div>${lijst(m.onthouding)}${m.nootOnthouding ? `<div class="noot">${m.nootOnthouding}</div>` : ''}</div>`;
+}
+
+MIDDELEN.forEach(m => {
+    const b = document.createElement('button');
+    b.innerHTML = m.naam.replace(/ \(.*\)$/, '');
+    b.dataset.id = m.id;
+    b.addEventListener('click', () => toonMiddel(m.id));
+    kiezer.appendChild(b);
+});
+toonMiddel(actiefMiddel);
+
+/* ---------- vergelijkingstabel ---------- */
+
+document.getElementById('tabel-houder').innerHTML = `
+<table class="groot">
+    <thead><tr>
+        <th>Middel</th>
+        <th class="h-intox">Intoxicatie</th>
+        <th class="h-overdosis">Overdosering</th>
+        <th class="h-onthouding">Onthouding</th>
+    </tr></thead>
+    <tbody>` + MIDDELEN.map(m => `
+        <tr>
+            <td>${m.naam}</td>
+            <td>${lijst(m.intox)}</td>
+            <td>${lijst(m.overdosis)}</td>
+            <td>${lijst(m.onthouding)}</td>
+        </tr>`).join('') + `
+    </tbody>
+</table>`;
+
+/* ---------- weergave-schakelaar ---------- */
+
+const knopMiddel = document.getElementById('knop-per-middel');
+const knopTabel = document.getElementById('knop-tabel');
+const wgMiddel = document.getElementById('weergave-middel');
+const wgTabel = document.getElementById('weergave-tabel');
+
+function schakel(naarTabel) {
+    knopMiddel.classList.toggle('actief', !naarTabel);
+    knopTabel.classList.toggle('actief', naarTabel);
+    wgMiddel.hidden = naarTabel;
+    wgTabel.hidden = !naarTabel;
+}
+knopMiddel.addEventListener('click', () => schakel(false));
+knopTabel.addEventListener('click', () => schakel(true));
+
+/* ---------- CAGE ---------- */
+
+const cageHouder = document.getElementById('cage-vragen');
+const cageUitslag = document.getElementById('cage-uitslag');
+const antwoorden = [false, false, false, false];
+
+CAGE.forEach((v, i) => {
+    const rij = document.createElement('div');
+    rij.className = 'cage-vraag';
+    rij.setAttribute('role', 'checkbox');
+    rij.setAttribute('tabindex', '0');
+    rij.setAttribute('aria-checked', 'false');
+    rij.innerHTML = `
+        <div class="cage-letter">${v.letter}</div>
+        <div class="cage-tekst">${v.tekst}<br><span class="en">${v.en}</span></div>
+        <div class="cage-check">&#10003;</div>`;
+    function wissel() {
+        antwoorden[i] = !antwoorden[i];
+        rij.classList.toggle('aan', antwoorden[i]);
+        rij.setAttribute('aria-checked', String(antwoorden[i]));
+        toonUitslag();
+    }
+    rij.addEventListener('click', wissel);
+    rij.addEventListener('keydown', e => {
+        if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); wissel(); }
+    });
+    cageHouder.appendChild(rij);
+});
+
+function toonUitslag() {
+    const score = antwoorden.filter(Boolean).length;
+    let klasse, tekst;
+    if (score >= 2) {
+        klasse = 'hoog';
+        tekst = 'Sterke aanwijzing voor problematisch alcoholgebruik. Verder uitvragen (hoeveelheid, patroon, gevolgen) en bespreekbaar maken.';
+    } else if (score === 1) {
+        klasse = 'midden';
+        tekst = 'E&eacute;n positief antwoord: wees alert en vraag door; overweeg een uitgebreidere screening zoals de AUDIT.';
+    } else {
+        klasse = 'laag';
+        tekst = 'Geen positieve antwoorden: screening negatief. Bedenk dat de CAGE niets zegt over de gedronken hoeveelheid.';
+    }
+    cageUitslag.className = 'cage-uitslag ' + klasse;
+    cageUitslag.innerHTML = `<span class="score">CAGE-score: ${score}/4.</span> ${tekst}`;
+}
+toonUitslag();
+</script>
+</body>
+</html>
