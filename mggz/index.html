@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>MGGZ-trainer</title>
+<meta name="description" content="E-learning geestelijke gezondheidszorg voor de militaire eerste lijn: DSM-5-basiskennis, KOP en SCEGS, en de verwijsketen. Herhaling van de basisarts-kennis, met voortgang. Voor onderwijsdoeleinden.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23e2d9cc'/><path d='M50 20c-14 0-24 10-24 22 0 8 4 13 9 17v11c0 3 2 5 5 5h20c3 0 5-2 5-5V59c5-4 9-9 9-17 0-12-10-22-24-22z' fill='none' stroke='%230f766e' stroke-width='6'/><path d='M40 46h20M50 36v20' stroke='%230f766e' stroke-width='6' stroke-linecap='round'/></svg>">
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --bg: #e2d9cc;
+    --vlak: #ffffff;
+    --vlak-zacht: #f7f3ed;
+    --tekst: #2c3e36;
+    --tekst-2: #6b7b6f;
+    --muted: #9aa69e;
+    --rand: #d5cdc2;
+    --rand-licht: #e3dbd0;
+    --accent: #0f766e;
+    --accent-donker: #115e59;
+    --accent-bg: rgba(15, 118, 110, 0.08);
+    --groen: #059669;
+    --groen-bg: rgba(5, 150, 105, 0.1);
+    --oranje: #d97706;
+    --rood: #dc2626;
+    --rood-bg: rgba(220, 38, 38, 0.08);
+}
+
+body {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--tekst);
+    line-height: 1.55;
+    min-height: 100vh;
+}
+
+.wrap { max-width: 680px; margin: 0 auto; padding: 16px 16px 60px; }
+
+.back-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--tekst-2); text-decoration: none;
+    font-size: 0.88rem; padding: 10px 0;
+}
+.back-link:hover { color: var(--accent); }
+.back-link svg { width: 17px; height: 17px; }
+
+.app-head { margin: 8px 0 18px; }
+.app-head h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem; font-weight: 600;
+}
+.app-head .sub { color: var(--tekst-2); font-size: 0.88rem; }
+
+.card {
+    background: var(--vlak);
+    border: 1px solid var(--rand-licht);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 14px;
+}
+.card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; font-weight: 600; margin-bottom: 10px;
+}
+.card p { font-size: 0.92rem; margin-bottom: 8px; }
+.card p:last-child { margin-bottom: 0; }
+.card ul, .card ol { margin: 6px 0 10px 20px; font-size: 0.92rem; }
+.card li { margin-bottom: 4px; }
+.zacht { color: var(--tekst-2); font-size: 0.85rem; }
+
+.quote {
+    background: var(--vlak-zacht);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 14px;
+    margin: 10px 0;
+    font-size: 0.92rem;
+    font-style: italic;
+}
+.mono { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+table.mini { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.87rem; }
+table.mini td, table.mini th { padding: 6px 8px; border-bottom: 1px solid var(--rand-licht); text-align: left; vertical-align: top; }
+table.mini th { color: var(--tekst-2); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.4px; }
+table.mini td:first-child { font-weight: 700; white-space: nowrap; }
+
+/* ------- moduleoverzicht ------- */
+.intro-note {
+    display: flex; gap: 10px; align-items: flex-start;
+    background: var(--accent-bg);
+    border: 1px solid rgba(15, 118, 110, 0.2);
+    border-radius: 12px; padding: 12px 14px;
+    font-size: 0.86rem; margin-bottom: 16px;
+}
+.intro-note svg { flex-shrink: 0; margin-top: 2px; }
+
+.mod-lijst { display: flex; flex-direction: column; gap: 10px; }
+.mod-item {
+    display: grid; grid-template-columns: 34px 1fr auto;
+    gap: 12px; align-items: center;
+    background: var(--vlak);
+    border: 1px solid var(--rand-licht);
+    border-radius: 12px; padding: 13px 16px;
+    cursor: pointer; text-align: left;
+    font: inherit; color: inherit; width: 100%;
+    transition: all 0.2s;
+}
+.mod-item:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(44, 62, 54, 0.08); border-color: #c4b8aa; }
+.mod-nr {
+    width: 34px; height: 34px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--vlak-zacht); border: 1px solid var(--rand);
+    font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; font-weight: 700;
+    color: var(--tekst-2);
+}
+.mod-item.af .mod-nr { background: var(--groen-bg); border-color: rgba(5, 150, 105, 0.35); color: var(--groen); }
+.mod-titel { font-weight: 600; font-size: 0.93rem; }
+.mod-sub { font-size: 0.78rem; color: var(--tekst-2); }
+.mod-score {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+    color: var(--muted); white-space: nowrap;
+}
+.mod-item.af .mod-score { color: var(--groen); font-weight: 700; }
+
+.mod-item.special { border-style: dashed; }
+.mod-item.special .mod-nr { background: var(--accent-bg); border-color: rgba(15, 118, 110, 0.3); color: var(--accent); }
+
+.voortgang-balkje {
+    height: 6px; border-radius: 4px; background: var(--rand-licht);
+    overflow: hidden; margin: 6px 0 2px;
+}
+.voortgang-balkje > div { height: 100%; background: var(--groen); border-radius: 4px; transition: width 0.5s; }
+
+/* ------- oefenscherm ------- */
+.oefen-top { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.oefen-top .stop {
+    font: inherit; font-size: 0.8rem; color: var(--tekst-2);
+    background: none; border: 1px solid var(--rand); border-radius: 50px;
+    padding: 5px 13px; cursor: pointer;
+}
+.oefen-top .stop:hover { border-color: var(--rood); color: var(--rood); }
+.balk { flex: 1; height: 8px; border-radius: 4px; background: rgba(44, 62, 54, 0.1); overflow: hidden; }
+.balk > div { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.4s ease; }
+
+.item-kaart {
+    background: var(--vlak);
+    border: 1px solid var(--rand-licht);
+    border-radius: 14px;
+    padding: 20px;
+    animation: verschijn 0.35s ease;
+}
+@keyframes verschijn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+.item-label {
+    display: inline-block; font-size: 0.68rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.8px;
+    color: var(--accent); background: var(--accent-bg);
+    padding: 3px 10px; border-radius: 50px; margin-bottom: 12px;
+}
+.item-label.herhaal { color: var(--oranje); background: rgba(217, 119, 6, 0.1); }
+.vraag-tekst { font-size: 1.02rem; font-weight: 600; margin-bottom: 14px; }
+
+.opties { display: flex; flex-direction: column; gap: 8px; }
+.optie {
+    font: inherit; font-size: 0.9rem; text-align: left;
+    background: var(--vlak-zacht); color: var(--tekst);
+    border: 1px solid var(--rand); border-radius: 10px;
+    padding: 11px 14px; cursor: pointer; transition: all 0.15s;
+}
+.optie:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-bg); }
+.optie:disabled { cursor: default; }
+.optie.goed { background: var(--groen-bg); border-color: var(--groen); color: var(--groen); font-weight: 600; }
+.optie.fout { background: var(--rood-bg); border-color: var(--rood); color: var(--rood); }
+.optie.gemist { border-color: var(--groen); border-style: dashed; color: var(--groen); }
+.optie.gekozen { border-color: var(--accent); background: var(--accent-bg); font-weight: 600; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.chip {
+    font: inherit; font-size: 0.86rem; font-weight: 500;
+    background: var(--vlak-zacht); border: 1px solid var(--rand);
+    border-radius: 50px; padding: 8px 15px; cursor: pointer; transition: all 0.15s;
+}
+.chip:hover:not(:disabled) { border-color: var(--accent); }
+.chip:disabled { opacity: 0.35; cursor: default; }
+.volg-lijst { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; min-height: 20px; }
+.volg-rij {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--vlak-zacht); border: 1px solid var(--rand);
+    border-radius: 10px; padding: 8px 12px; font-size: 0.9rem; cursor: pointer;
+}
+.volg-rij .nr { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; font-weight: 700; color: var(--tekst-2); width: 18px; }
+.volg-rij.goed { border-color: var(--groen); background: var(--groen-bg); cursor: default; }
+.volg-rij.fout { border-color: var(--rood); background: var(--rood-bg); cursor: default; }
+
+.koppel-kolommen { display: grid; grid-template-columns: auto 1fr; gap: 8px; }
+.koppel-links .chip { font-family: 'JetBrains Mono', monospace; font-weight: 700; width: 100%; }
+.koppel-kolommen > div { display: flex; flex-direction: column; gap: 8px; }
+.koppel-kolommen .chip { text-align: left; border-radius: 10px; }
+.chip.actief { border-color: var(--accent); background: var(--accent-bg); }
+.chip.vast { border-color: var(--groen); background: var(--groen-bg); color: var(--groen); cursor: default; }
+.chip.schud { animation: schud 0.35s; border-color: var(--rood); }
+@keyframes schud { 0%,100% { transform: none; } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+
+.sorteer-item {
+    background: var(--vlak-zacht); border: 1px solid var(--rand);
+    border-radius: 10px; padding: 14px; font-size: 0.95rem; font-weight: 600;
+    text-align: center; margin-bottom: 12px;
+}
+.sorteer-knoppen { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.sorteer-knoppen .optie { text-align: center; font-weight: 600; }
+.sorteer-telling { text-align: center; font-size: 0.78rem; color: var(--muted); margin-top: 10px; font-family: 'JetBrains Mono', monospace; }
+
+.feedback {
+    margin-top: 14px; border-radius: 10px; padding: 12px 14px;
+    font-size: 0.88rem; animation: verschijn 0.3s ease;
+}
+.feedback.ok { background: var(--groen-bg); border: 1px solid rgba(5, 150, 105, 0.3); }
+.feedback.nee { background: var(--rood-bg); border: 1px solid rgba(220, 38, 38, 0.25); }
+.feedback .kop { font-weight: 700; margin-bottom: 4px; }
+.feedback.ok .kop { color: var(--groen); }
+.feedback.nee .kop { color: var(--rood); }
+
+.knop {
+    font: inherit; font-size: 0.92rem; font-weight: 600;
+    background: var(--accent); color: #fff;
+    border: none; border-radius: 10px;
+    padding: 11px 22px; cursor: pointer; transition: all 0.2s;
+}
+.knop:hover { background: var(--accent-donker); }
+.knop:disabled { opacity: 0.4; cursor: default; }
+.knop.rustig { background: transparent; color: var(--tekst-2); border: 1px solid var(--rand); }
+.knop.rustig:hover { border-color: var(--accent); color: var(--accent); background: transparent; }
+.knop-rij { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+
+.flits-antwoord {
+    background: var(--vlak-zacht); border: 1px solid var(--rand);
+    border-radius: 10px; padding: 14px; font-size: 0.9rem; margin-top: 12px;
+    animation: verschijn 0.3s ease;
+}
+
+/* ------- klaar-scherm ------- */
+.klaar-kop { text-align: center; padding: 10px 0 4px; }
+.klaar-kop .cijfer {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2.6rem; font-weight: 700; line-height: 1.2;
+}
+.klaar-kop .cijfer.top { color: var(--groen); }
+.klaar-kop .cijfer.matig { color: var(--oranje); }
+.klaar-kop .cijfer.laag { color: var(--rood); }
+.klaar-kop .toelichting { color: var(--tekst-2); font-size: 0.9rem; margin-top: 4px; }
+.les-blok {
+    margin-top: 14px; border-radius: 10px; padding: 12px 14px;
+    font-size: 0.86rem;
+    background: var(--accent-bg);
+    border: 1px solid rgba(15, 118, 110, 0.25);
+}
+.les-blok .kop {
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.8px; color: var(--accent); margin-bottom: 4px;
+}
+.fout-lijstje { margin-top: 14px; }
+.fout-lijstje .rij {
+    display: flex; gap: 10px; align-items: flex-start;
+    padding: 8px 0; border-top: 1px solid var(--rand-licht); font-size: 0.86rem;
+}
+.fout-lijstje .rij svg { flex-shrink: 0; margin-top: 3px; }
+
+.voet {
+    text-align: center; margin-top: 30px;
+    font-size: 0.78rem; color: var(--muted);
+}
+.voet a { color: var(--tekst-2); }
+
+@media (max-width: 520px) {
+    .sorteer-knoppen { grid-template-columns: 1fr; }
+    .koppel-kolommen { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+    <a href="../index.html" class="back-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Dashboard
+    </a>
+    <div class="app-head">
+        <h1>MGGZ-trainer</h1>
+        <div class="sub">E-learning geestelijke gezondheidszorg &middot; de basis, v&oacute;&oacute;r de verdieping in de les</div>
+    </div>
+    <div id="app"></div>
+    <div class="voet">Persoonlijk studieproject, geen offici&euml;le uitgave. E-learning ter herhaling van basiskennis; volg voor diagnostiek en behandeling de actuele richtlijnen en het oordeel van de behandelaar.</div>
+</div>
+
+<script>
+'use strict';
+
+/* ============================================================
+   Didactische opzet:
+   - korte leerblokken, direct gevolgd door ophaal-oefeningen
+     (retrieval practice / testing effect)
+   - directe, uitleggende feedback bij elk antwoord
+   - fout beantwoorde items komen dezelfde sessie terug
+   - eindtoets mengt vragen uit alle modules (interleaving)
+   - zelftest met open vragen en zelfbeoordeling
+   ============================================================ */
+
+const OPSLAG = 'mggz-voortgang';
+
+function laadVoortgang() {
+    try { return JSON.parse(localStorage.getItem(OPSLAG)) || {}; } catch (e) { return {}; }
+}
+function bewaarVoortgang(v) {
+    try { localStorage.setItem(OPSLAG, JSON.stringify(v)); } catch (e) {}
+}
+function schud(a) {
+    const b = a.slice();
+    for (let i = b.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [b[i], b[j]] = [b[j], b[i]];
+    }
+    return b;
+}
+
+/* ---------------- inhoud ---------------- */
+
+const MODULES = [
+{
+    id: 'keten', titel: 'De GGZ-keten', sub: 'Van spreekkamer tot MGGZ',
+    les: 'De praktijk van het samenwerken met de POH-GGZ: wie ziet wat, hoe overleg je, en hoe houd je als arts de regie.',
+    items: [
+    { t: 'leer', kop: 'Waarom deze e-learning', html: `
+        <p>Deze e-learning herhaalt de <strong>basisarts-kennis</strong> over psychische klachten en stoornissen. Dat is bewust: als de basis er weer in zit, hoeft de les die niet opnieuw te behandelen en kan de tijd daar naar <strong>verdieping en praktijk</strong>: de specialist, de casu&iuml;stiek, de verdiepende gesprekken.</p>
+        <p>Elke module sluit af met wat er in de les op voortbouwt. Rond de modules af v&oacute;&oacute;r de bijbehorende les; je voortgang wordt (alleen op dit apparaat) bijgehouden.</p>` },
+    { t: 'leer', kop: 'De keten in het kort', html: `
+        <p>De huisarts &mdash; binnen Defensie de AMA in het zorgteam &mdash; is de <strong>poortwachter</strong> van de GGZ:</p>
+        <ul>
+            <li><strong>Huisarts/AMA + POH-GGZ</strong>: vraagverheldering, begeleiding van lichte en matige psychische klachten, kortdurende interventies. De POH-GGZ werkt onder verantwoordelijkheid van de arts en is g&eacute;&eacute;n zelfstandig behandelaar van psychische stoornissen.</li>
+            <li><strong>Generalistische basis-GGZ</strong>: lichte tot matige, niet-complexe stoornissen.</li>
+            <li><strong>Gespecialiseerde GGZ</strong>: complexe, ernstige of risicovolle problematiek. Binnen Defensie is dat de <strong>MGGZ</strong> (Militaire Geestelijke Gezondheidszorg), met expertise in uitzendgerelateerde problematiek zoals PTSS.</li>
+        </ul>
+        <p>Voor verwijzing naar de GGZ is een (vermoeden van een) <strong>DSM-classificatie</strong> nodig; klachten z&oacute;nder stoornis horen bij de huisartsenzorg zelf. Binnen Defensie staan daarnaast <strong>bedrijfsmaatschappelijk werk</strong> en de <strong>geestelijk verzorger</strong> als laagdrempelige, voorliggende voorzieningen naast de zorgketen: voor problemen die geen zorg nodig hebben, maar wel aandacht.</p>
+        <p class="zacht">Hoe vaak komt het voor? In NEMESIS-3 (Trimbos, 2019&ndash;2022) had ruim een kwart van de volwassenen in het afgelopen jaar een psychische aandoening; de 12-maandsprevalentie van de depressieve stoornis verdubbelde in ruim tien jaar van 5 naar 9 procent. Dit is dagelijkse kost in de eerste lijn, geen randverschijnsel.</p>` },
+    { t: 'leer', kop: 'De MGGZ van dichtbij', html: `
+        <p>De MGGZ is de eigen GGZ-instelling van Defensie, met <strong>vier regionale centra</strong> (Utrecht, Amsterdam, Zwolle, &rsquo;s-Hertogenbosch); alleen Utrecht biedt ook dagbehandeling en opname. Aanmelding loopt via verwijzing door de militair arts.</p>
+        <ul>
+            <li><strong>Actief dienende militairen</strong>: terecht met &aacute;lle psychische problematiek;</li>
+            <li><strong>Veteranen en postactieven</strong>: alleen bij dienst- of uitzendgerelateerde klachten. Voor hen is het <strong>Veteranenloket</strong> (24/7) de toegang tot het Landelijk Zorgsysteem voor Veteranen (LZV), het civiel-militaire netwerk waarvan de MGGZ deel uitmaakt.</li>
+        </ul>
+        <p class="zacht">PTSS wordt er volgens de civiele richtlijnen behandeld, met EMDR en traumagerichte cognitieve gedragstherapie als eerste keus. En ook goed om te weten: defensie-gezondheidscentra werken zelf met POH&rsquo;s-GGZ, net als de civiele huisartsenpraktijk.</p>` },
+    { t: 'mc', toets: true, vraag: 'Wat is de rol van de POH-GGZ?',
+        opties: [
+            { tekst: 'Vraagverheldering en begeleiding van psychische klachten onder verantwoordelijkheid van de huisarts; geen zelfstandig behandelaar van stoornissen', goed: true },
+            { tekst: 'Zelfstandig diagnosticeren en behandelen van DSM-stoornissen in de eerste lijn' },
+            { tekst: 'Uitsluitend doorverwijzen van pati&euml;nten naar de basis-GGZ' },
+            { tekst: 'Medicatie voorschrijven bij depressie en angst' }
+        ],
+        uitleg: 'De POH-GGZ is een ondersteuner van de huisartsenzorg: verheldert de vraag, begeleidt en doet kortdurende interventies. De arts blijft eindverantwoordelijk, ook voor medicatie en verwijzing.' },
+    { t: 'volgorde', toets: true, vraag: 'Zet de keten op volgorde van laagdrempelig naar meest gespecialiseerd.',
+        items: ['Bedrijfsmaatschappelijk werk of geestelijk verzorger', 'Huisarts/AMA met POH-GGZ', 'Generalistische basis-GGZ', 'Gespecialiseerde GGZ / MGGZ'],
+        uitleg: 'Matched care: zo licht als kan, zo zwaar als nodig. De voorliggende voorzieningen vangen op wat geen zorg nodig heeft; de MGGZ is er voor complexe en uitzendgerelateerde problematiek.' },
+    { t: 'mc', toets: true, vraag: 'Wanneer is verwijzing naar de GGZ (basis of gespecialiseerd) aan de orde?',
+        opties: [
+            { tekst: 'Bij een (vermoeden van een) DSM-stoornis; klachten zonder stoornis horen bij de huisartsenzorg en voorliggende voorzieningen', goed: true },
+            { tekst: 'Bij elke psychische klacht die langer dan twee weken bestaat' },
+            { tekst: 'Alleen als medicatie onvoldoende werkt' },
+            { tekst: 'Alleen op verzoek van de pati&euml;nt zelf' }
+        ],
+        uitleg: 'De poortwachtersrol betekent ook: niet alles doorsturen. Levensproblemen, rouw en werkstress zonder stoornis medicaliseren door verwijzing is een klassieke valkuil.' },
+    { t: 'mc', vraag: 'Een militair worstelt met zingevingsvragen na een uitzending, zonder aanwijzingen voor een stoornis. Wie is een passende eerste stap?',
+        opties: [
+            { tekst: 'De geestelijk verzorger of bedrijfsmaatschappelijk werk: laagdrempelig, geen zorgtraject en geen dossiervorming in de zorg', goed: true },
+            { tekst: 'Direct de MGGZ, want het is uitzendgerelateerd' },
+            { tekst: 'De basis-GGZ, met als classificatie een aanpassingsstoornis' },
+            { tekst: 'Niets doen; zingeving is geen taak van wie dan ook binnen Defensie' }
+        ],
+        uitleg: 'Niet elk probleem is een zorgvraag. De voorliggende voorzieningen zijn er juist voor dit soort vragen; verwijs naar zorg als er (vermoeden van) een stoornis of lijdensdruk met disfunctioneren is.' },
+    { t: 'mc', toets: true, vraag: 'Wie kunnen bij de MGGZ terecht?',
+        opties: [
+            { tekst: 'Actief dienende militairen met alle psychische problematiek; veteranen en postactieven alleen bij dienst- of uitzendgerelateerde klachten', goed: true },
+            { tekst: 'Alleen militairen met PTSS na een uitzending' },
+            { tekst: 'Iedereen die ooit bij Defensie heeft gewerkt, met elke klacht' },
+            { tekst: 'Alleen veteranen, via het Veteranenloket' }
+        ],
+        uitleg: 'Voor veteranen met uitzendgerelateerde problematiek is het Veteranenloket de 24/7-toegang tot het Landelijk Zorgsysteem voor Veteranen, het civiel-militaire netwerk waar de MGGZ deel van uitmaakt.' }
+    ]
+},
+{
+    id: 'dsm', titel: 'DSM-5: gereedschap, geen waarheid', sub: 'Wat een classificatie wel en niet is',
+    les: 'Hoe de specialist de DSM in de praktijk gebruikt en relativeert: structuurdiagnose, comorbiditeit en het verschil tussen classificeren en begrijpen.',
+    items: [
+    { t: 'leer', kop: 'Classificatie is geen diagnose', html: `
+        <p>De DSM-5 is een <strong>classificatiesysteem</strong>: een gemeenschappelijke taal die zegt <em>wat</em> iemand heeft volgens afgesproken criteria &mdash; niet <em>waarom</em>, en niet wat er moet gebeuren. Een classificatie is dus iets anders dan een diagnose: de diagnose omvat ook het verhaal, de context en de verklarende samenhang.</p>
+        <p>Vrijwel elke DSM-classificatie is opgebouwd uit dezelfde bouwstenen:</p>
+        <ul>
+            <li>een minimum <strong>aantal symptomen</strong> uit een lijst;</li>
+            <li>een minimale <strong>duur</strong>;</li>
+            <li><strong>lijdensdruk of disfunctioneren</strong> (werk, sociaal);</li>
+            <li><strong>uitsluiting</strong>: niet beter verklaard door een middel, een somatische aandoening of een andere stoornis.</li>
+        </ul>
+        <p class="zacht">Zonder lijdensdruk of disfunctioneren is er geen stoornis, hoeveel symptomen er ook zijn. En de grens tussen normaal en gestoord is een afspraak op een dimensie, geen natuurwet.</p>` },
+    { t: 'mc', toets: true, vraag: 'Wat is het verschil tussen een DSM-classificatie en een diagnose?',
+        opties: [
+            { tekst: 'De classificatie benoemt volgens afgesproken criteria w&aacute;t iemand heeft; de diagnose omvat ook context, verhaal en verklarende samenhang', goed: true },
+            { tekst: 'Er is geen verschil; de termen zijn synoniem' },
+            { tekst: 'De classificatie is uitgebreider dan de diagnose' },
+            { tekst: 'Alleen een psychiater mag classificeren; iedere arts mag diagnosticeren' }
+        ],
+        uitleg: 'De DSM is een gemeenschappelijke taal, geen verklaringsmodel. Twee mensen met dezelfde classificatie kunnen totaal verschillende problemen, oorzaken en behandelbehoeften hebben.' },
+    { t: 'meer', toets: true, vraag: 'Welke bouwstenen komen in vrijwel elke DSM-classificatie terug? Selecteer alles wat klopt.',
+        opties: [
+            { tekst: 'Een minimum aantal symptomen', goed: true },
+            { tekst: 'Een minimale duur', goed: true },
+            { tekst: 'Lijdensdruk of disfunctioneren', goed: true },
+            { tekst: 'Uitsluiting van middelen en somatische oorzaken', goed: true },
+            { tekst: 'Een aantoonbare biologische oorzaak' },
+            { tekst: 'Een positieve familieanamnese' }
+        ],
+        uitleg: 'Symptomen, duur, lijdensdruk, uitsluiting: dit rijtje helpt je elke classificatievraag te structureren. Biologische markers kent de DSM niet.' },
+    { t: 'mc', toets: true, vraag: 'Iemand voldoet aan acht van de negen symptoomcriteria van een depressieve episode, maar functioneert goed en heeft er geen last van. Wat geldt?',
+        opties: [
+            { tekst: 'Geen stoornis: zonder lijdensdruk of disfunctioneren is niet aan de criteria voldaan', goed: true },
+            { tekst: 'Een depressieve episode; acht symptomen is ruim voldoende' },
+            { tekst: 'Een depressieve episode in remissie' },
+            { tekst: 'Een persoonlijkheidsstoornis, want het patroon is kennelijk chronisch' }
+        ],
+        uitleg: 'Het lijdensdruk/disfunctioneren-criterium is de poort van elke classificatie. Symptomen tellen is nooit genoeg.' }
+    ]
+},
+{
+    id: 'modellen', titel: 'SCEGS en het KOP-model', sub: 'De gespreksmodellen van de eerste lijn',
+    les: 'Oefenen met KOP-gesprekken en SCEGS-exploratie in rollenspellen, en hoe de POH-GGZ hiermee een kortdurend traject opbouwt.',
+    items: [
+    { t: 'leer', kop: 'SCEGS: de klacht in vijf dimensies', html: `
+        <p>SCEGS is het NHG-model om een (aanhoudende lichamelijke) klacht breed te exploreren, zodat lichaam en context vanaf het begin allebei op tafel liggen:</p>
+        <table class="mini">
+            <tr><td class="mono">S</td><td><strong>Somatisch</strong>: aard, beloop, eerdere bevindingen</td></tr>
+            <tr><td class="mono">C</td><td><strong>Cognitief</strong>: wat denkt de pati&euml;nt dat er aan de hand is?</td></tr>
+            <tr><td class="mono">E</td><td><strong>Emotioneel</strong>: welke gevoelens roept de klacht op (angst, somberheid)?</td></tr>
+            <tr><td class="mono">G</td><td><strong>Gedragsmatig</strong>: wat doet of vermijdt de pati&euml;nt door de klacht?</td></tr>
+            <tr><td class="mono">S</td><td><strong>Sociaal</strong>: gevolgen voor werk, thuis, omgeving &mdash; en reacties van anderen</td></tr>
+        </table>
+        <p class="zacht">Kracht van het model: je hoeft niet te kiezen tussen &ldquo;echt&rdquo; en &ldquo;psychisch&rdquo;. Je verbreedt het gesprek zonder de klacht te betwisten.</p>` },
+    { t: 'leer', kop: 'KOP: K = O &times; P', html: `
+        <p>Het KOP-model (Rijnders) is h&eacute;t werkmodel van de kortdurende generalistische behandeling, veel gebruikt door de POH-GGZ:</p>
+        <ul>
+            <li><strong>K &mdash; Klachten</strong>: waar heeft de pati&euml;nt last van?</li>
+            <li><strong>O &mdash; Omstandigheden</strong>: welke gebeurtenissen en druk spelen er (werk, relatie, uitzending, verlies)?</li>
+            <li><strong>P &mdash; Persoonlijke stijl</strong>: hoe gaat deze persoon daar kenmerkend mee om (piekeren, doorgaan, vermijden, alles zelf oplossen)?</li>
+        </ul>
+        <p>De klachten worden begrepen als de uitkomst van omstandigheden maal persoonlijke stijl: <strong>K = O &times; P</strong>. De interventie richt zich vervolgens op O (omstandigheden veranderen of hanteren) en vooral op P (de eigen stijl herkennen en bijsturen), met de pati&euml;nt als actieve probleemoplosser.</p>
+        <p class="zacht">Het model normaliseert: klachten zijn een begrijpelijke reactie, geen defect. Dat maakt het licht, kort en activerend.</p>` },
+    { t: 'koppel', toets: true, vraag: 'Een militair met aanhoudende hoofdpijn. Koppel elke uitspraak aan de SCEGS-dimensie.',
+        paren: [
+            ['Somatisch', 'Drukkende pijn, hele dag aanwezig, geen aura'],
+            ['Cognitief', '&ldquo;Ik denk dat het iets ernstigs in mijn hoofd is&rdquo;'],
+            ['Emotioneel', 'Wordt er angstig en somber van'],
+            ['Gedragsmatig', 'Sport niet meer en meldt zich af voor diensten'],
+            ['Sociaal', 'Thuis irritaties; collega&rsquo;s nemen taken over']
+        ],
+        uitleg: 'Vijf dimensies, &eacute;&eacute;n klacht. De C, E, G en S bepalen vaak meer van het beloop dan de S van somatisch.' },
+    { t: 'mc', toets: true, vraag: 'Waar staan de letters van het KOP-model voor?',
+        opties: [
+            { tekst: 'Klachten, Omstandigheden, Persoonlijke stijl', goed: true },
+            { tekst: 'Klachten, Oorzaken, Prognose' },
+            { tekst: 'Kwetsbaarheid, Ondersteuning, Preventie' },
+            { tekst: 'Context, Ontwikkeling, Persoonlijkheid' }
+        ],
+        uitleg: 'K = O &times; P: klachten als uitkomst van omstandigheden maal persoonlijke stijl. De behandeling grijpt aan op O en vooral op P.' },
+    { t: 'mc', toets: true, vraag: 'Waarop richt een KOP-behandeling zich vooral?',
+        opties: [
+            { tekst: 'Op het herkennen en bijsturen van de eigen persoonlijke stijl, met de pati&euml;nt als actieve probleemoplosser', goed: true },
+            { tekst: 'Op het wegnemen van alle belastende omstandigheden' },
+            { tekst: 'Op het onderdrukken van de klachten met medicatie' },
+            { tekst: 'Op het verwerken van jeugdervaringen' }
+        ],
+        uitleg: 'Omstandigheden zijn vaak maar beperkt te veranderen; de persoonlijke stijl w&eacute;l. Vandaar kort, activerend en normaliserend.' },
+    { t: 'mc', vraag: 'Waarom werkt SCEGS goed bij een pati&euml;nt die bang is dat zijn klachten &ldquo;niet serieus genomen&rdquo; worden?',
+        opties: [
+            { tekst: 'Je exploreert de psychosociale kanten n&aacute;&aacute;st de somatische, zonder de klacht te betwisten of te kiezen tussen lichaam en psyche', goed: true },
+            { tekst: 'Het model bewijst dat de klacht psychisch is' },
+            { tekst: 'Het vervangt lichamelijk onderzoek, wat tijd bespaart' },
+            { tekst: 'Het dwingt de pati&euml;nt te erkennen dat stress de oorzaak is' }
+        ],
+        uitleg: 'De volgorde en de breedte doen het werk: alle vijf dimensies horen bij een gewone, volledige exploratie. Zo voelt de vraag naar emoties en gedrag niet als diskwalificatie van de klacht.' }
+    ]
+},
+{
+    id: 'stemming', titel: 'Stemmingsstoornissen', sub: 'Van somberheid tot depressie, en de manie niet missen',
+    les: 'Verdieping: therapieresistentie, suicidaliteitsbeoordeling in de militaire context en het gesprek dat verder gaat dan de checklist.',
+    items: [
+    { t: 'leer', kop: 'De depressieve episode', html: `
+        <p>Criteria in het kort: <strong>ten minste vijf</strong> van negen symptomen, <strong>minstens twee weken</strong>, vrijwel dagelijks, waarvan minimaal &eacute;&eacute;n <strong>kernsymptoom</strong>:</p>
+        <ul>
+            <li><strong>Sombere stemming</strong> het grootste deel van de dag;</li>
+            <li><strong>Verlies van interesse of plezier</strong> (anhedonie).</li>
+        </ul>
+        <p>De overige zeven: eetlust-/gewichtsverandering, slaapproblemen, psychomotorische agitatie of remming, vermoeidheid, gevoelens van waardeloosheid of schuld, concentratieproblemen, terugkerende gedachten aan de dood of su&iuml;cide. Plus altijd: lijdensdruk/disfunctioneren en uitsluiting van middelen en somatiek.</p>
+        <p class="zacht">Onderscheid het van gewone somberheid en van de <strong>aanpassingsstoornis</strong>: klachten binnen 3 maanden na een aanwijsbare stressor, die niet aan de criteria van een depressie voldoen en doorgaans verdwijnen als de stressor wegvalt.</p>` },
+    { t: 'leer', kop: 'Twee dingen die je niet mag missen', html: `
+        <ul>
+            <li><strong>Su&iuml;cidaliteit</strong>: altijd actief en concreet uitvragen (gedachten, plannen, middelen, eerdere pogingen, beschermende factoren). Ernaar vragen l&oacute;kt geen su&iuml;cide uit &mdash; dat is een hardnekkige mythe. In de militaire context extra relevant: toegang tot wapens.</li>
+            <li><strong>De (hypo)manie</strong>: vraag bij elke depressie naar eerdere perioden met uitgelaten of prikkelbare stemming, minder slaapbehoefte, ondernemingsdrang en impulsief gedrag (manie &ge; 1 week of opname; hypomanie &ge; 4 dagen). Een gemiste bipolaire stoornis betekent een verkeerde behandeling: een antidepressivum zonder stemmingsstabilisatie kan een manie uitlokken.</li>
+        </ul>` },
+    { t: 'mc', toets: true, vraag: 'Wat zijn de twee kernsymptomen van de depressieve episode?',
+        opties: [
+            { tekst: 'Sombere stemming en verlies van interesse of plezier', goed: true },
+            { tekst: 'Slaapproblemen en vermoeidheid' },
+            { tekst: 'Schuldgevoelens en concentratieproblemen' },
+            { tekst: 'Gewichtsverlies en psychomotorische remming' }
+        ],
+        uitleg: 'Minimaal &eacute;&eacute;n van deze twee moet aanwezig zijn; daarnaast in totaal ten minste vijf van de negen symptomen, minstens twee weken.' },
+    { t: 'mc', toets: true, vraag: 'Hoeveel symptomen en hoe lang zijn minimaal nodig voor een depressieve episode?',
+        opties: [
+            { tekst: 'Vijf van de negen symptomen, gedurende ten minste twee weken', goed: true },
+            { tekst: 'Drie symptomen gedurende een maand' },
+            { tekst: 'Alle negen symptomen gedurende twee weken' },
+            { tekst: 'Twee kernsymptomen gedurende zes weken' }
+        ],
+        uitleg: 'Vijf uit negen, twee weken, vrijwel dagelijks, met minimaal &eacute;&eacute;n kernsymptoom, plus lijdensdruk of disfunctioneren.' },
+    { t: 'mc', toets: true, vraag: 'Drie weken na een echtscheiding is een militair somber en slaapt slecht, maar functioneert redelijk en voldoet niet aan de depressiecriteria. Wat past het best?',
+        opties: [
+            { tekst: 'Een aanpassingsstoornis (of normale reactie): klachten na een aanwijsbare stressor, onder de depressiedrempel', goed: true },
+            { tekst: 'Een depressieve episode; de stressor doet er niet toe' },
+            { tekst: 'Een dysthyme stoornis' },
+            { tekst: 'Een gegeneraliseerde angststoornis' }
+        ],
+        uitleg: 'Tijdsrelatie met een stressor en het niet halen van de depressiecriteria wijzen op een aanpassingsstoornis. Beloop volgen: het kan alsnog een depressie worden.' },
+    { t: 'mc', toets: true, vraag: 'Waarom vraag je bij elke depressie naar eerdere manische of hypomanische perioden?',
+        opties: [
+            { tekst: 'Een gemiste bipolaire stoornis leidt tot verkeerde behandeling: een antidepressivum zonder stemmingsstabilisatie kan een manie uitlokken', goed: true },
+            { tekst: 'Omdat manie en depressie nooit bij dezelfde pati&euml;nt voorkomen' },
+            { tekst: 'Alleen voor de volledigheid van het dossier' },
+            { tekst: 'Omdat een bipolaire stoornis de depressie uitsluit' }
+        ],
+        uitleg: 'Verminderde slaapbehoefte (fit na een paar uur slaap!) is daarbij een sleutelvraag; dat is iets anders dan slecht slapen.' },
+    { t: 'mc', vraag: 'Klopt het dat vragen naar su&iuml;cidegedachten su&iuml;cide kan uitlokken?',
+        opties: [
+            { tekst: 'Nee, dat is een mythe: concreet en rustig uitvragen geeft juist ruimte en is essentieel voor de risico-inschatting', goed: true },
+            { tekst: 'Ja, daarom vraag je er alleen indirect naar' },
+            { tekst: 'Ja, bij jongeren en militairen wel' },
+            { tekst: 'Alleen een psychiater mag ernaar vragen' }
+        ],
+        uitleg: 'Vraag door: gedachten, plannen, voorbereidingen, middelen (denk in de militaire context aan wapentoegang), eerdere pogingen en wat iemand tegenhoudt.' }
+    ]
+},
+{
+    id: 'angst', titel: 'Angst en PTSS', sub: 'De angststoornissen, en waarom PTSS er niet bij hoort',
+    les: 'Verdieping door de specialist: traumabehandeling bij de MGGZ (o.a. EMDR en exposure), morele verwonding en het gesprek over uitzendervaringen.',
+    items: [
+    { t: 'leer', kop: 'De angststoornissen in het kort', html: `
+        <table class="mini">
+            <tr><td>Paniekstoornis</td><td>Terugkerende <strong>onverwachte</strong> paniekaanvallen (piek binnen minuten) + &ge; 1 maand zorgen erover of gedragsverandering; vaak met agorafobie</td></tr>
+            <tr><td>Gegeneraliseerde angst</td><td><strong>&ge; 6 maanden</strong> buitensporig, moeilijk controleerbaar piekeren over allerlei zaken, met spanningsklachten (rusteloosheid, spierspanning, slaapproblemen)</td></tr>
+            <tr><td>Sociale-angststoornis</td><td>Angst voor negatieve beoordeling in sociale situaties, &ge; 6 maanden, met vermijding</td></tr>
+            <tr><td>Specifieke fobie</td><td>Duidelijk omschreven angst (hoogte, bloed, vliegen) met vermijding</td></tr>
+        </table>
+        <p class="zacht">Denk bij nieuwe angstklachten ook somatisch en aan middelen: hyperthyre&iuml;die, cafe&iuml;ne, stimulantia, onttrekking van alcohol of benzodiazepinen.</p>` },
+    { t: 'leer', kop: 'PTSS: apart hoofdstuk, ander mechanisme', html: `
+        <p>PTSS staat in de DSM-5 <strong>niet</strong> bij de angststoornissen maar bij de <strong>trauma- en stressorgerelateerde stoornissen</strong>: er is per definitie een oorzakelijke gebeurtenis. De criteria in het kort:</p>
+        <ul>
+            <li><strong>A</strong> &mdash; blootstelling aan (dreigende) dood, ernstig letsel of seksueel geweld: zelf, als getuige, of herhaald beroepsmatig;</li>
+            <li><strong>B</strong> &mdash; herbeleving: intrusies, nachtmerries, flashbacks;</li>
+            <li><strong>C</strong> &mdash; vermijding van herinneringen of triggers;</li>
+            <li><strong>D</strong> &mdash; negatieve veranderingen in cognities en stemming (schuld, vervreemding, afgestompt);</li>
+            <li><strong>E</strong> &mdash; verhoogde prikkelbaarheid: schrikachtig, hypervigilant, woede, slaapproblemen;</li>
+            <li>duur <strong>&gt; 1 maand</strong> + lijdensdruk/disfunctioneren. Korter dan een maand: acute stressstoornis.</li>
+        </ul>
+        <p class="zacht">Let op het beloop: klachten direct na een ingrijpende gebeurtenis zijn normaal en doven meestal uit. Niet elke heftige uitzendervaring wordt PTSS; w&eacute;l laagdrempelig terug laten komen. De Nederlandse PRISMO-studie (militairen uitgezonden naar Afghanistan, tien jaar gevolgd) laat zien waarom: een piek van hoge PTSS-symptoomscores rond 6 maanden na uitzending (ruim 8%), maar &oacute;&oacute;k een late toename rond 5 jaar (bijna 13%) &mdash; klachten kunnen dus jaren later alsnog ontstaan of verergeren.</p>` },
+    { t: 'koppel', toets: true, vraag: 'Koppel het klinisch beeld aan de stoornis.',
+        paren: [
+            ['Paniekstoornis', 'Onverwachte aanvallen met hartkloppingen en doodsangst, en angst voor de volgende aanval'],
+            ['Gegeneraliseerde angst', 'Maandenlang oncontroleerbaar piekeren over van alles, met spierspanning'],
+            ['Sociale-angststoornis', 'Presentaties vermijden uit angst om af te gaan'],
+            ['Specifieke fobie', 'Flauwvallen bij bloedprikken, prikafspraken afzeggen']
+        ],
+        uitleg: 'Het onderscheid zit in de trigger: onverwacht (paniek), alles (GAS), beoordeling (sociaal), &eacute;&eacute;n omschreven object of situatie (fobie).' },
+    { t: 'mc', toets: true, vraag: 'Onder welk DSM-5-hoofdstuk valt PTSS?',
+        opties: [
+            { tekst: 'Trauma- en stressorgerelateerde stoornissen: een oorzakelijke gebeurtenis is onderdeel van de definitie', goed: true },
+            { tekst: 'De angststoornissen' },
+            { tekst: 'De dissociatieve stoornissen' },
+            { tekst: 'De persoonlijkheidsstoornissen' }
+        ],
+        uitleg: 'Sinds de DSM-5 een eigen hoofdstuk. Het A-criterium (de traumatische gebeurtenis) onderscheidt PTSS fundamenteel van angststoornissen, die geen oorzakelijke gebeurtenis vereisen.' },
+    { t: 'meer', toets: true, vraag: 'Welke symptoomclusters horen bij PTSS? Selecteer alles wat klopt.',
+        opties: [
+            { tekst: 'Herbeleving (intrusies, nachtmerries, flashbacks)', goed: true },
+            { tekst: 'Vermijding van herinneringen en triggers', goed: true },
+            { tekst: 'Negatieve veranderingen in cognities en stemming', goed: true },
+            { tekst: 'Verhoogde prikkelbaarheid en schrikachtigheid', goed: true },
+            { tekst: 'Wanen en hallucinaties als kernsymptoom' },
+            { tekst: 'Terugkerende onverwachte paniekaanvallen als vereiste' }
+        ],
+        uitleg: 'B, C, D en E: herbeleving, vermijding, negatieve cognities/stemming, arousal. Meer dan een maand, met lijdensdruk.' },
+    { t: 'mc', toets: true, vraag: 'Een militair heeft twee weken na een ernstig incident nachtmerries en is schrikachtig. Wat geldt?',
+        opties: [
+            { tekst: 'Dit past bij een normale reactie of acute stressstoornis; PTSS vereist meer dan een maand klachten. Vervolg afspreken', goed: true },
+            { tekst: 'Dit is per definitie PTSS; direct verwijzen naar de MGGZ' },
+            { tekst: 'Dit is een paniekstoornis' },
+            { tekst: 'Klachten binnen een maand na een incident zijn altijd onschuldig; geen vervolg nodig' }
+        ],
+        uitleg: 'De meeste acute stressreacties doven uit. De kunst is: normaliseren z&oacute;nder te bagatelliseren, en actief terugzien om de groep te vangen bij wie het niet overgaat.' },
+    { t: 'mc', vraag: 'Welke somatische en middelgerelateerde oorzaken overweeg je bij nieuwe angstklachten?',
+        opties: [
+            { tekst: 'Onder andere hyperthyre&iuml;die, cafe&iuml;ne en stimulantia, en onttrekking van alcohol of benzodiazepinen', goed: true },
+            { tekst: 'Geen: angst is per definitie psychisch' },
+            { tekst: 'Alleen hartritmestoornissen' },
+            { tekst: 'Alleen bijwerkingen van antidepressiva' }
+        ],
+        uitleg: 'Zeker bij een eerste presentatie op latere leeftijd of een atypisch beeld: eerst breed kijken, dan classificeren.' }
+    ]
+},
+{
+    id: 'adhd', titel: 'ADHD', sub: 'Herkenning bij volwassenen',
+    les: 'Verdieping: medicamenteuze behandeling en controles, ADHD en uitzendbaarheid, en differentiaaldiagnostiek met de specialist.',
+    items: [
+    { t: 'leer', kop: 'De criteria in het kort', html: `
+        <p>Twee symptoomdomeinen:</p>
+        <ul>
+            <li><strong>Onoplettendheid</strong>: details missen, moeite met aandacht vasthouden, niet lijken te luisteren, taken niet afmaken, organisatieproblemen, uitstellen, dingen kwijtraken, snel afgeleid, vergeetachtig;</li>
+            <li><strong>Hyperactiviteit/impulsiviteit</strong>: friemelen, niet blijven zitten, innerlijke rusteloosheid, druk praten, antwoorden eruit flappen, niet kunnen wachten, anderen onderbreken.</li>
+        </ul>
+        <p>Voor de classificatie: <strong>&ge; 6 symptomen</strong> per domein bij kinderen, <strong>&ge; 5 vanaf 17 jaar</strong>; meerdere symptomen al <strong>v&oacute;&oacute;r het 12e jaar</strong>; aanwezig in <strong>&ge; 2 settings</strong> (werk &eacute;n thuis); met disfunctioneren. Presentaties: overwegend onoplettend, overwegend hyperactief-impulsief, of gecombineerd.</p>
+        <p class="zacht">Bij volwassenen staat de innerlijke onrust vaak op de voorgrond in plaats van zichtbaar bewegen. Differentiaal: angst, depressie, slaapgebrek, middelen &mdash; die geven &oacute;&oacute;k concentratieproblemen, maar zonder het levenslange patroon.</p>` },
+    { t: 'mc', toets: true, vraag: 'Welke criteria gelden voor ADHD bij een volwassene (&ge; 17 jaar)?',
+        opties: [
+            { tekst: 'Ten minste vijf symptomen per domein, meerdere symptomen al voor het twaalfde jaar, in twee of meer settings, met disfunctioneren', goed: true },
+            { tekst: 'Ten minste negen symptomen, ontstaan op elke leeftijd, in &eacute;&eacute;n setting' },
+            { tekst: 'Elke volwassene met concentratieproblemen en drukte voldoet' },
+            { tekst: 'Alleen een positieve zelftest en herkenning in de kindertijd' }
+        ],
+        uitleg: 'Het levensloopcriterium is essentieel: ADHD begint in de kindertijd. Concentratieklachten die pas op volwassen leeftijd ontstaan, wijzen op iets anders.' },
+    { t: 'mc', toets: true, vraag: 'Een militair heeft sinds een half jaar concentratieproblemen en onrust, na een drukke periode met slecht slapen. Vroeger op school geen problemen. Wat is waarschijnlijk?',
+        opties: [
+            { tekst: 'Geen ADHD: het levenslange patroon ontbreekt; denk aan stress, slaapgebrek, stemming of angst', goed: true },
+            { tekst: 'ADHD, overwegend onoplettende presentatie' },
+            { tekst: 'ADHD, mits een vragenlijst positief is' },
+            { tekst: 'Een lichte verstandelijke beperking' }
+        ],
+        uitleg: 'Recent ontstane concentratieklachten hebben een brede differentiaal. Het criterium &ldquo;symptomen v&oacute;&oacute;r het twaalfde jaar&rdquo; is de snelste toets.' },
+    { t: 'sorteer', vraag: 'Bij welk ADHD-domein hoort dit symptoom?',
+        cats: ['Onoplettendheid', 'Hyperactiviteit/impulsiviteit'],
+        items: [
+            { tekst: 'Taken en afspraken vergeten', cat: 0 },
+            { tekst: 'Antwoorden eruit flappen', cat: 1 },
+            { tekst: 'Moeite met aandacht vasthouden', cat: 0 },
+            { tekst: 'Innerlijke rusteloosheid', cat: 1 },
+            { tekst: 'Spullen kwijtraken', cat: 0 },
+            { tekst: 'Anderen onderbreken, niet kunnen wachten', cat: 1 }
+        ],
+        uitleg: 'Twee domeinen, en de presentatie kan per persoon verschillen. Bij volwassenen is de hyperactiviteit vaak naar binnen geslagen: onrust in plaats van rennen.' },
+    { t: 'mc', vraag: 'Voor het vervolgconsult bij een pati&euml;nt die al bekend is met ADHD bestaat een aparte checklist. Wat is daarvan de kern?',
+        opties: [
+            { tekst: 'Systematisch monitoren: symptomen, functioneren, stemming, slaap, medicatie-inname, bijwerkingen en middelengebruik', goed: true },
+            { tekst: 'Jaarlijks de diagnose opnieuw stellen met de volledige DSM-criteria' },
+            { tekst: 'Alleen controleren of de herhaalrecepten kloppen' },
+            { tekst: 'De checklist vervangt het consult' }
+        ],
+        uitleg: 'Zie de ADHD-checklist-app op het dashboard: een onderhouds-checklist voor het vervolgconsult, met signaalantwoorden als gespreksagenda.' }
+    ]
+},
+{
+    id: 'autisme', titel: 'Autismespectrumstoornis', sub: 'Herkenning, ook bij wie het goed camoufleert',
+    les: 'Verdieping: hoe je de spreekkamer en de werkcontext aanpast, en wat een diagnostisch traject bij volwassenen inhoudt.',
+    items: [
+    { t: 'leer', kop: 'Twee criteriadomeinen', html: `
+        <p>De DSM-5 kent voor ASS twee domeinen:</p>
+        <ul>
+            <li><strong>A &mdash; sociale communicatie en interactie</strong> (alle drie vereist): beperkte sociaal-emotionele wederkerigheid; beperkte non-verbale communicatie (oogcontact, gebaren); moeite met het aangaan en begrijpen van relaties;</li>
+            <li><strong>B &mdash; beperkte, repetitieve gedragspatronen</strong> (minstens twee van vier): stereotiepe bewegingen of taal; vasthouden aan routines en moeite met verandering; intense, beperkte interesses; over- of ondergevoeligheid voor zintuiglijke prikkels.</li>
+        </ul>
+        <p>Aanwezig vanaf de <strong>vroege ontwikkeling</strong>, met beperkingen in het functioneren. Geen aparte subtypes meer: &eacute;&eacute;n spectrum, met ernstniveaus.</p>
+        <p class="zacht">Volwassenen &mdash; zeker vrouwen en mensen met een sterke intelligentie &mdash; kunnen veel <strong>camoufleren</strong>: aangeleerde scripts maskeren de moeite, tegen hoge energetische kosten. Denk aan ASS bij terugkerende overbelasting bij veranderingen, bij &ldquo;onbegrepen&rdquo; burn-outs en bij levenslange sociale vermoeidheid.</p>` },
+    { t: 'mc', toets: true, vraag: 'Wat zijn de twee criteriadomeinen van de autismespectrumstoornis?',
+        opties: [
+            { tekst: 'Beperkingen in sociale communicatie en interactie, plus beperkte repetitieve gedragspatronen en interesses', goed: true },
+            { tekst: 'Onoplettendheid plus hyperactiviteit' },
+            { tekst: 'Wanen plus hallucinaties' },
+            { tekst: 'Taalachterstand plus verstandelijke beperking' }
+        ],
+        uitleg: 'A (alle drie de sociale criteria) en B (minstens twee van vier patronen, waaronder sensorische bijzonderheden), vanaf de vroege ontwikkeling.' },
+    { t: 'mc', toets: true, vraag: 'Welk symptoom hoort sinds de DSM-5 expliciet bij het B-criterium van ASS?',
+        opties: [
+            { tekst: 'Over- of ondergevoeligheid voor zintuiglijke prikkels (geluid, licht, textuur)', goed: true },
+            { tekst: 'Terugkerende paniekaanvallen' },
+            { tekst: 'Verminderde intelligentie' },
+            { tekst: 'Agressief gedrag' }
+        ],
+        uitleg: 'Sensorische bijzonderheden zijn vaak een bruikbare ingang in de anamnese: gehoorbescherming op de legeringskamer, aversie tegen bepaalde stoffen of etenswaren, overprikkeling in de eetzaal.' },
+    { t: 'mc', toets: true, vraag: 'Waarom wordt ASS bij intelligente volwassenen vaak laat herkend?',
+        opties: [
+            { tekst: 'Door camouflage: aangeleerde sociale scripts maskeren de moeite, tegen hoge energetische kosten, tot het bij overbelasting misgaat', goed: true },
+            { tekst: 'Omdat ASS op volwassen leeftijd kan ontstaan' },
+            { tekst: 'Omdat de criteria alleen voor kinderen gelden' },
+            { tekst: 'Omdat intelligentie autisme geneest' }
+        ],
+        uitleg: 'Het beeld wordt vaak pas zichtbaar bij een contextverandering: nieuwe functie, uitzending, samenwonen. De ontwikkelingsanamnese (schooltijd!) is de sleutel.' },
+    { t: 'mc', vraag: 'Wat is de kern van goede zorg bij ASS in de eerste lijn?',
+        opties: [
+            { tekst: 'Context en communicatie aanpassen: voorspelbaarheid, concrete taal, prikkels beperken; ASS zelf is geen te genezen ziekte', goed: true },
+            { tekst: 'Verwijzen voor gedragstherapie gericht op genezing' },
+            { tekst: 'Medicatie die de kernsymptomen wegneemt' },
+            { tekst: 'Adviseren om sociale situaties te blijven oefenen tot het went' }
+        ],
+        uitleg: 'Behandeling richt zich op begeleiding, psycho-educatie en comorbiditeit (angst, somberheid, overprikkeling). De omgeving aanpassen levert vaak meer op dan de persoon willen veranderen.' }
+    ]
+},
+{
+    id: 'lvb', titel: 'LVB herkennen', sub: 'De onzichtbare beperking in de spreekkamer',
+    les: 'Verdieping: gespreksvoering en materialen voor LVB, en hoe je overvraging in de militaire werkomgeving signaleert en bespreekt.',
+    items: [
+    { t: 'leer', kop: 'Wat is LVB?', html: `
+        <p>Een <strong>licht verstandelijke beperking</strong>: IQ indicatief tussen 50 en 70, m&eacute;t beperkingen in het adaptief functioneren, ontstaan in de ontwikkelingsperiode. In de Nederlandse praktijk wordt ook <strong>zwakbegaafdheid</strong> (IQ 70&ndash;85) met beperkt aanpassingsvermogen tot de LVB-doelgroep gerekend. Sinds de DSM-5 is niet het IQ-getal maar het <strong>adaptief functioneren</strong> leidend: wat kan iemand aan in het dagelijks leven?</p>
+        <p>Herkenning is lastig: mensen met LVB zien er niet anders uit, hebben vaak leren verbergen wat ze niet begrijpen, en zeggen sociaal wenselijk &ldquo;ja&rdquo;. Signalen in de spreekkamer:</p>
+        <ul>
+            <li>moeite met klok, geld, formulieren en afspraken (vaak te laat of vergeten);</li>
+            <li>instructies en bijsluiters niet kunnen navertellen; therapie&ldquo;ontrouw&rdquo;;</li>
+            <li>een levensverhaal met praktijkonderwijs of speciaal onderwijs, schulden, wisselend werk;</li>
+            <li>overvraging: telkens vastlopen als taken complexer worden.</li>
+        </ul>
+        <p class="zacht">Praktisch: korte zinnen, &eacute;&eacute;n boodschap tegelijk, concreet, laten terugvertellen (terugvraagmethode), en steunstructuur betrekken. Vraag naar school: &ldquo;welke school heb je gedaan?&rdquo; zegt vaak meer dan tien andere vragen.</p>` },
+    { t: 'mc', toets: true, vraag: 'Wat is sinds de DSM-5 leidend bij het vaststellen van een verstandelijke beperking?',
+        opties: [
+            { tekst: 'Het adaptief functioneren: wat iemand in het dagelijks leven aankan, naast een indicatief IQ', goed: true },
+            { tekst: 'Uitsluitend het IQ-getal' },
+            { tekst: 'Het opleidingsniveau van de ouders' },
+            { tekst: 'De score op een screeningsvragenlijst' }
+        ],
+        uitleg: 'Het IQ is indicatief (LVB circa 50&ndash;70, met de zwakbegaafde groep 70&ndash;85 in de doelgroep), maar het dagelijks aanpassingsvermogen bepaalt de ernst en de ondersteuningsbehoefte.' },
+    { t: 'meer', toets: true, vraag: 'Welke signalen in de spreekkamer passen bij een mogelijk niet-herkende LVB? Selecteer alles wat klopt.',
+        opties: [
+            { tekst: 'Instructies niet kunnen navertellen en afspraken vergeten', goed: true },
+            { tekst: 'Sociaal wenselijk &ldquo;ja&rdquo; zeggen zonder het begrepen te hebben', goed: true },
+            { tekst: 'Moeite met formulieren, geld en plannen', goed: true },
+            { tekst: 'Een schoolloopbaan met praktijkonderwijs of speciaal onderwijs', goed: true },
+            { tekst: 'Een uitzonderlijk grote woordenschat' },
+            { tekst: 'Het zelf benoemen van de beperking bij het eerste consult' }
+        ],
+        uitleg: 'Mensen met LVB melden het vrijwel nooit zelf en camoufleren goed. Wie er niet actief aan denkt, mist het, en noemt het gedrag dan al snel ongemotiveerd of therapieontrouw.' },
+    { t: 'mc', toets: true, vraag: 'Wat is de terugvraagmethode?',
+        opties: [
+            { tekst: 'De pati&euml;nt in eigen woorden laten vertellen wat er is besproken en afgesproken, om te toetsen of het is overgekomen', goed: true },
+            { tekst: 'De pati&euml;nt na een week terugbellen met dezelfde vragen' },
+            { tekst: 'Een vragenlijst die het IQ schat' },
+            { tekst: 'De familie vragen of de pati&euml;nt het begrepen heeft' }
+        ],
+        uitleg: 'Niet &ldquo;heeft u het begrepen?&rdquo; (daar komt altijd &ldquo;ja&rdquo; op), maar: &ldquo;vertel eens, wat gaat u thuis doen?&rdquo; Werkt bij iedereen, en is onmisbaar bij LVB.' },
+    { t: 'mc', vraag: 'Een militair loopt telkens vast zodra taken complexer worden, vergeet afspraken en heeft schulden. Wat hoort in je differentiaal?',
+        opties: [
+            { tekst: 'Ook een niet-herkende LVB of zwakbegaafdheid: vraag naar de schoolloopbaan en toets het begrip', goed: true },
+            { tekst: 'Alleen werkstress; verstandelijke beperkingen komen bij militairen niet voor' },
+            { tekst: 'Een persoonlijkheidsstoornis, want het patroon is chronisch' },
+            { tekst: 'Simulatie' }
+        ],
+        uitleg: 'Ook binnen een gekeurde populatie komt de zwakbegaafde range voor. Overvraging uit zich vaak als &ldquo;gedragsprobleem&rdquo;; de vraag naar school en het laten terugvertellen kosten samen twee minuten.' }
+    ]
+},
+{
+    id: 'persoonlijkheid', titel: 'Persoonlijkheidsstoornissen', sub: 'Het algemene criterium en de drie clusters',
+    les: 'Verdieping: bejegening en de eigen tegenoverdracht, met casu&iuml;stiek van de specialist over borderline en de militaire werkcontext.',
+    items: [
+    { t: 'leer', kop: 'Wanneer is stijl een stoornis?', html: `
+        <p>Het algemene criterium: een <strong>duurzaam</strong>, star patroon van innerlijke ervaring en gedrag dat duidelijk afwijkt van wat de cultuur verwacht, <strong>pervasief</strong> is (in veel situaties), begint in de <strong>adolescentie of vroege volwassenheid</strong>, stabiel is en leidt tot <strong>lijdensdruk of disfunctioneren</strong>. Drie clusters:</p>
+        <table class="mini">
+            <tr><td>Cluster A</td><td>&ldquo;Vreemd, excentriek&rdquo;: parano&iuml;de, schizo&iuml;de, schizotypisch</td></tr>
+            <tr><td>Cluster B</td><td>&ldquo;Dramatisch, impulsief&rdquo;: antisociaal, borderline, histrionisch, narcistisch</td></tr>
+            <tr><td>Cluster C</td><td>&ldquo;Angstig, vermijdend&rdquo;: vermijdend, afhankelijk, dwangmatig</td></tr>
+        </table>
+        <p><strong>Borderline</strong> herken je aan instabiliteit op drie fronten: relaties (idealiseren en devalueren), zelfbeeld en emoties, met impulsiviteit, verlatingsangst en vaak zelfbeschadiging of chronische su&iuml;cidaliteit.</p>
+        <p class="zacht">Voor de eerste lijn telt vooral: het patroon herk&eacute;nnen (ook in de arts-pati&euml;ntrelatie: sterke wisselingen in hoe je wordt bejegend zijn informatie), consistent en begrensd blijven, en niet elke crisis als nieuwe stoornis classificeren.</p>` },
+    { t: 'mc', toets: true, vraag: 'Wat maakt een persoonlijkheidskenmerk tot een persoonlijkheidsstoornis?',
+        opties: [
+            { tekst: 'Een duurzaam, star en pervasief patroon vanaf de adolescentie, met lijdensdruk of disfunctioneren', goed: true },
+            { tekst: 'Elk opvallend karakter dat anderen lastig vinden' },
+            { tekst: 'E&eacute;n heftige crisis met impulsief gedrag' },
+            { tekst: 'Een afwijkende uitslag op een persoonlijkheidstest' }
+        ],
+        uitleg: 'Duurzaam, star, pervasief, vroeg begonnen, met lijden of disfunctioneren. E&eacute;n episode of gedrag in &eacute;&eacute;n context is g&eacute;&eacute;n persoonlijkheidsstoornis.' },
+    { t: 'koppel', toets: true, vraag: 'Koppel het cluster aan de typering en voorbeelden.',
+        paren: [
+            ['Cluster A', 'Vreemd en excentriek: parano&iuml;de, schizo&iuml;de, schizotypisch'],
+            ['Cluster B', 'Dramatisch en impulsief: antisociaal, borderline, histrionisch, narcistisch'],
+            ['Cluster C', 'Angstig en vermijdend: vermijdend, afhankelijk, dwangmatig']
+        ],
+        uitleg: 'A vreemd, B dramatisch, C angstig. De clusterindeling is grof, maar handig als eerste ordening in de eerste lijn.' },
+    { t: 'mc', toets: true, vraag: 'Welk beeld past het best bij een borderline-persoonlijkheidsstoornis?',
+        opties: [
+            { tekst: 'Instabiele relaties (idealiseren en devalueren), wisselend zelfbeeld en sterke stemmingswisselingen, met impulsiviteit en verlatingsangst', goed: true },
+            { tekst: 'Levenslange voorkeur voor alleen zijn zonder lijdensdruk' },
+            { tekst: 'Perfectionisme en starheid in regels en lijstjes' },
+            { tekst: 'Grootheidsgevoelens en behoefte aan bewondering' }
+        ],
+        uitleg: 'Instabiliteit is het kernwoord: in relaties, zelfbeeld en affect. Alleen-zijn zonder lijden past bij schizo&iuml;de trekken, perfectionisme bij dwangmatig, bewondering bij narcistisch.' },
+    { t: 'mc', vraag: 'Een pati&euml;nt vindt je het ene consult geweldig en het volgende consult waardeloos, en vraagt steeds meer uitzonderingen. Wat is verstandig?',
+        opties: [
+            { tekst: 'Het patroon herkennen als informatie, consistent en vriendelijk begrensd blijven, en continu&iuml;teit van &eacute;&eacute;n behandelaar organiseren', goed: true },
+            { tekst: 'Meebewegen met elke wens om escalatie te voorkomen' },
+            { tekst: 'Het contact overdragen zodra het lastig wordt' },
+            { tekst: 'De pati&euml;nt confronteren met de vermoedelijke classificatie' }
+        ],
+        uitleg: 'Splitting en wisselende bejegening zijn geen persoonlijke aanval maar deel van het patroon. Structuur, voorspelbaarheid en &eacute;&eacute;n lijn in het team zijn de behandeling in het klein.' }
+    ]
+},
+{
+    id: 'verwijzen', titel: 'Verwijzen en rode vlaggen', sub: 'Wanneer, waarheen en met welke informatie',
+    les: 'De les hierna: de specialist over wat de MGGZ met je verwijzing doet, en gezamenlijke casu&iuml;stiek over twijfelgevallen.',
+    items: [
+    { t: 'leer', kop: 'Matched care en de rode vlaggen', html: `
+        <p>Vuistregels voor de keuze:</p>
+        <ul>
+            <li><strong>Huisarts/AMA + POH-GGZ</strong>: klachten zonder stoornis, lichte problematiek, begeleiding en KOP-trajecten;</li>
+            <li><strong>Basis-GGZ</strong>: lichte tot matige, niet-complexe stoornis;</li>
+            <li><strong>Gespecialiseerde GGZ / MGGZ</strong>: complex, ernstig, comorbide of risicovol &mdash; en uitzendgerelateerde problematiek.</li>
+        </ul>
+        <p><strong>Direct opschalen (rode vlaggen)</strong>: acute su&iuml;cidaliteit met plan of voorbereiding; psychotische symptomen; (hypo)manie; ernstige verwaarlozing; gevaar voor anderen; ernstige comorbide verslaving. Bij acuut gevaar: crisisdienst.</p>
+        <p>Het landelijke verwijsmodel weegt vijf criteria: <strong>(vermoeden van een) DSM-stoornis, ernst, risico, complexiteit en beloop</strong>. Vuistregel voor de basis-GGZ is ook: uitblijvende verbetering na zo&rsquo;n twee maanden behandeling in de huisartsenpraktijk. Op de verwijzing hoort te staan naar welk echelon je verwijst (basis- of gespecialiseerde GGZ).</p>
+        <p>Een goede verwijsbrief bevat verder: de klachten en het beloop, je (vermoedelijke) DSM-classificatie, wat al is geprobeerd en met welk effect, relevante somatiek en medicatie, middelengebruik, risico-inschatting en de concrete vraag. In de militaire context ook: relatie met inzet of uitzending en gevolgen voor de inzetbaarheid &mdash; maar richting <strong>commandant</strong> blijft gelden: alleen beperkingen, nooit de diagnose.</p>` },
+    { t: 'meer', toets: true, vraag: 'Welke criteria wegen mee in het landelijke verwijsmodel voor de GGZ? Selecteer alles wat klopt.',
+        opties: [
+            { tekst: '(Vermoeden van een) DSM-stoornis', goed: true },
+            { tekst: 'Ernst van de problematiek', goed: true },
+            { tekst: 'Risico', goed: true },
+            { tekst: 'Complexiteit', goed: true },
+            { tekst: 'Beloop van de klachten', goed: true },
+            { tekst: 'De wachttijd bij de dichtstbijzijnde instelling' }
+        ],
+        uitleg: 'Vijf inhoudelijke criteria. Hoog risico of hoge complexiteit wijst richting gespecialiseerde GGZ, ook als de rest meevalt; wachttijden zijn een praktisch gegeven, geen indicatiecriterium.' },
+    { t: 'meer', toets: true, vraag: 'Welke bevindingen zijn reden om direct op te schalen naar gespecialiseerde zorg of de crisisdienst? Selecteer alles wat klopt.',
+        opties: [
+            { tekst: 'Su&iuml;cidaliteit met een concreet plan of voorbereidingen', goed: true },
+            { tekst: 'Psychotische symptomen', goed: true },
+            { tekst: 'Een (hypo)mane episode', goed: true },
+            { tekst: 'Gevaar voor anderen', goed: true },
+            { tekst: 'Twee weken somberheid na een teleurstelling, zonder risico' },
+            { tekst: 'Examenspanning bij een verder gezonde militair' }
+        ],
+        uitleg: 'De rode vlaggen rechtvaardigen het overslaan van stappen in de keten. De laatste twee horen juist bij de eerste lijn of bij normaliseren.' },
+    { t: 'mc', toets: true, vraag: 'Wat hoort er minimaal in een GGZ-verwijsbrief?',
+        opties: [
+            { tekst: 'Klachten en beloop, (vermoedelijke) classificatie, wat al geprobeerd is, somatiek en medicatie, middelengebruik, risico-inschatting en de concrete vraag', goed: true },
+            { tekst: 'Alleen de zin &ldquo;gaarne uw onderzoek en behandeling&rdquo;' },
+            { tekst: 'Het volledige medische dossier vanaf de geboorte' },
+            { tekst: 'Een ingevulde vragenlijst volstaat' }
+        ],
+        uitleg: 'De verwijsbrief bepaalt de triage aan de andere kant. Vermoeden van een DSM-stoornis is formeel nodig voor GGZ-verwijzing.' },
+    { t: 'mc', toets: true, vraag: 'Een militair heeft na een uitzending een vermoedelijke PTSS. De commandant vraagt wat er speelt. Wat deel je?',
+        opties: [
+            { tekst: 'Alleen de gevolgen voor de inzetbaarheid en de beperkingen, niet de diagnose; die blijft binnen het zorgteam', goed: true },
+            { tekst: 'De diagnose PTSS, want die is uitzendgerelateerd en dus dienstbelang' },
+            { tekst: 'Niets, ook geen inzetbaarheidsadvies' },
+            { tekst: 'Alles, mits de commandant om geheimhouding wordt gevraagd' }
+        ],
+        uitleg: 'Dezelfde regel als altijd (zie ook de module sociale geneeskunde): het inzetbaarheidsadvies gaat door, de aard van de aandoening niet. Juist bij psychische problematiek beschermt dit de bereidheid om hulp te zoeken.' },
+    { t: 'mc', vraag: 'Waarom is drempelverlaging extra belangrijk bij psychische klachten van militairen?',
+        opties: [
+            { tekst: 'Angst voor gevolgen voor carri&egrave;re en uitzendbaarheid maakt dat klachten laat gemeld worden; vertrouwelijkheid en normaliseren verlagen die drempel', goed: true },
+            { tekst: 'Militairen hebben vaker psychische stoornissen dan burgers' },
+            { tekst: 'Omdat de MGGZ lange wachtlijsten heeft' },
+            { tekst: 'Dat is niet belangrijk; de meldplicht regelt het al' }
+        ],
+        uitleg: 'Zorgmijding uit carri&egrave;revrees is een re&euml;el fenomeen. Leg uit wat w&eacute;l en niet bij de commandant terechtkomt; dat is vaak de sleutel tot op tijd hulp zoeken.' }
+    ]
+},
+{
+    id: 'casus', titel: 'Casu&iuml;stiek-trainer', sub: 'Zes vignetten uit de eerste lijn',
+    les: 'Neem je twijfels uit deze vignetten mee: de verdiepende casu&iuml;stiek in de les begint waar deze ophoudt.',
+    items: [
+    { t: 'leer', kop: 'Herken het patroon', html: `
+        <p>Zes korte vignetten. Kies telkens de beste eerste stap of duiding. De terugkerende vragen: <em>is dit een stoornis of een reactie? Welke plek in de keten past? En wat mag w&eacute;l en niet gedeeld worden?</em></p>` },
+    { t: 'mc', vraag: 'Een korporaal is sinds een maand somber, geniet nergens meer van, slaapt slecht, eet slecht, voelt zich waardeloos en functioneert niet op het werk. Beste duiding?',
+        opties: [
+            { tekst: 'Een depressieve episode is waarschijnlijk: kernsymptomen plus meerdere overige symptomen, langer dan twee weken, met disfunctioneren; su&iuml;cidaliteit uitvragen', goed: true },
+            { tekst: 'Een aanpassingsstoornis; even aankijken' },
+            { tekst: 'Een burn-out; twee weken rust voorschrijven' },
+            { tekst: 'Normale dip; terugkomen bij verergering' }
+        ],
+        uitleg: 'Tel na: twee kernsymptomen, waardeloosheid, slaap- en eetproblemen, vier weken, disfunctioneren. Su&iuml;cidaliteit hoort er bij deze presentatie standaard bij, inclusief de vraag naar wapentoegang.' },
+    { t: 'mc', vraag: 'Een sergeant heeft sinds een oefening met een ernstig ongeval (vier maanden geleden) nachtmerries, vermijdt de oefenlocatie, is schrikachtig en voelt zich schuldig. Beste stap?',
+        opties: [
+            { tekst: 'Vermoeden PTSS: verwijzen naar de gespecialiseerde (militaire) GGZ, met risico-inschatting en concrete vraag in de verwijzing', goed: true },
+            { tekst: 'KOP-traject bij de POH-GGZ' },
+            { tekst: 'Afwachten; dit dooft vanzelf uit' },
+            { tekst: 'Een benzodiazepine voor de nacht en over drie maanden terugzien' }
+        ],
+        uitleg: 'Alle clusters aanwezig en langer dan een maand: dit is geen acute stressreactie meer. Uitzendgerelateerde en dienstgerelateerde traumaproblematiek is bij uitstek MGGZ-terrein; benzodiazepinen zijn hier geen behandeling.' },
+    { t: 'mc', vraag: 'Een militair vraagt een ADHD-test omdat hij zich sinds de geboorte van zijn kind niet kan concentreren. School ging vroeger prima. Beste eerste stap?',
+        opties: [
+            { tekst: 'Breder kijken: slaap, stemming, stress en omstandigheden; het levenslange patroon van ADHD ontbreekt', goed: true },
+            { tekst: 'Direct verwijzen voor ADHD-diagnostiek' },
+            { tekst: 'Een proefbehandeling methylfenidaat starten' },
+            { tekst: 'De ADHD-checklist invullen; die stelt de diagnose' }
+        ],
+        uitleg: 'Jonge kinderen thuis is een krachtige verklaring voor concentratieverlies. Het criterium &ldquo;symptomen v&oacute;&oacute;r het twaalfde jaar&rdquo; ontbreekt; eerst K, O en P in kaart.' },
+    { t: 'mc', vraag: 'Een monteur zegt op alles &ldquo;ja&rdquo;, komt afspraken niet na, kan de uitleg over zijn medicatie niet navertellen en deed vroeger praktijkonderwijs. Wat is de beste duiding?',
+        opties: [
+            { tekst: 'Denk aan LVB of zwakbegaafdheid: pas je communicatie aan, gebruik de terugvraagmethode en betrek zo nodig ondersteuning', goed: true },
+            { tekst: 'Therapieontrouw: een waarschuwing noteren' },
+            { tekst: 'Een vermijdende persoonlijkheidsstoornis' },
+            { tekst: 'Desinteresse; ontslag uit zorg' }
+        ],
+        uitleg: 'Alle klassieke signalen op een rij. Wat op onwil lijkt, is vaak onvermogen; het gedrag verandert pas als de communicatie verandert.' },
+    { t: 'mc', vraag: 'Een militair met terugkerende conflicten idealiseert de nieuwe arts (&ldquo;eindelijk iemand die me begrijpt&rdquo;) en eist na twee weken een andere behandelaar. Er is een patroon van instabiele relaties sinds de puberteit. Beste opstelling?',
+        opties: [
+            { tekst: 'Herken het patroon (denk aan cluster B), blijf consistent en begrensd, houd &eacute;&eacute;n behandellijn aan en beoordeel of specialistische diagnostiek nodig is', goed: true },
+            { tekst: 'Wisselen van behandelaar; de klik is essentieel' },
+            { tekst: 'Direct de classificatie borderline meedelen' },
+            { tekst: 'Het contact be&euml;indigen wegens claimend gedrag' }
+        ],
+        uitleg: 'Meebuigen met elk verzoek bevestigt de instabiliteit; afwijzen ook. Structuur en &eacute;&eacute;n lijn zijn de interventie, en het duurzame patroon (niet de crisis) rechtvaardigt diagnostiek.' },
+    { t: 'mc', vraag: 'Een majoor piekert al maanden over werk, gezondheid en geld, is gespannen en slaapt slecht, maar functioneert redelijk. Geen stoornis-vermoeden op andere assen. Beste plek in de keten?',
+        opties: [
+            { tekst: 'Start in de eigen praktijk: exploratie (SCEGS waar somatische klachten spelen) en een KOP-traject bij de POH-GGZ; opschalen als het beeld een stoornis wordt', goed: true },
+            { tekst: 'Direct de MGGZ, want het duurt al maanden' },
+            { tekst: 'Een benzodiazepine tegen het piekeren' },
+            { tekst: 'Niets; piekeren is normaal' }
+        ],
+        uitleg: 'Dit kan zich richting GAS ontwikkelen, maar begint als begeleidbare spanningsproblematiek. Matched care: licht beginnen, criteria en beloop bewaken, en opschalen op indicatie.' }
+    ]
+}
+];
+
+const ZELFTEST = {
+    id: 'zelftest', titel: 'Zelftest zonder opties',
+    sub: 'Formuleer eerst zelf het antwoord, beoordeel dan jezelf',
+    items: [
+        { t: 'flits', vraag: 'Noem de vier bouwstenen die in vrijwel elke DSM-classificatie terugkomen.',
+          antwoord: 'Een minimum aantal symptomen, een minimale duur, lijdensdruk of disfunctioneren, en uitsluiting van middelen, somatiek of een andere stoornis die het beeld beter verklaart.' },
+        { t: 'flits', vraag: 'Geef de criteria van de depressieve episode in het kort.',
+          antwoord: 'Ten minste vijf van negen symptomen gedurende minstens twee weken, vrijwel dagelijks, met minimaal &eacute;&eacute;n kernsymptoom (sombere stemming of verlies van interesse/plezier), met lijdensdruk of disfunctioneren en zonder betere verklaring door middelen of somatiek.' },
+        { t: 'flits', vraag: 'Noem de vier symptoomclusters van PTSS en de minimale duur.',
+          antwoord: 'Herbeleving, vermijding, negatieve veranderingen in cognities en stemming, en verhoogde prikkelbaarheid/arousal; langer dan een maand na een traumatische gebeurtenis (criterium A). Korter: acute stressstoornis.' },
+        { t: 'flits', vraag: 'Wat zijn de ADHD-criteria voor een volwassene?',
+          antwoord: 'Ten minste vijf symptomen van onoplettendheid en/of hyperactiviteit-impulsiviteit, meerdere symptomen al v&oacute;&oacute;r het twaalfde jaar, aanwezig in twee of meer settings, met duidelijk disfunctioneren.' },
+        { t: 'flits', vraag: 'Waar staan SCEGS en KOP voor, en waarvoor gebruik je ze?',
+          antwoord: 'SCEGS: somatisch, cognitief, emotioneel, gedragsmatig, sociaal; het NHG-model om een (aanhoudende lichamelijke) klacht breed te exploreren. KOP: Klachten = Omstandigheden &times; Persoonlijke stijl; het werkmodel voor kortdurende generalistische behandeling, veel gebruikt door de POH-GGZ.' },
+        { t: 'flits', vraag: 'Noem de drie clusters persoonlijkheidsstoornissen met hun typering.',
+          antwoord: 'Cluster A: vreemd/excentriek (parano&iuml;de, schizo&iuml;de, schizotypisch). Cluster B: dramatisch/impulsief (antisociaal, borderline, histrionisch, narcistisch). Cluster C: angstig/vermijdend (vermijdend, afhankelijk, dwangmatig).' },
+        { t: 'flits', vraag: 'Welke rode vlaggen rechtvaardigen direct opschalen naar gespecialiseerde zorg of de crisisdienst?',
+          antwoord: 'Acute su&iuml;cidaliteit met plan of voorbereiding, psychotische symptomen, (hypo)manie, ernstige verwaarlozing, gevaar voor anderen, ernstige comorbide verslaving.' },
+        { t: 'flits', vraag: 'Beschrijf de GGZ-keten van laagdrempelig naar gespecialiseerd, inclusief de defensievarianten.',
+          antwoord: 'Voorliggend: bedrijfsmaatschappelijk werk en geestelijk verzorger. Dan huisarts/AMA met POH-GGZ (vraagverheldering, begeleiding, KOP). Dan generalistische basis-GGZ voor lichte tot matige stoornissen. Dan gespecialiseerde GGZ; binnen Defensie de MGGZ, met expertise in uitzendgerelateerde problematiek. Verwijzen vereist (vermoeden van) een DSM-classificatie.' }
+    ]
+};
+
+/* ---------------- app-status ---------------- */
+
+const app = document.getElementById('app');
+let sessie = null; // { moduleId, titel, wachtrij, idx, goedEersteKeer, totaalVragen, fouten: [vraagtekst] }
+
+function isVraag(item) { return item.t !== 'leer'; }
+
+/* ---------------- overzicht ---------------- */
+
+function toonOverzicht() {
+    sessie = null;
+    const v = laadVoortgang();
+    const klaar = MODULES.filter(m => v[m.id] && v[m.id].af).length;
+    const pct = Math.round(100 * klaar / MODULES.length);
+
+    let html = `
+    <div class="intro-note">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        <div>Deze e-learning herhaalt de basisarts-kennis, zodat de les de diepte in kan. Korte uitleg, direct oefenen, fouten komen dezelfde sessie terug, en elke module eindigt met wat de les eraan toevoegt. Sluit af met de gemengde eindtoets.</div>
+    </div>
+    <div class="card" style="padding:14px 18px;">
+        <div style="display:flex; justify-content:space-between; font-size:0.82rem;">
+            <span style="font-weight:600;">Voortgang</span>
+            <span class="mono" style="color:var(--tekst-2);">${klaar}/${MODULES.length} modules</span>
+        </div>
+        <div class="voortgang-balkje"><div style="width:${pct}%"></div></div>
+    </div>
+    <div class="mod-lijst">`;
+
+    MODULES.forEach((m, i) => {
+        const st = v[m.id];
+        const af = st && st.af;
+        const score = st && st.score != null ? `${st.score}%` : '';
+        html += `
+        <button class="mod-item ${af ? 'af' : ''}" data-mod="${m.id}">
+            <span class="mod-nr">${af ? '&#10003;' : i + 1}</span>
+            <span><span class="mod-titel">${m.titel}</span><br><span class="mod-sub">${m.sub}</span></span>
+            <span class="mod-score">${score}</span>
+        </button>`;
+    });
+
+    const zt = v['zelftest'];
+    const et = v['eindtoets'];
+    html += `
+        <button class="mod-item special ${zt && zt.af ? 'af' : ''}" data-mod="zelftest">
+            <span class="mod-nr">?</span>
+            <span><span class="mod-titel">Zelftest zonder opties</span><br><span class="mod-sub">Acht open vragen; kun je deze, dan zit de module goed</span></span>
+            <span class="mod-score">${zt && zt.score != null ? zt.score + '%' : ''}</span>
+        </button>
+        <button class="mod-item special ${et && et.af ? 'af' : ''}" data-mod="eindtoets">
+            <span class="mod-nr">&#9733;</span>
+            <span><span class="mod-titel">Eindtoets</span><br><span class="mod-sub">Twaalf vragen uit alle modules, door elkaar</span></span>
+            <span class="mod-score">${et && et.score != null ? et.score + '%' : ''}</span>
+        </button>
+    </div>`;
+
+    app.innerHTML = html;
+    app.querySelectorAll('.mod-item').forEach(b => {
+        b.addEventListener('click', () => startModule(b.dataset.mod));
+    });
+}
+
+/* ---------------- sessie ---------------- */
+
+function startModule(id) {
+    let titel, items;
+    if (id === 'zelftest') {
+        titel = ZELFTEST.titel;
+        items = ZELFTEST.items.slice();
+    } else if (id === 'eindtoets') {
+        titel = 'Eindtoets';
+        const pool = [];
+        MODULES.forEach(m => m.items.forEach(it => { if (it.toets) pool.push({ ...it, bron: m.titel }); }));
+        items = schud(pool).slice(0, 12);
+    } else {
+        const m = MODULES.find(x => x.id === id);
+        titel = m.titel;
+        items = m.items.slice();
+    }
+    sessie = {
+        moduleId: id, titel,
+        wachtrij: items.map(it => ({ ...it })),
+        idx: 0,
+        goed: 0,
+        totaalVragen: items.filter(isVraag).length,
+        fouten: []
+    };
+    toonItem();
+}
+
+function balkHtml() {
+    const s = sessie;
+    const pct = Math.round(100 * s.idx / s.wachtrij.length);
+    return `
+    <div class="oefen-top">
+        <button class="stop" id="stop-knop">Stoppen</button>
+        <div class="balk"><div style="width:${pct}%"></div></div>
+        <span class="mono" style="font-size:0.76rem; color:var(--tekst-2);">${Math.min(s.idx + 1, s.wachtrij.length)}/${s.wachtrij.length}</span>
+    </div>`;
+}
+
+function koppelStop() {
+    document.getElementById('stop-knop').addEventListener('click', () => {
+        if (confirm('Stoppen? De voortgang van deze module wordt niet opgeslagen.')) toonOverzicht();
+    });
+}
+
+function labelVoor(item) {
+    if (item.herhaling) return '<span class="item-label herhaal">Herhaling</span>';
+    const namen = { leer: 'Leren', mc: 'Kies het juiste antwoord', meer: 'Selecteer alles wat klopt', volgorde: 'Zet in de juiste volgorde', koppel: 'Koppel de paren', sorteer: 'Sorteer', flits: 'Formuleer zelf het antwoord' };
+    return `<span class="item-label">${namen[item.t] || ''}</span>`;
+}
+
+function toonItem() {
+    const s = sessie;
+    if (s.idx >= s.wachtrij.length) { toonKlaar(); return; }
+    const item = s.wachtrij[s.idx];
+    const render = { leer: renderLeer, mc: renderMc, meer: renderMeer, volgorde: renderVolgorde, koppel: renderKoppel, sorteer: renderSorteer, flits: renderFlits }[item.t];
+    app.innerHTML = balkHtml() + '<div class="item-kaart" id="kaart"></div>';
+    koppelStop();
+    render(item, document.getElementById('kaart'));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function registreer(item, wasGoed) {
+    const s = sessie;
+    if (isVraag(item) && !item.herhaling) {
+        if (wasGoed) s.goed++;
+        else {
+            s.fouten.push(item.vraag);
+            s.wachtrij.push({ ...item, herhaling: true });
+        }
+    }
+}
+
+function verderKnop(kaart) {
+    const rij = document.createElement('div');
+    rij.className = 'knop-rij';
+    const k = document.createElement('button');
+    k.className = 'knop';
+    k.textContent = 'Verder';
+    k.addEventListener('click', () => { sessie.idx++; toonItem(); });
+    rij.appendChild(k);
+    kaart.appendChild(rij);
+    k.focus();
+}
+
+function feedbackBlok(kaart, ok, uitleg) {
+    const f = document.createElement('div');
+    f.className = 'feedback ' + (ok ? 'ok' : 'nee');
+    f.innerHTML = `<div class="kop">${ok ? 'Goed!' : 'Niet helemaal.'}</div>${uitleg || ''}`;
+    kaart.appendChild(f);
+}
+
+/* ---------------- renderers ---------------- */
+
+function renderLeer(item, kaart) {
+    kaart.innerHTML = `${labelVoor(item)}<h3 style="font-family:'Playfair Display',serif; font-size:1.15rem; margin-bottom:10px;">${item.kop}</h3>${item.html}`;
+    verderKnop(kaart);
+}
+
+function renderMc(item, kaart) {
+    kaart.innerHTML = `${labelVoor(item)}<div class="vraag-tekst">${item.vraag}</div>`;
+    const houder = document.createElement('div');
+    houder.className = 'opties';
+    kaart.appendChild(houder);
+    const opties = schud(item.opties);
+    opties.forEach(o => {
+        const b = document.createElement('button');
+        b.className = 'optie';
+        b.innerHTML = o.tekst;
+        b.addEventListener('click', () => {
+            houder.querySelectorAll('.optie').forEach(x => x.disabled = true);
+            const ok = !!o.goed;
+            houder.querySelectorAll('.optie').forEach((x, i) => {
+                if (opties[i].goed) x.classList.add(ok ? 'goed' : 'gemist');
+            });
+            if (!ok) b.classList.add('fout');
+            else b.classList.add('goed');
+            registreer(item, ok);
+            feedbackBlok(kaart, ok, item.uitleg);
+            verderKnop(kaart);
+        });
+        houder.appendChild(b);
+    });
+}
+
+function renderMeer(item, kaart) {
+    kaart.innerHTML = `${labelVoor(item)}<div class="vraag-tekst">${item.vraag}</div>`;
+    const houder = document.createElement('div');
+    houder.className = 'opties';
+    kaart.appendChild(houder);
+    const opties = schud(item.opties);
+    const gekozen = new Set();
+    opties.forEach((o, i) => {
+        const b = document.createElement('button');
+        b.className = 'optie';
+        b.innerHTML = o.tekst;
+        b.addEventListener('click', () => {
+            if (b.disabled) return;
+            if (gekozen.has(i)) { gekozen.delete(i); b.classList.remove('gekozen'); }
+            else { gekozen.add(i); b.classList.add('gekozen'); }
+        });
+        houder.appendChild(b);
+    });
+    const rij = document.createElement('div');
+    rij.className = 'knop-rij';
+    const check = document.createElement('button');
+    check.className = 'knop';
+    check.textContent = 'Controleer';
+    check.addEventListener('click', () => {
+        if (gekozen.size === 0) return;
+        let ok = true;
+        houder.querySelectorAll('.optie').forEach((b, i) => {
+            b.disabled = true;
+            b.classList.remove('gekozen');
+            const moet = !!opties[i].goed, koos = gekozen.has(i);
+            if (moet && koos) b.classList.add('goed');
+            else if (moet && !koos) { b.classList.add('gemist'); ok = false; }
+            else if (!moet && koos) { b.classList.add('fout'); ok = false; }
+        });
+        rij.remove();
+        registreer(item, ok);
+        feedbackBlok(kaart, ok, item.uitleg);
+        verderKnop(kaart);
+    });
+    rij.appendChild(check);
+    kaart.appendChild(rij);
+}
+
+function renderVolgorde(item, kaart) {
+    kaart.innerHTML = `${labelVoor(item)}<div class="vraag-tekst">${item.vraag}</div>
+        <div class="volg-lijst" id="volg-lijst"></div>
+        <p class="zacht" style="margin-bottom:8px;">Tik de onderdelen aan in de juiste volgorde. Tik een geplaatst onderdeel aan om het terug te leggen.</p>
+        <div class="chips" id="volg-chips"></div>`;
+    const lijst = kaart.querySelector('#volg-lijst');
+    const chipsDiv = kaart.querySelector('#volg-chips');
+    const bron = schud(item.items.map((tekst, i) => ({ tekst, i })));
+    let keuze = [];
+    let klaar = false;
+
+    const rij = document.createElement('div');
+    rij.className = 'knop-rij';
+    const check = document.createElement('button');
+    check.className = 'knop';
+    check.textContent = 'Controleer';
+    check.disabled = true;
+    rij.appendChild(check);
+    kaart.appendChild(rij);
+
+    function teken() {
+        lijst.innerHTML = '';
+        keuze.forEach((k, pos) => {
+            const r = document.createElement('div');
+            r.className = 'volg-rij';
+            r.innerHTML = `<span class="nr">${pos + 1}</span><span>${k.tekst}</span>`;
+            if (!klaar) r.addEventListener('click', () => { keuze.splice(pos, 1); teken(); });
+            lijst.appendChild(r);
+        });
+        chipsDiv.innerHTML = '';
+        bron.forEach(k => {
+            if (keuze.includes(k)) return;
+            const c = document.createElement('button');
+            c.className = 'chip';
+            c.innerHTML = k.tekst;
+            c.addEventListener('click', () => { keuze.push(k); teken(); });
+            chipsDiv.appendChild(c);
+        });
+        check.disabled = keuze.length !== item.items.length;
+    }
+    teken();
+
+    check.addEventListener('click', () => {
+        klaar = true;
+        let ok = true;
+        lijst.querySelectorAll('.volg-rij').forEach((r, pos) => {
+            const juist = keuze[pos].i === pos;
+            r.classList.add(juist ? 'goed' : 'fout');
+            if (!juist) ok = false;
+        });
+        chipsDiv.remove();
+        rij.remove();
+        registreer(item, ok);
+        const extra = ok ? '' : `<br><br><strong>Juiste volgorde:</strong><ol style="margin:6px 0 0 20px;">${item.items.map(t => `<li>${t}</li>`).join('')}</ol>`;
+        feedbackBlok(kaart, ok, (item.uitleg || '') + extra);
+        verderKnop(kaart);
+    });
+}
+
+function renderKoppel(item, kaart) {
+    kaart.innerHTML = `${labelVoor(item)}<div class="vraag-tekst">${item.vraag}</div>
+        <div class="koppel-kolommen"><div id="kop-links"></div><div id="kop-rechts"></div></div>`;
+    const linksDiv = kaart.querySelector('#kop-links');
+    const rechtsDiv = kaart.querySelector('#kop-rechts');
+    linksDiv.parentElement.classList.add('koppel-kolommen');
+    linksDiv.classList.add('koppel-links');
+
+    const links = item.paren.map((p, i) => ({ tekst: p[0], i }));
+    const rechts = schud(item.paren.map((p, i) => ({ tekst: p[1], i })));
+    let actief = null;
+    let foutTeller = 0;
+    let vast = 0;
+
+    function maakChip(k, kant, houder) {
+        const c = document.createElement('button');
+        c.className = 'chip';
+        c.innerHTML = k.tekst;
+        c.dataset.i = k.i;
+        c.dataset.kant = kant;
+        c.addEventListener('click', () => {
+            if (c.classList.contains('vast')) return;
+            if (!actief) { actief = c; c.classList.add('actief'); return; }
+            if (actief === c) { c.classList.remove('actief'); actief = null; return; }
+            if (actief.dataset.kant === kant) {
+                actief.classList.remove('actief');
+                actief = c; c.classList.add('actief'); return;
+            }
+            if (actief.dataset.i === c.dataset.i) {
+                actief.classList.remove('actief');
+                actief.classList.add('vast'); c.classList.add('vast');
+                actief = null; vast++;
+                if (vast === item.paren.length) klaarKoppel();
+            } else {
+                foutTeller++;
+                c.classList.add('schud'); actief.classList.add('schud');
+                const a = actief;
+                setTimeout(() => { c.classList.remove('schud'); a.classList.remove('schud'); a.classList.remove('actief'); }, 380);
+                actief = null;
+            }
+        });
+        houder.appendChild(c);
+    }
+    links.forEach(k => maakChip(k, 'L', linksDiv));
+    rechts.forEach(k => maakChip(k, 'R', rechtsDiv));
+
+    function klaarKoppel() {
+        const ok = foutTeller === 0;
+        registreer(item, ok);
+        const extra = ok ? '' : `<br>Je had ${foutTeller} misser${foutTeller === 1 ? '' : 's'}; dit item komt straks terug.`;
+        feedbackBlok(kaart, ok, (item.uitleg || '') + extra);
+        verderKnop(kaart);
+    }
+}
+
+function renderSorteer(item, kaart) {
+    kaart.innerHTML = `${labelVoor(item)}<div class="vraag-tekst">${item.vraag}</div>
+        <div class="sorteer-item" id="sort-item"></div>
+        <div class="sorteer-knoppen" id="sort-knoppen"></div>
+        <div class="sorteer-telling" id="sort-telling"></div>`;
+    const itemDiv = kaart.querySelector('#sort-item');
+    const knoppen = kaart.querySelector('#sort-knoppen');
+    const telling = kaart.querySelector('#sort-telling');
+    const volgorde = schud(item.items);
+    let pos = 0, foutTeller = 0, bezig = false;
+
+    item.cats.forEach((cat, ci) => {
+        const b = document.createElement('button');
+        b.className = 'optie';
+        b.textContent = cat;
+        b.addEventListener('click', () => {
+            if (bezig || pos >= volgorde.length) return;
+            bezig = true;
+            const juist = volgorde[pos].cat === ci;
+            if (!juist) foutTeller++;
+            b.classList.add(juist ? 'goed' : 'fout');
+            itemDiv.style.borderColor = juist ? 'var(--groen)' : 'var(--rood)';
+            setTimeout(() => {
+                b.classList.remove('goed', 'fout');
+                itemDiv.style.borderColor = '';
+                pos++;
+                bezig = false;
+                if (pos >= volgorde.length) klaarSorteer();
+                else teken();
+            }, juist ? 350 : 900);
+        });
+        knoppen.appendChild(b);
+    });
+
+    function teken() {
+        itemDiv.innerHTML = volgorde[pos].tekst;
+        telling.textContent = `${pos + 1}/${volgorde.length}`;
+    }
+    teken();
+
+    function klaarSorteer() {
+        itemDiv.remove(); knoppen.remove(); telling.remove();
+        const ok = foutTeller === 0;
+        registreer(item, ok);
+        const extra = ok ? '' : `<br>${foutTeller} van de ${volgorde.length} ging mis; dit item komt straks terug.`;
+        feedbackBlok(kaart, ok, (item.uitleg || '') + extra);
+        verderKnop(kaart);
+    }
+}
+
+function renderFlits(item, kaart) {
+    kaart.innerHTML = `${labelVoor(item)}<div class="vraag-tekst">${item.vraag}</div>
+        <p class="zacht">Zeg het antwoord hardop of schrijf het op voordat je het omdraait. Zelf ophalen werkt beter dan herlezen.</p>`;
+    const rij = document.createElement('div');
+    rij.className = 'knop-rij';
+    const toon = document.createElement('button');
+    toon.className = 'knop';
+    toon.textContent = 'Toon antwoord';
+    toon.addEventListener('click', () => {
+        rij.remove();
+        const a = document.createElement('div');
+        a.className = 'flits-antwoord';
+        a.innerHTML = item.antwoord;
+        kaart.appendChild(a);
+        const rij2 = document.createElement('div');
+        rij2.className = 'knop-rij';
+        const goedK = document.createElement('button');
+        goedK.className = 'knop';
+        goedK.textContent = 'Wist ik';
+        goedK.addEventListener('click', () => { registreer(item, true); sessie.idx++; toonItem(); });
+        const foutK = document.createElement('button');
+        foutK.className = 'knop rustig';
+        foutK.textContent = 'Nog oefenen';
+        foutK.addEventListener('click', () => { registreer(item, false); sessie.idx++; toonItem(); });
+        rij2.appendChild(goedK); rij2.appendChild(foutK);
+        kaart.appendChild(rij2);
+    });
+    rij.appendChild(toon);
+    kaart.appendChild(rij);
+}
+
+/* ---------------- afronding ---------------- */
+
+function toonKlaar() {
+    const s = sessie;
+    const score = s.totaalVragen ? Math.round(100 * s.goed / s.totaalVragen) : 100;
+    const klasse = score >= 80 ? 'top' : score >= 60 ? 'matig' : 'laag';
+    const boodschap = score >= 80
+        ? 'Sterk. Deze stof zit erin.'
+        : score >= 60
+            ? 'Goede basis; de herhaalde items verdienen nog een rondje.'
+            : 'Doe deze module binnenkort nog een keer; herhaald ophalen is precies hoe het blijft hangen.';
+
+    const v = laadVoortgang();
+    const vorige = v[s.moduleId] || {};
+    v[s.moduleId] = { af: true, score: Math.max(score, vorige.score || 0) };
+    bewaarVoortgang(v);
+
+    let foutenHtml = '';
+    if (s.fouten.length) {
+        foutenHtml = `<div class="fout-lijstje"><p class="zacht" style="margin-bottom:4px;"><strong>In &eacute;&eacute;n keer goed lukte nog niet bij:</strong></p>` +
+            s.fouten.map(f => `<div class="rij"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.5" stroke-linecap="round"><path d="M1 4v6h6M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg><span>${f}</span></div>`).join('') +
+            `</div>`;
+    }
+
+    const mod = MODULES.find(m => m.id === s.moduleId);
+    const lesHtml = mod && mod.les
+        ? `<div class="les-blok"><div class="kop">In de les hierna</div>${mod.les}</div>`
+        : '';
+
+    app.innerHTML = `
+    <div class="card">
+        <div class="klaar-kop">
+            <div style="font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:600; margin-bottom:6px;">${s.titel} afgerond</div>
+            <div class="cijfer ${klasse}">${score}%</div>
+            <div class="toelichting">${s.goed} van ${s.totaalVragen} vragen in &eacute;&eacute;n keer goed &middot; ${boodschap}</div>
+        </div>
+        ${foutenHtml}
+        ${lesHtml}
+        <div class="knop-rij" style="justify-content:center;">
+            <button class="knop" id="terug-knop">Naar het overzicht</button>
+            <button class="knop rustig" id="opnieuw-knop">Module opnieuw</button>
+        </div>
+    </div>`;
+    document.getElementById('terug-knop').addEventListener('click', toonOverzicht);
+    document.getElementById('opnieuw-knop').addEventListener('click', () => startModule(s.moduleId));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+toonOverzicht();
+</script>
+</body>
+</html>
