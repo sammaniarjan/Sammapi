@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>ADHD-checklist</title>
+<meta name="description" content="Interactieve ADHD onderhouds-checklist voor het vervolgconsult in de eerste lijn. Voor onderwijsdoeleinden.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23e2d9cc'/><path d='M28 50l14 14 30-32' fill='none' stroke='%23be185d' stroke-width='9' stroke-linecap='round' stroke-linejoin='round'/><rect x='16' y='16' width='68' height='68' rx='14' fill='none' stroke='%232c3e36' stroke-width='6'/></svg>">
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --bg: #e2d9cc;
+    --vlak: #ffffff;
+    --vlak-zacht: #f7f3ed;
+    --tekst: #2c3e36;
+    --tekst-2: #6b7b6f;
+    --muted: #9aa69e;
+    --rand: #d5cdc2;
+    --rand-licht: #e3dbd0;
+    --accent: #be185d;
+    --accent-donker: #9d174d;
+    --accent-bg: rgba(190, 24, 93, 0.07);
+    --groen: #059669;
+    --groen-bg: rgba(5, 150, 105, 0.08);
+    --oranje: #d97706;
+    --oranje-bg: rgba(217, 119, 6, 0.09);
+}
+
+body {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--tekst);
+    line-height: 1.55;
+    min-height: 100vh;
+}
+
+.wrap { max-width: 680px; margin: 0 auto; padding: 16px 16px 60px; }
+
+.back-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--tekst-2); text-decoration: none;
+    font-size: 0.88rem; padding: 10px 0;
+}
+.back-link:hover { color: var(--accent); }
+.back-link svg { width: 17px; height: 17px; }
+
+.app-head { margin: 8px 0 18px; }
+.app-head h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem; font-weight: 600;
+}
+.app-head .sub { color: var(--tekst-2); font-size: 0.88rem; }
+
+.card {
+    background: var(--vlak);
+    border: 1px solid var(--rand-licht);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 14px;
+}
+.card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; font-weight: 600; margin-bottom: 8px;
+}
+.card p { font-size: 0.9rem; margin-bottom: 8px; }
+.card p:last-child { margin-bottom: 0; }
+.zacht { color: var(--tekst-2); font-size: 0.84rem; }
+
+.groep-kop {
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.8px; color: var(--accent);
+    margin: 4px 0 8px;
+}
+
+.vraag {
+    display: grid; grid-template-columns: 1fr auto;
+    gap: 10px; align-items: center;
+    padding: 11px 0; border-top: 1px solid var(--rand-licht);
+}
+.vraag:first-of-type { border-top: none; }
+.vraag .tekst { font-size: 0.9rem; }
+.vraag .nr { color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; margin-right: 4px; }
+.vraag.signaal { background: var(--oranje-bg); margin: 0 -18px; padding: 11px 18px; border-radius: 0; }
+.vraag.signaal + .vraag { border-top-color: transparent; }
+
+.janee { display: flex; gap: 6px; }
+.janee button {
+    font: inherit; font-size: 0.8rem; font-weight: 700;
+    width: 48px; padding: 7px 0; border-radius: 8px; cursor: pointer;
+    background: var(--vlak-zacht); color: var(--tekst-2);
+    border: 1px solid var(--rand); transition: all 0.15s;
+}
+.janee button:hover { border-color: var(--accent); }
+.janee button.aan-ja { background: var(--accent); border-color: var(--accent); color: #fff; }
+.janee button.aan-nee { background: var(--tekst); border-color: var(--tekst); color: #fff; }
+
+.samenvatting .telling {
+    display: flex; gap: 16px; margin-bottom: 10px; flex-wrap: wrap;
+}
+.samenvatting .tel {
+    background: var(--vlak-zacht); border: 1px solid var(--rand-licht);
+    border-radius: 10px; padding: 8px 14px; font-size: 0.84rem;
+}
+.samenvatting .tel b { font-family: 'JetBrains Mono', monospace; font-size: 1.05rem; }
+.tel.oranje { background: var(--oranje-bg); border-color: rgba(217, 119, 6, 0.3); }
+.tel.oranje b { color: var(--oranje); }
+.tel.groen { background: var(--groen-bg); border-color: rgba(5, 150, 105, 0.3); }
+.tel.groen b { color: var(--groen); }
+
+.punt-lijst { margin-top: 4px; }
+.punt-lijst .punt {
+    display: flex; gap: 8px; align-items: flex-start;
+    padding: 6px 0; border-top: 1px solid var(--rand-licht);
+    font-size: 0.86rem;
+}
+.punt-lijst .punt svg { flex-shrink: 0; margin-top: 3px; }
+
+.knop {
+    font: inherit; font-size: 0.88rem; font-weight: 600;
+    background: transparent; color: var(--tekst-2);
+    border: 1px solid var(--rand); border-radius: 10px;
+    padding: 9px 18px; cursor: pointer; transition: all 0.2s;
+    margin-top: 12px;
+}
+.knop:hover { border-color: var(--accent); color: var(--accent); }
+
+.voet {
+    text-align: center; margin-top: 30px;
+    font-size: 0.78rem; color: var(--muted);
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+    <a href="../index.html" class="back-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Dashboard
+    </a>
+    <div class="app-head">
+        <h1>ADHD-checklist</h1>
+        <div class="sub">Onderhouds-checklist voor het vervolgconsult</div>
+    </div>
+
+    <div class="card">
+        <p>Checklist voor het <strong>vervolgconsult</strong> bij een pati&euml;nt die bekend is met ADHD/ADD, bijvoorbeeld bij de jaarlijkse (medicatie)controle in de eerste lijn. Het is een <strong>gesprekshulp voor monitoring</strong>, geen diagnostisch instrument en geen scorelijst met afkappunt: elk signaalantwoord is een gespreksonderwerp.</p>
+        <p class="zacht">Naar de ADHD Onderhouds-Checklist voor de huisarts van Anne Kjems Philipsen, Anne M&oslash;nsted &amp; Sandra Kooij. Antwoorden worden nergens opgeslagen of verzonden.</p>
+    </div>
+
+    <div class="card">
+        <div class="groep-kop">Voor iedereen</div>
+        <div id="vragen-algemeen"></div>
+    </div>
+
+    <div class="card">
+        <div class="groep-kop">Alleen voor kinderen</div>
+        <div id="vragen-kind"></div>
+        <p class="zacht" style="margin-top:10px;">Let op de omgekeerde richting bij de laatste drie: daar is juist &ldquo;nee&rdquo; het signaalantwoord.</p>
+    </div>
+
+    <div class="card samenvatting">
+        <h2>Samenvatting voor het consult</h2>
+        <div class="telling">
+            <div class="tel" id="tel-beantwoord"><b>0</b>/24 beantwoord</div>
+            <div class="tel" id="tel-punten"><b>0</b> aandachtspunten</div>
+        </div>
+        <div class="punt-lijst" id="punt-lijst"><p class="zacht">Nog geen aandachtspunten: signaalantwoorden verschijnen hier automatisch.</p></div>
+        <button class="knop" id="reset">Alles wissen</button>
+    </div>
+
+    <div class="voet">Persoonlijk studieproject, geen offici&euml;le uitgave. Onderwijsmateriaal; volg voor diagnostiek en behandeling de actuele richtlijnen (NHG, GGZ-standaard ADHD).</div>
+</div>
+
+<script>
+'use strict';
+
+/* signaal: welk antwoord een aandachtspunt oplevert */
+const ALGEMEEN = [
+    { t: 'Heeft u/jij/uw kind problemen met hyperactiviteit, bijvoorbeeld rusteloosheid, nervositeit, moeite met stilzitten, friemelen aan dingen of buitensporige fysieke activiteit?', signaal: 'ja' },
+    { t: 'Heeft u/jij/uw kind problemen met impulsiviteit, bijvoorbeeld: niet denken maar doen, niet nadenken voor u iets zegt, te veel geld uitgeven of ongeduld?', signaal: 'ja' },
+    { t: 'Hebt u/jij/uw kind problemen met de concentratie, bijvoorbeeld snel afgeleid, verveeld, vergeetachtig of chaotisch, of dingen niet afmaken?', signaal: 'ja' },
+    { t: 'Heeft u/jij/uw kind problemen overdag, bijvoorbeeld op school of tijdens het werk?', signaal: 'ja' },
+    { t: 'Heeft u/jij/uw kind problemen in sociaal contact of met vrienden?', signaal: 'ja' },
+    { t: 'Heeft u/jij/uw kind problemen in de vrije tijd?', signaal: 'ja' },
+    { t: 'Zijn er problemen in de familie?', signaal: 'ja' },
+    { t: 'Zijn er onlangs dingen veranderd in uw/jouw leven die u/jou/uw kind be&iuml;nvloeden?', signaal: 'ja' },
+    { t: 'Zit u/jij/uw kind in een stressvolle periode?', signaal: 'ja' },
+    { t: 'Bent u / is jij/uw kind momenteel somber, verdrietig of angstig?', signaal: 'ja' },
+    { t: 'Hebt u/jij/uw kind stemmingswisselingen gedurende de dag?', signaal: 'ja' },
+    { t: 'Zijn er specifieke momenten overdag waarop u/jij/uw kind moeilijkheden ervaart?', signaal: 'ja' },
+    { t: 'Eet u/jij/uw kind meer of minder dan normaal?', signaal: 'ja' },
+    { t: 'Heeft u/jij/uw kind moeite met slapen?', signaal: 'ja' },
+    { t: 'Vergeet u/jij/uw kind de medicijnen in te nemen?', signaal: 'ja' },
+    { t: 'Hebt u/jij/uw kind extra medicatie nodig voor de ADHD/ADD?', signaal: 'ja' },
+    { t: 'Hebt u/jij/uw kind last van bijwerkingen van de medicatie?', signaal: 'ja' },
+    { t: 'Ervaart u/jij/uw kind steun door het gebruik van alcohol, marihuana, drugs of andere medicatie op dit moment?', signaal: 'ja' },
+    { t: 'Is er iets waar u/jij/uw kind specifieke hulp bij nodig heeft?', signaal: 'ja' }
+];
+const KIND = [
+    { t: 'Is het kind prikkelbaarder dan gewoonlijk?', signaal: 'ja' },
+    { t: 'Is het kind vaker boos dan gewoonlijk?', signaal: 'ja' },
+    { t: 'Groeit het kind naar verwachting?', signaal: 'nee' },
+    { t: 'Ontwikkelt het kind zich goed?', signaal: 'nee' },
+    { t: 'Is het kind blij?', signaal: 'nee' }
+];
+
+const VRAGEN = [
+    ...ALGEMEEN.map((v, i) => ({ ...v, groep: 'algemeen', nr: i + 1 })),
+    ...KIND.map((v, i) => ({ ...v, groep: 'kind', nr: i + 1 }))
+];
+const antwoorden = new Array(VRAGEN.length).fill(null);
+
+function kort(tekst) {
+    const zonder = tekst.replace(/, bijvoorbeeld.*$/, '?').replace(/, bijvoorbeeld.*\?/, '?');
+    return zonder;
+}
+
+function maakRij(v, idx, houder) {
+    const rij = document.createElement('div');
+    rij.className = 'vraag';
+    rij.innerHTML = `<div class="tekst"><span class="nr">${v.nr}.</span>${v.t}</div>`;
+    const knoppen = document.createElement('div');
+    knoppen.className = 'janee';
+    const ja = document.createElement('button');
+    ja.textContent = 'Ja';
+    const nee = document.createElement('button');
+    nee.textContent = 'Nee';
+    function zet(waarde) {
+        antwoorden[idx] = antwoorden[idx] === waarde ? null : waarde;
+        ja.classList.toggle('aan-ja', antwoorden[idx] === 'ja');
+        nee.classList.toggle('aan-nee', antwoorden[idx] === 'nee');
+        rij.classList.toggle('signaal', antwoorden[idx] === v.signaal);
+        werkSamenvattingBij();
+    }
+    ja.addEventListener('click', () => zet('ja'));
+    nee.addEventListener('click', () => zet('nee'));
+    knoppen.appendChild(ja); knoppen.appendChild(nee);
+    rij.appendChild(knoppen);
+    houder.appendChild(rij);
+    return { rij, ja, nee };
+}
+
+const rijen = [];
+const houderAlgemeen = document.getElementById('vragen-algemeen');
+const houderKind = document.getElementById('vragen-kind');
+VRAGEN.forEach((v, idx) => {
+    rijen.push(maakRij(v, idx, v.groep === 'algemeen' ? houderAlgemeen : houderKind));
+});
+
+const telBeantwoord = document.getElementById('tel-beantwoord');
+const telPunten = document.getElementById('tel-punten');
+const puntLijst = document.getElementById('punt-lijst');
+
+function werkSamenvattingBij() {
+    const beantwoord = antwoorden.filter(a => a !== null).length;
+    const punten = VRAGEN.map((v, i) => ({ v, i })).filter(x => antwoorden[x.i] === x.v.signaal);
+    telBeantwoord.innerHTML = `<b>${beantwoord}</b>/${VRAGEN.length} beantwoord`;
+    telPunten.innerHTML = `<b>${punten.length}</b> aandachtspunt${punten.length === 1 ? '' : 'en'}`;
+    telPunten.className = 'tel ' + (punten.length > 0 ? 'oranje' : (beantwoord === VRAGEN.length ? 'groen' : ''));
+    if (punten.length === 0) {
+        puntLijst.innerHTML = beantwoord === VRAGEN.length
+            ? '<p class="zacht">Alle vragen beantwoord, geen signaalantwoorden.</p>'
+            : '<p class="zacht">Nog geen aandachtspunten: signaalantwoorden verschijnen hier automatisch.</p>';
+        return;
+    }
+    puntLijst.innerHTML = punten.map(x => `
+        <div class="punt">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.5" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <span>${x.v.groep === 'kind' ? '<strong>Kind:</strong> ' : ''}${kort(x.v.t)} <span class="zacht">(antwoord: ${antwoorden[x.i]})</span></span>
+        </div>`).join('');
+}
+werkSamenvattingBij();
+
+document.getElementById('reset').addEventListener('click', () => {
+    antwoorden.fill(null);
+    rijen.forEach(r => {
+        r.ja.classList.remove('aan-ja');
+        r.nee.classList.remove('aan-nee');
+        r.rij.classList.remove('signaal');
+    });
+    werkSamenvattingBij();
+});
+</script>
+</body>
+</html>
