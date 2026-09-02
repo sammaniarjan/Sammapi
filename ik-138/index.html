@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>IK-138 Overuren &amp; ORT</title>
+<meta name="description" content="Instructiekaart IK-138: overuren en onregelmatigheidstoeslag declareren. Speciaal voor de AMA's.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23154273'/><text x='50' y='63' font-size='34' text-anchor='middle' fill='white' font-family='Verdana' font-weight='bold'>138</text></svg>">
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+/* Rijkshuisstijl-geinspireerd, zelfde toon als IK-271:
+   wit vlak, oranje banner, donkerblauw, geen decoratie. */
+:root {
+    --oranje: #E17000;
+    --donkerblauw: #154273;
+    --linkblauw: #01689B;
+    --linkblauw-donker: #01496E;
+    --rood: #D52B1E;
+    --rood-bg: #F9E1DF;
+    --geel-bg: #FBF3E1;
+    --geel-tekst: #94710A;
+    --groen: #39870C;
+    --groen-bg: #E8F2E1;
+    --bg: #F3F3F3;
+    --vlak: #FFFFFF;
+    --tekst: #282828;
+    --tekst-2: #535353;
+    --muted: #696969;
+    --rand: #CCCCCC;
+    --rand-licht: #E6E6E6;
+    --schaduw: 0 1px 4px rgba(0,0,0,0.10);
+    color-scheme: light;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Source Sans 3', 'Segoe UI', Verdana, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--tekst);
+    line-height: 1.55;
+    min-height: 100vh;
+    font-variant-numeric: tabular-nums;
+}
+
+.mast-top {
+    background: var(--vlak);
+    border-bottom: 1px solid var(--rand-licht);
+    padding: 8px 16px;
+    display: flex; align-items: center; gap: 10px;
+}
+.mast-mark {
+    width: 26px; height: 26px; flex-shrink: 0;
+    background: var(--donkerblauw); color: #fff;
+    font-size: 0.62rem; font-weight: 700;
+    display: grid; place-items: center;
+}
+.mast-top .label { font-size: 0.82rem; color: var(--tekst-2); }
+
+.mast-banner { background: var(--oranje); }
+.mast-banner .inner, .wrap { max-width: 900px; margin: 0 auto; width: 100%; }
+.mast-banner .inner { padding: 14px 16px; }
+.mast-banner h1 { color: #fff; font-size: 1.35rem; font-weight: 700; }
+.mast-banner .sub { color: #fff; font-size: 0.82rem; opacity: 0.95; }
+
+.wrap { padding: 20px 16px 48px; }
+
+.card {
+    background: var(--vlak);
+    border: 1px solid var(--rand-licht);
+    box-shadow: var(--schaduw);
+    margin-bottom: 16px;
+}
+.card-kop {
+    background: var(--donkerblauw); color: #fff;
+    padding: 9px 16px;
+    font-size: 0.85rem; font-weight: 700;
+    letter-spacing: 0.3px;
+}
+.card-body { padding: 16px; }
+
+.intro-notitie {
+    background: var(--geel-bg);
+    border-left: 4px solid var(--oranje);
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    color: var(--geel-tekst);
+    margin-bottom: 16px;
+}
+
+.veld { margin-bottom: 14px; }
+.veld label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 3px; }
+.veld .toelichting { font-size: 0.76rem; color: var(--muted); margin-bottom: 4px; }
+input[type="text"], input[type="number"], select {
+    font: inherit; width: 100%;
+    color: var(--tekst); background: var(--vlak);
+    border: 1px solid var(--rand); border-radius: 2px;
+    padding: 8px 10px;
+}
+input:focus, select:focus { outline: 3px solid var(--oranje); outline-offset: 1px; border-color: var(--linkblauw); }
+
+.check-veld {
+    display: flex; align-items: flex-start; gap: 10px;
+    background: var(--bg);
+    border: 1px solid var(--rand-licht);
+    padding: 10px 12px;
+    cursor: pointer;
+    margin-bottom: 8px;
+}
+.check-veld:last-child { margin-bottom: 0; }
+.check-veld input { width: auto; margin-top: 3px; accent-color: var(--linkblauw); }
+.check-veld .check-tekst { font-size: 0.88rem; }
+.check-veld .check-sub { font-size: 0.76rem; color: var(--muted); }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+.grid-2:last-child { margin-bottom: 0; }
+.grid-2 .veld { display: flex; flex-direction: column; margin-bottom: 0; }
+.grid-2 .veld input, .grid-2 .veld select { margin-top: auto; }
+@media (max-width: 520px) { .grid-2 { grid-template-columns: 1fr; } }
+
+/* Berekening */
+.kosten-tabel { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.kosten-tabel td { padding: 6px 4px; border-bottom: 1px solid var(--rand-licht); }
+.kosten-tabel td:last-child { text-align: right; font-weight: 600; white-space: nowrap; }
+.kosten-tabel tr.tussenkop td {
+    font-weight: 700; color: var(--donkerblauw);
+    border-bottom: 1px solid var(--rand); padding-top: 12px;
+}
+.kosten-tabel tr.totaal td {
+    border-top: 2px solid var(--donkerblauw); border-bottom: none;
+    font-weight: 700; font-size: 0.95rem; padding-top: 10px;
+}
+.kosten-euro { font-size: 0.78rem; color: var(--muted); text-align: right; margin-top: 6px; }
+.kosten-leeg { font-size: 0.85rem; color: var(--muted); font-style: italic; }
+
+.btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    font: inherit; font-weight: 700; font-size: 0.95rem;
+    padding: 12px 24px; border-radius: 2px;
+    border: none; cursor: pointer;
+    background: var(--rood); color: #fff;
+    width: 100%;
+}
+.btn:hover { background: #B02318; }
+.btn:disabled { opacity: 0.5; cursor: default; }
+.btn-sec {
+    background: var(--vlak); color: var(--linkblauw);
+    border: 1px solid var(--linkblauw); font-weight: 600;
+    width: auto; padding: 9px 18px; font-size: 0.88rem;
+}
+.btn-sec:hover { background: #F0F6F9; }
+
+.fout { background: var(--rood-bg); color: var(--rood); font-size: 0.85rem; padding: 8px 12px; margin-top: 10px; }
+
+/* Verwerking */
+.verwerking { text-align: center; padding: 30px 16px; }
+.spinner {
+    width: 36px; height: 36px; margin: 0 auto 16px;
+    border: 4px solid var(--rand-licht); border-top-color: var(--donkerblauw);
+    border-radius: 50%;
+    animation: draai 0.9s linear infinite;
+}
+@keyframes draai { to { transform: rotate(360deg); } }
+.verwerking-stap { font-size: 0.9rem; color: var(--tekst-2); min-height: 1.5em; }
+
+/* Besluit */
+.besluit-stempel {
+    display: inline-block;
+    border: 4px solid var(--rood); color: var(--rood);
+    font-size: 1.5rem; font-weight: 700; letter-spacing: 2px;
+    padding: 6px 22px;
+    transform: rotate(-4deg);
+    margin: 6px 0 16px;
+}
+.besluit-stempel.groen { border-color: var(--groen); color: var(--groen); }
+.besluit-tekst p { font-size: 0.9rem; margin-bottom: 10px; }
+.besluit-kenmerk { font-size: 0.76rem; color: var(--muted); margin-top: 14px; }
+.bezwaar-teller { font-size: 0.8rem; color: var(--muted); margin-top: 8px; font-style: italic; }
+
+.pagina-voet {
+    max-width: 900px; margin: 0 auto; padding: 0 16px 32px;
+    font-size: 0.76rem; color: var(--muted);
+}
+.pagina-voet a { color: var(--linkblauw); }
+
+.ik-meta { font-size: 0.74rem; color: var(--muted); margin-bottom: 14px; }
+.ik-body h3 { font-size: 0.92rem; margin: 14px 0 6px; color: var(--donkerblauw); }
+.ik-body h3:first-of-type { margin-top: 0; }
+.ik-body p { font-size: 0.88rem; margin-bottom: 8px; }
+.ik-body ul, .ik-body ol { font-size: 0.88rem; padding-left: 22px; margin-bottom: 8px; }
+.ik-body li { margin-bottom: 4px; }
+.ik-body dt { font-size: 0.88rem; font-weight: 700; margin-top: 8px; }
+.ik-body dd { font-size: 0.88rem; margin-left: 0; margin-bottom: 4px; }
+.terug-link { margin-bottom: 12px; }
+.terug-link a { font-size: 0.82rem; color: var(--linkblauw); }
+
+.scherm { display: none; }
+.scherm.actief { display: block; }
+</style>
+</head>
+<body>
+
+<div class="mast-top">
+    <span class="mast-mark" aria-hidden="true">138</span>
+    <span class="label">Bureau Compensatie &amp; Gemiste Uren</span>
+</div>
+<header class="mast-banner">
+    <div class="inner">
+        <h1>IK-138 &mdash; Overuren &amp; ORT</h1>
+        <div class="sub">Voor AMA's die denken dat uren tellen</div>
+    </div>
+</header>
+
+<div class="wrap">
+
+    <!-- ══════════ INSTRUCTIEKAART ══════════ -->
+    <div class="scherm actief" id="scherm-ik">
+        <div class="card">
+            <div class="card-kop">Instructiekaart IK-138 &mdash; Overuren en onregelmatigheidstoeslag</div>
+            <div class="card-body ik-body">
+                <p class="ik-meta">Vastgesteld: buiten kantooruren &middot; Versie 9 (wijzigingen t.o.v. versie 8: het lettertype) &middot; Rubricering: openbaar, maar niemand leest het</p>
+
+                <h3>1. Doel</h3>
+                <p>Deze instructiekaart beschrijft hoe u overuren en onregelmatigheidstoeslag (ORT)
+                declareert. &ldquo;Onregelmatig&rdquo; zegt daarbij niets over uw diensten en alles
+                over de uitbetaling.</p>
+
+                <h3>2. Begrippen</h3>
+                <dl>
+                    <dt>Overuur</dt>
+                    <dd>Elk uur boven de normjobtijd dat <strong>vooraf schriftelijk is bevolen</strong>.
+                    Uren die achteraf nodig bleken, gelden als vrijwillige inzet. Defensie dankt u
+                    voor uw loyaliteit. Deze dank is niet overdraagbaar en niet inwisselbaar.</dd>
+                    <dt>ORT</dt>
+                    <dd>Toeslag voor werken op onmogelijke tijdstippen. De hoogte is zorgvuldig
+                    afgestemd op wat u er n&eacute;t niet voor zou doen.</dd>
+                    <dt>Compensatie-uur</dt>
+                    <dd>Een uur dat wordt bijgeschreven op uw verlofkaart en vervalt op een moment
+                    dat u op oefening bent.</dd>
+                </dl>
+
+                <h3>3. Voorwaarden</h3>
+                <ul>
+                    <li>Alleen vooraf bevolen uren tellen. Het bevel moet schriftelijk zijn, vooraf,
+                    en in tweevoud. De bevelvoerende is onbereikbaar.</li>
+                    <li>Uren tijdens oefeningen zijn geen overuren. Dat is de oefening.</li>
+                    <li>Vanaf de rang van majoor bestaat overwerk niet; het heet dan
+                    <strong>het ambt</strong>.</li>
+                </ul>
+
+                <h3>4. Werkwijze</h3>
+                <ol>
+                    <li>Verzamel bewijs van elk uur: aanwezigheidsregistratie, een foto van de klok,
+                    en twee getuigen die ook overwerkten en dus niet gehoord kunnen worden.</li>
+                    <li>Open formulier 138-52-9917-C (bijlage A).</li>
+                    <li>Dien de uren in v&oacute;&oacute;r de 24e van de maand waarin u ze nog niet
+                    gemaakt heeft.</li>
+                    <li>Is het systeem in onderhoud, dan is dat het teken dat u het goed doet.</li>
+                    <li>Wacht.</li>
+                </ol>
+
+                <h3>5. Bijzonderheden</h3>
+                <ul>
+                    <li>Uitbetaling volgt in de salarisrun van een nader te bepalen maand. U herkent
+                    hem aan het ontbreken van het bedrag.</li>
+                    <li>Bezwaar maken is mogelijk en zinloos (vaste jurisprudentie; zie ook IK-271,
+                    punt 5).</li>
+                    <li>Bij twijfel: gewoon doorwerken.</li>
+                </ul>
+
+                <div style="margin-top:16px;">
+                    <button class="btn" id="btn-naar-formulier" style="background: var(--linkblauw);">Naar formulier 138-52-9917-C</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════ FORMULIER ══════════ -->
+    <div class="scherm" id="scherm-formulier">
+
+        <div class="terug-link"><a href="#" id="link-naar-ik">&lsaquo; Instructiekaart IK-138</a></div>
+
+        <div class="card">
+            <div class="card-kop">Formulier 138-52-9917-C &mdash; Declaratie overuren en ORT (bijlage A bij IK-138)</div>
+            <div class="card-body">
+                <div class="intro-notitie" style="margin-bottom:0;">
+                    Vul dit formulier in eigen tijd in. Het invullen zelf geldt niet als overwerk.
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-kop">1. Persoonsgegevens</div>
+            <div class="card-body">
+                <div class="grid-2">
+                    <div class="veld">
+                        <label for="naam">Rang en naam</label>
+                        <div class="toelichting">Vanaf de rang van majoor vervalt deze aanvraag van rechtswege (zie IK-138, punt 3).</div>
+                        <input type="text" id="naam" autocomplete="off" placeholder="bijv. Luitenant B. Moe">
+                    </div>
+                    <div class="veld">
+                        <label for="pnummer">Personeelsnummer</label>
+                        <div class="toelichting">Het nummer dat u nooit paraat heeft op het moment dat erom wordt gevraagd.</div>
+                        <input type="text" id="pnummer" autocomplete="off" inputmode="numeric" placeholder="bijv. 97.03.14.138">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-kop">2. Opgave uren</div>
+            <div class="card-body">
+                <div class="grid-2">
+                    <div class="veld">
+                        <label for="gewerkt">Gewerkte overuren deze maand</label>
+                        <input type="number" id="gewerkt" min="0" max="744" placeholder="bijv. 23">
+                    </div>
+                    <div class="veld">
+                        <label for="bevolen">Waarvan vooraf schriftelijk bevolen</label>
+                        <div class="toelichting">Wees eerlijk. Wij zijn dat niet.</div>
+                        <input type="number" id="bevolen" min="0" max="744" placeholder="bijv. 0">
+                    </div>
+                </div>
+                <div class="veld">
+                    <label for="reden">Reden van het overwerk</label>
+                    <select id="reden">
+                        <option value="">&mdash; kies &mdash;</option>
+                        <option>De oefening liep uit (let op: dat is geen overwerk, dat is de oefening)</option>
+                        <option>Het SMT liep uit</option>
+                        <option>Iemand zei "nog heel even"</option>
+                        <option>Het systeem lag eruit, dus moest alles op papier, dus lag alles eruit</option>
+                        <option>Ik ben arts</option>
+                    </select>
+                </div>
+                <div class="veld">
+                    <label>ORT-tijdvakken (aankruisen wat van toepassing is)</label>
+                    <label class="check-veld" for="ort-avond">
+                        <input type="checkbox" id="ort-avond" data-ort="22" data-naam="Avond (18:00&ndash;24:00)">
+                        <span><span class="check-tekst">Avond (18:00&ndash;24:00)</span><br><span class="check-sub">Toeslag 22%</span></span>
+                    </label>
+                    <label class="check-veld" for="ort-nacht">
+                        <input type="checkbox" id="ort-nacht" data-ort="38" data-naam="Nacht (00:00&ndash;06:00)">
+                        <span><span class="check-tekst">Nacht (00:00&ndash;06:00)</span><br><span class="check-sub">Toeslag 38%</span></span>
+                    </label>
+                    <label class="check-veld" for="ort-weekend">
+                        <input type="checkbox" id="ort-weekend" data-ort="45" data-naam="Weekend">
+                        <span><span class="check-tekst">Weekend</span><br><span class="check-sub">Toeslag 45%</span></span>
+                    </label>
+                    <label class="check-veld" for="ort-feestdag">
+                        <input type="checkbox" id="ort-feestdag" data-ort="60" data-naam="Feestdag">
+                        <span><span class="check-tekst">Feestdag</span><br><span class="check-sub">Toeslag 60%</span></span>
+                    </label>
+                    <label class="check-veld" for="ort-verjaardag">
+                        <input type="checkbox" id="ort-verjaardag" data-ort="0.5" data-naam="Eigen verjaardag">
+                        <span><span class="check-tekst">Tijdens mijn eigen verjaardag</span><br><span class="check-sub">Toeslag 0,5% (attentiewaarde)</span></span>
+                    </label>
+                </div>
+                <div class="veld">
+                    <label for="compensatie">Voorkeur compensatie</label>
+                    <select id="compensatie">
+                        <option value="">&mdash; kies &mdash;</option>
+                        <option value="geld">Uitbetalen</option>
+                        <option value="verlof">Verlofuren (vervallen tijdens uw volgende oefening)</option>
+                        <option value="tevredenheid">Tevredenheid</option>
+                    </select>
+                </div>
+                <label class="check-veld" for="echt">
+                    <input type="checkbox" id="echt">
+                    <span>
+                        <span class="check-tekst"><strong>Ik heb deze uren daadwerkelijk gewerkt</strong></span><br>
+                        <span class="check-sub">Aankruisen verplicht. Voor de uitkomst maakt het niet uit.</span>
+                    </span>
+                </label>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-kop">3. Berekening (volstrekt offici&euml;el)</div>
+            <div class="card-body">
+                <div id="kosten-leeg" class="kosten-leeg">Vul de gewerkte en bevolen uren in voor de berekening.</div>
+                <div id="kosten-inhoud" hidden>
+                    <table class="kosten-tabel" id="kosten-tabel"></table>
+                    <div class="kosten-euro" id="kosten-euro"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <button class="btn" id="btn-declareren">DECLAREREN</button>
+                <div class="fout" id="form-fout" hidden></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════ VERWERKING ══════════ -->
+    <div class="scherm" id="scherm-verwerking">
+        <div class="card">
+            <div class="card-kop">Uw declaratie wordt verwerkt</div>
+            <div class="card-body verwerking">
+                <div class="spinner"></div>
+                <div class="verwerking-stap" id="verwerking-stap">Declaratie indienen&hellip;</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════ ONTVANGSTBEVESTIGING ══════════ -->
+    <div class="scherm" id="scherm-ontvangst">
+        <div class="card">
+            <div class="card-kop">Ontvangstbevestiging</div>
+            <div class="card-body">
+                <div class="besluit-tekst">
+                    <p>Uw declaratie is in goede orde ontvangen en toegevoegd aan de stapel van deze maand.</p>
+                    <p>Uitbetaling volgt in de salarisrun van <strong>een nader te bepalen maand</strong>.
+                    U herkent hem aan het ontbreken van het bedrag.</p>
+                    <p>Eerder informeren naar de status geldt als vrijwillige inzet.</p>
+                </div>
+                <div class="besluit-kenmerk" id="ontvangst-kenmerk"></div>
+                <div style="margin-top:16px;">
+                    <button class="btn-sec btn" id="btn-niet-wachten">Dat wacht ik niet af</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════ BESLUIT ══════════ -->
+    <div class="scherm" id="scherm-besluit">
+        <div class="card">
+            <div class="card-kop">Besluit op uw declaratie</div>
+            <div class="card-body">
+                <div class="besluit-stempel" id="besluit-stempel">AFGEWEZEN</div>
+                <div class="besluit-tekst" id="besluit-tekst"></div>
+                <div class="besluit-kenmerk" id="besluit-kenmerk"></div>
+                <div style="margin-top:16px; display:flex; gap:8px; flex-wrap:wrap;">
+                    <button class="btn-sec btn" id="btn-bezwaar">Bezwaar maken</button>
+                    <button class="btn-sec btn" id="btn-opnieuw">Opnieuw proberen</button>
+                </div>
+                <div class="bezwaar-teller" id="bezwaar-teller" hidden></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="pagina-voet">
+    <a href="../index.html">Terug naar het dashboard</a> &middot; Persoonlijk project, geen offici&euml;le uitgave.
+</div>
+
+<script>
+'use strict';
+const $ = (sel) => document.querySelector(sel);
+
+const UURLOON = 2.71;          // euro bruto, officiersuurloon volgens tabel 138-B
+const ADMINISTRATIE = 13.80;   // euro, per declaratie
+const ERKENNINGSFACTOR = 0.4;  // art. 3.1: bewijs niet aangeleverd in tweevoud
+
+function toonScherm(id) {
+    document.querySelectorAll('.scherm').forEach(s => s.classList.toggle('actief', s.id === id));
+    window.scrollTo(0, 0);
+}
+
+function euro(n) {
+    return (n < 0 ? '−' : '') + '€ ' + Math.abs(n).toLocaleString('nl-NL', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+function pct(n) { return String(n).replace('.', ',') + '%'; }
+
+function ortVakken() {
+    return Array.from(document.querySelectorAll('input[data-ort]:checked'))
+        .map(el => ({ naam: el.dataset.naam, p: parseFloat(el.dataset.ort) }));
+}
+
+/* ---------- Berekening (volstrekt officieel) ---------- */
+function berekenDeclaratie() {
+    const gewerkt = parseInt($('#gewerkt').value, 10);
+    const bevolen = parseInt($('#bevolen').value, 10);
+    if (isNaN(gewerkt) || isNaN(bevolen) || gewerkt < 0 || bevolen < 0) return null;
+
+    const erkend = Math.floor(Math.min(bevolen, gewerkt) * ERKENNINGSFACTOR);
+    const vakken = ortVakken();
+    const ortSom = vakken.reduce((s, v) => s + v.p, 0);
+    const bruto = erkend * UURLOON;
+    const netto = bruto - ADMINISTRATIE;
+
+    return { gewerkt, bevolen, erkend, vakken, ortSom, bruto, netto };
+}
+
+function updateBerekening() {
+    const d = berekenDeclaratie();
+    if (!d) {
+        $('#kosten-leeg').hidden = false;
+        $('#kosten-inhoud').hidden = true;
+        return;
+    }
+    $('#kosten-leeg').hidden = true;
+    $('#kosten-inhoud').hidden = false;
+
+    const r = [];
+    r.push(['Opgegeven overuren', d.gewerkt + ' uur']);
+    r.push(['Waarvan vooraf schriftelijk bevolen', d.bevolen + ' uur']);
+    r.push(['Niet bevolen: vrijwillige inzet (met dank)', (d.gewerkt - Math.min(d.bevolen, d.gewerkt)) + ' uur']);
+    r.push(['Erkenningsfactor art. 3.1 (bewijs niet in tweevoud): × 0,4', d.erkend + ' uur']);
+
+    let ortRegels = '';
+    if (d.vakken.length) {
+        ortRegels += '<tr class="tussenkop"><td>ORT-toeslagen</td><td></td></tr>';
+        d.vakken.forEach(v => { ortRegels += '<tr><td>' + v.naam + '</td><td>+' + pct(v.p) + '</td></tr>'; });
+        ortRegels += '<tr><td>Harmonisatiekorting wegens ORT-plafond</td><td>−' + pct(d.ortSom) + '</td></tr>';
+        ortRegels += '<tr><td>Netto ORT (conform cao-afspraak die niemand zich kan herinneren)</td><td>0,0%</td></tr>';
+    }
+
+    const geldRegels =
+        '<tr class="tussenkop"><td>Uitbetaling</td><td></td></tr>' +
+        '<tr><td>Erkende uren × officiersuurloon tabel 138-B (' + euro(UURLOON) + ')</td><td>' + euro(d.bruto) + '</td></tr>' +
+        '<tr><td>Administratiekosten formulier 138-52-9917-C</td><td>−' + euro(ADMINISTRATIE).replace('€', '€') + '</td></tr>';
+
+    $('#kosten-tabel').innerHTML =
+        r.map(x => '<tr><td>' + x[0] + '</td><td>' + x[1] + '</td></tr>').join('') +
+        ortRegels + geldRegels +
+        '<tr class="totaal"><td>' + (d.netto < 0 ? 'Door u bij te betalen' : 'Aan u uit te keren') + '</td><td>' + euro(Math.abs(d.netto)) + '</td></tr>';
+
+    $('#kosten-euro').textContent = d.netto < 0
+        ? 'Het verschuldigde bedrag wordt ingehouden op uw eerstvolgende ORT (zie boven: 0,0%).'
+        : 'Uitbetaling in de salarisrun van een nader te bepalen maand.';
+}
+
+['gewerkt', 'bevolen'].forEach(id => $('#' + id).addEventListener('input', updateBerekening));
+document.querySelectorAll('input[data-ort]').forEach(el => el.addEventListener('change', updateBerekening));
+
+/* ---------- Validatie ---------- */
+function toonFout(msg) {
+    const f = $('#form-fout');
+    f.textContent = msg;
+    f.hidden = false;
+}
+
+function veldenGeldig() {
+    const gewerkt = parseInt($('#gewerkt').value, 10);
+    const bevolen = parseInt($('#bevolen').value, 10);
+    if (!$('#naam').value.trim() || !$('#pnummer').value.trim() ||
+        isNaN(gewerkt) || isNaN(bevolen) || !$('#reden').value || !$('#compensatie').value) {
+        toonFout('Vul eerst alle velden in. Ja, allemaal. Dit is Defensie.');
+        return false;
+    }
+    if (bevolen > gewerkt) {
+        toonFout('U kunt niet meer bevolen uren hebben dan gewerkte uren. Zelfs wij niet.');
+        return false;
+    }
+    if (!$('#echt').checked) {
+        toonFout('Kruis aan dat u de uren daadwerkelijk heeft gewerkt. Het is verplicht en het maakt niet uit.');
+        return false;
+    }
+    return true;
+}
+
+/* ---------- Verwerking & besluit ---------- */
+const STAPPEN = [
+    'Declaratie indienen…',
+    'Uren natellen…',
+    'Uren kloppen. Voor de zekerheid opnieuw natellen…',
+    'Schriftelijk bevel opvragen bij het archief…',
+    'Het archief is verhuisd. Nieuw adres onbekend…',
+    'ORT-plafond bijstellen…',
+    'Handtekening zoeken van iemand die niet op verlof is…',
+    'Niemand gevonden. Besluit toch opstellen…'
+];
+
+let bezwaren = 0;
+
+$('#btn-declareren').addEventListener('click', () => {
+    if (!veldenGeldig()) return;
+    $('#form-fout').hidden = true;
+    toonScherm('scherm-verwerking');
+
+    let i = 0;
+    const stapEl = $('#verwerking-stap');
+    stapEl.textContent = STAPPEN[0];
+    const interval = setInterval(() => {
+        i++;
+        if (i < STAPPEN.length) {
+            stapEl.textContent = STAPPEN[i];
+        } else {
+            clearInterval(interval);
+            toonOntvangst();
+        }
+    }, 950);
+});
+
+function kenmerk() {
+    return 'Kenmerk: 138-52-9917-C/' + new Date().getFullYear() + '/' +
+        String(Math.floor(Math.random() * 90000) + 10000);
+}
+
+function toonOntvangst() {
+    $('#ontvangst-kenmerk').textContent = kenmerk() + ' · Status: wacht op paraaf (2 van 11)';
+    toonScherm('scherm-ontvangst');
+}
+
+$('#btn-niet-wachten').addEventListener('click', toonBesluit);
+
+function eersteVanVolgendeMaand() {
+    const d = new Date();
+    d.setMonth(d.getMonth() + 1, 1);
+    return d.toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+function toonBesluit() {
+    const naam = $('#naam').value.trim();
+    const d = berekenDeclaratie();
+    const stempel = $('#besluit-stempel');
+    const tekst = $('#besluit-tekst');
+    const verjaardag = $('#ort-verjaardag').checked;
+    const compensatie = $('#compensatie').value;
+
+    bezwaren = 0;
+    $('#bezwaar-teller').hidden = true;
+    stempel.classList.remove('groen');
+
+    const hogeRang = /\b(majoor|luitenant-kolonel|overste|kolonel|brigade-generaal|generaal|commandeur|kapitein ter zee|kolonel-arts)\b/i.test(naam);
+
+    let felicitatie = verjaardag ? '<p>Gefeliciteerd overigens.</p>' : '';
+
+    if (hogeRang) {
+        stempel.textContent = 'NIET ONTVANKELIJK';
+        tekst.innerHTML =
+            '<p>Geachte ' + esc(naam) + ',</p>' +
+            '<p>Uit uw rang blijkt dat u majoor of hoger bent. Vanaf die rang bestaat overwerk niet; ' +
+            'het heet dan <strong>het ambt</strong> (IK-138, punt 3).</p>' +
+            '<p>Uw uren zijn geregistreerd als ambtsvervulling en daarmee reeds volledig vergoed, ' +
+            'namelijk met het ambt zelf.</p>' + felicitatie +
+            '<p>Wij danken u voor uw leiderschap.</p>';
+    } else if (d.bevolen === 0) {
+        stempel.textContent = 'AFGEWEZEN';
+        tekst.innerHTML =
+            '<p>Geachte ' + esc(naam) + ',</p>' +
+            '<p>U heeft <strong>' + d.gewerkt + ' overuren</strong> opgegeven, waarvan ' +
+            '<strong>0 vooraf schriftelijk bevolen</strong>.</p>' +
+            '<p>Conform IK-138, punt 2, zijn al deze uren aangemerkt als <strong>vrijwillige inzet</strong>. ' +
+            'Defensie dankt u voor uw loyaliteit. Deze dank is niet overdraagbaar, niet inwisselbaar ' +
+            'en niet opnieuw declarabel.</p>' + felicitatie +
+            '<p>De administratiekosten (' + euro(ADMINISTRATIE) + ') worden ingehouden op uw eerstvolgende ORT (0,0%).</p>';
+    } else if (d.erkend === 0) {
+        stempel.textContent = 'AFGEWEZEN';
+        tekst.innerHTML =
+            '<p>Geachte ' + esc(naam) + ',</p>' +
+            '<p>Na toepassing van de erkenningsfactor (art. 3.1: × 0,4, afgerond naar beneden) resteren ' +
+            'van uw ' + d.bevolen + ' bevolen uren <strong>0 erkende uren</strong>.</p>' +
+            '<p>Wiskundig gezien heeft u dus niet overgewerkt. Wij begrijpen dat dit anders voelde.</p>' + felicitatie +
+            '<p>De administratiekosten (' + euro(ADMINISTRATIE) + ') blijven verschuldigd; het formulier is immers wel verwerkt.</p>';
+    } else {
+        const compRegel = {
+            geld: d.netto < 0
+                ? '<p>Na verrekening resteert een door u <strong>bij te betalen bedrag van ' + euro(Math.abs(d.netto)) + '</strong>. Dit wordt ingehouden op uw eerstvolgende ORT (0,0%).</p>'
+                : '<p>Het bedrag van <strong>' + euro(d.netto) + '</strong> wordt uitbetaald in compensatie-uren, omgerekend tegen een koers die op het moment van bijschrijven wordt vastgesteld.</p>',
+            verlof: '<p>De erkende uren zijn bijgeschreven als <strong>verlofuren</strong>. Zij vervallen per <strong>' + eersteVanVolgendeMaand() + '</strong>; uw eenheid is die week op oefening.</p>',
+            tevredenheid: '<p>De door u gekozen compensatie (<strong>tevredenheid</strong>) is reeds uitgekeerd. Wij vertrouwen erop dat u er zuinig op bent.</p>'
+        }[compensatie];
+
+        stempel.textContent = 'GEDEELTELIJK TOEGEKEND';
+        stempel.classList.add('groen');
+        tekst.innerHTML =
+            '<p>Geachte ' + esc(naam) + ',</p>' +
+            '<p>Van uw ' + d.gewerkt + ' opgegeven overuren zijn er na toetsing ' +
+            '<strong>' + d.erkend + ' erkend</strong>. De overige ' + (d.gewerkt - d.erkend) +
+            ' uur zijn geregistreerd als vrijwillige inzet, waarvoor dank.</p>' +
+            (d.vakken.length ? '<p>Uw ORT-toeslagen (totaal +' + pct(d.ortSom) + ') zijn toegekend en aansluitend ' +
+            'geharmoniseerd naar het ORT-plafond (−' + pct(d.ortSom) + '). Netto ORT: 0,0%.</p>' : '') +
+            compRegel + felicitatie +
+            '<p>Wij vertrouwen erop u hiermee ruimschoots gecompenseerd te hebben.</p>';
+    }
+
+    $('#besluit-kenmerk').textContent = kenmerk() + ' · Behandeld door: vacature (reeds 138 dagen)';
+    toonScherm('scherm-besluit');
+}
+
+function esc(s) {
+    const d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+}
+
+$('#btn-bezwaar').addEventListener('click', () => {
+    bezwaren++;
+    const t = $('#bezwaar-teller');
+    t.hidden = false;
+    t.textContent = bezwaren === 1
+        ? 'Uw bezwaar is ontvangen buiten kantooruren en telt daarom niet.'
+        : 'Uw ' + bezwaren + 'e bezwaar is geregistreerd als vrijwillige inzet.';
+});
+
+$('#btn-opnieuw').addEventListener('click', () => toonScherm('scherm-formulier'));
+$('#btn-naar-formulier').addEventListener('click', () => toonScherm('scherm-formulier'));
+$('#link-naar-ik').addEventListener('click', (e) => {
+    e.preventDefault();
+    toonScherm('scherm-ik');
+});
+</script>
+</body>
+</html>
