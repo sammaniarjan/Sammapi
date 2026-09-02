@@ -125,7 +125,10 @@
             .apps-grid.mini { grid-template-columns: repeat(2, 1fr); }
         }
 
-        .zoek-houder { position: relative; margin-bottom: 30px; }
+        .zoek-houder { position: relative; margin: 56px 0 34px; }
+        @media (max-width: 680px) {
+            .zoek-houder { margin-top: 32px; }
+        }
         .zoek-houder svg {
             position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
             width: 18px; height: 18px; color: #9aa69e; pointer-events: none;
