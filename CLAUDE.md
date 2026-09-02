@@ -33,18 +33,15 @@ Central launcher with links to the apps. Dark theme with green accents matching 
 ## Development
 
 ```bash
-# Run any app
-open index.html                    # Hub launcher
-open biupama-app-main/index.html   # Study app
-open excel-to-ical/index.html      # Rooster converter
-open ppv-main/index.html           # PPV/NPV calculator
-open SnaakGPT/index.html           # Quotes game
-
-# Or serve locally
+# Serve locally (required: internal links use directory URLs like "bellijst/",
+# which resolve to index.html over HTTP but not via file://)
 python3 -m http.server 8000
+# then open http://localhost:8000/
 ```
 
 No build step required. All apps are self-contained HTML files.
+
+**Internal links**: always link to directories (`href="bellijst/"`, `href="../"`), never to `index.html` directly, so visitors see clean URLs on GitHub Pages.
 
 ## Deployment
 
