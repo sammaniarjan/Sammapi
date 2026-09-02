@@ -49,7 +49,7 @@
         /* ===================================
            Apps Grid
            =================================== */
-        .app-section { margin-bottom: 22px; }
+        .app-section { margin-bottom: 36px; }
         .app-section:last-child { margin-bottom: 0; }
 
         .section-label {
@@ -104,8 +104,46 @@
         .apps-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            gap: 14px;
         }
+
+        .apps-grid .app-card.bellijst { grid-column: 1 / -1; }
+
+        .apps-grid.mini { grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .apps-grid.mini .app-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 10px;
+            padding: 16px 10px 14px;
+        }
+        .apps-grid.mini .app-description,
+        .apps-grid.mini .arrow-icon { display: none; }
+        .apps-grid.mini .app-title { font-size: 0.84rem; line-height: 1.25; }
+        @media (max-width: 680px) {
+            .apps-grid.mini { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        .zoek-houder { position: relative; margin-bottom: 30px; }
+        .zoek-houder svg {
+            position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+            width: 18px; height: 18px; color: #9aa69e; pointer-events: none;
+        }
+        #app-zoek {
+            font: inherit; width: 100%;
+            padding: 12px 16px 12px 42px;
+            background: #ffffff; color: #2c3e36;
+            border: 1px solid #d5cdc2; border-radius: 12px;
+            transition: border-color 0.2s;
+        }
+        #app-zoek:focus { outline: none; border-color: #c45a3c; }
+        body.terminal-mode #app-zoek {
+            background: #000; color: #00ff00;
+            border-color: #005500;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        body.terminal-mode .zoek-houder svg { color: #005500; }
 
         .app-card {
             background: #ffffff;
@@ -677,10 +715,113 @@
 
     <div class="container">
 
+                <div class="zoek-houder">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <input id="app-zoek" type="search" placeholder="Zoek een app&hellip;" autocomplete="off" aria-label="Apps doorzoeken">
+        </div>
+
         <section class="apps-section">
             <div class="app-section">
-                <div class="section-label">Studie</div>
+                <div class="section-label">Veld</div>
                 <div class="apps-grid">
+                    <a href="bellijst/index.html" class="app-card bellijst">
+                        <div class="app-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>
+                            </svg>
+                        </div>
+                        <div class="app-content">
+                            <div class="app-title">Bellijst</div>
+                            <p class="app-description">Handige nummers, doorzoekbaar en direct te bellen.</p>
+                        </div>
+                        <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
+
+                    <a href="negen-liner/index.html" class="app-card liner">
+                <div class="app-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c45a3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                        <line x1="12" y1="7" x2="12" y2="13"/>
+                        <line x1="9" y1="10" x2="15" y2="10"/>
+                    </svg>
+                </div>
+                <div class="app-content">
+                    <div class="app-title">9-Liner</div>
+                    <p class="app-description">MEDEVAC-aanvraag oefenen met MGRS-coördinaten en GPS-conversie.</p>
+                </div>
+                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+
+                    <a href="coordinaten/index.html" class="app-card coords">
+                <div class="app-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="7"/>
+                        <line x1="12" y1="2" x2="12" y2="5"/>
+                        <line x1="12" y1="19" x2="12" y2="22"/>
+                        <line x1="2" y1="12" x2="5" y2="12"/>
+                        <line x1="19" y1="12" x2="22" y2="12"/>
+                    </svg>
+                </div>
+                <div class="app-content">
+                    <div class="app-title">Coördinaten</div>
+                    <p class="app-description">MGRS ↔ GPS omrekenen, met Google Maps-link.</p>
+                </div>
+                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+
+                    
+                </div>
+            </div>
+            <div class="app-section">
+                <div class="section-label">Rekenaars</div>
+                <div class="apps-grid">
+                    <a href="ppv-main/index.html" class="app-card ppv">
+                <div class="app-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="20" x2="18" y2="10"/>
+                        <line x1="12" y1="20" x2="12" y2="4"/>
+                        <line x1="6" y1="20" x2="6" y2="14"/>
+                        <line x1="2" y1="20" x2="22" y2="20"/>
+                    </svg>
+                </div>
+                <div class="app-content">
+                    <div class="app-title">Algoritme Checker</div>
+                    <p class="app-description">Bereken PPV en NPV van diagnostische tests.</p>
+                </div>
+                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+
+                    <a href="zuurstof/index.html" class="app-card zuurstof">
+                <div class="app-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="8" y="7" width="8" height="14" rx="3"/>
+                        <path d="M10 7V4h4v3"/>
+                    </svg>
+                </div>
+                <div class="app-content">
+                    <div class="app-title">O₂-rekenaar</div>
+                    <p class="app-description">Hoe lang gaat de zuurstofcilinder mee bij deze flow?</p>
+                </div>
+                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+
+                    <a href="brandwonden/index.html" class="app-card brandwonden">
+                <div class="app-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 3c3 4 6 6.5 6 10.5a6 6 0 1 1-12 0C6 9.5 9 7 12 3z"/>
+                    </svg>
+                </div>
+                <div class="app-content">
+                    <div class="app-title">Brandwonden</div>
+                    <p class="app-description">Rule of nines → TBSA → Parkland-vochtresuscitatie.</p>
+                </div>
+                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+                </div>
+            </div>
+            <div class="app-section">
+                <div class="section-label">Studie</div>
+                <div class="apps-grid mini">
                     <a href="biupama-app-main/index.html" class="app-card biupama">
                 <div class="app-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2dd4a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -799,102 +940,6 @@
                         <div class="app-content">
                             <div class="app-title">ADHD-checklist</div>
                             <p class="app-description">Onderhouds-checklist voor het vervolgconsult.</p>
-                        </div>
-                        <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                    </a>
-                </div>
-            </div>
-            <div class="app-section">
-                <div class="section-label">Rekenaars</div>
-                <div class="apps-grid">
-                    <a href="ppv-main/index.html" class="app-card ppv">
-                <div class="app-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="20" x2="18" y2="10"/>
-                        <line x1="12" y1="20" x2="12" y2="4"/>
-                        <line x1="6" y1="20" x2="6" y2="14"/>
-                        <line x1="2" y1="20" x2="22" y2="20"/>
-                    </svg>
-                </div>
-                <div class="app-content">
-                    <div class="app-title">Algoritme Checker</div>
-                    <p class="app-description">Bereken PPV en NPV van diagnostische tests.</p>
-                </div>
-                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </a>
-
-                    <a href="zuurstof/index.html" class="app-card zuurstof">
-                <div class="app-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="8" y="7" width="8" height="14" rx="3"/>
-                        <path d="M10 7V4h4v3"/>
-                    </svg>
-                </div>
-                <div class="app-content">
-                    <div class="app-title">O₂-rekenaar</div>
-                    <p class="app-description">Hoe lang gaat de zuurstofcilinder mee bij deze flow?</p>
-                </div>
-                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </a>
-
-                    <a href="brandwonden/index.html" class="app-card brandwonden">
-                <div class="app-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 3c3 4 6 6.5 6 10.5a6 6 0 1 1-12 0C6 9.5 9 7 12 3z"/>
-                    </svg>
-                </div>
-                <div class="app-content">
-                    <div class="app-title">Brandwonden</div>
-                    <p class="app-description">Rule of nines → TBSA → Parkland-vochtresuscitatie.</p>
-                </div>
-                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </a>
-                </div>
-            </div>
-            <div class="app-section">
-                <div class="section-label">Veld</div>
-                <div class="apps-grid">
-                    <a href="negen-liner/index.html" class="app-card liner">
-                <div class="app-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c45a3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                        <line x1="12" y1="7" x2="12" y2="13"/>
-                        <line x1="9" y1="10" x2="15" y2="10"/>
-                    </svg>
-                </div>
-                <div class="app-content">
-                    <div class="app-title">9-Liner</div>
-                    <p class="app-description">MEDEVAC-aanvraag oefenen met MGRS-coördinaten en GPS-conversie.</p>
-                </div>
-                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </a>
-
-                    <a href="coordinaten/index.html" class="app-card coords">
-                <div class="app-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="7"/>
-                        <line x1="12" y1="2" x2="12" y2="5"/>
-                        <line x1="12" y1="19" x2="12" y2="22"/>
-                        <line x1="2" y1="12" x2="5" y2="12"/>
-                        <line x1="19" y1="12" x2="22" y2="12"/>
-                    </svg>
-                </div>
-                <div class="app-content">
-                    <div class="app-title">Coördinaten</div>
-                    <p class="app-description">MGRS ↔ GPS omrekenen, met Google Maps-link.</p>
-                </div>
-                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </a>
-
-                    <a href="bellijst/index.html" class="app-card bellijst">
-                        <div class="app-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>
-                            </svg>
-                        </div>
-                        <div class="app-content">
-                            <div class="app-title">Bellijst</div>
-                            <p class="app-description">Handige nummers, doorzoekbaar en direct te bellen.</p>
                         </div>
                         <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                     </a>
@@ -1145,21 +1190,65 @@
 
     passwordInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
-            if (passwordInput.value === 'TROPEN42') {
-                // Zet het sessie-token dat de rooster-app zelf ook gebruikt,
-                // zodat de toegangsgate daar niet nogmaals om de code vraagt
-                sessionStorage.setItem('ama-rooster-toegang', '2a8f519b87f9bf1a38e60ed1a695f2162ca525b96bc34505f566cc14e4fb76d3');
-                window.location.href = 'excel-to-ical/index.html';
-            } else {
-                passwordInput.classList.add('error');
-                passwordInput.value = '';
-                setTimeout(() => passwordInput.classList.remove('error'), 500);
-            }
+            const ROOSTER_HASH = '2a8f519b87f9bf1a38e60ed1a695f2162ca525b96bc34505f566cc14e4fb76d3';
+            crypto.subtle.digest('SHA-256', new TextEncoder().encode(passwordInput.value.toUpperCase())).then(buf => {
+                const hex = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+                if (hex === ROOSTER_HASH) {
+                    // Zet het sessie-token dat de rooster-app zelf ook gebruikt,
+                    // zodat de toegangsgate daar niet nogmaals om de code vraagt
+                    sessionStorage.setItem('ama-rooster-toegang', ROOSTER_HASH);
+                    window.location.href = 'excel-to-ical/index.html';
+                } else {
+                    passwordInput.classList.add('error');
+                    passwordInput.value = '';
+                    setTimeout(() => passwordInput.classList.remove('error'), 500);
+                }
+            });
         }
         if (e.key === 'Escape') {
             passwordModal.classList.remove('active');
             passwordInput.value = '';
         }
+    });
+
+
+    // ===================================
+    // App-zoekbalk
+    // ===================================
+    const appZoek = document.getElementById('app-zoek');
+
+    function filterApps(term) {
+        const f = term.trim().toLowerCase();
+        document.querySelectorAll('.app-section').forEach(sectie => {
+            let zichtbaar = 0;
+            sectie.querySelectorAll('.app-card').forEach(kaart => {
+                const raak = !f || kaart.textContent.toLowerCase().includes(f);
+                kaart.style.display = raak ? '' : 'none';
+                if (raak) zichtbaar++;
+            });
+            sectie.style.display = zichtbaar ? '' : 'none';
+            if (sectie.classList.contains('inklapbaar')) {
+                if (f && zichtbaar && !sectie.classList.contains('open')) {
+                    sectie.classList.add('open', 'zoek-open');
+                } else if (!f && sectie.classList.contains('zoek-open')) {
+                    sectie.classList.remove('open', 'zoek-open');
+                }
+            }
+        });
+    }
+
+    appZoek.addEventListener('input', () => {
+        if (appZoek.value.trim().toLowerCase() === 'rooster') {
+            appZoek.value = '';
+            filterApps('');
+            passwordModal.classList.add('active');
+            setTimeout(() => passwordInput.focus(), 100);
+            return;
+        }
+        filterApps(appZoek.value);
+    });
+    appZoek.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') { appZoek.value = ''; filterApps(''); appZoek.blur(); }
     });
 
     passwordModal.addEventListener('click', (e) => {
