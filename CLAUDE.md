@@ -43,6 +43,23 @@ No build step required. All apps are self-contained HTML files.
 
 **Internal links**: always link to directories (`href="bellijst/"`, `href="../"`), never to `index.html` directly, so visitors see clean URLs on GitHub Pages.
 
+## Writing style (de-AI-fyer)
+
+All text in this repo must be free of AI-typography tells. **Run the checker before every commit**:
+
+```bash
+python3 tools/deaifyer.py        # check; exit code 1 on violations
+python3 tools/deaifyer.py --fix  # auto-fixes curly quotes and digit ranges
+```
+
+Rules the tool enforces:
+- **No em/en dashes as thought-dashes** (`—`, `–`, `&mdash;`, `&ndash;`) in prose. Rewrite by hand to a colon, comma, semicolon, parentheses, or a sentence split; never blind-replace.
+- **No curly quotes/apostrophes** (`“ ” ‘ ’` and their entities); `--fix` converts them to straight quotes.
+- **Digit ranges use a hyphen** (`10-15`, `18:00-24:00`); `--fix` converts en-dashes between digits.
+- Filler words (cruciaal, essentieel, naadloos, robuust, kortom) are reported as warnings only; judge per case, medical emphasis in the study guides is fine.
+
+Also avoid other AI-writing tells when authoring new content: "niet X, maar Y"-contrasts as a tic, rule-of-three lists everywhere, and significance inflation. The vendored `excel-to-ical/lib/` is excluded and must never be touched.
+
 ## Deployment
 
 Hosted on GitHub Pages.

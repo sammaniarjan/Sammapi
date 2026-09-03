@@ -61,6 +61,6 @@ No build step. Single-file app with inline CSS/JS.
 
 ## Notes
 
-- xlsx is loaded from local `lib/xlsx.full.min.js` (copied from `node_modules/xlsx/dist/`); never switch back to a CDN — the CSP blocks it and it undermines the privacy guarantee
+- xlsx is loaded from local `lib/xlsx.full.min.js` (copied from `node_modules/xlsx/dist/`); never switch back to a CDN: the CSP blocks it and it undermines the privacy guarantee
 - To change the access code: compute `printf 'NEWCODE' | shasum -a 256` (uppercase!) and replace the `ACCESS_HASH` constant in BOTH `index.html` (gate script) and the hub `../index.html` (easter egg script)
 - Sample roster in `voorbeeld rooster/` for testing
