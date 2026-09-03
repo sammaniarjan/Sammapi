@@ -19,7 +19,7 @@ No build step. Single-file app with inline CSS/JS.
 
 `index.html` contains everything:
 - **Access gate**: SHA-256 hashed access code required (sessionStorage token `ama-rooster-toegang`); only the hash is in source. Hub easter egg (type "rooster" or 7× logo taps) opens the same gate.
-- **Privacy**: 100% local processing, enforced by a CSP meta tag that blocks ALL network requests. xlsx.js is vendored locally in `lib/` (NOT loaded from CDN — do not reintroduce external resources). See `PRIVACY.md`.
+- **Privacy**: 100% local processing, enforced by a CSP meta tag that blocks ALL network requests. xlsx.js is vendored locally in `lib/` (NOT loaded from CDN; do not reintroduce external resources). See `PRIVACY.md`.
 - **Excel parsing**: Uses local `lib/xlsx.full.min.js` to parse `.xlsx/.xls` files
 - **Calendar views**: Week and month views with navigation
 - **Change detection**: Compares uploads to detect new/modified events

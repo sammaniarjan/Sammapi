@@ -208,7 +208,7 @@ th.h-onthouding { border-bottom: 2px solid var(--onthouding) !important; }
 
     <div class="card" id="cage">
         <h2>CAGE-screening (alcohol)</h2>
-        <p style="font-size: 0.88rem; margin-bottom: 10px;">Vier vragen; tik aan wat met &ldquo;ja&rdquo; wordt beantwoord.</p>
+        <p style="font-size: 0.88rem; margin-bottom: 10px;">Vier vragen; tik aan wat met &quot;ja&quot; wordt beantwoord.</p>
         <div id="cage-vragen"></div>
         <div class="cage-uitslag laag" id="cage-uitslag"></div>
         <p class="zacht" style="margin-top: 10px;">De CAGE screent op problematisch alcoholgebruik; hij meet niet de hoeveelheid. Voor uitgebreidere screening bestaat de AUDIT(-C). Een positieve screening is een aanleiding voor een goed gesprek, geen diagnose.</p>
@@ -232,7 +232,7 @@ const MIDDELEN = [
     id: 'alcohol', naam: 'Alcohol', sub: 'Onthouding kan levensbedreigend zijn: denk aan insulten en delirium tremens',
     intox: ['Ontremming, verminderd oordeelsvermogen', 'Emotionele labiliteit, soms agressie', 'Dysartrie', 'Ataxie, vallen', 'Nystagmus', 'Verlengde reactietijd', 'Foetor alcoholicus'],
     overdosis: ['Dalend bewustzijn tot coma', 'Ademhalingsdepressie', 'Aspiratierisico (braken bij gedaald bewustzijn)', 'Hypothermie', 'Hypoglykemie', 'Overlijden'],
-    onthouding: ['Tremor, zweten', 'Tachycardie, hypertensie', 'Misselijkheid, braken', 'Angst, agitatie, slapeloosheid (6&ndash;24 u)', 'Onthoudingsinsulten (12&ndash;48 u)', 'Delirium tremens (48&ndash;96 u): desori&euml;ntatie, hallucinaties, autonome ontregeling'],
+    onthouding: ['Tremor, zweten', 'Tachycardie, hypertensie', 'Misselijkheid, braken', 'Angst, agitatie, slapeloosheid (6-24 u)', 'Onthoudingsinsulten (12-48 u)', 'Delirium tremens (48-96 u): desori&euml;ntatie, hallucinaties, autonome ontregeling'],
     nootOnthouding: 'Delirium tremens is levensbedreigend. Denk aan thiamine (preventie Wernicke) en gestructureerde bewaking (bv. CIWA-Ar).'
 },
 {
@@ -253,21 +253,21 @@ const MIDDELEN = [
     id: 'xtc', naam: 'Ecstasy (MDMA)', sub: 'De gevaren: hyperthermie, hyponatri&euml;mie en serotoninesyndroom',
     intox: ['Euforie, verhoogde empathie en energie', 'Mydriasis', 'Kaakklem, tandenknarsen (bruxisme)', 'Tachycardie, hypertensie', 'Zweten, droge mond', 'Neiging tot oplopende lichaamstemperatuur'],
     overdosis: ['Hyperthermie (&gt; 40 &deg;C)', 'Serotoninesyndroom (agitatie, hyperreflexie, clonus)', 'Hyponatri&euml;mie door waterintoxicatie: hersenoedeem, insulten', 'Rabdomyolyse, acuut nierfalen', 'Hartritmestoornissen', 'Leverfalen, stollingsstoornissen (DIC)'],
-    onthouding: ['Geen klassiek lichamelijk onthoudingssyndroom', 'Wel na-effect (&ldquo;dinsdagdip&rdquo;): somberheid, vermoeidheid', 'Prikkelbaarheid', 'Concentratieproblemen, dagen na gebruik'],
+    onthouding: ['Geen klassiek lichamelijk onthoudingssyndroom', 'Wel na-effect (&quot;dinsdagdip&quot;): somberheid, vermoeidheid', 'Prikkelbaarheid', 'Concentratieproblemen, dagen na gebruik'],
     nootOnthouding: 'Zowel te weinig als t&eacute; veel drinken is gevaarlijk: het advies is met mate, met elektrolyten, en afkoelen.'
 },
 {
     id: 'cocaine', naam: 'Coca&iuml;ne', sub: 'Sympathicomimeticum: denk bij pijn op de borst aan coca&iuml;negebruik',
     intox: ['Euforie, zelfoverschatting, energiek', 'Mydriasis', 'Tachycardie, hypertensie', 'Zweten', 'Verminderde eetlust en slaapbehoefte', 'Agitatie, achterdocht'],
     overdosis: ['Pijn op de borst, coronairspasme, myocardinfarct', 'Hartritmestoornissen', 'Hypertensieve crisis, CVA', 'Insulten', 'Hyperthermie', 'Geagiteerd delier, rabdomyolyse'],
-    onthouding: ['&ldquo;Crash&rdquo;: uitputting en hypersomnie', 'Toegenomen eetlust', 'Sombere stemming, anhedonie', 'Soms su&iuml;cidale gedachten', 'Sterke craving'],
+    onthouding: ['&quot;Crash&quot;: uitputting en hypersomnie', 'Toegenomen eetlust', 'Sombere stemming, anhedonie', 'Soms su&iuml;cidale gedachten', 'Sterke craving'],
     nootOnthouding: 'De onthouding is niet lichamelijk gevaarlijk, maar de somberheid en craving maken de terugvalkans groot.'
 },
 {
     id: 'heroine', naam: 'Hero&iuml;ne (opio&iuml;den)', sub: 'De klassieke overdoseringstrias: coma, miosis, ademhalingsdepressie',
-    intox: ['Euforie, daarna sedatie (&ldquo;knikkebollen&rdquo;)', 'Miosis', 'Trage ademhaling', 'Bradycardie, hypotensie', 'Obstipatie', 'Jeuk'],
+    intox: ['Euforie, daarna sedatie (&quot;knikkebollen&quot;)', 'Miosis', 'Trage ademhaling', 'Bradycardie, hypotensie', 'Obstipatie', 'Jeuk'],
     overdosis: ['Trias: coma + pinpointpupillen + ademhalingsdepressie', 'Cyanose, apneu', 'Longoedeem', 'Overlijden', 'Antidotum naloxon: cave kortere werkingsduur dan het opio&iuml;d, dus herhalen en bewaken'],
-    onthouding: ['Craving, onrust, slapeloosheid', 'Gapen, tranenvloed, loopneus', 'Mydriasis, kippenvel (&ldquo;cold turkey&rdquo;)', 'Spier- en botpijn', 'Buikkrampen, diarree, braken', 'Zweten, rillingen'],
+    onthouding: ['Craving, onrust, slapeloosheid', 'Gapen, tranenvloed, loopneus', 'Mydriasis, kippenvel (&quot;cold turkey&quot;)', 'Spier- en botpijn', 'Buikkrampen, diarree, braken', 'Zweten, rillingen'],
     nootOnthouding: 'Heftig maar op zichzelf niet levensbedreigend (anders dan bij alcohol en benzodiazepinen). Begint 6 tot 12 uur na de laatste dosis, piek na 2 tot 3 dagen.'
 }
 ];
@@ -276,7 +276,7 @@ const CAGE = [
     { letter: 'C', tekst: 'Heeft u ooit het gevoel gehad dat u minder zou moeten drinken?', en: 'Cut down' },
     { letter: 'A', tekst: 'Heeft u zich weleens ge&euml;rgerd aan kritiek van anderen op uw drinkgedrag?', en: 'Annoyed by criticism' },
     { letter: 'G', tekst: 'Heeft u zich weleens schuldig gevoeld over uw drinken?', en: 'Guilty' },
-    { letter: 'E', tekst: 'Heeft u ooit &rsquo;s ochtends meteen alcohol gedronken om een kater te verminderen of de zenuwen te kalmeren?', en: 'Eye-opener' }
+    { letter: 'E', tekst: 'Heeft u ooit &#39;s ochtends meteen alcohol gedronken om een kater te verminderen of de zenuwen te kalmeren?', en: 'Eye-opener' }
 ];
 
 /* ---------- per middel ---------- */

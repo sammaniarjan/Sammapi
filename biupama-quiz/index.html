@@ -348,8 +348,8 @@ function volgende() {
         const pct = Math.round(goedDezeRonde / ronde.length * 100);
         $('#score').textContent = goedDezeRonde + '/' + ronde.length;
         $('#score-sub').textContent = pct >= 80 ? 'Sterk! (' + pct + '%)'
-            : pct >= 60 ? 'Aardig op weg (' + pct + '%) — foute vragen komen vaker terug.'
-            : 'Nog even stampen (' + pct + '%) — foute vragen komen vaker terug.';
+            : pct >= 60 ? 'Aardig op weg (' + pct + '%), foute vragen komen vaker terug.'
+            : 'Nog even stampen (' + pct + '%), foute vragen komen vaker terug.';
         toonView('view-klaar');
     }
 }

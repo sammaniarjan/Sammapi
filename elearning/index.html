@@ -156,7 +156,7 @@ body {
     </div>
     <div id="paden"></div>
     <div class="export-kaart">
-        <div class="uitleg"><strong>Export (optioneel).</strong> Download een tekstbestand met je afgeronde modules, scores en datums &mdash; voor je eigen administratie of om te delen. Niets is verplicht.</div>
+        <div class="uitleg"><strong>Export (optioneel).</strong> Download een tekstbestand met je afgeronde modules, scores en datums, voor je eigen administratie of om te delen. Niets is verplicht.</div>
         <button class="knop" id="export-knop">Exporteer voortgang</button>
     </div>
     <div class="voet">Persoonlijk studieproject, geen offici&euml;le uitgave. Voortgang staat alleen in deze browser; een ander apparaat of een geleegde browser begint blanco.</div>
@@ -168,7 +168,7 @@ body {
 const LEERPADEN = [
 {
     key: 'mggz-voortgang', map: '../mggz/', naam: 'MGGZ-trainer', accent: '#0f766e',
-    omschrijving: 'GGZ in overzicht: ziektebeelden, diagnostiek en behandeling. 10–15 minuten totaal.',
+    omschrijving: 'GGZ in overzicht: ziektebeelden, diagnostiek en behandeling. 10-15 minuten totaal.',
     modules: [
         { id: 'keten', titel: 'De keten & verwijzen', sub: 'Wie doet wat, en wanneer verwijs je' },
         { id: 'onderzoek', titel: 'Psychiatrisch onderzoek', sub: 'Status mentalis voor de eerste lijn' },
@@ -263,7 +263,7 @@ function exporteer() {
         const v = laad(pad.key);
         const klaar = pad.modules.filter(m => v[m.id] && v[m.id].af).length;
         regels.push('');
-        regels.push(pad.naam + ' — ' + klaar + '/' + pad.modules.length + ' modules afgerond');
+        regels.push(pad.naam + ': ' + klaar + '/' + pad.modules.length + ' modules afgerond');
         regels.push('-'.repeat(46));
         pad.modules.forEach(m => {
             const st = v[m.id];

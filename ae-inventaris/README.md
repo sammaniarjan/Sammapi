@@ -1,4 +1,4 @@
-# Tascheck — AE medisch materiaal
+# Tascheck: AE medisch materiaal
 
 Zelfstandige web-app voor het beheer van de medische sets bij AE-vluchten (rotary wing). Vervangt het bijhouden van tellingen, vervaldatums en bestellijsten in losse Excel-bestanden.
 
@@ -17,14 +17,14 @@ De onderdelen bevatten **artikelen**, gegroepeerd per **compartiment** (behalve 
 ## Wat de app doet
 
 - **Telling per onderdeel**: stap artikel voor artikel door de inhoud met grote +/− knoppen; per artikel kan de vervaldatum op de verpakking direct worden bijgewerkt en wordt de foto getoond ter herkenning. Afsluiten met een overzicht van afwijkingen, daarna opslaan.
-- **Vervaldatumbewaking**: elk artikel krijgt automatisch een status — verlopen (rood), verloopt binnen 1 maand (rood), binnen 3 maanden (oranje), of goed (groen). Het tabblad *Vervaldata* toont alles gesorteerd op urgentie.
+- **Vervaldatumbewaking**: elk artikel krijgt automatisch een status: verlopen (rood), verloopt binnen 1 maand (rood), binnen 3 maanden (oranje), of goed (groen). Het tabblad *Vervaldata* toont alles gesorteerd op urgentie.
 - **Bestellijst met aanvulvolgorde**: artikelen die verlopen zijn, binnenkort verlopen of onder de norm zitten verschijnen vanzelf op de bestellijst. Per regel wordt de herkomst gekozen volgens de vaste volgorde: eerst de **grijze voorraad**, dan de voorraad van **MatLog (Gilze)**, en wat daar niet is gaat als **VMF-bestelling** via de SharePoint van MatLog naar het MGLC. Regels die uit grijze voorraad of MatLog komen gaan niet mee in de bestelling.
 - **Export op SAP-nummer**: de bestelling gaat als e-mail, klembordtekst of CSV, met per regel SAP-nummer en SAP-benaming.
 - **Beheer**: sets (incl. duo), onderdelen, compartimenten en artikelen zijn volledig te bewerken. Een nieuwe set kan direct met de standaardonderdelen worden aangemaakt.
 
 ## Gebruik
 
-Open `index.html` in een browser — geen installatie of server nodig. De app is ontworpen voor gebruik op een telefoon tijdens het tellen.
+Open `index.html` in een browser, geen installatie of server nodig. De app is ontworpen voor gebruik op een telefoon tijdens het tellen.
 
 Gegevens staan lokaal op het apparaat (browseropslag). Via het tandwiel rechtsboven kan een back-up (JSON) worden gedownload en hersteld, bijvoorbeeld om gegevens naar een ander apparaat over te zetten. Foto's tellen mee in de opslagruimte (ze worden verkleind opgeslagen).
 

@@ -263,10 +263,10 @@ textarea { resize: vertical; min-height: 54px; }
             <div class="line-body">
                 <div class="line-title">Special equipment required</div>
                 <div class="check-list">
-                    <label><input type="checkbox" id="l4a" checked> A &mdash; None</label>
-                    <label><input type="checkbox" id="l4b"> B &mdash; Hoist</label>
-                    <label><input type="checkbox" id="l4c"> C &mdash; Extraction equipment</label>
-                    <label><input type="checkbox" id="l4d"> D &mdash; Ventilator</label>
+                    <label><input type="checkbox" id="l4a" checked> A - None</label>
+                    <label><input type="checkbox" id="l4b"> B - Hoist</label>
+                    <label><input type="checkbox" id="l4c"> C - Extraction equipment</label>
+                    <label><input type="checkbox" id="l4d"> D - Ventilator</label>
                 </div>
             </div>
         </div>
@@ -288,11 +288,11 @@ textarea { resize: vertical; min-height: 54px; }
                 <div class="line-title" id="l6-title">Security at pick-up site</div>
                 <div id="l6-oorlog">
                     <select id="l6-sel">
-                        <option value="">&mdash; select &mdash;</option>
-                        <option value="N">N &mdash; No enemy troops in area</option>
-                        <option value="P">P &mdash; Possible enemy troops in area (approach with caution)</option>
-                        <option value="E">E &mdash; Enemy troops in area (approach with caution)</option>
-                        <option value="X">X &mdash; Enemy troops in area (armed escort required)</option>
+                        <option value="">select...</option>
+                        <option value="N">N - No enemy troops in area</option>
+                        <option value="P">P - Possible enemy troops in area (approach with caution)</option>
+                        <option value="E">E - Enemy troops in area (approach with caution)</option>
+                        <option value="X">X - Enemy troops in area (armed escort required)</option>
                     </select>
                 </div>
                 <div id="l6-vrede" hidden>
@@ -307,12 +307,12 @@ textarea { resize: vertical; min-height: 54px; }
             <div class="line-body">
                 <div class="line-title">Method of marking pick-up site</div>
                 <select id="l7-sel">
-                    <option value="">&mdash; select &mdash;</option>
-                    <option value="A">A &mdash; Panels</option>
-                    <option value="B">B &mdash; Pyrotechnic signal</option>
-                    <option value="C">C &mdash; Smoke signal</option>
-                    <option value="D">D &mdash; None</option>
-                    <option value="E">E &mdash; Other</option>
+                    <option value="">select...</option>
+                    <option value="A">A - Panels</option>
+                    <option value="B">B - Pyrotechnic signal</option>
+                    <option value="C">C - Smoke signal</option>
+                    <option value="D">D - None</option>
+                    <option value="E">E - Other</option>
                 </select>
                 <div style="margin-top:8px;" id="l7-other-wrap" hidden>
                     <input type="text" id="l7-other" placeholder="describe the marking">
@@ -341,10 +341,10 @@ textarea { resize: vertical; min-height: 54px; }
                 <div class="line-title" id="l9-title">NBC contamination</div>
                 <div id="l9-oorlog">
                     <select id="l9-sel">
-                        <option value="">&mdash; None &mdash;</option>
-                        <option value="N">N &mdash; Nuclear</option>
-                        <option value="B">B &mdash; Biological</option>
-                        <option value="C">C &mdash; Chemical</option>
+                        <option value="">none</option>
+                        <option value="N">N - Nuclear</option>
+                        <option value="B">B - Biological</option>
+                        <option value="C">C - Chemical</option>
                     </select>
                 </div>
                 <div id="l9-vrede" hidden>
@@ -653,37 +653,37 @@ function updateLine1() {
 function buildOutput() {
     const g = (id) => $('#' + id).value.trim();
     const lines = [];
-    lines.push('MEDEVAC REQUEST (9-LINER)' + (mode === 'vrede' ? ' — PEACETIME' : ''));
+    lines.push('MEDEVAC REQUEST (9-LINER)' + (mode === 'vrede' ? ' - PEACETIME' : ''));
     lines.push('');
-    lines.push('LINE 1  LOCATION:       ' + (g('l1').toUpperCase() || '—'));
+    lines.push('LINE 1  LOCATION:       ' + (g('l1').toUpperCase() || '-'));
     const freq = g('l2-freq'), call = g('l2-call');
-    lines.push('LINE 2  FREQ/CALL SIGN: ' + ((freq || call) ? [freq, call].filter(Boolean).join(' / ') : '—'));
+    lines.push('LINE 2  FREQ/CALL SIGN: ' + ((freq || call) ? [freq, call].filter(Boolean).join(' / ') : '-'));
     lines.push('LINE 3  PRECEDENCE:     ' + (counts(['l3a','l3b','l3c','l3d','l3e'],
-        ['A (Urgent)','B (Urgent Surgical)','C (Priority)','D (Routine)','E (Convenience)']) || '—'));
+        ['A (Urgent)','B (Urgent Surgical)','C (Priority)','D (Routine)','E (Convenience)']) || '-'));
     const eq = [];
     if ($('#l4a').checked) eq.push('A (None)');
     if ($('#l4b').checked) eq.push('B (Hoist)');
     if ($('#l4c').checked) eq.push('C (Extraction equipment)');
     if ($('#l4d').checked) eq.push('D (Ventilator)');
-    lines.push('LINE 4  EQUIPMENT:      ' + (eq.join(', ') || '—'));
-    lines.push('LINE 5  BY TYPE:        ' + (counts(['l5l','l5a'], ['L (Litter)','A (Ambulatory)']) || '—'));
+    lines.push('LINE 4  EQUIPMENT:      ' + (eq.join(', ') || '-'));
+    lines.push('LINE 5  BY TYPE:        ' + (counts(['l5l','l5a'], ['L (Litter)','A (Ambulatory)']) || '-'));
     if (mode === 'oorlog') {
         const l6 = $('#l6-sel');
-        lines.push('LINE 6  SECURITY:       ' + (l6.value ? l6.options[l6.selectedIndex].text : '—'));
+        lines.push('LINE 6  SECURITY:       ' + (l6.value ? l6.options[l6.selectedIndex].text : '-'));
     } else {
-        lines.push('LINE 6  WOUNDS:         ' + (g('l6-txt') || '—'));
+        lines.push('LINE 6  WOUNDS:         ' + (g('l6-txt') || '-'));
     }
     const l7 = $('#l7-sel');
-    let l7txt = l7.value ? l7.options[l7.selectedIndex].text : '—';
-    if (l7.value === 'E' && g('l7-other')) l7txt = 'E — ' + g('l7-other');
+    let l7txt = l7.value ? l7.options[l7.selectedIndex].text : '-';
+    if (l7.value === 'E' && g('l7-other')) l7txt = 'E - ' + g('l7-other');
     lines.push('LINE 7  MARKING:        ' + l7txt);
     lines.push('LINE 8  NATIONALITY:    ' + (counts(['l8a','l8b','l8c','l8d','l8e'],
-        ['A (Coalition military)','B (Coalition civilian)','C (Non-Coalition security forces)','D (Non-Coalition civilian)','E (EPW)']) || '—'));
+        ['A (Coalition military)','B (Coalition civilian)','C (Non-Coalition security forces)','D (Non-Coalition civilian)','E (EPW)']) || '-'));
     if (mode === 'oorlog') {
         const l9 = $('#l9-sel');
         lines.push('LINE 9  NBC:            ' + (l9.value ? l9.options[l9.selectedIndex].text : 'None'));
     } else {
-        lines.push('LINE 9  TERRAIN:        ' + (g('l9-txt') || '—'));
+        lines.push('LINE 9  TERRAIN:        ' + (g('l9-txt') || '-'));
     }
     return lines.join('\n');
 }

@@ -188,14 +188,14 @@ const examples = {
     sensitivity: 99,
     specificity: 99,
     prevalence: 10,
-    description: 'Drone-detectie in oorlogsgebied. "99% accuraat" bij 10% vijanden. PPV is hoog (~92%) — de meeste alarmen kloppen.'
+    description: 'Drone-detectie in oorlogsgebied. "99% accuraat" bij 10% vijanden. PPV is hoog (~92%): de meeste alarmen kloppen.'
   },
   'drone-peace': {
     population: 100000,
     sensitivity: 99,
     specificity: 99,
     prevalence: 0.1,
-    description: 'Zelfde drone bij routine surveillance (0,1% vijanden). PPV daalt naar ~9% — meer dan 90% van de alarmen is vals!'
+    description: 'Zelfde drone bij routine surveillance (0,1% vijanden). PPV daalt naar ~9%: meer dan 90% van de alarmen is vals!'
   }
 };
 
@@ -331,8 +331,8 @@ function updateELI5(r) {
 
   if (highNpvLowPpv) {
     text = `<strong>Hoge NPV, lage PPV.</strong><br><br>`;
-    text += `De PPV is ${ppvPct}% — van alle positieve uitslagen is dit het percentage dat daadwerkelijk ziek is. `;
-    text += `De <span class="highlight good">NPV is ${npvPct}%</span> — van alle negatieve uitslagen is dit percentage daadwerkelijk gezond.`;
+    text += `De PPV is ${ppvPct}%: van alle positieve uitslagen is dit het percentage dat daadwerkelijk ziek is. `;
+    text += `De <span class="highlight good">NPV is ${npvPct}%</span>: van alle negatieve uitslagen is dit percentage daadwerkelijk gezond.`;
     text += `<br><br>Van ${fmt(totalNeg)} negatieve uitslagen zijn er ${fmt(r.trueNegatives)} terecht negatief en ${fmt(r.falseNegatives)} vals negatief.`;
   } else if (highPpv) {
     text = `<strong>Hoge PPV (${ppvPct}%).</strong><br><br>`;

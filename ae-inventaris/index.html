@@ -747,7 +747,7 @@ function load() {
 
 function save() {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-    catch (e) { toast('Opslaan lukte niet — opslag vol? Verwijder foto’s of maak een back-up.'); }
+    catch (e) { toast('Opslaan lukte niet. Opslag vol? Verwijder foto\'s of maak een back-up.'); }
 }
 
 /* =====================================================================
@@ -767,7 +767,7 @@ function expiryStatus(expiry) {
 }
 
 function fmtExpiry(expiry) {
-    if (!expiry) return '—';
+    if (!expiry) return '-';
     const [y, m] = expiry.split('-');
     const months = ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
     return months[Number(m) - 1] + ' ' + y;
@@ -915,7 +915,7 @@ async function saveFile(filename, text) {
                 return;
             }
             if (err && err.code === 'declined') return;
-            if (err && err.code === 'rate_limited') { toast('Nog een download open — probeer zo opnieuw.'); return; }
+            if (err && err.code === 'rate_limited') { toast('Nog een download open, probeer zo opnieuw.'); return; }
             toast('Downloaden lukte hier niet.');
         }
         return;
@@ -1228,7 +1228,7 @@ function renderCountStep() {
         countSession = null;
         renderPartDetail();
         showView('view-part-detail');
-        toast('Telling gepauzeerd — je kunt later verdergaan');
+        toast('Telling gepauzeerd, je kunt later verdergaan');
     });
 }
 
@@ -1367,7 +1367,7 @@ function renderArticles() {
             '<td><span class="item-name-cell" style="font-weight:600;">' + esc(r.it.name) + '</span>' +
                 (r.it.sapName ? '<span class="cell-sub">' + esc(r.it.sapName) + '</span>' : '') +
                 (r.it.note ? '<span class="cell-sub" style="font-style:italic;">✎ ' + esc(r.it.note) + '</span>' : '') + '</td>' +
-            '<td>' + esc(r.it.sapNr || '—') + '</td>' +
+            '<td>' + esc(r.it.sapNr || '-') + '</td>' +
             '<td>' + esc(r.set.name) + '</td>' +
             '<td>' + esc(r.part.name) + (r.it.compartment ? '<span class="cell-sub">' + esc(r.it.compartment) + '</span>' : '') + '</td>' +
             '<td class="num"><span' + shortCls + '>' + r.it.current + '</span> / ' + r.it.target + ' ' + esc(r.it.unit || 'st') + '</td>' +
@@ -1409,7 +1409,7 @@ function renderOrder() {
         : '';
 
     if (!lines.length) {
-        wrapEl.innerHTML = '<div class="empty">Niets aan te vullen — alle sets op orde.</div>';
+        wrapEl.innerHTML = '<div class="empty">Niets aan te vullen: alle sets op orde.</div>';
         return;
     }
 
@@ -1504,7 +1504,7 @@ $('#btn-order-mark').addEventListener('click', () => {
 function orderText() {
     const lines = exportLines();
     if (!lines.length) return null;
-    let txt = 'VMF-bestelling medisch materiaal AE — ' + fmtDate(todayISO()) + '\n\n';
+    let txt = 'VMF-bestelling medisch materiaal AE, ' + fmtDate(todayISO()) + '\n\n';
     let cur = '';
     for (const l of lines) {
         const head = l.setName + ' · ' + l.partName;
@@ -1766,7 +1766,7 @@ function openItemModal(setId, partId, itemId) {
 $('#btn-settings').addEventListener('click', () => {
     openModal(
         '<h2>Instellingen</h2>' +
-        '<p class="muted" style="margin-bottom:14px;">Gegevens staan lokaal op dit apparaat (browseropslag). Maak regelmatig een back-up, zeker voordat je van apparaat wisselt. Foto’s tellen mee in de opslagruimte.</p>' +
+        '<p class="muted" style="margin-bottom:14px;">Gegevens staan lokaal op dit apparaat (browseropslag). Maak regelmatig een back-up, zeker voordat je van apparaat wisselt. Foto\'s tellen mee in de opslagruimte.</p>' +
         '<div class="btn-row" style="flex-direction:column;">' +
             '<button class="btn btn-block" id="f-export">Back-up downloaden (JSON)</button>' +
             '<button class="btn btn-block" id="f-import">Back-up herstellen</button>' +
