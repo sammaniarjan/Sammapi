@@ -2,11 +2,11 @@
   "name": "BIUPAMA Tropengeneeskunde",
   "short_name": "BIUPAMA",
   "description": "Studiegids tropengeneeskunde voor militaire geneeskunde",
-  "start_url": "./index.html",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#0a0f0a",
-  "theme_color": "#2dd4a0",
+  "background_color": "#e2d9cc",
+  "theme_color": "#e2d9cc",
   "orientation": "any",
   "icons": [
     {

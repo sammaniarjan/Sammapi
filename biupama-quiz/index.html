@@ -375,6 +375,13 @@ $('#btn-reset-stats').addEventListener('click', () => {
 });
 
 renderStart();
+
+const catParam = new URLSearchParams(location.search).get('cat');
+if (catParam && categorieen().includes(catParam)) {
+    gekozenCat = catParam;
+    renderStart();
+    startRonde();
+}
 </script>
 </body>
 </html>

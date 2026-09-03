@@ -68,12 +68,12 @@ Hosted on GitHub Pages.
 
 ## Design System
 
-All apps share a dark theme with colored accents:
-- Hub: `#2dd4a0` (mint green)
-- Biupama: `#2dd4a0` (mint green)
-- Excel-to-iCal: `#10b981` (emerald)
-- PPV-main: `#3b82f6` (blue)
-- SnaakGPT: `#00ff00` (neon green, terminal aesthetic)
+The hub and most apps share a warm light theme: background `#e2d9cc`, white cards, text `#2c3e36`, fonts Playfair Display / DM Sans / JetBrains Mono (served locally via `fonts/fonts.css`). Each app has its own accent color:
+- Hub & Biupama (studiegids + quiz): `#0d9f6e` (green)
+- E-learning hub & MGGZ: `#0f766e`, sociale geneeskunde: `#4d7c0f`, JESIP: `#4f46e5`
+- Rijkshuisstijl satire (ik-271, ik-138, clrs): oranje `#E17000`, donkerblauw `#154273`
+
+Exceptions with their own look: SnaakGPT (`#00ff00`, terminal aesthetic), Excel-to-iCal (`#10b981` emerald), PPV-main (`#3b82f6` blue).
 
 ## Language
 

@@ -162,6 +162,7 @@ body {
     <div class="voet">Persoonlijk studieproject, geen offici&euml;le uitgave. Voortgang staat alleen in deze browser; een ander apparaat of een geleegde browser begint blanco.</div>
 </div>
 
+<script src="../biupama-quiz/questions.js"></script>
 <script>
 'use strict';
 
@@ -250,6 +251,62 @@ function teken() {
         kaart.innerHTML = html;
         houder.appendChild(kaart);
     });
+    tekenQuiz(houder);
+}
+
+/* De BIUPAMA-quiz is een vragenbank, geen moduletraject: een categorie telt
+   als beheerst wanneer elke vraag erin is beantwoord en vaker goed dan fout ging. */
+function quizStatus() {
+    const stats = laad('biupama-quiz-stats');
+    const beheerst = q => {
+        const s = stats[q.id];
+        return !!s && (s.goed + s.fout) > 0 && s.goed >= s.fout;
+    };
+    const catNamen = [...new Set(QUIZ_QUESTIONS.map(q => q.cat))];
+    const cats = catNamen.map(naam => {
+        const vragen = QUIZ_QUESTIONS.filter(q => q.cat === naam);
+        return { naam, totaal: vragen.length, beheerst: vragen.filter(beheerst).length };
+    });
+    return {
+        cats,
+        totaal: QUIZ_QUESTIONS.length,
+        beheerst: QUIZ_QUESTIONS.filter(beheerst).length
+    };
+}
+
+function tekenQuiz(houder) {
+    const accent = '#0d9f6e';
+    const s = quizStatus();
+    const pct = Math.round(100 * s.beheerst / s.totaal);
+    const alles = s.beheerst === s.totaal;
+
+    let html = `
+    <div class="pad-kop">
+        <div>
+            <h2>BIUPAMA-quiz</h2>
+            <div class="omschrijving">Oefenvragen tropengeneeskunde; lastige vragen komen vaker terug.</div>
+        </div>
+        <a class="pad-open" href="../biupama-quiz/" style="background:${accent};">Openen</a>
+    </div>
+    <div class="pad-balk"><div style="width:${pct}%; background:${alles ? 'var(--groen)' : accent};"></div></div>
+    <div class="pad-telling">${alles ? '<span class="alles">&#10003; alle vragen beheerst</span>' : `${s.beheerst}/${s.totaal} vragen beheerst (minstens 1x goed beantwoord, vaker goed dan fout)`}</div>
+    <div class="mod-lijst">`;
+
+    s.cats.forEach((c, i) => {
+        const af = c.beheerst === c.totaal;
+        html += `
+        <a class="mod-rij ${af ? 'af' : ''}" href="../biupama-quiz/?cat=${encodeURIComponent(c.naam)}">
+            <span class="nr">${af ? '&#10003;' : i + 1}</span>
+            <span class="titel">${tekst(c.naam)}<span class="sub">${c.totaal} vragen</span></span>
+            <span class="score">${c.beheerst}/${c.totaal}</span>
+        </a>`;
+    });
+
+    html += `</div>`;
+    const kaart = document.createElement('div');
+    kaart.className = 'pad-kaart';
+    kaart.innerHTML = html;
+    houder.appendChild(kaart);
 }
 
 function exporteer() {
@@ -277,6 +334,14 @@ function exporteer() {
             }
             regels.push(regel);
         });
+    });
+
+    const qs = quizStatus();
+    regels.push('');
+    regels.push('BIUPAMA-quiz: ' + qs.beheerst + '/' + qs.totaal + ' vragen beheerst');
+    regels.push('-'.repeat(46));
+    qs.cats.forEach(c => {
+        regels.push((c.beheerst === c.totaal ? '[x] ' : '[ ] ') + c.naam + ' (' + c.beheerst + '/' + c.totaal + ' beheerst)');
     });
     regels.push('');
 

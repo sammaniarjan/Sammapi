@@ -54,7 +54,7 @@ The content source is `BIUPAMA.md` - a comprehensive markdown file that should b
 
 - **Self-contained**: All CSS and JavaScript are inline (no external files)
 - **Responsive design**: Grid layout that adapts to mobile with hamburger menu
-- **Dark theme**: Custom CSS variables define the color scheme (green accent on dark background)
+- **Warm light theme**: Custom CSS variables define the color scheme (green accent `#0d9f6e` on a warm light background `#e2d9cc`, matching the hub)
 - **Navigation**:
   - Sidebar navigation auto-generated from content sections
   - Search functionality for filtering content
@@ -71,7 +71,7 @@ The main content is hardcoded in HTML within the `<main>` element. When updating
 ### Styling System
 
 Uses CSS custom properties (variables) for theming:
-- Dark green/black palette
+- Warm light palette (beige background, white cards, green accent)
 - Color-coded badges for pathogen types (bacteria, protozoa, helminths, viruses, fungi)
 - Responsive breakpoint at 768px for mobile
 
