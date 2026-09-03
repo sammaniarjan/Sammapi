@@ -53,8 +53,8 @@ python3 tools/deaifyer.py --fix  # auto-fixes curly quotes and digit ranges
 ```
 
 Rules the tool enforces:
-- **No em/en dashes as thought-dashes** (`—`, `–`, `&mdash;`, `&ndash;`) in prose. Rewrite by hand to a colon, comma, semicolon, parentheses, or a sentence split; never blind-replace.
-- **No curly quotes/apostrophes** (`“ ” ‘ ’` and their entities); `--fix` converts them to straight quotes.
+- **No em/en dashes as thought-dashes** (U+2014, U+2013, or their HTML entities) in prose. Rewrite by hand to a colon, comma, semicolon, parentheses, or a sentence split; never blind-replace.
+- **No curly quotes/apostrophes** (U+201C/201D/2018/2019 or their entities); `--fix` converts them to straight quotes.
 - **Digit ranges use a hyphen** (`10-15`, `18:00-24:00`); `--fix` converts en-dashes between digits.
 - Filler words (cruciaal, essentieel, naadloos, robuust, kortom) are reported as warnings only; judge per case, medical emphasis in the study guides is fine.
 
