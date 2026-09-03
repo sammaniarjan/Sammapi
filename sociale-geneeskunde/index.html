@@ -1416,7 +1416,7 @@ function toonKlaar() {
 
     const v = laadVoortgang();
     const vorige = v[s.moduleId] || {};
-    v[s.moduleId] = { af: true, score: Math.max(score, vorige.score || 0) };
+    v[s.moduleId] = { af: true, score: Math.max(score, vorige.score || 0), wanneer: Date.now() };
     bewaarVoortgang(v);
 
     let foutenHtml = '';
@@ -1444,7 +1444,9 @@ function toonKlaar() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-toonOverzicht();
+const diepLink = new URLSearchParams(location.search).get('module');
+if (diepLink && (diepLink === 'zelftest' || diepLink === 'eindtoets' || MODULES.some(m => m.id === diepLink))) startModule(diepLink);
+else toonOverzicht();
 </script>
 </body>
 </html>

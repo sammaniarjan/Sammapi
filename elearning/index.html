@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>E-learning</title>
+<meta name="description" content="Overzicht van de e-learnings (MGGZ en sociale geneeskunde) met voortgang per module. Afgeronde modules blijven groen; optioneel exporteer je een voortgangsoverzicht. Voor onderwijsdoeleinden.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23e2d9cc'/><path d='M50 26L14 42l36 16 36-16z' fill='none' stroke='%230f766e' stroke-width='6' stroke-linejoin='round'/><path d='M28 50v16c0 6 10 11 22 11s22-5 22-11V50' fill='none' stroke='%230f766e' stroke-width='6' stroke-linecap='round'/><path d='M84 44v18' stroke='%230f766e' stroke-width='6' stroke-linecap='round'/></svg>">
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --bg: #e2d9cc;
+    --vlak: #ffffff;
+    --vlak-zacht: #f7f3ed;
+    --tekst: #2c3e36;
+    --tekst-2: #6b7b6f;
+    --muted: #9aa69e;
+    --rand: #d5cdc2;
+    --rand-licht: #e3dbd0;
+    --accent: #0f766e;
+    --accent-donker: #115e59;
+    --accent-bg: rgba(15, 118, 110, 0.08);
+    --groen: #059669;
+    --groen-bg: rgba(5, 150, 105, 0.1);
+}
+
+body {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--tekst);
+    line-height: 1.55;
+    min-height: 100vh;
+}
+
+.wrap { max-width: 860px; margin: 0 auto; padding: 16px 16px 60px; }
+
+.back-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--tekst-2); text-decoration: none;
+    font-size: 0.88rem; padding: 10px 0;
+}
+.back-link:hover { color: var(--accent); }
+.back-link svg { width: 17px; height: 17px; }
+
+.app-head { margin: 8px 0 18px; }
+.app-head h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem; font-weight: 600;
+}
+.app-head .sub { color: var(--tekst-2); font-size: 0.88rem; }
+
+.intro-note {
+    display: flex; gap: 10px; align-items: flex-start;
+    background: var(--accent-bg);
+    border: 1px solid rgba(15, 118, 110, 0.2);
+    border-radius: 12px; padding: 12px 14px;
+    font-size: 0.86rem; margin-bottom: 16px;
+}
+.intro-note svg { flex-shrink: 0; margin-top: 2px; }
+
+.pad-kaart {
+    background: var(--vlak);
+    border: 1px solid var(--rand-licht);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 16px;
+}
+.pad-kop { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.pad-kop h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem; font-weight: 600;
+}
+.pad-kop .omschrijving { color: var(--tekst-2); font-size: 0.85rem; margin-top: 2px; }
+.pad-open {
+    font: inherit; font-size: 0.84rem; font-weight: 600;
+    color: #fff; text-decoration: none;
+    border-radius: 50px; padding: 8px 16px;
+    white-space: nowrap; align-self: center;
+}
+.pad-balk {
+    height: 7px; border-radius: 4px; background: var(--rand-licht);
+    overflow: hidden; margin: 14px 0 4px;
+}
+.pad-balk > div { height: 100%; border-radius: 4px; transition: width 0.5s; }
+.pad-telling { font-family: 'JetBrains Mono', monospace; font-size: 0.76rem; color: var(--tekst-2); margin-bottom: 12px; }
+.pad-telling .alles { color: var(--groen); font-weight: 700; }
+
+.mod-lijst { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+@media (max-width: 620px) { .mod-lijst { grid-template-columns: 1fr; } }
+.mod-rij {
+    display: grid; grid-template-columns: 26px 1fr auto;
+    gap: 10px; align-items: center;
+    background: var(--vlak-zacht);
+    border: 1px solid var(--rand);
+    border-radius: 10px; padding: 9px 12px;
+    text-decoration: none; color: inherit;
+    transition: all 0.15s;
+}
+.mod-rij:hover { border-color: var(--accent); transform: translateY(-1px); }
+.mod-rij .nr {
+    width: 26px; height: 26px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--vlak); border: 1px solid var(--rand);
+    font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 700;
+    color: var(--tekst-2);
+}
+.mod-rij .titel { font-size: 0.86rem; font-weight: 600; }
+.mod-rij .sub { display: block; font-size: 0.73rem; font-weight: 400; color: var(--tekst-2); }
+.mod-rij .score { font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: var(--muted); }
+.mod-rij.af { background: var(--groen-bg); border-color: rgba(5, 150, 105, 0.35); }
+.mod-rij.af:hover { border-color: var(--groen); }
+.mod-rij.af .nr { background: var(--groen); border-color: var(--groen); color: #fff; }
+.mod-rij.af .score { color: var(--groen); font-weight: 700; }
+.mod-rij.special { border-style: dashed; }
+
+.export-kaart {
+    background: var(--vlak);
+    border: 1px dashed var(--rand);
+    border-radius: 14px;
+    padding: 16px 18px;
+    display: flex; gap: 14px; align-items: center; justify-content: space-between; flex-wrap: wrap;
+}
+.export-kaart .uitleg { font-size: 0.85rem; color: var(--tekst-2); flex: 1 1 260px; }
+.export-kaart .uitleg strong { color: var(--tekst); }
+.knop {
+    font: inherit; font-size: 0.9rem; font-weight: 600;
+    background: var(--accent); color: #fff;
+    border: none; border-radius: 10px;
+    padding: 10px 20px; cursor: pointer; transition: all 0.2s;
+}
+.knop:hover { background: var(--accent-donker); }
+
+.voet {
+    text-align: center; margin-top: 30px;
+    font-size: 0.78rem; color: var(--muted);
+}
+.voet a { color: var(--tekst-2); }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <a href="../" class="back-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Dashboard
+    </a>
+    <div class="app-head">
+        <h1>E-learning</h1>
+        <div class="sub">Alle e-learnings met voortgang per module &middot; alleen op dit apparaat bijgehouden</div>
+    </div>
+    <div class="intro-note">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        <div>Klik een module aan om er direct in te springen. Afgeronde modules blijven <strong>groen</strong> staan, met je beste score. Afronden is je eigen verantwoordelijkheid; wil je kunnen laten zien wat je hebt gedaan, dan kun je onderaan (optioneel) een overzicht exporteren.</div>
+    </div>
+    <div id="paden"></div>
+    <div class="export-kaart">
+        <div class="uitleg"><strong>Export (optioneel).</strong> Download een tekstbestand met je afgeronde modules, scores en datums &mdash; voor je eigen administratie of om te delen. Niets is verplicht.</div>
+        <button class="knop" id="export-knop">Exporteer voortgang</button>
+    </div>
+    <div class="voet">Persoonlijk studieproject, geen offici&euml;le uitgave. Voortgang staat alleen in deze browser; een ander apparaat of een geleegde browser begint blanco.</div>
+</div>
+
+<script>
+'use strict';
+
+const LEERPADEN = [
+{
+    key: 'mggz-voortgang', map: '../mggz/', naam: 'MGGZ-trainer', accent: '#0f766e',
+    omschrijving: 'GGZ in overzicht: ziektebeelden, diagnostiek en behandeling. 10–15 minuten totaal.',
+    modules: [
+        { id: 'keten', titel: 'De keten & verwijzen', sub: 'Wie doet wat, en wanneer verwijs je' },
+        { id: 'onderzoek', titel: 'Psychiatrisch onderzoek', sub: 'Status mentalis voor de eerste lijn' },
+        { id: 'stemming', titel: 'Stemming, angst & PTSS', sub: 'Herkennen en eerste behandelstap' },
+        { id: 'ontwikkeling', titel: 'ADHD, autisme & LVB', sub: 'Herkennen en ermee rekenen in het consult' },
+        { id: 'persoonlijkheid', titel: 'Persoonlijkheid & psychose', sub: 'Clusters, rode vlaggen en de eerste lijn' },
+        { id: 'casus', titel: 'Casuïstiek', sub: 'Drie korte casussen uit de eerste lijn' },
+        { id: 'eindtoets', titel: 'Eindtoets', sub: 'Tien vragen door elkaar', special: true }
+    ]
+},
+{
+    key: 'socgen-voortgang', map: '../sociale-geneeskunde/', naam: 'Sociale geneeskunde', accent: '#4d7c0f',
+    omschrijving: 'Gezondheid en werk, wetgeving, en de militaire context.',
+    modules: [
+        { id: 'vak', titel: 'Wat is sociale geneeskunde?', sub: 'Het vak en de drie specialismen' },
+        { id: 'modellen', titel: 'Gezondheid en werk: de modellen', sub: 'Positieve gezondheid, ICF en werk als medicijn' },
+        { id: 'preventie', titel: 'Preventie', sub: 'Twee indelingen die je moet kennen' },
+        { id: 'poortwachter', titel: 'Wet verbetering poortwachter', sub: 'De verzuimtijdlijn met weeknummers' },
+        { id: 'wia', titel: 'Loondoorbetaling en WIA', sub: 'Van 104 weken loon naar de uitkeringsklassen' },
+        { id: 'arbo', titel: 'Arbowet en de bedrijfsarts', sub: 'Basiscontract, spreekuur en second opinion' },
+        { id: 'privacy', titel: 'Privacy, rechten en plichten', sub: 'Wat wel en niet mag rond de zieke werknemer' },
+        { id: 'dubbelrol', titel: 'De militair arts: dubbele rol', sub: 'Zorgteam, beroepsgeheim en de commandant' },
+        { id: 'inzet', titel: 'Keuring, oefening en uitzending', sub: 'Van aanstellingskeuring tot hitteadvies' },
+        { id: 'verzuimmil', titel: 'Verzuim, SMT en rechtspositie', sub: 'Van ziekmelding tot invaliditeitspensioen' },
+        { id: 'casus', titel: 'Casuïstiek-trainer', sub: 'Zes situaties uit de praktijk' },
+        { id: 'zelftest', titel: 'Zelftest zonder opties', sub: 'Open vragen met zelfbeoordeling', special: true },
+        { id: 'eindtoets', titel: 'Eindtoets', sub: 'Twaalf vragen door elkaar', special: true }
+    ]
+}
+];
+
+function laad(key) {
+    try { return JSON.parse(localStorage.getItem(key)) || {}; } catch (e) { return {}; }
+}
+
+function tekst(s) {
+    const d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+}
+
+function teken() {
+    const houder = document.getElementById('paden');
+    houder.innerHTML = '';
+    LEERPADEN.forEach(pad => {
+        const v = laad(pad.key);
+        const klaar = pad.modules.filter(m => v[m.id] && v[m.id].af).length;
+        const pct = Math.round(100 * klaar / pad.modules.length);
+        const alles = klaar === pad.modules.length;
+
+        let html = `
+        <div class="pad-kop">
+            <div>
+                <h2>${tekst(pad.naam)}</h2>
+                <div class="omschrijving">${tekst(pad.omschrijving)}</div>
+            </div>
+            <a class="pad-open" href="${pad.map}" style="background:${pad.accent};">Openen</a>
+        </div>
+        <div class="pad-balk"><div style="width:${pct}%; background:${alles ? 'var(--groen)' : pad.accent};"></div></div>
+        <div class="pad-telling">${alles ? '<span class="alles">&#10003; alles afgerond</span>' : `${klaar}/${pad.modules.length} modules afgerond`}</div>
+        <div class="mod-lijst">`;
+
+        pad.modules.forEach((m, i) => {
+            const st = v[m.id];
+            const af = st && st.af;
+            const score = af && st.score != null ? st.score + '%' : '';
+            const nr = m.special ? (m.id === 'eindtoets' ? '&#9733;' : '?') : String(i + 1);
+            html += `
+            <a class="mod-rij ${af ? 'af' : ''} ${m.special ? 'special' : ''}" href="${pad.map}?module=${m.id}">
+                <span class="nr">${af ? '&#10003;' : nr}</span>
+                <span class="titel">${tekst(m.titel)}<span class="sub">${tekst(m.sub)}</span></span>
+                <span class="score">${score}</span>
+            </a>`;
+        });
+
+        html += `</div>`;
+        const kaart = document.createElement('div');
+        kaart.className = 'pad-kaart';
+        kaart.innerHTML = html;
+        houder.appendChild(kaart);
+    });
+}
+
+function exporteer() {
+    const nu = new Date();
+    const datumOpties = { day: 'numeric', month: 'long', year: 'numeric' };
+    const regels = [];
+    regels.push('E-LEARNING - VOORTGANGSOVERZICHT');
+    regels.push('Geëxporteerd: ' + nu.toLocaleDateString('nl-NL', datumOpties) + ', ' + nu.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' }));
+    regels.push('Bron: apps.sammani.nl (voortgang wordt alleen op het eigen apparaat bijgehouden)');
+    LEERPADEN.forEach(pad => {
+        const v = laad(pad.key);
+        const klaar = pad.modules.filter(m => v[m.id] && v[m.id].af).length;
+        regels.push('');
+        regels.push(pad.naam + ' — ' + klaar + '/' + pad.modules.length + ' modules afgerond');
+        regels.push('-'.repeat(46));
+        pad.modules.forEach(m => {
+            const st = v[m.id];
+            const af = st && st.af;
+            let regel = (af ? '[x] ' : '[ ] ') + m.titel;
+            if (af) {
+                const extra = [];
+                if (st.score != null) extra.push('score ' + st.score + '%');
+                if (st.wanneer) extra.push('afgerond ' + new Date(st.wanneer).toLocaleDateString('nl-NL', datumOpties));
+                if (extra.length) regel += ' (' + extra.join(', ') + ')';
+            }
+            regels.push(regel);
+        });
+    });
+    regels.push('');
+
+    const blob = new Blob([regels.join('\n')], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'elearning-voortgang.txt';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+document.getElementById('export-knop').addEventListener('click', exporteer);
+teken();
+</script>
+</body>
+</html>
