@@ -1103,6 +1103,39 @@ Denguevirus (flavivirus), 4 serotypes (DENV-1 t/m 4)
 
 ---
 
+## 3B. CHIKUNGUNYA
+
+### Kliniek
+
+- Incubatietijd 2-12 dagen; overdracht via de Aedes-mug (overdag actief)
+- Acuut: hoge koorts, ernstige (vaak symmetrische) polyartralgie, myalgie, hoofdpijn, uitslag
+- **Chroniciteit bepaalt de ziektelast: bij circa 40-50% houden reumatische klachten (artralgie/artritis) maanden tot jaren aan**
+
+### Vaccinatie
+
+Twee vaccins geregistreerd (Ixchiq 2024, Vimkunya 2025). Voor beide ontbreekt een RCT met klinische eindpunten: registratie berust op immunogeniciteit (neutraliserende antistoffen als surrogaatmarker); effectiviteitsstudies lopen als registratieverplichting.
+
+|Vaccin|Type|Kern|
+|---|---|---|
+|**Vimkunya**|VLP (niet-levend), 1 dosis, vanaf 12 jaar|Neutraliserende antistoffen bij ~98% na 3 weken; LCR-voorkeursvaccin|
+|**Ixchiq**|Levend verzwakt, 1 dosis|Neutraliserende antistoffen bij ~99% na 28 dagen; potentieel ernstige bijwerkingen (chikungunya-achtig beeld, encefalitis), vooral bij ouderen; gebruik bij 60/65-plus in 2025 tijdelijk geschorst|
+
+### LCR-indicatie
+
+Vaccinatie aanbevelen bij verhoogd risico op chikungunya:
+
+- Reizigers naar landen of gebieden met een gaande CHIKV-uitbraak, ongeacht de reisduur
+- Reizigers (bijvoorbeeld expats) die 6 maanden of langer verblijven in een endemisch C1-land (substantiële endemiciteit); de grens van 6 maanden is indicatief
+
+Vaccinkeuze:
+
+- **12 t/m 64 jaar**: voorkeur Vimkunya; Ixchiq als alternatief wanneer Vimkunya niet mogelijk of wenselijk is (bijvoorbeeld contra-indicatie), of in uitzonderlijke gevallen op nadrukkelijk verzoek na adequate voorlichting, uitsluitend na zorgvuldige afweging van baten en risico's
+- **65 jaar en ouder**: uitsluitend Vimkunya
+
+Indicatiestelling: significant risico, na afweging van baten en risico's. Volg het actuele LCR-protocol (mijn.lcr.nl/protocollen).
+
+---
+
 ## 4. SCHISTOSOMIASIS (Bilharzia)
 
 ### Soorten
@@ -2290,6 +2323,17 @@ Mycobacterium tuberculosis complex
 - Contra-indicaties
 - Verblijfsduur
 - Kosten
+
+### Preventiestrategie per transmissiegebied
+
+|Gebied|Beleid|
+|---|---|
+|Laag transmissiegebied|Anti-muggenmaatregelen|
+|Middelmatig, medische hulp binnen 48 uur bereikbaar (tijdens en na de reis)|Anti-muggenmaatregelen|
+|Middelmatig, medische hulp binnen 48 uur niet bereikbaar (tijdens of na de reis)|Anti-muggenmaatregelen + noodbehandeling mee|
+|Hoog transmissiegebied|Anti-muggenmaatregelen + chemoprofylaxe|
+
+**Risicogroepen:** het schema geldt voor de gezonde reiziger. Bij verhoogd risico op een gecompliceerd beloop is chemoprofylaxe ook in middelmatig transmissiegebied aangewezen: jonge kinderen, zwangeren, ouderen (in de Nederlandse reizigersadvisering 60-plus), (functionele) hypo- of asplenie, immuunsuppressie en complexe comorbiditeit. Bij (functionele) hypo- of asplenie geldt het strengste beleid: reizen naar malariagebied wordt ontraden, chemoprofylaxe wordt ook in laag-transmissiegebied geadviseerd, en altijd chemoprofylaxe in plaats van noodbehandeling.
 
 ### Muggenwerende maatregelen
 
