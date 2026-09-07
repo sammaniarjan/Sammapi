@@ -103,6 +103,10 @@ body {
 }
 .bel-knop:hover { background: rgba(180, 83, 9, 0.14); }
 .bel-knop svg { width: 15px; height: 15px; flex-shrink: 0; }
+.bel-knop.mail {
+    font-size: 0.78rem; font-weight: 600;
+    word-break: break-all; text-transform: lowercase;
+}
 .kopieer {
     font: inherit; flex-shrink: 0;
     background: transparent; border: 1px solid var(--rand);
@@ -138,7 +142,7 @@ body {
     </a>
     <div class="app-head">
         <h1>Bellijst</h1>
-        <div class="sub">Handige nummers, doorzoekbaar en direct te bellen</div>
+        <div class="sub">Handige nummers en mailadressen, doorzoekbaar en direct te bellen</div>
     </div>
 
     <div class="zoek-houder">
@@ -167,24 +171,174 @@ const NUMMERS = [
         ]
     },
     {
-        naam: 'Defensie farmaceutische dienst',
-        toelichting: 'Farmaceutische vragen rond logistiek, opslag (ruimte te warm), vaccins',
+        naam: 'Arts van dienst EGB',
+        toelichting: 'Kromhout Kazerne, Utrecht',
+        nummers: [
+            { label: '', nummer: '088 950 25 40' }
+        ]
+    },
+    {
+        naam: 'Tandarts van dienst (DTD)',
+        toelichting: 'Bij spoed of overleg, met name buiten kantooruren; anders de DTD van de kazerne',
+        nummers: [
+            { label: '', nummer: '088 950 25 50' }
+        ]
+    },
+    {
+        naam: 'MGGZ / Centrale zorgeenheid (CZE)',
+        toelichting: 'Centraal aanmeldteam en dienstdoende psychiater via hetzelfde nummer',
+        nummers: [
+            { label: 'Aanmeldteam / dd psychiater', nummer: '030 250 25 99' },
+            { label: 'Staf CZE', nummer: '030 250 26 50' }
+        ],
+        emails: [
+            { label: 'Aanmeldingen', adres: 'aanmeldingen.mggz@mindef.nl' },
+            { label: 'Centrale zorgeenheid', adres: 'centralezorgeenheid.mggz@mindef.nl' },
+            { label: 'Operationele zorg', adres: 'operationelezorgmggz@mindef.nl' }
+        ]
+    },
+    {
+        naam: 'Defensie farmaceutische dienst (DFD)',
+        toelichting: 'Farmaceutische vragen rond logistiek, opslag (ruimte te warm), vaccins; kantooruren (8-17 uur)',
         nummers: [
             { label: '', nummer: '088 950 25 30' }
+        ],
+        emails: [
+            { label: '', adres: 'defensie.farmaceutische.dienst@mindef.nl' }
         ]
     },
     {
-        naam: 'Dienstdoende apotheek',
-        toelichting: 'Patiëntgerichte vragen (onder werktijden)',
+        naam: 'Centrale militaire apotheek',
+        toelichting: 'Pati\u00ebntgerichte farmaceutische vragen; RJ Punter, apotheker (8-17.30 uur)',
         nummers: [
             { label: '', nummer: '030 250 22 69' }
+        ],
+        emails: [
+            { label: '', adres: 'centraal.militaire.apotheek@mindef.nl' }
         ]
     },
     {
-        naam: 'Dienstdoende psychiater MGGZ',
+        naam: 'Di\u00ebtetiek CMH',
+        toelichting: 'Centraal Militair Hospitaal, Utrecht',
+        nummers: [
+            { label: '', nummer: '030 250 23 13' }
+        ]
+    },
+    {
+        naam: 'CMH internisten (infectiologie)',
+        toelichting: 'Roos Barth en Esther Schadd via het CMH; Kees Stijnis via het AMC',
+        nummers: [
+            { label: 'Barth / Schadd', nummer: '030 250 21 11' },
+            { label: 'Stijnis (AMC)', nummer: '020 566 91 11' }
+        ],
+        emails: [
+            { label: 'Roos Barth', adres: 're.barth@mindef.nl' },
+            { label: 'Esther Schadd', adres: 'em.schadd@mindef.nl' },
+            { label: 'Kees Stijnis', adres: 'c.stijnis@amsterdamumc.nl' }
+        ]
+    },
+    {
+        naam: 'Tropische en reizigersgeneeskunde (AMC)',
+        toelichting: 'Centrum voor Tropische Geneeskunde en Reizigersgeneeskunde, Amsterdam UMC',
+        nummers: [
+            { label: 'Algemeen AMC', nummer: '020 566 91 11' },
+            { label: 'Secretariaat', nummer: '020 566 65 26' }
+        ],
+        emails: [
+            { label: '', adres: 'c.stijnis@amsterdamumc.nl' }
+        ]
+    },
+    {
+        naam: 'Parasitologie (Amsterdam UMC)',
         toelichting: '',
         nummers: [
-            { label: '', nummer: '030 250 25 99' }
+            { label: 'Laboratorium', nummer: '020 566 57 19' },
+            { label: 'Dd arts-parasitoloog', nummer: '06 21 35 34 42' }
+        ]
+    },
+    {
+        naam: 'AMC Lymecentrum',
+        toelichting: '',
+        nummers: [
+            { label: 'Lymeline', nummer: '020 732 71 70' }
+        ],
+        emails: [
+            { label: '', adres: 'lyme@amsterdamumc.nl' }
+        ]
+    },
+    {
+        naam: 'Tbc-overleg',
+        toelichting: 'Klinische consulenten: Beatrixoord / Radboudumc',
+        nummers: [
+            { label: 'Intercollegiale lijn', nummer: '020 555 38 91' }
+        ],
+        emails: [
+            { label: 'GGD Amsterdam', adres: 'amakowski@ggd.amsterdam.nl' }
+        ]
+    },
+    {
+        naam: 'IMG',
+        toelichting: 'Inspectie Militaire Gezondheidszorg',
+        nummers: [
+            { label: '', nummer: '088 956 63 22' }
+        ],
+        emails: [
+            { label: '', adres: 'img@mindef.nl' }
+        ]
+    },
+    {
+        naam: 'Veteranenloket',
+        toelichting: 'Veteraneninstituut',
+        nummers: [
+            { label: '', nummer: '088 344 00 00' }
+        ],
+        emails: [
+            { label: '', adres: 'info@veteranenloket.nl' }
+        ]
+    },
+    {
+        naam: 'CEAG',
+        toelichting: 'Vaccinatieadviezen en landeninformatie via e-mail',
+        nummers: [
+            { label: 'Aanvraagcentrum', nummer: '088 950 25 89' }
+        ],
+        emails: [
+            { label: 'Current ops', adres: 'ceag.current.ops@mindef.nl' }
+        ]
+    },
+    {
+        naam: 'Loket asbest',
+        toelichting: '',
+        nummers: [
+            { label: '', nummer: '0800 272 37 80' }
+        ],
+        emails: [
+            { label: '', adres: 'loket.asbest@mindef.nl' }
+        ]
+    },
+    {
+        naam: 'Melding stralingsincident',
+        toelichting: 'Alarmlijn',
+        nummers: [
+            { label: '', nummer: '0800 7777 8888' },
+            { label: 'Of', nummer: '+31 6 53 17 91 22' }
+        ]
+    },
+    {
+        naam: 'Incidentmelding',
+        toelichting: 'Referentie: Inc 0846554',
+        nummers: [
+            { label: '', nummer: '0800 235 84 00' }
+        ]
+    },
+    {
+        naam: 'Gynaecoloog (reservist, Isala)',
+        toelichting: 'Vincent Jongen',
+        nummers: [
+            { label: '', nummer: '06 11 08 82 25' }
+        ],
+        emails: [
+            { label: '', adres: 'v.jongen@isala.nl' }
         ]
     }
 ];
@@ -197,6 +351,7 @@ const zoekWis = document.getElementById('zoek-wis');
 const belIcoon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>';
 const kopieerIcoon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
 const vinkIcoon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
+const mailIcoon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>';
 
 function kaal(s) { return s.toLowerCase().replace(/[\s-]/g, ''); }
 
@@ -209,7 +364,8 @@ function render(filter) {
         const raak = !f
             || item.naam.toLowerCase().includes(f)
             || item.toelichting.toLowerCase().includes(f)
-            || item.nummers.some(n => n.label.toLowerCase().includes(f) || (fKaal && kaal(n.nummer).includes(fKaal)));
+            || item.nummers.some(n => n.label.toLowerCase().includes(f) || (fKaal && kaal(n.nummer).includes(fKaal)))
+            || (item.emails || []).some(m => m.label.toLowerCase().includes(f) || m.adres.toLowerCase().includes(f));
         if (!raak) return;
         getoond++;
         const kaart = document.createElement('div');
@@ -235,6 +391,29 @@ function render(filter) {
                     setTimeout(() => { kop.innerHTML = kopieerIcoon; kop.classList.remove('ok'); }, 1400);
                 } catch (e) {
                     window.prompt('Kopieer het nummer:', telWaarde);
+                }
+            });
+            rij.appendChild(kop);
+            kaart.appendChild(rij);
+        });
+        (item.emails || []).forEach(m => {
+            const rij = document.createElement('div');
+            rij.className = 'nummer-rij';
+            rij.innerHTML = `
+                <span class="label">${m.label}</span>
+                <a class="bel-knop mail" href="mailto:${m.adres}">${mailIcoon}${m.adres}</a>`;
+            const kop = document.createElement('button');
+            kop.className = 'kopieer';
+            kop.setAttribute('aria-label', 'Mailadres kopiëren');
+            kop.innerHTML = kopieerIcoon;
+            kop.addEventListener('click', async () => {
+                try {
+                    await navigator.clipboard.writeText(m.adres);
+                    kop.innerHTML = vinkIcoon;
+                    kop.classList.add('ok');
+                    setTimeout(() => { kop.innerHTML = kopieerIcoon; kop.classList.remove('ok'); }, 1400);
+                } catch (e) {
+                    window.prompt('Kopieer het mailadres:', m.adres);
                 }
             });
             rij.appendChild(kop);
