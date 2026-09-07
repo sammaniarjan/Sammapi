@@ -21,7 +21,7 @@ Central launcher with links to the apps. Dark theme with green accents matching 
 
 **Hidden app**: excel-to-ical is NOT visibly linked. It sits behind an easter egg: type "rooster" on the hub (desktop) or tap the logo icon 7× quickly (mobile), then enter an access code. Only the SHA-256 hash of the code lives in source (`ACCESS_HASH` in both hub `index.html` and `excel-to-ical/index.html`). The app itself is also gated, so a direct URL still requires the code. Never add a visible link to excel-to-ical or put the plaintext code anywhere in the repo.
 
-**Gated app**: bellijst is visibly linked but password-protected with the same pattern (`TOEGANG_HASH` in `bellijst/index.html`: SHA-256 of the uppercased password, remembered per browser session). The same rule applies: never put the plaintext password anywhere in the repo or in commit messages. Note this gate hides the page, not the source: the contact data itself is still readable in the page source.
+**Gated app**: bellijst is visibly linked but password-protected, and its contact data is encrypted in the source: the `KLUIS` blob in `bellijst/index.html` holds the list as AES-256-GCM ciphertext, with the key derived from the uppercased password via PBKDF2-SHA256 (200000 iterations). Unlocking is remembered per browser session. To edit the list you need the password (ask the user; it is never stored): `node tools/bellijst-kluis.js ontsleutel > /tmp/lijst.json`, edit the JSON, then `node tools/bellijst-kluis.js versleutel /tmp/lijst.json` and delete the JSON. Never commit the plaintext list, and never put the password anywhere in the repo or in commit messages.
 
 ### Sub-Apps (each has own CLAUDE.md with detailed docs)
 

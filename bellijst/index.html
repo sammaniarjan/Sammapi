@@ -189,185 +189,13 @@ body {
 <script>
 'use strict';
 
-const NUMMERS = [
-    {
-        naam: 'Duikmedisch Centrum',
-        toelichting: 'Overleg duikmedische zaken',
-        nummers: [
-            { label: 'Binnen scheepstijd', nummer: '088 950 14 17' },
-            { label: 'Binnen scheepstijd', nummer: '088 951 13 00' },
-            { label: 'Buiten scheepstijd', nummer: '0223 65 82 20' }
-        ]
-    },
-    {
-        naam: 'Arts van dienst EGB',
-        toelichting: 'Kromhout Kazerne, Utrecht',
-        nummers: [
-            { label: '', nummer: '088 950 25 40' }
-        ]
-    },
-    {
-        naam: 'Tandarts van dienst (DTD)',
-        toelichting: 'Bij spoed of overleg, met name buiten kantooruren; anders de DTD van de kazerne',
-        nummers: [
-            { label: '', nummer: '088 950 25 50' }
-        ]
-    },
-    {
-        naam: 'MGGZ / Centrale zorgeenheid (CZE)',
-        toelichting: 'Centraal aanmeldteam en dienstdoende psychiater via hetzelfde nummer',
-        nummers: [
-            { label: 'Aanmeldteam / dd psychiater', nummer: '030 250 25 99' },
-            { label: 'Staf CZE', nummer: '030 250 26 50' }
-        ],
-        emails: [
-            { label: 'Aanmeldingen', adres: 'aanmeldingen.mggz@mindef.nl' },
-            { label: 'Centrale zorgeenheid', adres: 'centralezorgeenheid.mggz@mindef.nl' },
-            { label: 'Operationele zorg', adres: 'operationelezorgmggz@mindef.nl' }
-        ]
-    },
-    {
-        naam: 'Defensie farmaceutische dienst (DFD)',
-        toelichting: 'Farmaceutische vragen rond logistiek, opslag (ruimte te warm), vaccins; kantooruren (8-17 uur)',
-        nummers: [
-            { label: '', nummer: '088 950 25 30' }
-        ],
-        emails: [
-            { label: '', adres: 'defensie.farmaceutische.dienst@mindef.nl' }
-        ]
-    },
-    {
-        naam: 'Centrale militaire apotheek',
-        toelichting: 'Pati\u00ebntgerichte farmaceutische vragen; apotheker (8-17.30 uur)',
-        nummers: [
-            { label: '', nummer: '030 250 22 69' }
-        ],
-        emails: [
-            { label: '', adres: 'centraal.militaire.apotheek@mindef.nl' }
-        ]
-    },
-    {
-        naam: 'Di\u00ebtetiek CMH',
-        toelichting: 'Centraal Militair Hospitaal, Utrecht',
-        nummers: [
-            { label: '', nummer: '030 250 23 13' }
-        ]
-    },
-    {
-        naam: 'Infectiologie',
-        toelichting: 'Infectiologen via de centrale van CMH of AMC',
-        nummers: [
-            { label: 'CMH', nummer: '030 250 21 11' },
-            { label: 'AMC', nummer: '020 566 91 11' }
-        ]
-    },
-    {
-        naam: 'Tropische en reizigersgeneeskunde (AMC)',
-        toelichting: 'Centrum voor Tropische Geneeskunde en Reizigersgeneeskunde, Amsterdam UMC',
-        nummers: [
-            { label: 'Algemeen AMC', nummer: '020 566 91 11' },
-            { label: 'Secretariaat', nummer: '020 566 65 26' }
-        ]
-    },
-    {
-        naam: 'LCR',
-        toelichting: 'Landelijk Co\u00f6rdinatiecentrum Reizigersadvisering; ma, di en do 9:00-12:00 uur. Medisch-inhoudelijke vragen pas na raadplegen van de protocollen en de eindverantwoordelijk arts. Mail wordt op werkdagen gelezen.',
-        nummers: [
-            { label: 'Medisch (keuze 1)', nummer: '020 620 18 29' },
-            { label: 'Overig (keuze 2)', nummer: '020 620 18 29' }
-        ],
-        emails: [
-            { label: 'Medische vragen', adres: 'alert@lcr.nl' }
-        ]
-    },
-    {
-        naam: 'Parasitologie (Amsterdam UMC)',
-        toelichting: '',
-        nummers: [
-            { label: 'Laboratorium', nummer: '020 566 57 19' },
-            { label: 'Dd arts-parasitoloog', nummer: '06 21 35 34 42' }
-        ]
-    },
-    {
-        naam: 'AMC Lymecentrum',
-        toelichting: '',
-        nummers: [
-            { label: 'Lymeline', nummer: '020 732 71 70' }
-        ],
-        emails: [
-            { label: '', adres: 'lyme@amsterdamumc.nl' }
-        ]
-    },
-    {
-        naam: 'Tbc-overleg',
-        toelichting: 'Klinische consulenten: Beatrixoord / Radboudumc',
-        nummers: [
-            { label: 'Intercollegiale lijn', nummer: '020 555 38 91' }
-        ]
-    },
-    {
-        naam: 'IMG',
-        toelichting: 'Inspectie Militaire Gezondheidszorg',
-        nummers: [
-            { label: '', nummer: '088 956 63 22' }
-        ],
-        emails: [
-            { label: '', adres: 'img@mindef.nl' }
-        ]
-    },
-    {
-        naam: 'Veteranenloket',
-        toelichting: 'Veteraneninstituut',
-        nummers: [
-            { label: '', nummer: '088 344 00 00' }
-        ],
-        emails: [
-            { label: '', adres: 'info@veteranenloket.nl' }
-        ]
-    },
-    {
-        naam: 'CEAG',
-        toelichting: 'Vaccinatieadviezen en landeninformatie via e-mail',
-        nummers: [
-            { label: 'Aanvraagcentrum', nummer: '088 950 25 89' }
-        ],
-        emails: [
-            { label: 'Current ops', adres: 'ceag.current.ops@mindef.nl' }
-        ]
-    },
-    {
-        naam: 'Loket asbest',
-        toelichting: '',
-        nummers: [
-            { label: '', nummer: '0800 272 37 80' }
-        ],
-        emails: [
-            { label: '', adres: 'loket.asbest@mindef.nl' }
-        ]
-    },
-    {
-        naam: 'Melding stralingsincident',
-        toelichting: 'Alarmlijn',
-        nummers: [
-            { label: '', nummer: '0800 7777 8888' },
-            { label: 'Of', nummer: '+31 6 53 17 91 22' }
-        ]
-    },
-    {
-        naam: 'Incidentmelding',
-        toelichting: 'Referentie: Inc 0846554',
-        nummers: [
-            { label: '', nummer: '0800 235 84 00' }
-        ]
-    },
-    {
-        naam: 'Gynaecoloog (reservist, Isala)',
-        toelichting: '',
-        nummers: [
-            { label: '', nummer: '06 11 08 82 25' }
-        ]
-    }
-];
+let NUMMERS = [];
+
+const KLUIS = {
+    zout: '4oYkw1my3syGNP8F+DL4CA==',
+    iv: 'h+KKZ+kUe+Ehbhsu',
+    data: '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'
+};
 
 const lijst = document.getElementById('lijst');
 const leeg = document.getElementById('leeg');
@@ -461,32 +289,45 @@ zoekWis.addEventListener('click', () => {
     zoek.focus();
 });
 
-/* ---- toegangspoort: alleen de SHA-256-hash van het wachtwoord staat in de bron ---- */
-const TOEGANG_HASH = 'd2020f47d1e7e88794f2ecad258003b05c2df1396152d641ac74f4c82c15cd7e';
-const TOEGANG_SLEUTEL = 'ama-bellijst-toegang';
+/* ---- kluis: de lijst staat versleuteld in de bron (AES-256-GCM); de
+   sleutel wordt met PBKDF2 uit het wachtwoord afgeleid. Beheer via
+   tools/bellijst-kluis.js; het wachtwoord staat nergens in de repo. ---- */
+const KLUIS_OPSLAG = 'ama-bellijst-sleutel';
 const poort = document.getElementById('poort');
 const poortInvoer = document.getElementById('poort-invoer');
 const poortKnop = document.getElementById('poort-knop');
 const poortFout = document.getElementById('poort-fout');
 const inhoud = document.getElementById('inhoud');
 
-async function sha256Hex(tekst) {
-    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(tekst));
-    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+function b64naarBytes(b64) { return Uint8Array.from(atob(b64), c => c.charCodeAt(0)); }
+function bytesNaarB64(buf) { return btoa(String.fromCharCode(...new Uint8Array(buf))); }
+
+async function sleutelUitWachtwoord(wachtwoord) {
+    const basis = await crypto.subtle.importKey('raw', new TextEncoder().encode(wachtwoord.toUpperCase()), 'PBKDF2', false, ['deriveKey']);
+    return crypto.subtle.deriveKey(
+        { name: 'PBKDF2', salt: b64naarBytes(KLUIS.zout), iterations: 200000, hash: 'SHA-256' },
+        basis, { name: 'AES-GCM', length: 256 }, true, ['decrypt']);
 }
 
-function ontgrendel() {
+async function openKluis(sleutel) {
+    const klaar = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64naarBytes(KLUIS.iv) }, sleutel, b64naarBytes(KLUIS.data));
+    return JSON.parse(new TextDecoder().decode(klaar));
+}
+
+function ontgrendel(nummers) {
+    NUMMERS = nummers;
     poort.hidden = true;
     inhoud.hidden = false;
     render('');
 }
 
 async function controleerPoort() {
-    const hash = await sha256Hex(poortInvoer.value.toUpperCase());
-    if (hash === TOEGANG_HASH) {
-        try { sessionStorage.setItem(TOEGANG_SLEUTEL, hash); } catch (e) {}
-        ontgrendel();
-    } else {
+    try {
+        const sleutel = await sleutelUitWachtwoord(poortInvoer.value);
+        const nummers = await openKluis(sleutel);
+        try { sessionStorage.setItem(KLUIS_OPSLAG, bytesNaarB64(await crypto.subtle.exportKey('raw', sleutel))); } catch (e) {}
+        ontgrendel(nummers);
+    } catch (e) {
         poortFout.hidden = false;
         poortInvoer.select();
     }
@@ -496,15 +337,20 @@ poortKnop.addEventListener('click', controleerPoort);
 poortInvoer.addEventListener('keydown', e => { if (e.key === 'Enter') controleerPoort(); });
 poortInvoer.addEventListener('input', () => { poortFout.hidden = true; });
 
-(function start() {
-    let token = null;
-    try { token = sessionStorage.getItem(TOEGANG_SLEUTEL); } catch (e) {}
-    if (token === TOEGANG_HASH) {
-        ontgrendel();
-    } else {
-        poort.hidden = false;
-        poortInvoer.focus();
+(async function start() {
+    let ruw = null;
+    try { ruw = sessionStorage.getItem(KLUIS_OPSLAG); } catch (e) {}
+    if (ruw) {
+        try {
+            const sleutel = await crypto.subtle.importKey('raw', b64naarBytes(ruw), 'AES-GCM', false, ['decrypt']);
+            ontgrendel(await openKluis(sleutel));
+            return;
+        } catch (e) {
+            try { sessionStorage.removeItem(KLUIS_OPSLAG); } catch (x) {}
+        }
     }
+    poort.hidden = false;
+    poortInvoer.focus();
 })();
 </script>
 </body>
