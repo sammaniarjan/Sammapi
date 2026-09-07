@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Duikgeneeskunde</title>
+<meta name="description" content="Compact naslagwerk duikgeneeskunde: de wetten van Boyle, Dalton en Henry, barotrauma, ademgassen, decompressieziekte en de opvang van een duikongeval. Voor onderwijsdoeleinden.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23e2d9cc'/><circle cx='50' cy='30' r='9' fill='none' stroke='%230369a1' stroke-width='6'/><path d='M50 39v28M30 55c0 14 9 22 20 22s20-8 20-22M32 46l36 0' fill='none' stroke='%230369a1' stroke-width='6' stroke-linecap='round'/></svg>">
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --bg: #e2d9cc;
+    --vlak: #ffffff;
+    --vlak-zacht: #f7f3ed;
+    --tekst: #2c3e36;
+    --tekst-2: #6b7b6f;
+    --muted: #9aa69e;
+    --rand: #d5cdc2;
+    --rand-licht: #e3dbd0;
+    --accent: #0369a1;
+    --accent-donker: #075985;
+    --accent-bg: rgba(3, 105, 161, 0.07);
+    --rood: #dc2626;
+    --rood-bg: rgba(220, 38, 38, 0.07);
+    --oranje: #b45309;
+    --oranje-bg: rgba(180, 83, 9, 0.08);
+    --groen: #059669;
+}
+
+body {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--tekst);
+    line-height: 1.55;
+    min-height: 100vh;
+}
+
+.wrap { max-width: 860px; margin: 0 auto; padding: 16px 16px 60px; }
+
+.back-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--tekst-2); text-decoration: none;
+    font-size: 0.88rem; padding: 10px 0;
+}
+.back-link:hover { color: var(--accent); }
+.back-link svg { width: 17px; height: 17px; }
+
+.app-head { margin: 8px 0 18px; }
+.app-head h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem; font-weight: 600;
+}
+.app-head .sub { color: var(--tekst-2); font-size: 0.88rem; }
+
+.card {
+    background: var(--vlak);
+    border: 1px solid var(--rand-licht);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 14px;
+}
+.card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem; font-weight: 600; margin-bottom: 10px;
+}
+.card h3 { font-size: 0.95rem; font-weight: 700; margin: 12px 0 6px; }
+.card h3:first-of-type { margin-top: 0; }
+.card p { font-size: 0.92rem; margin-bottom: 8px; }
+.card p:last-child { margin-bottom: 0; }
+.card ul, .card ol { margin: 6px 0 10px 20px; font-size: 0.92rem; }
+.card li { margin-bottom: 4px; }
+.zacht { color: var(--tekst-2); font-size: 0.85rem; }
+.mono { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+table.mini { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.87rem; }
+table.mini td, table.mini th { padding: 6px 8px; border-bottom: 1px solid var(--rand-licht); text-align: left; vertical-align: top; }
+table.mini th { color: var(--tekst-2); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.4px; }
+table.mini td:first-child { font-weight: 700; white-space: nowrap; }
+.tabel-scroll { overflow-x: auto; }
+
+.blok {
+    border-radius: 10px; padding: 11px 14px; margin: 10px 0;
+    font-size: 0.88rem;
+}
+.blok .kop { font-weight: 700; margin-bottom: 3px; }
+.blok.info { background: var(--accent-bg); border: 1px solid rgba(3, 105, 161, 0.22); }
+.blok.info .kop { color: var(--accent-donker); }
+.blok.let-op { background: var(--oranje-bg); border: 1px solid rgba(180, 83, 9, 0.25); }
+.blok.let-op .kop { color: var(--oranje); }
+.blok.spoed { background: var(--rood-bg); border: 1px solid rgba(220, 38, 38, 0.25); }
+.blok.spoed .kop { color: var(--rood); }
+
+.formule {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.88rem;
+    background: var(--vlak-zacht); border: 1px solid var(--rand);
+    border-radius: 8px; padding: 8px 12px; margin: 8px 0;
+    display: inline-block;
+}
+
+.stappen { counter-reset: stap; list-style: none; margin: 10px 0 0 0 !important; }
+.stappen li {
+    counter-increment: stap;
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 9px 0; border-top: 1px solid var(--rand-licht);
+    margin: 0;
+}
+.stappen li::before {
+    content: counter(stap);
+    flex-shrink: 0;
+    width: 26px; height: 26px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--accent-bg); border: 1px solid rgba(3, 105, 161, 0.3);
+    color: var(--accent); font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem; font-weight: 700;
+}
+
+a.intern { color: var(--accent); }
+
+.voet {
+    text-align: center; margin-top: 30px;
+    font-size: 0.78rem; color: var(--muted);
+}
+.voet a { color: var(--tekst-2); }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <a href="../" class="back-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Dashboard
+    </a>
+    <div class="app-head">
+        <h1>Duikgeneeskunde</h1>
+        <div class="sub">Compact naslagwerk uit de lesdag duikgeneeskunde</div>
+    </div>
+
+    <div class="card">
+        <h2>Duikmedisch Centrum (DMC)</h2>
+        <p>Taken van het DMC:</p>
+        <ul>
+            <li>medische keuringen (onder meer longfunctie en VO<sub>2</sub>max / X-ECG);</li>
+            <li>behandeling van duikongevallen;</li>
+            <li>loss of cabin pressure met decompressieklachten;</li>
+            <li>hyperbare zuurstof bij KNO-indicaties.</li>
+        </ul>
+        <p class="zacht">De nummers van het DMC (binnen en buiten scheepstijd) staan in de <a class="intern" href="../bellijst/">bellijst</a>. Overleg mag altijd.</p>
+        <p class="zacht">Lucht: circa 21% zuurstof, 78% stikstof en 1% overige gassen.</p>
+    </div>
+
+    <div class="card">
+        <h2>De drie hoofdwetten</h2>
+
+        <h3>Boyle: druk en volume</h3>
+        <div class="formule">p &times; V = C (bij gelijke temperatuur)</div>
+        <p>Elke 10 meter onder water komt er 1 bar druk bij. Aan het oppervlak (NAP) heerst 1 bar; op 36 meter dus 4,6 bar.</p>
+        <p>Gevolgen van een snel drukverschil (snel stijgen): mediastinaal emfyseem, gasembolie (geknapte longblaasjes, lucht in de bloedbaan) en sinussqueeze (hoofdpijn vanuit de sinussen).</p>
+        <div class="blok let-op"><span class="kop">Consequentie:</span> met tubadysfunctie of oorproblemen kun je niet duiken.</div>
+
+        <h3>Dalton: parti&euml;le drukken</h3>
+        <p>De totale druk is de som van de parti&euml;le drukken in het mengsel; 1 bar lucht bevat 0,8 bar stikstof. Door de verhoogde druk op diepte ontstaan zuurstoftoxiciteit, stikstofnarcose en HPNS. Reken dus aan het gasmengsel en de diepte waar je heen wilt.</p>
+
+        <h3>Henry: oplossen van gas</h3>
+        <p>De hoeveelheid gas die in een medium is opgelost, komt in evenwicht met de parti&euml;le druk van dat gas dat met het medium in contact staat. Dit is de basis van decompressieziekte: onder druk neem je meer zuurstof en stikstof op en raken de weefsels met stikstof verzadigd. Stijg je te snel, dan schiet het opgeloste gas terug naar de gasfase en gaat het "bruisen".</p>
+    </div>
+
+    <div class="card">
+        <h2>Barotrauma van de long (long burst)</h2>
+        <p>Een probleem met equaliseren op alveolair niveau. De alveolaire druk wordt onder water hoger dan de druk aan de linkszijde van het hart, waardoor lucht direct naar de arteri&euml;le circulatie kan: een <strong>arteri&euml;le gasembolie (AGE)</strong>.</p>
+        <p>Kan optreden bij:</p>
+        <ul>
+            <li>lokale luchtwegblokkades, bijvoorbeeld bij verkoudheid of allergie;</li>
+            <li>het vasthouden van de ademhaling tijdens het stijgen;</li>
+            <li>xylometazolinegebruik (vanwege het rebound-effect).</li>
+        </ul>
+        <div class="blok let-op"><span class="kop">CT-thorax:</span> bij een pneumothorax niet naar de hyperbare kamer voordat er een drain in zit, vanwege het risico op een spanningspneumothorax.</div>
+
+        <h3>Immersie-longoedeem (IPE)</h3>
+        <p>Longoedeem onder water door een verhoogde volumeshift van perifeer naar centraal, richting de pulmonale vaten. Risicofactoren: een strakke wetsuit, pre-existent hartfalen of hypertensie.</p>
+
+        <h3>Therapie</h3>
+        <ul>
+            <li><strong>Beperkte klachten</strong> (KNO, tand, masker): xylometazoline en afwachten.</li>
+            <li><strong>Pneumothorax</strong>: behandeling conform de standaard; drain v&oacute;&oacute;r eventuele hyperbare behandeling.</li>
+            <li><strong>AGE</strong>: bellen en acuut handelen.</li>
+            <li><strong>Halsemfyseem</strong> zonder neurologische, cardiale of oculaire tekenen van AGE: aan de zuurstof laten, wel beeldvorming. Overleg mag altijd.</li>
+        </ul>
+        <div class="blok spoed"><span class="kop">Opvang AGE:</span> 15 liter zuurstof, ongeacht de saturatie.</div>
+    </div>
+
+    <div class="card">
+        <h2>Ademgassen en hun bijwerkingen</h2>
+        <p>Duikmengsels bestaan uit stikstof, zuurstof en helium, of gewoon perslucht.</p>
+
+        <h3>Stikstof (N<sub>2</sub>)</h3>
+        <p>Stikstofnarcose lijkt op het effect van alcohol, vermoedelijk via GABA (mogelijk membraanfunctie en bloed-hersenbarri&egrave;re). Argon, krypton en xenon zijn het meest narcotisch; van helium is ongeveer vier keer zoveel nodig als van stikstof voor hetzelfde narcotische effect. De toxische hoeveelheid is persoons- en diepteafhankelijk, niet tijdsafhankelijk.</p>
+
+        <h3>Zuurstof (O<sub>2</sub>)</h3>
+        <p>Hyperoxische grens bij 1,3 bar parti&euml;le zuurstofdruk (op 3 meter bij 100% zuurstof). De effecten ontstaan door druk plus een tijdsfactor, mogelijk mede door zuurstofradicalen.</p>
+        <ul>
+            <li><strong>Neurologisch</strong>, onthoud <span class="mono">ConVENTID</span>: <strong>con</strong>vulsions, <strong>v</strong>isual, <strong>e</strong>ars, <strong>n</strong>ausea, <strong>t</strong>witching, <strong>i</strong>rritability, <strong>d</strong>izziness. Van tintelingen en fasciculaties tot een tonisch-clonisch insult.</li>
+            <li><strong>Pulmonaal</strong> (tijdsafhankelijk, bij lange duur): longfunctieafwijkingen, hoesten, retrosternale pijn, tracheobronchiale irritatie.</li>
+        </ul>
+        <p>Risico neemt toe met de expositieduur en met CO<sub>2</sub>-stijging (vasodilatatie). Voordeel van zuurstofrijke mengsels: geen decompressieziekte.</p>
+
+        <h3>Helium (He)</h3>
+        <p>Ideaal opvulgas voor de diepte, vanwege de parti&euml;le-drukeffecten (weinig narcotisch).</p>
+    </div>
+
+    <div class="card">
+        <h2>Decompressieziekte (DCZ)</h2>
+        <p><strong>Etiologie</strong>: door plots drukverval zetten gassen uit en diffunderen ze het weefsel uit; het gaat vooral om stikstofbellen. Lokalisatie: overal, initieel veneus (lagere druk, afvoer van de organen). Naast onderbreking van de flow ontstaan ook intimascheurtjes en trombose. De diagnostiek is lastig; bij klachten: hyperbare zuurstof.</p>
+
+        <h3>Symptomen en beloop</h3>
+        <ul>
+            <li>Paresthesie&euml;n en pijn; bij ernstige vormen neurologische uitval. In de acute fase niet te onderscheiden van een gasembolie. Bij klachten van &eacute;&eacute;n regio: denk met name aan cerebrale decompressie.</li>
+            <li>Kan ook uren na de duik nog ontstaan, bijna altijd binnen 24 uur. Een gasembolie ontstaat op een acuut moment.</li>
+            <li>Doppler (veneus): van een bifasisch naar een multifasisch geluid.</li>
+        </ul>
+        <div class="blok let-op"><span class="kop">NB:</span> direct na het duiken vliegen of de bergen in geeft n&oacute;g meer decompressie. Dus: niet vliegen, niet de bergen in.</div>
+        <p>Eerste behandeling: hyperbare zuurstof; die geeft ook langdurige vasoconstrictie.</p>
+
+        <h3>Typen</h3>
+        <div class="tabel-scroll">
+        <table class="mini">
+            <tr><th>Type</th><th>Beeld</th><th>Beleid</th></tr>
+            <tr><td>Type 1</td><td>mild, cutaan: skin creeps ("the creeps", rode vlekken, komt veel voor) en "the bends" (diepe gewrichtspijn en pijn rond het gewricht); verbetering binnen 30 minuten</td><td>normobare zuurstof is zeer waarschijnlijk afdoende</td></tr>
+            <tr><td>Type 2</td><td>neurologisch (bel in cerebrum of spinaal), vestibulair, cardiopulmonaal</td><td>recompressie</td></tr>
+            <tr><td>Marbling</td><td>blauwig gemarmerde, reticulaire huidafwijking: een dieper probleem en voorbode van neurologische DCZ</td><td>recompressie</td></tr>
+        </table>
+        </div>
+        <p class="zacht">Onderscheid barotrauma en vestibulaire DCZ: bij barotrauma een "knapje", direct gevolgd door klachten.</p>
+    </div>
+
+    <div class="card">
+        <h2>Opvang van een duikongeval</h2>
+        <ol class="stappen">
+            <li>ABCDE; 15 liter zuurstof via een non-rebreathing masker, ongeacht de saturatie.</li>
+            <li>Overleg met het Duikmedisch Centrum (nummers in de <a class="intern" href="../bellijst/">bellijst</a>).</li>
+            <li>Rehydratie 1-2 liter op geleide van de urineproductie (cave spinale DCZ).</li>
+            <li>Naar de SEH; pneumothorax uitsluiten met een spoed-CT.</li>
+            <li>Recompressietank.</li>
+        </ol>
+    </div>
+
+    <div class="voet">Persoonlijk studieproject, geen offici&euml;le uitgave. Samenvatting van lesmateriaal; volg voor diagnostiek en behandeling de actuele richtlijnen en overleg laagdrempelig met het Duikmedisch Centrum.</div>
+</div>
+</body>
+</html>
