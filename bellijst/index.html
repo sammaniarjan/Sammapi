@@ -123,6 +123,23 @@ body {
     padding: 30px 0; font-size: 0.9rem;
 }
 
+.poort-rij { display: flex; gap: 8px; flex-wrap: wrap; }
+#poort-invoer {
+    font: inherit; flex: 1 1 200px;
+    padding: 10px 14px;
+    background: var(--vlak-zacht); color: var(--tekst);
+    border: 1px solid var(--rand); border-radius: 10px;
+}
+#poort-invoer:focus { outline: none; border-color: var(--accent); }
+#poort-knop {
+    font: inherit; font-weight: 600;
+    background: var(--accent); color: #fff;
+    border: none; border-radius: 10px;
+    padding: 10px 20px; cursor: pointer;
+}
+#poort-knop:hover { background: var(--accent-donker); }
+.poort-fout { color: #dc2626; font-size: 0.84rem; margin-top: 8px; }
+
 .voet {
     text-align: center; margin-top: 30px;
     font-size: 0.78rem; color: var(--muted);
@@ -145,6 +162,17 @@ body {
         <div class="sub">Handige nummers en mailadressen, doorzoekbaar en direct te bellen</div>
     </div>
 
+    <div class="kaart" id="poort" hidden>
+        <div class="naam" style="margin-bottom:4px;">Toegang</div>
+        <div class="toelichting" style="margin-bottom:12px;">Deze lijst is afgeschermd. Voer het wachtwoord in.</div>
+        <div class="poort-rij">
+            <input id="poort-invoer" type="password" placeholder="Wachtwoord" autocomplete="off">
+            <button id="poort-knop">Openen</button>
+        </div>
+        <div class="poort-fout" id="poort-fout" hidden>Onjuist wachtwoord.</div>
+    </div>
+
+    <div id="inhoud" hidden>
     <div class="zoek-houder">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
         <input id="zoek" type="search" placeholder="Zoek op naam of nummer&hellip;" autocomplete="off">
@@ -153,6 +181,7 @@ body {
 
     <div id="lijst"></div>
     <div class="leeg" id="leeg" hidden>Geen nummers gevonden.</div>
+    </div>
 
     <div class="voet">Persoonlijk project, geen offici&euml;le uitgave. Controleer nummers periodiek; aan deze lijst kunnen geen rechten worden ontleend.</div>
 </div>
@@ -431,7 +460,52 @@ zoekWis.addEventListener('click', () => {
     render('');
     zoek.focus();
 });
-render('');
+
+/* ---- toegangspoort: alleen de SHA-256-hash van het wachtwoord staat in de bron ---- */
+const TOEGANG_HASH = 'd2020f47d1e7e88794f2ecad258003b05c2df1396152d641ac74f4c82c15cd7e';
+const TOEGANG_SLEUTEL = 'ama-bellijst-toegang';
+const poort = document.getElementById('poort');
+const poortInvoer = document.getElementById('poort-invoer');
+const poortKnop = document.getElementById('poort-knop');
+const poortFout = document.getElementById('poort-fout');
+const inhoud = document.getElementById('inhoud');
+
+async function sha256Hex(tekst) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(tekst));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function ontgrendel() {
+    poort.hidden = true;
+    inhoud.hidden = false;
+    render('');
+}
+
+async function controleerPoort() {
+    const hash = await sha256Hex(poortInvoer.value.toUpperCase());
+    if (hash === TOEGANG_HASH) {
+        try { sessionStorage.setItem(TOEGANG_SLEUTEL, hash); } catch (e) {}
+        ontgrendel();
+    } else {
+        poortFout.hidden = false;
+        poortInvoer.select();
+    }
+}
+
+poortKnop.addEventListener('click', controleerPoort);
+poortInvoer.addEventListener('keydown', e => { if (e.key === 'Enter') controleerPoort(); });
+poortInvoer.addEventListener('input', () => { poortFout.hidden = true; });
+
+(function start() {
+    let token = null;
+    try { token = sessionStorage.getItem(TOEGANG_SLEUTEL); } catch (e) {}
+    if (token === TOEGANG_HASH) {
+        ontgrendel();
+    } else {
+        poort.hidden = false;
+        poortInvoer.focus();
+    }
+})();
 </script>
 </body>
 </html>
