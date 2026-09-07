@@ -28,12 +28,21 @@ No build step. Single-file app with inline CSS/JS.
 
 ### Expected Excel Format
 
+Two layouts are auto-detected by `parseExcelData` (the date column, an Excel serial number or date cell, decides the offset):
+
+Old layout (header row on top):
+
 | Dag | Datum | Tijd | Locatie | Module | Les | Docent |
 |-----|-------|------|---------|--------|-----|--------|
 | ma  | 45678 | 0900-1200 | Zaal A | TG1 | Malaria | Dr. X |
 
-- Column 1 (Datum): Excel serial date number
-- Column 2 (Tijd): Format `HHMM-HHMM` or `dzv` (hele dag)
+New layout (Klas-roosters, since 2026): no top header; every row starts with the date, and the header labels (Tijd/Locatie/Module/Lesnaam/Docent/Opmerkingen AMA) are repeated on date rows mid-sheet and are skipped via the `Tijd` label check.
+
+| Datum | Tijd | Locatie | Module | Lesnaam | Docent | Opmerkingen |
+|-------|------|---------|--------|---------|--------|-------------|
+| 46272 | 0800-1600 | LCR | Reizigersvaccinatie | ... | ... | ... |
+
+- Tijd: `HHMM-HHMM`, or anything starting with `dzv` (whole day, 08:00-16:00)
 - Event title format: `[MODULE] Lesson - Teacher`
 
 ### Key Functions

@@ -1192,24 +1192,41 @@
     }
 
     // Parse Excel
+    // Twee indelingen worden herkend:
+    // - oud:   Dag | Datum | Tijd | Locatie | Module | Les | Docent
+    // - nieuw: Datum | Tijd | Locatie | Module | Lesnaam | Docent | Opmerkingen
+    //   (zonder kopregel bovenaan; de koppen staan herhaald op datumregels)
+    function isExcelDatum(v) {
+      if (v instanceof Date) return !isNaN(v.getTime());
+      return typeof v === 'number' && v > 20000 && v < 80000;
+    }
+    function naarDatum(v) {
+      return v instanceof Date ? new Date(v) : excelDateToJS(v);
+    }
+
     function parseExcelData(data) {
       const result = [];
       for (const row of data) {
         if (!row || row.length < 5) continue;
-        if (row[0] === 'Dag' || row[1] === 'Datum') continue;
 
-        const dateSerial = row[1];
-        if (typeof dateSerial !== 'number') continue;
+        let offset;
+        if (isExcelDatum(row[1])) offset = 1;      // oud formaat: datum in kolom 2
+        else if (isExcelDatum(row[0])) offset = 0; // nieuw formaat: datum in kolom 1
+        else continue;                             // kopregels en lege regels
 
-        const baseDate = excelDateToJS(dateSerial);
+        const baseDate = naarDatum(row[offset]);
         if (isNaN(baseDate.getTime())) continue;
 
-        const timeStr = row[2];
+        const timeStr = row[offset + 1];
+        const location = (row[offset + 2] || '').toString().trim();
+        const module = (row[offset + 3] || '').toString().trim();
+        const lesson = (row[offset + 4] || '').toString().trim();
+        const teacher = (row[offset + 5] || '').toString().trim();
+
+        // herhaalde kopregels op datumregels overslaan
+        if (typeof timeStr === 'string' && timeStr.trim() === 'Tijd') continue;
+
         const timeData = parseTime(timeStr);
-        const location = (row[3] || '').toString().trim();
-        const module = (row[4] || '').toString().trim();
-        const lesson = (row[5] || '').toString().trim();
-        const teacher = (row[6] || '').toString().trim();
 
         if (!lesson && !module) continue;
 
