@@ -813,7 +813,253 @@ const MODULES = [
         uitleg: 'Patroon 3: in dit domein is &quot;all of the above&quot; vaak correct, juist omdat M/ETHANE en de vijf principes meerdere functies tegelijk vervullen.' }
     ]
 }
+,
+{
+    id: 'mascal', titel: 'MASCAL en incidenttypen', sub: 'Wanneer is groot te groot?',
+    items: [
+    { t: 'leer', kop: 'Major incident: de wegende elementen', html: `
+        <p>Een major incident is een incident waarbij de <strong>middelen eindig</strong> zijn en <strong>special procedures</strong> nodig zijn. Wat meeweegt:</p>
+        <ul>
+            <li><strong>aantal</strong> slachtoffers;</li>
+            <li><strong>ernst</strong> van de letsels;</li>
+            <li><strong>type</strong> slachtoffers: volwassenen of kinderen (schaarse specialistische capaciteit);</li>
+            <li>aantal <strong>levende</strong> slachtoffers;</li>
+            <li><strong>locatie</strong>: hoeveel middelen zijn daar voorhanden?</li>
+        </ul>
+        <p>Special procedures betekent: bewust <strong>meer risico accepteren</strong> om zo veel mogelijk te doen voor zo veel mogelijk mensen.</p>
+        <p class="zacht">NB: doordat er tegenwoordig minder capaciteit beschikbaar is, wordt die drempel eerder gehaald: major incidents komen relatief vaker voor.</p>` },
+    { t: 'leer', kop: 'Typen en MASCAL', html: `
+        <table class="mini">
+            <tr><th>As</th><th>Onderscheid</th></tr>
+            <tr><td>Oorzaak</td><td>man-made of natuurlijk</td></tr>
+            <tr><td>Simple</td><td>de infrastructuur is intact en bruikbaar</td></tr>
+            <tr><td>Compound</td><td>ook de infrastructuur zelf is beschadigd</td></tr>
+            <tr><td>Compensated</td><td>de middelen volstaan</td></tr>
+            <tr><td>Uncompensated</td><td>alle middelen zijn verbruikt en het is nog niet toereikend</td></tr>
+        </table>
+        <p><strong>MASCAL</strong>: een major incident met een excessieve wanverhouding tussen het aantal slachtoffers en de lokaal beschikbare medische capaciteit. Het zorgsysteem raakt overlopen. Het uitroepen is een besluit op <strong>strategisch niveau</strong>.</p>` },
+    { t: 'koppel', toets: true,
+      vraag: 'Koppel het incidenttype aan de omschrijving.',
+      paren: [
+        ['Simple', 'de infrastructuur is intact en bruikbaar'],
+        ['Compound', 'ook de infrastructuur zelf is beschadigd'],
+        ['Compensated', 'de middelen volstaan'],
+        ['Uncompensated', 'alle middelen verbruikt en nog niet toereikend']
+      ],
+      uitleg: 'Simple/compound gaat over de infrastructuur, compensated/uncompensated over de middelen. Een compound, uncompensated incident is het zwaarste scenario.' },
+    { t: 'mc', toets: true,
+      vraag: 'Wat maakt een major incident tot een MASCAL?',
+      opties: [
+        { tekst: 'Een excessieve wanverhouding tussen het aantal slachtoffers en de lokaal beschikbare medische capaciteit', goed: true },
+        { tekst: 'Meer dan vijftig slachtoffers, ongeacht de capaciteit' },
+        { tekst: 'Elke inzet waarbij meerdere diensten tegelijk optreden' },
+        { tekst: 'Elk incident met dodelijke slachtoffers' }
+      ],
+      uitleg: 'Het gaat om de verhouding, niet om een absoluut aantal: het zorgsysteem raakt overlopen. Het besluit ligt op strategisch niveau.' }
+    ]
+},
+{
+    id: 'c2scatr', titel: 'C2SCATR', sub: 'De militaire kapstok voor de eerste fase',
+    items: [
+    { t: 'leer', kop: 'Zeven stappen, van chaos naar milde verwarring', html: `
+        <p><strong>C2SCATR</strong> is de systematische all-hazards volgorde: <strong>C</strong>ommand &amp; <strong>C</strong>ontrol, <strong>S</strong>afety, <strong>C</strong>ommunication, <strong>A</strong>ssessment, <strong>T</strong>riage, <strong>T</strong>reatment, <strong>T</strong>ransport (de militaire variant van CSCATTT).</p>
+        <ul>
+            <li><strong>Assessment</strong>: maximaal 6-8 minuten. Prioriteiten: plaats de gewondenverzamelplaats (CCP), kies parkeerlocaties, plan het ambulancecircuit, weeg informatie naar bron (autoriteit, semi-autoriteit, publiek) en update je METHANE. De assistent blijft in het voertuig; het blauwe of groene licht dient als marker.</li>
+            <li>Doorloop het <strong>joint decision model opnieuw</strong> bij elk nieuw stukje informatie en elke verandering van de situatie.</li>
+            <li><strong>Triage</strong>: het inzetten van de categorie T4 is een strategische beslissing.</li>
+            <li><strong>Treatment</strong>: doe per slachtoffer zo min mogelijk.</li>
+            <li><strong>Transport</strong>.</li>
+        </ul>` },
+    { t: 'volgorde', toets: true,
+      vraag: 'Zet de onderdelen van C2SCATR in de juiste volgorde.',
+      items: ['Command &amp; Control', 'Safety', 'Communication', 'Assessment', 'Triage', 'Treatment', 'Transport'],
+      uitleg: 'Command en control eerst: zonder structuur is de rest niet uitvoerbaar. Behandelen komt bewust pas op de zesde plaats.' },
+    { t: 'mc', toets: true,
+      vraag: 'Hoeveel tijd staat er voor de assessment (verkenning)?',
+      opties: [
+        { tekst: 'Maximaal 6-8 minuten', goed: true },
+        { tekst: '15-20 minuten' },
+        { tekst: 'Zo lang als nodig is voor een compleet beeld' },
+        { tekst: '1-2 minuten' }
+      ],
+      uitleg: 'Kort en systematisch: CCP plaatsen, parkeerlocaties kiezen, ambulancecircuit plannen en de METHANE updaten. Een compleet beeld komt er in deze fase toch niet.' },
+    { t: 'mc', toets: true,
+      vraag: 'Wat is het behandelprincipe tijdens een major incident?',
+      opties: [
+        { tekst: 'Per slachtoffer zo min mogelijk doen, zodat je zo veel mogelijk slachtoffers kunt helpen', goed: true },
+        { tekst: 'Elk slachtoffer volledig stabiliseren voordat je verder gaat' },
+        { tekst: 'De zwaarstgewonde eerst volledig behandelen' },
+        { tekst: 'Behandelen op volgorde van aantreffen' }
+      ],
+      uitleg: 'Least for most. Daarom is ook de major incident-rugzak basaler gepakt dan een gewone rugzak; die gewone volstaat voor hooguit twee T1-slachtoffers.' }
+    ]
+},
+{
+    id: 'command', titel: 'Command, control en cordons', sub: 'Bronze, silver, gold en de ringen',
+    items: [
+    { t: 'leer', kop: 'Verticaal en horizontaal', html: `
+        <p><strong>Command is verticaal</strong> (binnen de eigen dienst), <strong>control is horizontaal</strong> (tussen diensten). Effectieve commandovoering vraagt goede communicatie in beide richtingen, over diensten en organisaties heen.</p>
+        <ul>
+            <li>Het <strong>eerste voertuig</strong> van elke dienst treedt op als haar commandopost; in Nederland het commandovoertuig met groen zwaailicht.</li>
+            <li><strong>Plaats jezelf naast de collega-commandanten</strong> (infanterie, genie) en betrek de lokale commandant: lokale kennis.</li>
+            <li><strong>Cordons</strong>: een binnen- en een buitenring met een fysieke barri&egrave;re; personeel wordt geregistreerd bij het passeren.</li>
+        </ul>
+        <p class="zacht">Interoperability: samen coherent en effectief optreden met QRF/force protection, politie, brandweer/rescue en de geneeskundige diensten. Raak je ge&iuml;soleerd: triage sieve, eenvoudige behandeling, transport aanvragen. En onthoud: <em>&quot;the best fluid at a trauma is diesel&quot;</em>.</p>` },
+    { t: 'leer', kop: 'Bronze, silver, gold', html: `
+        <table class="mini">
+            <tr><th>Laag</th><th>Niveau</th><th>Doet</th></tr>
+            <tr><td>Bronze</td><td>tactisch, binnenring</td><td>doet het werk</td></tr>
+            <tr><td>Silver</td><td>operationeel, buitenring</td><td>maakt het plan</td></tr>
+            <tr><td>Gold</td><td>strategisch</td><td>hoe lang duurt dit, aflossing, rust- en herstelgebieden, mutual aid, reputatie van de organisatie</td></tr>
+        </table>
+        <p>De commandant raakt <strong>niet zelf betrokken</strong> bij triage, behandeling of transport van pati&euml;nten. Wel verantwoordelijk: passende PPE voor het personeel, de <strong>operationele &eacute;n emotionele debriefing</strong>, en adequate mediatraining.</p>` },
+    { t: 'koppel', toets: true,
+      vraag: 'Koppel de commandolaag aan de rol.',
+      paren: [
+        ['Bronze', 'tactisch, binnenring: doet het werk'],
+        ['Silver', 'operationeel, buitenring: maakt het plan'],
+        ['Gold', 'strategisch: duur, aflossing, mutual aid, reputatie']
+      ],
+      uitleg: 'Bronze werkt, silver plant, gold kijkt vooruit: hoe lang duurt dit, wie lost af, is er mutual aid nodig?' },
+    { t: 'mc', toets: true,
+      vraag: 'Wat hoort een commandant tijdens een major incident niet te doen?',
+      opties: [
+        { tekst: 'Zelf slachtoffers triageren of behandelen', goed: true },
+        { tekst: 'De debriefing organiseren, ook de emotionele' },
+        { tekst: 'Zorgen voor passende PPE van het personeel' },
+        { tekst: 'Zich naast de commandanten van de andere diensten opstellen' }
+      ],
+      uitleg: 'Wie zelf behandelt, verliest het overzicht. De commandant geeft leiding en blijft uit de subtaken.' }
+    ]
+},
+{
+    id: 'veiligheid', titel: 'Veiligheid: de zes C&#39;s en ERICPD', sub: 'All hazards, decontaminatie en CBRN',
+    items: [
+    { t: 'leer', kop: 'De zes C&#39;s', html: `
+        <table class="mini">
+            <tr><th>C</th><th>Inhoud</th></tr>
+            <tr><td>Confirm</td><td>klopt de melding wel? Verborgen wijst op opzet, zichtbaar op waarschijnlijkheid, passend bij de omgeving op doelwit en risico</td></tr>
+            <tr><td>Clear</td><td>&quot;wie kan lopen, kom naar mij&quot;</td></tr>
+            <tr><td>Cordon</td><td>zet de afzetting</td></tr>
+            <tr><td>Control</td><td>QRF of politie</td></tr>
+            <tr><td>Check</td><td>staat het cordon goed, is het bronze-gebied niet te groot of te klein, zijn er secondary devices?</td></tr>
+            <tr><td>Contain</td><td>houd het incident klein; 5-20-regel: eerst 5 meter rondom, daarna 20 meter</td></tr>
+        </table>
+        <p class="zacht">Weeg informatie steeds: is het relevant voor deze situatie, accuraat, actueel, en bevestigd door een andere bron?</p>` },
+    { t: 'leer', kop: 'Safety 1-2-3 en ERICPD', html: `
+        <p><strong>Safety 1-2-3</strong>: eerst <strong>self</strong> (PPE: veiligheid, functie, duurzaamheid, comfort, zichtbaarheid; de commandant is verantwoordelijk voor passende PPE), dan <strong>scene</strong> (genie, politie of QRF bepalen of de scene veilig is), dan <strong>survivors</strong> (evacueren).</p>
+        <p><strong>ERICPD</strong> voor het beperken van risico&#39;s: <strong>E</strong>liminate, <strong>R</strong>educe, <strong>I</strong>solate, <strong>C</strong>ontrol, <strong>P</strong>rotection, <strong>D</strong>iscipline (&quot;nee&quot; durven zeggen).</p>
+        <p class="zacht">De JESIP-risicocyclus erbij: gevaar identificeren, risico beoordelen, taak benoemen, beheersmaatregelen toepassen, integreren in het responsplan, en besluiten vastleggen.</p>` },
+    { t: 'volgorde', toets: true,
+      vraag: 'Zet de zes C&#39;s in de juiste volgorde.',
+      items: ['Confirm', 'Clear', 'Cordon', 'Control', 'Check', 'Contain'],
+      uitleg: 'Eerst bevestigen en ontruimen, dan afzetten en beheersen, en tot slot controleren en klein houden.' },
+    { t: 'koppel', toets: true,
+      vraag: 'Koppel de ERICPD-letter aan de maatregel.',
+      paren: [
+        ['Eliminate', 'het gevaar wegnemen'],
+        ['Reduce', 'het gevaar verkleinen'],
+        ['Isolate', 'het gevaar isoleren'],
+        ['Control', 'het gevaar beheersen'],
+        ['Protection', 'bescherming tegen het gevaar'],
+        ['Discipline', 'nee durven zeggen']
+      ],
+      uitleg: 'De volgorde is ook de voorkeursvolgorde: wegnemen is beter dan beschermen, en soms is het juiste antwoord gewoon nee.' },
+    { t: 'leer', kop: 'CBRN: METHANE-plus en decontaminatie', html: `
+        <p>Bij een (vermoede) CBRN-component stuur je <strong>METHANE-plus</strong>: de standaardmelding aangevuld met <strong>signs &amp; symptoms, weer, omgeving, release-indicatoren</strong> en of er <strong>daders aanwezig</strong> zijn. De aanpak hangt af van het aantal uitgeschakelden.</p>
+        <p>Decontaminatie: bij symptomen <strong>nat</strong> (koud water); is er geen water, dan <strong>droog</strong>. Bij grote aantallen: weg uit het gebied, kleding uit, stoffen verwijderen, en laat mensen het zo veel mogelijk <strong>zelf</strong> doen.</p>` },
+    { t: 'mc', toets: true,
+      vraag: 'Wat komt er bij een CBRN-verdenking bovenop de standaard METHANE-melding?',
+      opties: [
+        { tekst: 'Signs &amp; symptoms, weer, omgeving, release-indicatoren en of er daders aanwezig zijn', goed: true },
+        { tekst: 'Alleen de windrichting' },
+        { tekst: 'Niets; METHANE volstaat altijd' },
+        { tekst: 'De namen van de slachtoffers' }
+      ],
+      uitleg: 'METHANE-plus. En voor de opvang: met symptomen nat decontamineren met koud water, zonder water droog, en bij massa vooral laten zelf doen.' }
+    ]
+},
+{
+    id: 'verbindingen', titel: 'Verbindingen en vastlegging', sub: 'Radioprocedure, loggen en uitrusting',
+    items: [
+    { t: 'leer', kop: 'Radioprocedure', html: `
+        <p><strong>Slechte communicatie is de meest voorkomende faalfactor</strong> in major incident-management. De basis van een net radiobericht:</p>
+        <div class="quote">Mike 1, this is Mike 2, radiocheck, over.</div>
+        <ul>
+            <li>Kwaliteit terugmelden: OK, <em>unclear</em>, <em>broken up</em> of <em>completely lost</em>.</li>
+            <li><strong>Over</strong>: je verwacht antwoord. <strong>Out</strong>: einde bericht. &quot;Break&quot; is geen NAVO-standaard.</li>
+            <li>Cijfers los uitspreken: 15 wordt <span class="mono">figures, one five</span>.</li>
+            <li>Spellen kondig je aan met <span class="mono">I spell</span>.</li>
+        </ul>` },
+    { t: 'leer', kop: 'Loggen, uitrusting en planning', html: `
+        <p>Bij een major incident: <strong>start de klok en begin te schrijven</strong>. Pen en notitieboek, lokaal logboek of noodlogboek. De nasleep kan groot zijn: onderzoeken, rapporten en informatieverzoeken.</p>
+        <ul>
+            <li><strong>Uitrusting</strong>: de major incident-rugzak is basaler gepakt dan een gewone en doet het minste voor de meesten; een gewone rugzak volstaat voor hooguit twee T1-slachtoffers.</li>
+            <li><strong>Contingency</strong>: is risico maal gevolg hoog, plan er dan voor.</li>
+            <li><strong>Planning en training</strong>: oefen in bouwstenen, en houd rekening met multinationale en culturele verschillen en met lastige rolherkenning in militaire context.</li>
+        </ul>` },
+    { t: 'mc', toets: true,
+      vraag: 'Je sluit een radiobericht af waarop je antwoord verwacht. Wat zeg je?',
+      opties: [
+        { tekst: 'Over', goed: true },
+        { tekst: 'Out' },
+        { tekst: 'Break' },
+        { tekst: 'Roger, einde' }
+      ],
+      uitleg: 'Over vraagt om antwoord; out sluit definitief af. &quot;Break&quot; is geen NAVO-standaard.' },
+    { t: 'mc', toets: true,
+      vraag: 'Hoe geef je het getal 15 door via de radio?',
+      opties: [
+        { tekst: 'Figures, one five', goed: true },
+        { tekst: 'Fifteen' },
+        { tekst: 'One-five, I spell' },
+        { tekst: 'Vijftien, herhaal: vijftien' }
+      ],
+      uitleg: 'Cijfers spreek je los uit om verhoring te voorkomen. &quot;I spell&quot; is voor het spellen van woorden, niet van getallen.' },
+    { t: 'flits',
+      vraag: 'Waarom begin je bij een major incident direct met schrijven, en waarin?',
+      antwoord: 'Pen en notitieboek, lokaal logboek of noodlogboek. De nasleep brengt onderzoeken, rapporten en informatieverzoeken; zonder log valt niets te reconstrueren.' }
+    ]
+},
+{
+    id: 'methane-oefening', titel: 'METHANE-oefeningen', sub: 'Scenario&#39;s: stel zelf de melding op',
+    items: [
+    { t: 'leer', kop: 'Opfrisser en voorbeeldmelding', html: `
+        <p>M/ETHANE: <strong>M</strong>ajor incident (declared of standby), <strong>E</strong>xact location, <strong>T</strong>ype of incident, <strong>H</strong>azards, <strong>A</strong>ccess, <strong>N</strong>umber of casualties, <strong>E</strong>mergency services. Zo klinkt een volledige melding:</p>
+        <div class="quote">Major incident declared. Exact location: kruispunt bij kilometerpaal 12 op de N348. Type: bus tegen een viaduct. Hazards: lekkende brandstof, mogelijk instabiel viaduct. Access: aanrijden via de zuidzijde; de noordzijde is geblokkeerd. Number: twaalf gewonden, van wie drie niet ambulant. Emergency services: twee extra ambulances en brandweer met stabilisatiemateriaal gevraagd.</div>
+        <p class="zacht">Hierna oefen je: eerst de volgorde, dan herkennen, dan zelf formuleren.</p>` },
+    { t: 'volgorde', toets: true,
+      vraag: 'Zet de onderdelen van een M/ETHANE-melding in de juiste volgorde.',
+      items: ['Major incident: declared of standby', 'Exact location', 'Type of incident', 'Hazards', 'Access', 'Number of casualties', 'Emergency services'],
+      uitleg: 'De M is de schakelaar, daarna volgen de letters het woord ETHANE.' },
+    { t: 'koppel', toets: true,
+      vraag: 'Scenario busongeval: koppel elk stukje informatie aan de juiste letter.',
+      paren: [
+        ['M', '&quot;major incident declared&quot;'],
+        ['E', 'kruispunt bij kilometerpaal 12'],
+        ['T', 'bus tegen een viaduct'],
+        ['H', 'lekkende brandstof, instabiel viaduct'],
+        ['A', 'aanrijden via de zuidzijde'],
+        ['N', 'twaalf gewonden, drie niet ambulant'],
+        ['E&nbsp;', 'twee extra ambulances en brandweer gevraagd']
+      ],
+      uitleg: 'Let op het verschil tussen de eerste E (exact location) en de laatste (emergency services: aanwezig en aanvullend benodigd).' },
+    { t: 'mc', toets: true,
+      vraag: 'Oefenscenario: explosie in een legeringsgebouw op een kazerneterrein, rook, meerdere gewonden. Welke eerste melding is het sterkst?',
+      opties: [
+        { tekst: 'Major incident declared. Legeringsgebouw 4, kazerneterrein X. Explosie, oorzaak onbekend. Rook, mogelijk secundair explosief. Toegang via de hoofdpoort. Geschat tien gewonden, aantal niet-ambulant onbekend. Brandweer, EOD en drie ambulances gevraagd.', goed: true },
+        { tekst: 'Er is een explosie geweest in gebouw 4, kom zo snel mogelijk met alles wat je hebt.' },
+        { tekst: 'Major incident declared. Legeringsgebouw 4. Explosie. Toegang via de hoofdpoort. Brandweer gevraagd.' },
+        { tekst: 'Tien gewonden bij een explosie in gebouw 4. Rook. Stuur ambulances.' }
+      ],
+      uitleg: 'Alleen de eerste bevat alle zeven elementen, inclusief hazards (rook, mogelijk secundair explosief) en een schatting van de aantallen. Schatten mag; weglaten niet.' },
+    { t: 'flits',
+      vraag: 'Scenario: op de schietbaan klapt een band van een vrachtwagen uiteen naast een wachtende groep. Vijf gewonden, van wie twee er slecht aan toe zijn; de toegangsweg is half versperd. Formuleer hardop je volledige M/ETHANE-melding.',
+      antwoord: 'Bijvoorbeeld: &quot;Major incident standby. Exact location: schietbaan Z, toegangsweg vanaf de doorgaande weg. Type: uiteengeklapte vrachtwagenband naast personeel. Hazards: mogelijk verdere bandinstabiliteit, rijdend verkeer. Access: toegangsweg half versperd; aanrijden stapvoets, oostzijde. Number: vijf gewonden, twee vermoedelijk T1. Emergency services: twee ambulances en berging gevraagd.&quot; De precieze invulling mag anders, als alle zeven elementen er maar in zitten.' }
+    ]
+}
 ];
+
 
 const ZELFTEST = {
     id: 'zelftest', titel: 'Zelftest zonder opties',
