@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Opleiding</title>
+<meta name="description" content="To-do's en deadlines voor de praktijkopdrachten van de opleiding: sociale kaart, korte adviesnota en werkplekonderzoek.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23e2d9cc'/><rect x='18' y='22' width='64' height='60' rx='10' fill='none' stroke='%239d174d' stroke-width='6'/><path d='M34 14v16M66 14v16M18 42h64' stroke='%239d174d' stroke-width='6' stroke-linecap='round'/><path d='M36 62l10 10 18-20' fill='none' stroke='%239d174d' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --bg: #e2d9cc;
+    --vlak: #ffffff;
+    --vlak-zacht: #f7f3ed;
+    --tekst: #2c3e36;
+    --tekst-2: #6b7b6f;
+    --muted: #9aa69e;
+    --rand: #d5cdc2;
+    --rand-licht: #e3dbd0;
+    --accent: #9d174d;
+    --accent-donker: #831843;
+    --accent-bg: rgba(157, 23, 77, 0.07);
+    --rood: #dc2626;
+    --oranje: #b45309;
+    --oranje-bg: rgba(180, 83, 9, 0.08);
+    --groen: #059669;
+    --groen-bg: rgba(5, 150, 105, 0.08);
+}
+
+body {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--tekst);
+    line-height: 1.55;
+    min-height: 100vh;
+}
+
+.wrap { max-width: 860px; margin: 0 auto; padding: 16px 16px 60px; }
+
+.back-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--tekst-2); text-decoration: none;
+    font-size: 0.88rem; padding: 10px 0;
+}
+.back-link:hover { color: var(--accent); }
+.back-link svg { width: 17px; height: 17px; }
+
+.app-head { margin: 8px 0 18px; }
+.app-head h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem; font-weight: 600;
+}
+.app-head .sub { color: var(--tekst-2); font-size: 0.88rem; }
+
+.card {
+    background: var(--vlak);
+    border: 1px solid var(--rand-licht);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 14px;
+}
+.card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem; font-weight: 600; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.card h3 { font-size: 0.95rem; font-weight: 700; margin: 12px 0 6px; }
+.card h3:first-of-type { margin-top: 0; }
+.card p { font-size: 0.92rem; margin-bottom: 8px; }
+.card p:last-child { margin-bottom: 0; }
+.card ul, .card ol { margin: 6px 0 10px 20px; font-size: 0.92rem; }
+.card li { margin-bottom: 4px; }
+.zacht { color: var(--tekst-2); font-size: 0.85rem; }
+.mono { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+.deadline-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem; font-weight: 500;
+    background: var(--accent-bg); color: var(--accent-donker);
+    border: 1px solid rgba(157, 23, 77, 0.25);
+    border-radius: 50px; padding: 3px 10px;
+}
+
+/* To-do overzicht */
+.todo-lijst { list-style: none; margin: 4px 0 0 !important; }
+.todo-rij {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 10px 4px; border-top: 1px solid var(--rand-licht);
+    margin: 0 !important;
+}
+.todo-lijst .todo-rij:first-child { border-top: none; }
+.todo-rij input[type="checkbox"] {
+    width: 19px; height: 19px; margin-top: 2px;
+    accent-color: var(--groen); cursor: pointer; flex-shrink: 0;
+}
+.todo-datum {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.76rem; font-weight: 500;
+    color: var(--accent-donker);
+    background: var(--vlak-zacht); border: 1px solid var(--rand);
+    border-radius: 6px; padding: 2px 8px;
+    white-space: nowrap; flex-shrink: 0; margin-top: 1px;
+    min-width: 96px; text-align: center;
+}
+.todo-tekst { font-size: 0.92rem; flex: 1; }
+.todo-tekst .wanneer { display: block; font-size: 0.78rem; color: var(--muted); }
+.todo-rij.af .todo-tekst { color: var(--muted); text-decoration: line-through; }
+.todo-rij.af .todo-datum { color: var(--groen); border-color: rgba(5, 150, 105, 0.35); background: var(--groen-bg); }
+.todo-rij.te-laat .todo-datum { color: var(--rood); border-color: rgba(220, 38, 38, 0.35); background: rgba(220, 38, 38, 0.06); }
+.todo-rij.binnenkort .todo-datum { color: var(--oranje); border-color: rgba(180, 83, 9, 0.35); background: var(--oranje-bg); }
+.verwijder-knop {
+    background: none; border: none; cursor: pointer;
+    color: var(--muted); font-size: 1rem; line-height: 1;
+    padding: 4px 6px; border-radius: 6px; flex-shrink: 0;
+}
+.verwijder-knop:hover { color: var(--rood); background: rgba(220, 38, 38, 0.06); }
+
+.nieuw-rij {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--rand-licht);
+}
+.nieuw-rij input {
+    font-family: inherit; font-size: 0.9rem; color: var(--tekst);
+    background: var(--vlak-zacht); border: 1px solid var(--rand);
+    border-radius: 8px; padding: 8px 12px;
+}
+.nieuw-rij input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+#nieuw-tekst { flex: 1; min-width: 180px; }
+#nieuw-datum { width: 150px; }
+.nieuw-rij button {
+    font-family: inherit; font-size: 0.88rem; font-weight: 600;
+    background: var(--accent); color: #fff; border: none;
+    border-radius: 8px; padding: 8px 16px; cursor: pointer;
+}
+.nieuw-rij button:hover { background: var(--accent-donker); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 4px; }
+.chip {
+    font-size: 0.8rem; padding: 4px 11px; border-radius: 50px;
+    background: var(--vlak-zacht); border: 1px solid var(--rand);
+}
+
+.blok {
+    border-radius: 10px; padding: 11px 14px; margin: 10px 0;
+    font-size: 0.88rem;
+}
+.blok .kop { font-weight: 700; margin-bottom: 3px; }
+.blok.notitie { background: var(--oranje-bg); border: 1px solid rgba(180, 83, 9, 0.25); }
+.blok.notitie .kop { color: var(--oranje); }
+.blok.info { background: var(--accent-bg); border: 1px solid rgba(157, 23, 77, 0.22); }
+.blok.info .kop { color: var(--accent-donker); }
+
+.voet {
+    text-align: center; margin-top: 30px;
+    font-size: 0.78rem; color: var(--muted);
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+    <a href="../" class="back-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Dashboard
+    </a>
+    <div class="app-head">
+        <h1>Opleiding</h1>
+        <div class="sub">Praktijkopdrachten en deadlines in &eacute;&eacute;n overzicht; vink af wat klaar is.</div>
+    </div>
+
+    <div class="card">
+        <h2>To-do's met datum</h2>
+        <ul class="todo-lijst" id="todo-lijst"></ul>
+        <div class="nieuw-rij">
+            <input type="text" id="nieuw-tekst" placeholder="Eigen to-do toevoegen&hellip;" maxlength="120">
+            <input type="date" id="nieuw-datum" aria-label="Datum (optioneel)">
+            <button id="nieuw-knop">Toevoegen</button>
+        </div>
+        <p class="zacht" style="margin-top:8px;">Voortgang en eigen to-do's worden op dit apparaat bewaard.</p>
+    </div>
+
+    <div class="card">
+        <h2>Sociale kaart 2 (SK2) <span class="deadline-chip">inleveren 7 dec</span></h2>
+        <p>Een <strong>complexe pati&euml;nt in het EGB</strong>. De opbouw is hetzelfde als in het huisartsenblok:</p>
+        <ul>
+            <li><strong>Webmodel</strong> (1 blz).</li>
+            <li><strong>Overzicht en uitwerking</strong> van gegevens, personen, partijen en instanties.</li>
+        </ul>
+        <h3>Wat erin mag aan "clubs"</h3>
+        <div class="chips">
+            <span class="chip">Militair</span>
+            <span class="chip">GZHC (gezondheidscentrum)</span>
+            <span class="chip">CMH (Centraal Militair Hospitaal)</span>
+            <span class="chip">MGGZ</span>
+            <span class="chip">Partner</span>
+            <span class="chip">Vrienden</span>
+            <span class="chip">Lijnmanager</span>
+            <span class="chip">Collega's</span>
+            <span class="chip">GV'er (geestelijk verzorger)</span>
+            <span class="chip">BMW (maatschappelijk werk)</span>
+            <span class="chip">BMB (bijzondere medische beoordelingen)</span>
+            <span class="chip">DCR (Dienstencentrum Re-integratie)</span>
+            <span class="chip">Commandant</span>
+        </div>
+        <p class="zacht">BMB doet de vaststelling die het UWV civiel doet.</p>
+        <div class="blok notitie"><span class="kop">Eigen notitie:</span> het webmodel nog uitwerken in mermaid.</div>
+    </div>
+
+    <div class="card">
+        <h2>Korte adviesnota
+            <span class="deadline-chip">7 dec &middot; 25 jan &middot; 15 feb &middot; 19 feb</span>
+        </h2>
+        <p><strong>Wat is het:</strong> een advies aan de leiding. Signaleren &gt; interpretatie &gt; advies.</p>
+        <h3>Leerdoelen</h3>
+        <ul>
+            <li>Samenwerkings- en tegenwerkingskrachten in kaart brengen (krachtveldanalyse).</li>
+            <li>Rol als arts &eacute;n adviseur.</li>
+            <li>Naast schriftelijk ook mondeling adviseren.</li>
+        </ul>
+        <h3>Vorm en niveau</h3>
+        <ul>
+            <li>Aangepast model conform het onderwijs schriftelijk adviseren: <strong>inleiding &amp; advies, onderbouwing, conclusie &amp; aanbeveling</strong>. Maximaal 200 woorden.</li>
+            <li>Het probleem speelt op het GZHC; niveau tot en met C-GZHC.</li>
+        </ul>
+        <h3>Zes centrale vragen</h3>
+        <ol>
+            <li>Wat is het probleem?</li>
+            <li>Waarom is het een probleem?</li>
+            <li>Wie heeft het probleem?</li>
+            <li>Waar doet het probleem zich voor?</li>
+            <li>Wanneer is het een probleem?</li>
+            <li>Op welke wijze (hoe)?</li>
+        </ol>
+        <p>Quick scan: kloppen de conclusie en de aanbeveling bij het gesignaleerde probleem?</p>
+        <div class="blok notitie"><span class="kop">Eigen notitie (mijn edge):</span> toevoegen wat er gebeurt als het probleem <strong>niet</strong> wordt opgelost. Wie heeft daar last van, wat betekent die last en welke gevolgen heeft dat? Levert het direct zichtbare problemen op?</div>
+        <div class="blok info"><span class="kop">Datums:</span> 7 dec onderwerp en probleemstelling inleveren &middot; 25 jan conceptversie &middot; 15 feb definitieve versie &middot; 19 feb mondeling advies aan de commandant.</div>
+    </div>
+
+    <div class="card">
+        <h2>Werkplekonderzoek</h2>
+        <p>Informatie volgt tijdens de lessen arbeidsanamnese.</p>
+    </div>
+
+    <div class="voet">Persoonlijke planningspagina; data komen uit de opdrachtbeschrijvingen van de opleiding.</div>
+</div>
+
+<script>
+const VASTE_TODOS = [
+    { id: 'sk2', datum: '2026-12-07', tekst: 'Sociale kaart 2 inleveren (complexe patiënt EGB)' },
+    { id: 'nota-onderwerp', datum: '2026-12-07', tekst: 'Adviesnota: onderwerp en probleemstelling inleveren' },
+    { id: 'nota-concept', datum: '2027-01-25', tekst: 'Adviesnota: conceptversie inleveren' },
+    { id: 'nota-def', datum: '2027-02-15', tekst: 'Adviesnota: definitieve versie inleveren' },
+    { id: 'nota-mondeling', datum: '2027-02-19', tekst: 'Mondeling advies aan de commandant' },
+    { id: 'werkplek', datum: null, tekst: 'Werkplekonderzoek (info tijdens lessen arbeidsanamnese)' }
+];
+
+const MAANDEN = ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
+
+function leesOpslag(sleutel, standaard) {
+    try { return JSON.parse(localStorage.getItem(sleutel)) || standaard; }
+    catch (e) { return standaard; }
+}
+function schrijfOpslag(sleutel, waarde) {
+    try { localStorage.setItem(sleutel, JSON.stringify(waarde)); } catch (e) {}
+}
+
+function toonDatum(iso) {
+    const d = new Date(iso + 'T12:00:00');
+    return d.getDate() + ' ' + MAANDEN[d.getMonth()] + ' ' + d.getFullYear();
+}
+
+function dagenTot(iso) {
+    const nu = new Date();
+    const vandaag = new Date(nu.getFullYear(), nu.getMonth(), nu.getDate());
+    const doel = new Date(iso + 'T00:00:00');
+    return Math.round((doel - vandaag) / 86400000);
+}
+
+function wanneerTekst(dagen) {
+    if (dagen === 0) return 'vandaag';
+    if (dagen === 1) return 'morgen';
+    if (dagen < 0) return Math.abs(dagen) + (dagen === -1 ? ' dag' : ' dagen') + ' geleden';
+    if (dagen < 15) return 'over ' + dagen + ' dagen';
+    return 'over ' + Math.round(dagen / 7) + ' weken';
+}
+
+function alleTodos() {
+    const eigen = leesOpslag('opleiding-eigen', []);
+    const lijst = VASTE_TODOS.concat(eigen.map(t => ({ id: t.id, datum: t.datum || null, tekst: t.tekst, eigen: true })));
+    lijst.sort((a, b) => {
+        if (!a.datum && !b.datum) return 0;
+        if (!a.datum) return 1;
+        if (!b.datum) return -1;
+        return a.datum < b.datum ? -1 : a.datum > b.datum ? 1 : 0;
+    });
+    return lijst;
+}
+
+function tekenTodos() {
+    const af = leesOpslag('opleiding-af', {});
+    const houder = document.getElementById('todo-lijst');
+    houder.innerHTML = '';
+    alleTodos().forEach(todo => {
+        const rij = document.createElement('li');
+        rij.className = 'todo-rij';
+        const isAf = !!af[todo.id];
+        if (isAf) rij.classList.add('af');
+
+        const vink = document.createElement('input');
+        vink.type = 'checkbox';
+        vink.checked = isAf;
+        vink.setAttribute('aria-label', 'Afvinken: ' + todo.tekst);
+        vink.addEventListener('change', () => {
+            const nieuw = leesOpslag('opleiding-af', {});
+            if (vink.checked) nieuw[todo.id] = true; else delete nieuw[todo.id];
+            schrijfOpslag('opleiding-af', nieuw);
+            tekenTodos();
+        });
+        rij.appendChild(vink);
+
+        const datumVak = document.createElement('span');
+        datumVak.className = 'todo-datum';
+        if (todo.datum) {
+            datumVak.textContent = toonDatum(todo.datum);
+            const dagen = dagenTot(todo.datum);
+            if (!isAf && dagen < 0) rij.classList.add('te-laat');
+            else if (!isAf && dagen <= 14) rij.classList.add('binnenkort');
+        } else {
+            datumVak.textContent = 'geen datum';
+        }
+        rij.appendChild(datumVak);
+
+        const tekst = document.createElement('span');
+        tekst.className = 'todo-tekst';
+        tekst.textContent = todo.tekst;
+        if (todo.datum && !isAf) {
+            const wanneer = document.createElement('span');
+            wanneer.className = 'wanneer';
+            wanneer.textContent = wanneerTekst(dagenTot(todo.datum));
+            tekst.appendChild(wanneer);
+        }
+        rij.appendChild(tekst);
+
+        if (todo.eigen) {
+            const weg = document.createElement('button');
+            weg.className = 'verwijder-knop';
+            weg.title = 'Verwijderen';
+            weg.textContent = '×';
+            weg.addEventListener('click', () => {
+                schrijfOpslag('opleiding-eigen', leesOpslag('opleiding-eigen', []).filter(t => t.id !== todo.id));
+                const nieuw = leesOpslag('opleiding-af', {});
+                delete nieuw[todo.id];
+                schrijfOpslag('opleiding-af', nieuw);
+                tekenTodos();
+            });
+            rij.appendChild(weg);
+        }
+
+        houder.appendChild(rij);
+    });
+}
+
+function voegToe() {
+    const tekstVeld = document.getElementById('nieuw-tekst');
+    const datumVeld = document.getElementById('nieuw-datum');
+    const tekst = tekstVeld.value.trim();
+    if (!tekst) { tekstVeld.focus(); return; }
+    const eigen = leesOpslag('opleiding-eigen', []);
+    eigen.push({ id: 'eigen-' + Date.now(), tekst: tekst, datum: datumVeld.value || null });
+    schrijfOpslag('opleiding-eigen', eigen);
+    tekstVeld.value = '';
+    datumVeld.value = '';
+    tekenTodos();
+    tekstVeld.focus();
+}
+
+document.getElementById('nieuw-knop').addEventListener('click', voegToe);
+document.getElementById('nieuw-tekst').addEventListener('keydown', e => {
+    if (e.key === 'Enter') voegToe();
+});
+
+tekenTodos();
+</script>
+</body>
+</html>
