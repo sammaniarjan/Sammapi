@@ -627,6 +627,7 @@ body::before {
 
 .person-dot.true-positive { background: var(--success); }
 .person-dot.false-positive { background: var(--danger); }
+.person-dot.false-negative { background: var(--warning); }
 
 .legend {
   display: flex;
@@ -650,6 +651,7 @@ body::before {
 
 .legend-dot.true-positive { background: var(--success); }
 .legend-dot.false-positive { background: var(--danger); }
+.legend-dot.false-negative { background: var(--warning); }
 
 /* ===================================
    Interpretation
@@ -950,6 +952,10 @@ body::before {
   background: var(--danger);
 }
 
+.live-icon-array .icon-dot.fn {
+  background: var(--warning);
+}
+
 .array-legend {
   display: flex;
   justify-content: center;
@@ -976,6 +982,10 @@ body::before {
 
 .array-legend .dot.fp {
   background: var(--danger);
+}
+
+.array-legend .dot.fn {
+  background: var(--warning);
 }
 
 /* ===================================

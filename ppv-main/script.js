@@ -36,6 +36,8 @@ const impactText = document.getElementById('impact-text');
 
 // Live visualization elements
 const liveIconArray = document.getElementById('live-icon-array');
+const liveMissArray = document.getElementById('live-miss-array');
+const missedGrid = document.getElementById('missed-grid');
 const livePpv = document.getElementById('live-ppv');
 const liveNpv = document.getElementById('live-npv');
 const ppvMeterArc = document.getElementById('ppv-meter-arc');
@@ -195,7 +197,7 @@ const examples = {
     sensitivity: 48,
     specificity: 97,
     prevalence: 6.8,
-    description: 'Zelfde algoritme, drempel 39,0 graden (waar hitteziekte dreigt): de sensitiviteit zakt naar 48%, dus ruim de helft van de werkelijk oververhitte sporters wordt gemist. De NPV van 96% oogt geruststellend, maar dat komt door de lage prevalentie (6,8%), niet door de test.'
+    description: 'Zelfde algoritme, drempel 39,0 graden (waar hitteziekte dreigt): de sensitiviteit zakt naar 48%. Kijk hieronder bij "van 100 mensen die het echt hebben": 52 gemist, terwijl de NPV-meter op 96% staat. Die hoge NPV komt door de lage prevalentie (6,8%), niet door de test.'
   },
   'drone-war': {
     population: 10000,
@@ -288,6 +290,7 @@ function displayResults(r) {
   resultFn.textContent = fmt(r.falseNegatives);
 
   updatePeopleGrid(r.truePositives, r.falsePositives);
+  updateMissedGrid(r.truePositives, r.falseNegatives);
   updateELI5(r);
   updateImpact(r);
 }
@@ -296,35 +299,43 @@ function displayResults(r) {
 // People Grid
 // ===================================
 
-function updatePeopleGrid(truePos, falsePos) {
-  const total = truePos + falsePos;
+function fillPeopleGrid(grid, countA, classA, countB, classB) {
+  const total = countA + countB;
   const maxDots = 100;
 
-  let scaledTrue = truePos;
-  let scaledFalse = falsePos;
+  let scaledA = countA;
+  let scaledB = countB;
 
   if (total > maxDots) {
     const scale = maxDots / total;
-    scaledTrue = Math.max(1, Math.round(truePos * scale));
-    scaledFalse = Math.max(1, Math.round(falsePos * scale));
+    scaledA = countA > 0 ? Math.max(1, Math.round(countA * scale)) : 0;
+    scaledB = countB > 0 ? Math.max(1, Math.round(countB * scale)) : 0;
 
-    while (scaledTrue + scaledFalse > maxDots) {
-      if (scaledFalse > scaledTrue) scaledFalse--;
-      else scaledTrue--;
+    while (scaledA + scaledB > maxDots) {
+      if (scaledB > scaledA) scaledB--;
+      else scaledA--;
     }
   }
 
   const dots = [];
-  for (let i = 0; i < scaledTrue; i++) dots.push('true-positive');
-  for (let i = 0; i < scaledFalse; i++) dots.push('false-positive');
+  for (let i = 0; i < scaledA; i++) dots.push(classA);
+  for (let i = 0; i < scaledB; i++) dots.push(classB);
   shuffle(dots);
 
-  peopleGrid.innerHTML = '';
+  grid.innerHTML = '';
   dots.forEach(type => {
     const dot = document.createElement('div');
     dot.className = 'person-dot ' + type;
-    peopleGrid.appendChild(dot);
+    grid.appendChild(dot);
   });
+}
+
+function updatePeopleGrid(truePos, falsePos) {
+  fillPeopleGrid(peopleGrid, truePos, 'true-positive', falsePos, 'false-positive');
+}
+
+function updateMissedGrid(truePos, falseNeg) {
+  fillPeopleGrid(missedGrid, truePos, 'true-positive', falseNeg, 'false-negative');
 }
 
 // ===================================
@@ -373,6 +384,12 @@ function updateELI5(r) {
     text += `<br><br><em>Opmerking:</em> Bij een prevalentie van ${prevPct}% is het aantal gezonden veel groter dan het aantal zieken, wat het absolute aantal vals-positieven verhoogt.`;
   }
 
+  const zieken = r.truePositives + r.falseNegatives;
+  const gemistPct = zieken > 0 ? Math.round((r.falseNegatives / zieken) * 100) : 0;
+  if (gemistPct >= 30) {
+    text += `<br><br><em>Let op de andere kant:</em> van de ${fmt(zieken)} mensen die het echt hebben, mist de test er ${fmt(r.falseNegatives)} (${gemistPct}%). Zie de oranje stippen hierboven.`;
+  }
+
   eli5Text.innerHTML = text;
 }
 
@@ -386,9 +403,15 @@ function updateImpact(r) {
 
   impactMessage.classList.remove('good', 'bad');
 
+  const zieken = r.truePositives + r.falseNegatives;
+  const gemistPct = zieken > 0 ? Math.round((r.falseNegatives / zieken) * 100) : 0;
   const highNpvLowPpv = r.npv >= 0.95 && r.ppv < 0.5;
 
-  if (highNpvLowPpv) {
+  if (r.npv >= 0.9 && gemistPct >= 30) {
+    impactMessage.classList.add('bad');
+    impactTitle.textContent = 'Hoge NPV, toch veel gemist';
+    impactText.textContent = `De NPV van ${npvPct}% oogt veilig, maar van de ${fmt(zieken)} mensen die het echt hebben mist de test er ${fmt(r.falseNegatives)} (${gemistPct}%). De NPV wordt hier omhoog getrokken door de lage prevalentie, niet door de test. Uitsluiten kan alleen met voldoende sensitiviteit.`;
+  } else if (highNpvLowPpv) {
     impactTitle.textContent = 'Hoge NPV, lage PPV';
     impactText.textContent = `PPV ${ppvPct}%, NPV ${npvPct}%. Het percentage vals-positieven is hoger dan het percentage vals-negatieven.`;
   } else if (r.ppv >= 0.7) {
@@ -433,13 +456,15 @@ function shuffle(arr) {
 // ===================================
 
 function initLiveVisualization() {
-  // Create 100 dots for icon array
-  liveIconArray.innerHTML = '';
-  for (let i = 0; i < 100; i++) {
-    const dot = document.createElement('div');
-    dot.className = 'icon-dot';
-    liveIconArray.appendChild(dot);
-  }
+  // Create 100 dots for both icon arrays
+  [liveIconArray, liveMissArray].forEach(arr => {
+    arr.innerHTML = '';
+    for (let i = 0; i < 100; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'icon-dot';
+      arr.appendChild(dot);
+    }
+  });
   updateLiveVisualization();
 }
 
@@ -480,6 +505,18 @@ function updateLiveVisualization() {
       dot.classList.add('tp');
     } else {
       dot.classList.add('fp');
+    }
+  });
+
+  // Update missed array - of 100 people who truly have it, how many does the test find?
+  const foundCount = Math.round(sensitivity * 100);
+  const missDots = liveMissArray.querySelectorAll('.icon-dot');
+  missDots.forEach((dot, i) => {
+    dot.classList.remove('tp', 'fn');
+    if (i < foundCount) {
+      dot.classList.add('tp');
+    } else {
+      dot.classList.add('fn');
     }
   });
 }

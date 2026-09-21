@@ -169,9 +169,9 @@
               <div class="bayes-formula">&gt;38,0 &deg;C: sens 96%, spec 75% &middot; 76 van 2.111 gemist</div>
               <div class="bayes-formula">&gt;39,0 &deg;C: sens 48%, spec 97% &middot; 179 van 342 gemist</div>
               <div class="bayes-formula">&gt;39,25 &deg;C: sens 13%, spec 99% &middot; 154 van 176 gemist</div>
-              <p>In het lage en middengebied (37,75-38,75 &deg;C) is de schatting bruikbaar, bijvoorbeeld om een doel-Tc rond 38,5 &deg;C te bewaken tijdens hitteacclimatisatie. Maar juist waar hitteziekte dreigt (Tc &ge;39 &deg;C) mist het algoritme meer dan de helft van de werkelijk oververhitte sporters. De aanname van een vaste hartslag-Tc-relatie gaat daar stuk (onder andere door herverdeling van bloedstroom bij dehydratie), waardoor de schatter de hoogste temperaturen structureel onderschat.</p>
-              <p>De valkuil voor de lezer: bij de drempel van 39,0 &deg;C is de NPV nog steeds 96% (4.542 terecht negatief van 4.721 negatieven). Dat oogt geruststellend, maar komt vrijwel volledig door de lage prevalentie: maar 6,8% van de metingen zat boven 39 &deg;C. Reken je met de sensitiviteit, dan zie je dat een negatieve uitslag bij een sporter die werkelijk boven de 39 &deg;C zit vaker voorkomt (52%) dan een positieve. Een hoge NPV bij lage prevalentie is dus geen bewijs dat je veilig kunt uitsluiten.</p>
-              <p>Conclusie: ECTemp is bruikbaar als trainingsinstrument, maar niet als enige bewaking om hitteziekte te voorspellen. Kies hierboven de twee ECTemp-voorbeelden en vergelijk zelf de PPV en NPV.</p>
+              <p>De rest van deze app draait vooral om de PPV: hoeveel van de alarmen kloppen? Bij ECTemp zit het probleem aan de andere kant, bij de vals-negatieven. Van de 342 metingen die echt boven 39,0 &deg;C zaten, kreeg meer dan de helft (179) een geruststellende uitslag. Juist waar hitteziekte dreigt faalt het algoritme dus: de vaste hartslag-Tc-relatie gaat daar stuk (onder andere door herverdeling van bloedstroom bij dehydratie), waardoor de hoogste temperaturen structureel worden onderschat.</p>
+              <p>En toch is de NPV bij die drempel 96% (4.542 terecht negatief van 4.721 negatieven). Dat is geen tegenspraak, maar de base rate fallacy in spiegelbeeld. Maar 6,8% van de metingen zat boven 39 &deg;C, dus de negatieve uitslagen bestaan vrijwel volledig uit mensen die het toch al niet hadden; de 179 gemiste gevallen vallen daartussen weg. Een hoge NPV bewijst dus niet dat je veilig kunt uitsluiten: dat vertelt alleen de sensitiviteit. Kijk daarom bij de voorbeelden naar de visualisatie "van 100 mensen die het echt hebben": daar zie je 52 gemiste gevallen, terwijl de NPV-meter op 96% staat.</p>
+              <p>Conclusie: ECTemp is bruikbaar als trainingsinstrument in het middengebied (bijvoorbeeld een doel-Tc van 38,5 &deg;C bewaken tijdens hitteacclimatisatie), maar ongeschikt als enige bewaking om hitteziekte te voorspellen. Kies hierboven de twee ECTemp-voorbeelden en vergelijk.</p>
             </div>
           </details>
         </div>
@@ -247,6 +247,16 @@
               <span class="legend-item"><span class="dot fp"></span> Vals +</span>
             </div>
           </div>
+
+          <!-- Missed Array -->
+          <div class="live-array-container">
+            <p class="array-title">Van 100 mensen die het echt hebben:</p>
+            <div class="live-icon-array" id="live-miss-array"></div>
+            <div class="array-legend">
+              <span class="legend-item"><span class="dot tp"></span> Gevonden</span>
+              <span class="legend-item"><span class="dot fn"></span> Gemist (vals &minus;)</span>
+            </div>
+          </div>
         </div>
 
         <div class="nav-buttons">
@@ -305,6 +315,23 @@
             <div class="legend-item">
               <div class="legend-dot false-positive"></div>
               <span>Vals positief</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Missed cases -->
+        <div class="viz-section">
+          <h3>Alle mensen die het echt hebben</h3>
+          <p class="subtitle">Groen = gevonden door de test, Oranje = gemist (vals negatief)</p>
+          <div class="people-grid" id="missed-grid"></div>
+          <div class="legend">
+            <div class="legend-item">
+              <div class="legend-dot true-positive"></div>
+              <span>Gevonden</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot false-negative"></div>
+              <span>Gemist (vals negatief)</span>
             </div>
           </div>
         </div>
