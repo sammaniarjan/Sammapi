@@ -770,6 +770,126 @@ body::before {
 }
 
 /* ===================================
+   ECTemp verkenner
+   =================================== */
+.ectemp-verkenner {
+  margin: 4px 0 16px;
+}
+
+.ectemp-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 4px 0 14px;
+}
+
+.ectemp-chip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.ectemp-chip:hover {
+  border-color: var(--accent);
+  color: var(--text-primary);
+}
+
+.ectemp-chip.heet {
+  border-color: rgba(220, 38, 38, 0.35);
+  color: var(--danger);
+}
+
+.ectemp-chip.actief {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+
+.ectemp-chip.heet.actief {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #ffffff;
+}
+
+.ectemp-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.ectemp-stat {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 6px;
+  text-align: center;
+}
+
+.ectemp-stat .l {
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.ectemp-stat .v {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.ectemp-stat .v.laag { color: var(--danger); }
+.ectemp-stat .v.hoog { color: var(--success); }
+
+.ectemp-teller {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-align: center;
+  margin: 0 0 12px;
+}
+
+.ectemp-verkenner .live-array-container {
+  margin-bottom: 12px;
+}
+
+.ectemp-chart-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 14px 10px;
+  margin-bottom: 12px;
+}
+
+.ectemp-chart-wrap svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.array-legend .dot.lijn-sens { background: var(--accent); }
+.array-legend .dot.lijn-npv { background: var(--success); }
+
+.ectemp-tool-rij {
+  text-align: center;
+}
+
+@media (max-width: 560px) {
+  .ectemp-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ===================================
    Footer
    =================================== */
 .footer {

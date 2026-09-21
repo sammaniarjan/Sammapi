@@ -162,16 +162,43 @@
             <p id="example-description"></p>
           </div>
 
-          <details class="bayes-details">
+          <details class="bayes-details" id="ectemp-casus">
             <summary>Casus: ECTemp, kerntemperatuur schatten uit hartslag</summary>
             <div class="bayes-content">
-              <p>Het ECTemp-algoritme schat de kerntemperatuur (Tc) uit opeenvolgende hartslagwaarden. De Korte et al. (Front Sports Act Living 2022) valideerden het bij 101 topsporters die in de hitte fietsten: 5.025 metingen, Tc 35,8-40,4 &deg;C. De testeigenschappen hangen sterk af van de drempel die je wilt detecteren:</p>
-              <div class="bayes-formula">&gt;38,0 &deg;C: sens 96%, spec 75% &middot; 76 van 2.111 gemist</div>
-              <div class="bayes-formula">&gt;39,0 &deg;C: sens 48%, spec 97% &middot; 179 van 342 gemist</div>
-              <div class="bayes-formula">&gt;39,25 &deg;C: sens 13%, spec 99% &middot; 154 van 176 gemist</div>
+              <p>Het ECTemp-algoritme schat de kerntemperatuur (Tc) uit opeenvolgende hartslagwaarden. De Korte et al. (Front Sports Act Living 2022) valideerden het bij 101 topsporters die in de hitte fietsten: 5.025 metingen, Tc 35,8-40,4 &deg;C. De testeigenschappen hangen sterk af van de drempel die je wilt detecteren. Klik een drempel en zie de echte meetdata:</p>
+
+              <div class="ectemp-verkenner">
+                <div class="ectemp-chips" id="ectemp-chips"></div>
+                <div class="ectemp-stats">
+                  <div class="ectemp-stat"><div class="l">Sens</div><div class="v" id="ect-sens">--</div></div>
+                  <div class="ectemp-stat"><div class="l">Spec</div><div class="v" id="ect-spec">--</div></div>
+                  <div class="ectemp-stat"><div class="l">PPV</div><div class="v" id="ect-ppv">--</div></div>
+                  <div class="ectemp-stat"><div class="l">NPV</div><div class="v" id="ect-npv">--</div></div>
+                </div>
+                <p class="ectemp-teller" id="ectemp-teller"></p>
+                <div class="live-array-container">
+                  <p class="array-title" id="ectemp-miss-titel"></p>
+                  <div class="live-icon-array" id="ectemp-miss-array"></div>
+                  <div class="array-legend">
+                    <span class="legend-item"><span class="dot tp"></span> Gevonden</span>
+                    <span class="legend-item"><span class="dot fn"></span> Gemist (vals &minus;)</span>
+                  </div>
+                </div>
+                <div class="ectemp-chart-wrap">
+                  <p class="array-title">De sensitiviteit stort in waar het gevaarlijk wordt; de NPV blijft hoog:</p>
+                  <svg id="ectemp-chart" viewBox="0 0 560 250" role="img" aria-label="Sensitiviteit en NPV per drempel"></svg>
+                  <div class="array-legend">
+                    <span class="legend-item"><span class="dot lijn-sens"></span> Sensitiviteit</span>
+                    <span class="legend-item"><span class="dot lijn-npv"></span> NPV</span>
+                  </div>
+                </div>
+                <div class="ectemp-tool-rij">
+                  <button type="button" class="btn-next" id="ectemp-naar-tool">Zet deze drempel in de rekentool</button>
+                </div>
+              </div>
               <p>De rest van deze app draait vooral om de PPV: hoeveel van de alarmen kloppen? Bij ECTemp zit het probleem aan de andere kant, bij de vals-negatieven. Van de 342 metingen die echt boven 39,0 &deg;C zaten, kreeg meer dan de helft (179) een geruststellende uitslag. Juist waar hitteziekte dreigt faalt het algoritme dus: de vaste hartslag-Tc-relatie gaat daar stuk (onder andere door herverdeling van bloedstroom bij dehydratie), waardoor de hoogste temperaturen structureel worden onderschat.</p>
               <p>En toch is de NPV bij die drempel 96% (4.542 terecht negatief van 4.721 negatieven). Dat is geen tegenspraak, maar de base rate fallacy in spiegelbeeld. Maar 6,8% van de metingen zat boven 39 &deg;C, dus de negatieve uitslagen bestaan vrijwel volledig uit mensen die het toch al niet hadden; de 179 gemiste gevallen vallen daartussen weg. Een hoge NPV bewijst dus niet dat je veilig kunt uitsluiten: dat vertelt alleen de sensitiviteit. Kijk daarom bij de voorbeelden naar de visualisatie "van 100 mensen die het echt hebben": daar zie je 52 gemiste gevallen, terwijl de NPV-meter op 96% staat.</p>
-              <p>Conclusie: ECTemp is bruikbaar als trainingsinstrument in het middengebied (bijvoorbeeld een doel-Tc van 38,5 &deg;C bewaken tijdens hitteacclimatisatie), maar ongeschikt als enige bewaking om hitteziekte te voorspellen. Kies hierboven de twee ECTemp-voorbeelden en vergelijk.</p>
+              <p>Conclusie: ECTemp is bruikbaar als trainingsinstrument in het middengebied (bijvoorbeeld een doel-Tc van 38,5 &deg;C bewaken tijdens hitteacclimatisatie), maar ongeschikt als enige bewaking om hitteziekte te voorspellen. Zet een drempel met de knop hierboven direct in de rekentool, of kies de twee kant-en-klare ECTemp-voorbeelden.</p>
             </div>
           </details>
         </div>
@@ -196,7 +223,7 @@
           <div class="input-group">
             <label>Specificiteit</label>
             <div class="slider-row">
-              <input type="range" id="specificity" min="50" max="100" step="0.1" value="95">
+              <input type="range" id="specificity" min="0" max="100" step="0.1" value="95">
               <span id="specificity-value" class="slider-value">95%</span>
             </div>
           </div>
@@ -204,7 +231,7 @@
           <div class="input-group">
             <label>Prevalentie</label>
             <div class="slider-row">
-              <input type="range" id="prevalence" min="0.1" max="50" step="0.1" value="10">
+              <input type="range" id="prevalence" min="0.1" max="95" step="0.1" value="10">
               <span id="prevalence-value" class="slider-value">10%</span>
             </div>
           </div>

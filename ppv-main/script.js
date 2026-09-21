@@ -239,6 +239,12 @@ exampleButtons.forEach(btn => {
       exampleButtons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
 
+      // ECTemp-voorbeelden: klap de bijbehorende casus met verkenner open
+      if (key.indexOf('ectemp') === 0) {
+        const casus = document.getElementById('ectemp-casus');
+        if (casus) casus.open = true;
+      }
+
       // Update live visualization
       updateLiveVisualization();
     }
@@ -525,6 +531,208 @@ function updateLiveVisualization() {
 startButton.addEventListener('click', () => {
   initLiveVisualization();
 });
+
+// ===================================
+// ECTemp verkenner (de Korte et al. 2022, tabel 2; echte aantallen)
+// ===================================
+
+const ECTEMP_DATA = [
+  { t: '37,0',  tp: 4466, fp: 336, tn: 106,  fn: 117 },
+  { t: '37,25', tp: 3767, fp: 370, tn: 616,  fn: 272 },
+  { t: '37,5',  tp: 3231, fp: 495, tn: 1110, fn: 189 },
+  { t: '37,75', tp: 2654, fp: 643, tn: 1623, fn: 105 },
+  { t: '38,0',  tp: 2035, fp: 742, tn: 2172, fn: 76 },
+  { t: '38,25', tp: 1411, fp: 707, tn: 2824, fn: 83 },
+  { t: '38,5',  tp: 878,  fp: 546, tn: 3485, fn: 116 },
+  { t: '38,75', tp: 456,  fp: 313, tn: 4090, fn: 166 },
+  { t: '39,0',  tp: 163,  fp: 141, tn: 4542, fn: 179 },
+  { t: '39,25', tp: 22,   fp: 39,  tn: 4810, fn: 154 },
+  { t: '39,5',  tp: 3,    fp: 12,  tn: 4937, fn: 73 },
+  { t: '39,75', tp: 0,    fp: 5,   tn: 4989, fn: 31 }
+];
+const ECTEMP_HEET_VANAF = 8; // index van >39,0: het hitteziektegebied
+
+const ectempChips = document.getElementById('ectemp-chips');
+const ectempMissArray = document.getElementById('ectemp-miss-array');
+const ectempMissTitel = document.getElementById('ectemp-miss-titel');
+const ectempTeller = document.getElementById('ectemp-teller');
+const ectempChart = document.getElementById('ectemp-chart');
+const ectSens = document.getElementById('ect-sens');
+const ectSpec = document.getElementById('ect-spec');
+const ectPpv = document.getElementById('ect-ppv');
+const ectNpv = document.getElementById('ect-npv');
+
+let ectempIndex = 8;
+let ectempMarkerLijn = null;
+let ectempMarkerSens = null;
+let ectempMarkerNpv = null;
+
+function ectempWaarden(d) {
+  const zieken = d.tp + d.fn;
+  const gezond = d.fp + d.tn;
+  const n = zieken + gezond;
+  return {
+    zieken,
+    n,
+    sens: zieken > 0 ? d.tp / zieken : 0,
+    spec: gezond > 0 ? d.tn / gezond : 0,
+    ppv: (d.tp + d.fp) > 0 ? d.tp / (d.tp + d.fp) : 0,
+    npv: (d.tn + d.fn) > 0 ? d.tn / (d.tn + d.fn) : 0,
+    prev: zieken / n
+  };
+}
+
+// Grafiekgeometrie (viewBox 560 x 250)
+const ECT_ML = 38, ECT_MR = 12, ECT_MT = 14, ECT_MB = 34;
+const ECT_W = 560, ECT_H = 250;
+function ectX(i) { return ECT_ML + (i / (ECTEMP_DATA.length - 1)) * (ECT_W - ECT_ML - ECT_MR); }
+function ectY(p) { return ECT_MT + (1 - p) * (ECT_H - ECT_MT - ECT_MB); }
+
+function svgEl(tag, attrs) {
+  const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  for (const k in attrs) el.setAttribute(k, attrs[k]);
+  return el;
+}
+
+function tekenEctempChart() {
+  ectempChart.innerHTML = '';
+
+  // Hitteziektegebied
+  const gebied = svgEl('rect', {
+    x: ectX(ECTEMP_HEET_VANAF), y: ECT_MT,
+    width: ectX(ECTEMP_DATA.length - 1) - ectX(ECTEMP_HEET_VANAF),
+    height: ECT_H - ECT_MT - ECT_MB
+  });
+  gebied.style.fill = 'var(--danger-bg)';
+  ectempChart.appendChild(gebied);
+  const gebiedTekst = svgEl('text', {
+    x: (ectX(ECTEMP_HEET_VANAF) + ectX(ECTEMP_DATA.length - 1)) / 2,
+    y: ECT_MT + 14, 'text-anchor': 'middle', 'font-size': '10'
+  });
+  gebiedTekst.style.fill = 'var(--danger)';
+  gebiedTekst.textContent = 'hitteziektegebied';
+  ectempChart.appendChild(gebiedTekst);
+
+  // Rasterlijnen en y-labels
+  [0, 0.25, 0.5, 0.75, 1].forEach(p => {
+    const lijn = svgEl('line', { x1: ECT_ML, y1: ectY(p), x2: ECT_W - ECT_MR, y2: ectY(p), 'stroke-width': '1' });
+    lijn.style.stroke = 'var(--border)';
+    ectempChart.appendChild(lijn);
+    if (p === 0 || p === 0.5 || p === 1) {
+      const lbl = svgEl('text', { x: ECT_ML - 6, y: ectY(p) + 3.5, 'text-anchor': 'end', 'font-size': '10' });
+      lbl.style.fill = 'var(--text-muted)';
+      lbl.textContent = Math.round(p * 100) + '%';
+      ectempChart.appendChild(lbl);
+    }
+  });
+
+  // X-labels (om en om)
+  ECTEMP_DATA.forEach((d, i) => {
+    if (i % 2 !== 0) return;
+    const lbl = svgEl('text', { x: ectX(i), y: ECT_H - 12, 'text-anchor': 'middle', 'font-size': '10' });
+    lbl.style.fill = 'var(--text-muted)';
+    lbl.textContent = '>' + d.t;
+    ectempChart.appendChild(lbl);
+  });
+
+  // Lijnen
+  const sensPunten = ECTEMP_DATA.map((d, i) => ectX(i) + ',' + ectY(ectempWaarden(d).sens)).join(' ');
+  const npvPunten = ECTEMP_DATA.map((d, i) => ectX(i) + ',' + ectY(ectempWaarden(d).npv)).join(' ');
+  const npvLijn = svgEl('polyline', { points: npvPunten, fill: 'none', 'stroke-width': '2.5', 'stroke-linejoin': 'round' });
+  npvLijn.style.stroke = 'var(--success)';
+  ectempChart.appendChild(npvLijn);
+  const sensLijn = svgEl('polyline', { points: sensPunten, fill: 'none', 'stroke-width': '2.5', 'stroke-linejoin': 'round' });
+  sensLijn.style.stroke = 'var(--accent)';
+  ectempChart.appendChild(sensLijn);
+
+  // Marker voor de gekozen drempel
+  ectempMarkerLijn = svgEl('line', { y1: ECT_MT, y2: ECT_H - ECT_MB, 'stroke-width': '1.5', 'stroke-dasharray': '4 3' });
+  ectempMarkerLijn.style.stroke = 'var(--text-muted)';
+  ectempChart.appendChild(ectempMarkerLijn);
+  ectempMarkerNpv = svgEl('circle', { r: '5' });
+  ectempMarkerNpv.style.fill = 'var(--success)';
+  ectempChart.appendChild(ectempMarkerNpv);
+  ectempMarkerSens = svgEl('circle', { r: '5' });
+  ectempMarkerSens.style.fill = 'var(--accent)';
+  ectempChart.appendChild(ectempMarkerSens);
+}
+
+function kiesEctemp(index) {
+  ectempIndex = index;
+  const d = ECTEMP_DATA[index];
+  const w = ectempWaarden(d);
+
+  ectempChips.querySelectorAll('.ectemp-chip').forEach((chip, i) => {
+    chip.classList.toggle('actief', i === index);
+  });
+
+  ectSens.textContent = Math.round(w.sens * 100) + '%';
+  ectSpec.textContent = Math.round(w.spec * 100) + '%';
+  ectPpv.textContent = Math.round(w.ppv * 100) + '%';
+  ectNpv.textContent = Math.round(w.npv * 100) + '%';
+  ectSens.classList.toggle('laag', w.sens < 0.6);
+  ectSens.classList.toggle('hoog', w.sens >= 0.9);
+  ectNpv.classList.toggle('hoog', w.npv >= 0.9);
+
+  const prevPct = (w.prev * 100).toFixed(1).replace('.', ',');
+  ectempTeller.textContent = 'Echt boven drempel: ' + fmt(w.zieken) + ' van ' + fmt(w.n) + ' (' + prevPct + '%) · gevonden ' + fmt(d.tp) + ' · gemist ' + fmt(d.fn);
+  ectempMissTitel.textContent = 'Van 100 sporters die echt boven ' + d.t + ' °C zitten:';
+
+  const gevonden = Math.round(w.sens * 100);
+  ectempMissArray.querySelectorAll('.icon-dot').forEach((dot, i) => {
+    dot.classList.remove('tp', 'fn');
+    dot.classList.add(i < gevonden ? 'tp' : 'fn');
+  });
+
+  const x = ectX(index);
+  ectempMarkerLijn.setAttribute('x1', x);
+  ectempMarkerLijn.setAttribute('x2', x);
+  ectempMarkerSens.setAttribute('cx', x);
+  ectempMarkerSens.setAttribute('cy', ectY(w.sens));
+  ectempMarkerNpv.setAttribute('cx', x);
+  ectempMarkerNpv.setAttribute('cy', ectY(w.npv));
+}
+
+function initEctempVerkenner() {
+  if (!ectempChips) return;
+
+  ECTEMP_DATA.forEach((d, i) => {
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'ectemp-chip' + (i >= ECTEMP_HEET_VANAF ? ' heet' : '');
+    chip.textContent = '>' + d.t;
+    chip.addEventListener('click', () => kiesEctemp(i));
+    ectempChips.appendChild(chip);
+  });
+
+  for (let i = 0; i < 100; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'icon-dot';
+    ectempMissArray.appendChild(dot);
+  }
+
+  tekenEctempChart();
+  kiesEctemp(ectempIndex);
+
+  document.getElementById('ectemp-naar-tool').addEventListener('click', () => {
+    const d = ECTEMP_DATA[ectempIndex];
+    const w = ectempWaarden(d);
+    populationInput.value = w.n;
+    sensitivitySlider.value = Math.round(w.sens * 100);
+    specificitySlider.value = (w.spec * 100).toFixed(1);
+    prevalenceSlider.value = (w.prev * 100).toFixed(1);
+    sensitivityValue.textContent = sensitivitySlider.value + '%';
+    specificityValue.textContent = specificitySlider.value + '%';
+    prevalenceValue.textContent = prevalenceSlider.value + '%';
+    exampleButtons.forEach(b => b.classList.remove('active'));
+    exampleDescription.textContent = 'ECTemp bij drempel ' + d.t + ' graden, rechtstreeks uit de meetdata: sliders en populatie zijn overgenomen. Druk op Bereken voor het volledige resultaat.';
+    exampleInfo.style.display = 'block';
+    updateLiveVisualization();
+    document.querySelector('.input-grid').scrollIntoView({ behavior: 'smooth' });
+  });
+}
+
+initEctempVerkenner();
 
 // ===================================
 // Defense Context
