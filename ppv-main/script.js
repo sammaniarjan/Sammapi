@@ -183,6 +183,20 @@ const examples = {
     prevalence: 10,
     description: 'PSA: sensitiviteit 80%, lage specificiteit (35%) door diverse oorzaken van PSA-verhoging.'
   },
+  'ectemp-mid': {
+    population: 5025,
+    sensitivity: 96,
+    specificity: 75,
+    prevalence: 42,
+    description: 'ECTemp (Tc-schatting uit hartslag) bij drempel 38,0 graden: sensitiviteit 96%, specificiteit 75% (de Korte 2022, 5025 metingen bij 101 topsporters in de hitte). In dit middengebied is het algoritme bruikbaar, bijvoorbeeld voor hitteacclimatisatie.'
+  },
+  'ectemp-heat': {
+    population: 5025,
+    sensitivity: 48,
+    specificity: 97,
+    prevalence: 6.8,
+    description: 'Zelfde algoritme, drempel 39,0 graden (waar hitteziekte dreigt): de sensitiviteit zakt naar 48%, dus ruim de helft van de werkelijk oververhitte sporters wordt gemist. De NPV van 96% oogt geruststellend, maar dat komt door de lage prevalentie (6,8%), niet door de test.'
+  },
   'drone-war': {
     population: 10000,
     sensitivity: 99,

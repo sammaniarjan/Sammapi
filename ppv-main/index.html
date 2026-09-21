@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
   <title>Algoritme Checker</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%233b82f6'/><text x='50' y='70' font-size='55' text-anchor='middle' fill='white' font-family='sans-serif'>%25</text></svg>">
   <link rel="stylesheet" href="../fonts/fonts.css">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -140,6 +141,14 @@
               <strong>PSA</strong>
               <span>Prostaatkanker</span>
             </button>
+            <button class="example-btn" data-example="ectemp-mid">
+              <strong>ECTemp</strong>
+              <span>Drempel 38,0 &deg;C</span>
+            </button>
+            <button class="example-btn" data-example="ectemp-heat">
+              <strong>ECTemp</strong>
+              <span>Hitteziekte (&ge;39 &deg;C)</span>
+            </button>
             <button class="example-btn defense-example" data-example="drone-war">
               <strong>Drone detectie</strong>
               <span>Oorlogsgebied</span>
@@ -152,6 +161,19 @@
           <div id="example-info" class="example-info" style="display: none;">
             <p id="example-description"></p>
           </div>
+
+          <details class="bayes-details">
+            <summary>Casus: ECTemp, kerntemperatuur schatten uit hartslag</summary>
+            <div class="bayes-content">
+              <p>Het ECTemp-algoritme schat de kerntemperatuur (Tc) uit opeenvolgende hartslagwaarden. De Korte et al. (Front Sports Act Living 2022) valideerden het bij 101 topsporters die in de hitte fietsten: 5.025 metingen, Tc 35,8-40,4 &deg;C. De testeigenschappen hangen sterk af van de drempel die je wilt detecteren:</p>
+              <div class="bayes-formula">&gt;38,0 &deg;C: sens 96%, spec 75% &middot; 76 van 2.111 gemist</div>
+              <div class="bayes-formula">&gt;39,0 &deg;C: sens 48%, spec 97% &middot; 179 van 342 gemist</div>
+              <div class="bayes-formula">&gt;39,25 &deg;C: sens 13%, spec 99% &middot; 154 van 176 gemist</div>
+              <p>In het lage en middengebied (37,75-38,75 &deg;C) is de schatting bruikbaar, bijvoorbeeld om een doel-Tc rond 38,5 &deg;C te bewaken tijdens hitteacclimatisatie. Maar juist waar hitteziekte dreigt (Tc &ge;39 &deg;C) mist het algoritme meer dan de helft van de werkelijk oververhitte sporters. De aanname van een vaste hartslag-Tc-relatie gaat daar stuk (onder andere door herverdeling van bloedstroom bij dehydratie), waardoor de schatter de hoogste temperaturen structureel onderschat.</p>
+              <p>De valkuil voor de lezer: bij de drempel van 39,0 &deg;C is de NPV nog steeds 96% (4.542 terecht negatief van 4.721 negatieven). Dat oogt geruststellend, maar komt vrijwel volledig door de lage prevalentie: maar 6,8% van de metingen zat boven 39 &deg;C. Reken je met de sensitiviteit, dan zie je dat een negatieve uitslag bij een sporter die werkelijk boven de 39 &deg;C zit vaker voorkomt (52%) dan een positieve. Een hoge NPV bij lage prevalentie is dus geen bewijs dat je veilig kunt uitsluiten.</p>
+              <p>Conclusie: ECTemp is bruikbaar als trainingsinstrument, maar niet als enige bewaking om hitteziekte te voorspellen. Kies hierboven de twee ECTemp-voorbeelden en vergelijk zelf de PPV en NPV.</p>
+            </div>
+          </details>
         </div>
 
         <hr class="divider">
@@ -166,7 +188,7 @@
           <div class="input-group">
             <label>Sensitiviteit</label>
             <div class="slider-row">
-              <input type="range" id="sensitivity" min="50" max="100" step="1" value="90">
+              <input type="range" id="sensitivity" min="0" max="100" step="1" value="90">
               <span id="sensitivity-value" class="slider-value">90%</span>
             </div>
           </div>
