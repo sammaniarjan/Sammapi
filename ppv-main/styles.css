@@ -1636,6 +1636,91 @@ body::before {
 }
 
 /* ===================================
+   Casus: Hitte & Hartslag
+   Hergebruikt de defensie-componenten met een eigen accent.
+   =================================== */
+.hitte-overlay {
+  --defense-accent: #c2410c;
+  --defense-accent-dim: #9a3412;
+  --defense-accent-glow: rgba(234, 88, 12, 0.12);
+  display: flex;
+  flex-direction: column;
+  min-height: 500px;
+}
+
+.hitte-overlay .defense-badge {
+  border-color: rgba(234, 88, 12, 0.3);
+}
+
+.welcome-button.hitte-button {
+  background: transparent;
+  border: 1px solid #c2410c;
+  color: #c2410c;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 32px;
+  font-size: 0.9rem;
+}
+
+.welcome-button.hitte-button:hover {
+  background: rgba(234, 88, 12, 0.12);
+  transform: translateY(-2px);
+}
+
+.hitte-step {
+  display: none;
+  padding: 30px;
+  flex: 1;
+  animation: fadeIn 0.3s ease;
+}
+
+.hitte-step.active {
+  display: block;
+}
+
+.hitte-step h1 {
+  font-size: 1.3rem;
+  color: var(--text-primary);
+  margin: 0 0 8px;
+  font-weight: 600;
+}
+
+.hitte-twee {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.hitte-twee .concept-card {
+  margin: 0;
+}
+
+.example-casus-link {
+  margin-top: 8px;
+  padding: 0;
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.example-casus-link:hover {
+  color: var(--accent-dim);
+}
+
+@media (max-width: 560px) {
+  .hitte-twee {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===================================
    Human-in-the-Loop Simulatie
    =================================== */
 .welcome-button.game-button {

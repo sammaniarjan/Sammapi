@@ -239,11 +239,9 @@ exampleButtons.forEach(btn => {
       exampleButtons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
 
-      // ECTemp-voorbeelden: klap de bijbehorende casus met verkenner open
-      if (key.indexOf('ectemp') === 0) {
-        const casus = document.getElementById('ectemp-casus');
-        if (casus) casus.open = true;
-      }
+      // ECTemp-voorbeelden: toon de link naar de casus Hitte & Hartslag
+      const casusLink = document.getElementById('example-casus-link');
+      if (casusLink) casusLink.style.display = key.indexOf('ectemp') === 0 ? 'inline-block' : 'none';
 
       // Update live visualization
       updateLiveVisualization();
@@ -607,7 +605,7 @@ function tekenEctempChart() {
   ectempChart.appendChild(gebied);
   const gebiedTekst = svgEl('text', {
     x: (ectX(ECTEMP_HEET_VANAF) + ectX(ECTEMP_DATA.length - 1)) / 2,
-    y: ECT_MT + 14, 'text-anchor': 'middle', 'font-size': '10'
+    y: ECT_H - ECT_MB - 40, 'text-anchor': 'middle', 'font-size': '12', 'font-weight': '600'
   });
   gebiedTekst.style.fill = 'var(--danger)';
   gebiedTekst.textContent = 'hitteziektegebied';
@@ -619,7 +617,7 @@ function tekenEctempChart() {
     lijn.style.stroke = 'var(--border)';
     ectempChart.appendChild(lijn);
     if (p === 0 || p === 0.5 || p === 1) {
-      const lbl = svgEl('text', { x: ECT_ML - 6, y: ectY(p) + 3.5, 'text-anchor': 'end', 'font-size': '10' });
+      const lbl = svgEl('text', { x: ECT_ML - 6, y: ectY(p) + 4, 'text-anchor': 'end', 'font-size': '12' });
       lbl.style.fill = 'var(--text-muted)';
       lbl.textContent = Math.round(p * 100) + '%';
       ectempChart.appendChild(lbl);
@@ -629,7 +627,7 @@ function tekenEctempChart() {
   // X-labels (om en om)
   ECTEMP_DATA.forEach((d, i) => {
     if (i % 2 !== 0) return;
-    const lbl = svgEl('text', { x: ectX(i), y: ECT_H - 12, 'text-anchor': 'middle', 'font-size': '10' });
+    const lbl = svgEl('text', { x: ectX(i), y: ECT_H - 10, 'text-anchor': 'middle', 'font-size': '12' });
     lbl.style.fill = 'var(--text-muted)';
     lbl.textContent = '>' + d.t;
     ectempChart.appendChild(lbl);
@@ -714,9 +712,17 @@ function initEctempVerkenner() {
   tekenEctempChart();
   kiesEctemp(ectempIndex);
 
+  // Vanuit de casus naar de rekentool, met de gekozen drempel in de sliders
   document.getElementById('ectemp-naar-tool').addEventListener('click', () => {
     const d = ECTEMP_DATA[ectempIndex];
     const w = ectempWaarden(d);
+
+    hitteOverlay.style.display = 'none';
+    welcomeScreen.style.display = 'none';
+    mainApp.style.display = 'flex';
+    goToStep(2);
+    initLiveVisualization();
+
     populationInput.value = w.n;
     sensitivitySlider.value = Math.round(w.sens * 100);
     specificitySlider.value = (w.spec * 100).toFixed(1);
@@ -727,9 +733,66 @@ function initEctempVerkenner() {
     exampleButtons.forEach(b => b.classList.remove('active'));
     exampleDescription.textContent = 'ECTemp bij drempel ' + d.t + ' graden, rechtstreeks uit de meetdata: sliders en populatie zijn overgenomen. Druk op Bereken voor het volledige resultaat.';
     exampleInfo.style.display = 'block';
+    const casusLink = document.getElementById('example-casus-link');
+    if (casusLink) casusLink.style.display = 'inline-block';
     updateLiveVisualization();
     document.querySelector('.input-grid').scrollIntoView({ behavior: 'smooth' });
   });
+}
+
+// ===================================
+// Casus Hitte & Hartslag: overlay-navigatie
+// ===================================
+
+const hitteOverlay = document.getElementById('hitte-overlay');
+const hitteButton = document.getElementById('hitte-button');
+const hitteClose = document.getElementById('hitte-close');
+const hitteProgressFill = document.getElementById('hitte-progress-fill');
+const hitteStepLabels = document.querySelectorAll('#hitte-step-labels span');
+const hitteSteps = document.querySelectorAll('.hitte-step');
+const totalHitteSteps = 5;
+let hitteHerkomst = 'welcome';
+
+function openHitte(herkomst, stap) {
+  hitteHerkomst = herkomst;
+  welcomeScreen.style.display = 'none';
+  mainApp.style.display = 'none';
+  hitteOverlay.style.display = 'flex';
+  goToHitteStep(stap || 1);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goToHitteStep(step) {
+  hitteProgressFill.style.width = (step / totalHitteSteps) * 100 + '%';
+  hitteStepLabels.forEach((label, i) => {
+    label.classList.toggle('active', i < step);
+  });
+  hitteSteps.forEach(s => s.classList.remove('active'));
+  const target = document.getElementById('hitte-step-' + step);
+  if (target) target.classList.add('active');
+}
+
+hitteButton.addEventListener('click', () => openHitte('welcome', 1));
+
+hitteClose.addEventListener('click', () => {
+  hitteOverlay.style.display = 'none';
+  if (hitteHerkomst === 'calc') {
+    mainApp.style.display = 'flex';
+  } else {
+    welcomeScreen.style.display = 'block';
+  }
+});
+
+document.querySelectorAll('[data-hittegoto]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    goToHitteStep(parseInt(btn.dataset.hittegoto));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+const exampleCasusLink = document.getElementById('example-casus-link');
+if (exampleCasusLink) {
+  exampleCasusLink.addEventListener('click', () => openHitte('calc', 1));
 }
 
 initEctempVerkenner();
