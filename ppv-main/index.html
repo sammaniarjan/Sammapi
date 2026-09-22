@@ -155,6 +155,10 @@
               <strong>ECTemp</strong>
               <span>Hitteziekte (&ge;39 &deg;C)</span>
             </button>
+            <button class="example-btn" data-example="hips">
+              <strong>HIPS</strong>
+              <span>Hartslag + gait</span>
+            </button>
             <button class="example-btn defense-example" data-example="drone-war">
               <strong>Drone detectie</strong>
               <span>Oorlogsgebied</span>
@@ -665,6 +669,7 @@
           <span>Waarom</span>
           <span>Verkenner</span>
           <span>Context</span>
+          <span>Vervolg</span>
           <span>Conclusie</span>
         </div>
       </div>
@@ -673,7 +678,7 @@
       <div id="hitte-step-1" class="hitte-step active">
         <div class="defense-badge">CASUS: HITTE &amp; HARTSLAG</div>
         <h1>NPV 96%. Toch de helft gemist.</h1>
-        <p class="intro-text">Een sporthorloge schat je kerntemperatuur uit de hartslag. Zegt het "rustig maar", dan klopt dat in 96% van de gevallen. Klinkt veilig. Dit zijn de echte cijfers bij 39,0 &deg;C, de grens waar hitteziekte begint.</p>
+        <p class="intro-text">Een sporthorloge schat je kerntemperatuur uit de hartslag. Zegt het "rustig maar", dan klopt dat in 96% van de gevallen. Klinkt veilig. Dit zijn de echte cijfers van de versie op hartslag alleen, bij 39,0 &deg;C, de grens waar hitteziekte begint.</p>
 
         <div class="defense-comparison">
           <h3>Dezelfde 5.025 metingen. Dezelfde drempel.</h3>
@@ -745,7 +750,7 @@
 
       <!-- Hitte stap 2: waarom NPV hier niets belooft -->
       <div id="hitte-step-2" class="hitte-step">
-        <div class="defense-badge">STAP 2 VAN 5</div>
+        <div class="defense-badge">STAP 2 VAN 6</div>
         <h1>Waarom een hoge NPV je niets belooft</h1>
         <p class="intro-text">De 179 gemiste gevallen zijn niet weg. Ze verdwijnen in de massa.</p>
 
@@ -788,7 +793,7 @@
 
       <!-- Hitte stap 3: verkenner -->
       <div id="hitte-step-3" class="hitte-step">
-        <div class="defense-badge">STAP 3 VAN 5</div>
+        <div class="defense-badge">STAP 3 VAN 6</div>
         <h1>Kies de drempel, zie de test</h1>
         <p class="intro-text">Echte meetdata: 5.025 metingen bij 101 sporters, kerntemperatuur 35,8-40,4 &deg;C. Klik een drempel.</p>
 
@@ -831,7 +836,7 @@
 
       <!-- Hitte stap 4: context -->
       <div id="hitte-step-4" class="hitte-step">
-        <div class="defense-badge">STAP 4 VAN 5</div>
+        <div class="defense-badge">STAP 4 VAN 6</div>
         <h1>Waar komt dit vandaan?</h1>
         <p class="intro-text">Het ECTemp-algoritme schat de kerntemperatuur uit alleen de hartslag. Geen pil, geen sonde. Het validatieonderzoek was positief:</p>
 
@@ -859,12 +864,91 @@
 
         <div class="defense-nav">
           <button class="btn-back" data-hittegoto="3">&larr; Terug</button>
-          <button class="btn-next" data-hittegoto="5">Conclusie &rarr;</button>
+          <button class="btn-next" data-hittegoto="5">Hoe is het opgelost? &rarr;</button>
         </div>
       </div>
 
-      <!-- Hitte stap 5: conclusie -->
+      <!-- Hitte stap 5: vervolg, een tweede signaal -->
       <div id="hitte-step-5" class="hitte-step">
+        <div class="defense-badge">STAP 5 VAN 6</div>
+        <h1>Hoe het is opgelost: een tweede signaal</h1>
+        <p class="intro-text">Dit is een oud probleem. Het antwoord was geen betere drempel, maar een andere vraag. Niet "zit de temperatuur boven 39 &deg;C?", maar "is dit een beginnende heat stroke?"</p>
+
+        <div class="concept-card">
+          <h3>Loopstabiliteit uit de accelerometer</h3>
+          <p>Het klinische kenmerk van exertional heat stroke is een verstoord centraal zenuwstelsel, zichtbaar als ataxie: een wankele gang. Een sensor op de borst meet dat. Buller et al. (Br J Sports Med 2022) combineerden ECTemp met die loopinstabiliteit bij 1.806 militairen tijdens hardlooptests en marsen. Het systeem is doorontwikkeld tot HIPS (Heat Injury Prevention System), met ook huidtemperatuur, op data van ruim 14.000 personen.</p>
+        </div>
+
+        <div class="defense-scenario-box">
+          <div class="defense-scenario-params">
+            <div class="defense-param">
+              <span class="defense-param-label">Trainingssessies</span>
+              <span class="defense-param-value">3.422</span>
+            </div>
+            <div class="defense-param">
+              <span class="defense-param-label">Heat strokes</span>
+              <span class="defense-param-value accent">6 (0,18%)</span>
+            </div>
+            <div class="defense-param">
+              <span class="defense-param-label">Zonder heat stroke</span>
+              <span class="defense-param-value">3.416</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="defense-calc-steps">
+          <div class="defense-calc-step">
+            <div class="defense-calc-icon success">&#10003;</div>
+            <div>
+              <strong>Gevonden (terecht positief)</strong>
+              <p><span class="text-success">6</span> van 6, minstens 3,5 minuut v&oacute;&oacute;r de collaps</p>
+            </div>
+          </div>
+          <div class="defense-calc-step">
+            <div class="defense-calc-icon warning">!</div>
+            <div>
+              <strong>Gemist (vals negatief)</strong>
+              <p>0 van 6</p>
+            </div>
+          </div>
+          <div class="defense-calc-step">
+            <div class="defense-calc-icon danger">&#10005;</div>
+            <div>
+              <strong>Vals alarm (vals positief)</strong>
+              <p><span class="text-danger">209</span> van 3.416 (6,1%)</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="defense-comparison">
+          <h3>De afweging draait om</h3>
+          <div class="defense-compare-row">
+            <div class="defense-compare-item good">
+              <div class="defense-compare-label">Sensitiviteit</div>
+              <div class="defense-compare-ppv">100%</div>
+            </div>
+            <div class="defense-compare-vs">vs</div>
+            <div class="defense-compare-item bad">
+              <div class="defense-compare-label">PPV</div>
+              <div class="defense-compare-ppv">2,8%</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="defense-extreme-note">
+          <h4>PPV 2,8% en toch de goede keuze</h4>
+          <p>Van elke 36 alarmen is er 1 echt. Bij de drone was dat ondenkbaar: elk vals alarm treft een burger. Hier kost een vals alarm een korte stop en een check, en een gemist geval is potentieel dodelijk. Welke fout je accepteert, volgt uit wat elke fout kost.<br>
+          Kanttekening: 6 heat strokes is weinig. "6 van 6" klinkt als 100%, maar het 95%-betrouwbaarheidsinterval begint pas bij 54%.</p>
+        </div>
+
+        <div class="defense-nav">
+          <button class="btn-back" data-hittegoto="4">&larr; Terug</button>
+          <button class="btn-next" data-hittegoto="6">Conclusie &rarr;</button>
+        </div>
+      </div>
+
+      <!-- Hitte stap 6: conclusie -->
+      <div id="hitte-step-6" class="hitte-step">
         <div class="defense-badge">CONCLUSIE</div>
         <h1>De vragen die je moet stellen</h1>
         <p class="intro-text">Als iemand een monitor aanprijst met "nauwkeurig", vraag dan door.</p>
@@ -894,8 +978,8 @@
           <div class="defense-question-card">
             <div class="defense-q-number">4</div>
             <div>
-              <h4>"Wat kost een gemist geval?"</h4>
-              <p>Bij een drone: een vals alarm treft een burger. Bij hitteziekte: een gemist geval loopt door met 40 &deg;C. Hier weegt vals-negatief zwaarder dan vals-positief.</p>
+              <h4>"Wat kost een gemist geval, en wat kost een vals alarm?"</h4>
+              <p>Bij een drone treft een vals alarm een burger. Bij hitteziekte loopt een gemist geval door met 40 &deg;C. Daarom accepteerde het leger bij HIPS 209 valse alarmen om 6 heat strokes te vangen: PPV 2,8%, en terecht.</p>
             </div>
           </div>
         </div>
@@ -903,11 +987,11 @@
         <div class="defense-takeaway">
           <h3>Onthoud</h3>
           <p><strong>Afwijking 0,15 &deg;C, NPV 96%, en toch 52% van de gevaarlijke gevallen gemist.</strong><br>
-          Bruikbaar om training te sturen, ongeschikt als enige bewaking tegen hitteziekte.</p>
+          Hartslag alleen is bruikbaar om training te sturen, niet als bewaking tegen hitteziekte. Met loopstabiliteit erbij draait het om: alles gevonden, 97% van de alarmen vals, en dat is hier de goede ruil.</p>
         </div>
 
         <div class="defense-nav">
-          <button class="btn-back" data-hittegoto="4">← Terug</button>
+          <button class="btn-back" data-hittegoto="5">← Terug</button>
           <button class="btn-next btn-primary" id="ectemp-naar-tool">Zelf rekenen met deze drempel →</button>
         </div>
       </div>

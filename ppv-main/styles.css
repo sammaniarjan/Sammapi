@@ -1718,6 +1718,16 @@ body::before {
   .hitte-twee {
     grid-template-columns: 1fr;
   }
+
+  .hitte-overlay .defense-step-labels {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 4px 12px;
+  }
+
+  .hitte-overlay .defense-step-labels span {
+    font-size: 0.6rem;
+  }
 }
 
 /* ===================================

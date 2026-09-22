@@ -199,6 +199,13 @@ const examples = {
     prevalence: 6.8,
     description: 'Zelfde algoritme, drempel 39,0 graden (waar hitteziekte dreigt): de sensitiviteit zakt naar 48%. Kijk hieronder bij "van 100 mensen die het echt hebben": 52 gemist, terwijl de NPV-meter op 96% staat. Die hoge NPV komt door de lage prevalentie (6,8%), niet door de test.'
   },
+  'hips': {
+    population: 3422,
+    sensitivity: 100,
+    specificity: 93.9,
+    prevalence: 0.2,
+    description: 'Hartslag plus loopstabiliteit (Buller 2022, 3.422 trainingssessies, 6 heat strokes): alle 6 gevonden, 209 valse alarmen. PPV rond de 3%, en toch de goede keuze: een vals alarm kost een korte check, een gemist geval kan dodelijk zijn.'
+  },
   'drone-war': {
     population: 10000,
     sensitivity: 99,
@@ -241,7 +248,7 @@ exampleButtons.forEach(btn => {
 
       // ECTemp-voorbeelden: toon de link naar de casus Hitte & Hartslag
       const casusLink = document.getElementById('example-casus-link');
-      if (casusLink) casusLink.style.display = key.indexOf('ectemp') === 0 ? 'inline-block' : 'none';
+      if (casusLink) casusLink.style.display = (key.indexOf('ectemp') === 0 || key === 'hips') ? 'inline-block' : 'none';
 
       // Update live visualization
       updateLiveVisualization();
@@ -750,7 +757,7 @@ const hitteClose = document.getElementById('hitte-close');
 const hitteProgressFill = document.getElementById('hitte-progress-fill');
 const hitteStepLabels = document.querySelectorAll('#hitte-step-labels span');
 const hitteSteps = document.querySelectorAll('.hitte-step');
-const totalHitteSteps = 5;
+const totalHitteSteps = 6;
 let hitteHerkomst = 'welcome';
 
 function openHitte(herkomst, stap) {
