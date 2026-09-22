@@ -661,67 +661,128 @@
       <div class="defense-progress">
         <div class="defense-progress-fill" id="hitte-progress-fill"></div>
         <div class="defense-step-labels" id="hitte-step-labels">
-          <span class="active">Claim</span>
-          <span>Vraag</span>
+          <span class="active">Valkuil</span>
+          <span>Waarom</span>
           <span>Verkenner</span>
-          <span>Valkuil</span>
+          <span>Context</span>
           <span>Conclusie</span>
         </div>
       </div>
 
-      <!-- Hitte stap 1: de claim -->
+      <!-- Hitte stap 1: de paradox -->
       <div id="hitte-step-1" class="hitte-step active">
         <div class="defense-badge">CASUS: HITTE &amp; HARTSLAG</div>
-        <h1>Een horloge dat je kerntemperatuur kent</h1>
-        <p class="intro-text">Het ECTemp-algoritme schat de kerntemperatuur uit alleen de hartslag. Geen pil, geen sonde.</p>
+        <h1>NPV 96%. Toch de helft gemist.</h1>
+        <p class="intro-text">Een sporthorloge schat je kerntemperatuur uit de hartslag. Zegt het "rustig maar", dan klopt dat in 96% van de gevallen. Klinkt veilig. Dit zijn de echte cijfers bij 39,0 &deg;C, de grens waar hitteziekte begint.</p>
 
-        <div class="defense-quote">
-          <p>"Gemiddelde afwijking slechts <strong>0,15 &deg;C</strong>, correlatie 0,86, nauwkeurigheid <strong>84-99%</strong>."</p>
-          <span class="defense-quote-source">Validatie bij 101 topsporters in de hitte (de Korte et al., Front Sports Act Living 2022)</span>
+        <div class="defense-comparison">
+          <h3>Dezelfde 5.025 metingen. Dezelfde drempel.</h3>
+          <div class="defense-compare-row">
+            <div class="defense-compare-item good">
+              <div class="defense-compare-label">NPV</div>
+              <div class="defense-compare-ppv">96%</div>
+            </div>
+            <div class="defense-compare-vs">vs</div>
+            <div class="defense-compare-item bad">
+              <div class="defense-compare-label">Echte gevallen gemist</div>
+              <div class="defense-compare-ppv">52%</div>
+            </div>
+          </div>
         </div>
 
-        <div class="concept-card">
-          <h3>De vraag</h3>
-          <p>Kun je hiermee de militair of sporter eruit pikken die hitteziekte ontwikkelt?</p>
-          <p>Net als "99% accuraat" bij de drone zegt "nauwkeurigheid 84-99%" <em>niets</em> zolang je niet weet wat je precies wilt detecteren.</p>
-          <p class="example">Een kleine gemiddelde afwijking kan samengaan met het missen van de helft van de gevaarlijke gevallen. Dat gaan we uitrekenen.</p>
+        <div class="defense-scenario-box">
+          <div class="defense-scenario-params">
+            <div class="defense-param">
+              <span class="defense-param-label">Metingen</span>
+              <span class="defense-param-value">5.025</span>
+            </div>
+            <div class="defense-param">
+              <span class="defense-param-label">Echt boven 39 &deg;C</span>
+              <span class="defense-param-value accent">342 (6,8%)</span>
+            </div>
+            <div class="defense-param">
+              <span class="defense-param-label">Eronder</span>
+              <span class="defense-param-value">4.683 (93,2%)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="defense-calc-steps">
+          <div class="defense-calc-step">
+            <div class="defense-calc-icon success">&#10003;</div>
+            <div>
+              <strong>Gevonden (terecht positief)</strong>
+              <p>163 van 342</p>
+            </div>
+          </div>
+          <div class="defense-calc-step">
+            <div class="defense-calc-icon warning">!</div>
+            <div>
+              <strong>Gemist (vals negatief)</strong>
+              <p><span class="text-warning">179</span> van 342: het horloge zei "rustig maar"</p>
+            </div>
+          </div>
+          <div class="defense-calc-step">
+            <div class="defense-calc-icon danger">&#10005;</div>
+            <div>
+              <strong>Vals alarm (vals positief)</strong>
+              <p><span class="text-danger">141</span> van 4.683</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="defense-result-highlight bad">
+          <div class="defense-result-big">Sensitiviteit 48%</div>
+          <p>Meer gemist dan gevonden: 179 tegenover 163.<br>
+          <strong>Bij iemand die er echt boven zit, is "rustig maar" de meest waarschijnlijke uitslag.</strong></p>
         </div>
 
         <div class="defense-nav">
-          <button class="btn-back" id="hitte-close">← Terug</button>
-          <button class="btn-next" data-hittegoto="2">Wat wil je detecteren? →</button>
+          <button class="btn-back" id="hitte-close">&larr; Terug</button>
+          <button class="btn-next" data-hittegoto="2">Hoe kan dat? &rarr;</button>
         </div>
       </div>
 
-      <!-- Hitte stap 2: de vraag bepaalt de test -->
+      <!-- Hitte stap 2: waarom NPV hier niets belooft -->
       <div id="hitte-step-2" class="hitte-step">
         <div class="defense-badge">STAP 2 VAN 5</div>
-        <h1>Dezelfde meting, twee verschillende vragen</h1>
-        <p class="intro-text">Een drempel maakt van een schatting een test: boven de drempel is "positief".</p>
+        <h1>Waarom een hoge NPV je niets belooft</h1>
+        <p class="intro-text">De 179 gemiste gevallen zijn niet weg. Ze verdwijnen in de massa.</p>
 
-        <div class="hitte-twee">
-          <div class="concept-card">
-            <h3>Vraag A: hitteacclimatisatie</h3>
-            <p>Je wilt tijdens de training een doel-kerntemperatuur van ongeveer <strong>38,5 &deg;C</strong> aanhouden.</p>
-            <p class="example">Drempel in het middengebied. Een misser van een paar tienden is vervelend, niet gevaarlijk.</p>
+        <div class="defense-calc-steps">
+          <div class="defense-calc-step">
+            <div class="defense-calc-icon success">&#10003;</div>
+            <div>
+              <strong>Negatieve uitslagen: 4.721</strong>
+              <p>4.542 terecht (zaten er echt onder) + 179 gemist</p>
+            </div>
           </div>
-          <div class="concept-card">
-            <h3>Vraag B: hitteziekte voorkomen</h3>
-            <p>Je wilt weten wie boven de <strong>39 &deg;C</strong> komt, want daar begint het gevaar.</p>
-            <p class="example">Drempel aan de bovenkant. Een gemist geval is iemand die doorloopt met een kerntemperatuur van 40 &deg;C.</p>
+          <div class="defense-calc-step">
+            <div class="defense-calc-icon warning">!</div>
+            <div>
+              <strong>NPV = 4.542 / 4.721 = 96%</strong>
+              <p>De teller is groot omdat bijna niemand boven de 39 &deg;C zat, niet omdat het horloge zo goed is</p>
+            </div>
           </div>
+        </div>
+
+        <div class="defense-extreme-note">
+          <h4>De lakmoesproef</h4>
+          <p>Stel: een horloge dat <strong>nooit</strong> alarm slaat. Sensitiviteit 0%, alle 342 gevallen gemist.<br>
+          NPV = 4.683 / 5.025 = <strong>93%</strong>. Een kapotte test haalt hier dus bijna dezelfde NPV als ECTemp.<br>
+          Bij een prevalentie van 6,8% is een hoge NPV geen prestatie, maar een gegeven.</p>
         </div>
 
         <div class="concept-card highlight">
-          <h3>Twee getallen tellen</h3>
-          <p><strong>Sensitiviteit:</strong> van alle mensen die <em>echt</em> boven de drempel zitten, bij hoeveel slaat het horloge aan?</p>
-          <p><strong>NPV:</strong> als het horloge zegt "rustig maar", hoe vaak klopt dat?</p>
-          <p class="example">Die twee lijken op elkaar, maar gedragen zich totaal anders. Dat zie je in de volgende stap.</p>
+          <h3>Twee getallen die op elkaar lijken</h3>
+          <p><strong>NPV:</strong> als de uitslag "rustig maar" is, hoe vaak klopt dat? Dat hangt vooral af van hoe zeldzaam het probleem is.</p>
+          <p><strong>Sensitiviteit:</strong> van alle mensen die er <em>echt</em> boven zitten, bij hoeveel slaat het horloge aan? Dat is de test zelf.</p>
+          <p class="example">Wil je iets gevaarlijks uitsluiten, dan is de sensitiviteit het getal dat telt. Hier: 48%. Dit is de base rate fallacy in spiegelbeeld.</p>
         </div>
 
         <div class="defense-nav">
-          <button class="btn-back" data-hittegoto="1">← Terug</button>
-          <button class="btn-next" data-hittegoto="3">Naar de meetdata →</button>
+          <button class="btn-back" data-hittegoto="1">&larr; Terug</button>
+          <button class="btn-next" data-hittegoto="3">Is dit bij elke drempel zo? &rarr;</button>
         </div>
       </div>
 
@@ -759,92 +820,46 @@
         </div>
 
         <div class="concept-card">
-          <p>In het middengebied (37,75-38,75 &deg;C) werkt de test prima: sensitiviteit 73-96%. Precies in het rode gebied, waar je hem het hardst nodig hebt, stort de sensitiviteit in. En de NPV? Die blijft rustig op 96%.</p>
+          <p>In het middengebied (37,75-38,75 &deg;C) werkt de test prima: sensitiviteit 73-96%. Precies in het rode gebied, waar je hem het hardst nodig hebt, stort de sensitiviteit in. En de NPV? Die blijft overal rond de 96%, wat de test ook doet.</p>
         </div>
 
         <div class="defense-nav">
-          <button class="btn-back" data-hittegoto="2">← Terug</button>
-          <button class="btn-next" data-hittegoto="4">Hoe kan dat? →</button>
+          <button class="btn-back" data-hittegoto="2">&larr; Terug</button>
+          <button class="btn-next" data-hittegoto="4">Waar komt dit vandaan? &rarr;</button>
         </div>
       </div>
 
-      <!-- Hitte stap 4: de valkuil -->
+      <!-- Hitte stap 4: context -->
       <div id="hitte-step-4" class="hitte-step">
         <div class="defense-badge">STAP 4 VAN 5</div>
-        <h1>NPV 96%, toch de helft gemist</h1>
-        <p class="intro-text">Drempel 39,0 &deg;C, de grens waar hitteziekte begint.</p>
+        <h1>Waar komt dit vandaan?</h1>
+        <p class="intro-text">Het ECTemp-algoritme schat de kerntemperatuur uit alleen de hartslag. Geen pil, geen sonde. Het validatieonderzoek was positief:</p>
 
-        <div class="defense-scenario-box">
-          <div class="defense-scenario-params">
-            <div class="defense-param">
-              <span class="defense-param-label">Metingen</span>
-              <span class="defense-param-value">5.025</span>
-            </div>
-            <div class="defense-param">
-              <span class="defense-param-label">Echt boven 39 &deg;C</span>
-              <span class="defense-param-value accent">342 (6,8%)</span>
-            </div>
-            <div class="defense-param">
-              <span class="defense-param-label">Eronder</span>
-              <span class="defense-param-value">4.683 (93,2%)</span>
-            </div>
+        <div class="defense-quote">
+          <p>"Gemiddelde afwijking slechts <strong>0,15 &deg;C</strong>, correlatie 0,86, nauwkeurigheid <strong>84-99%</strong>."</p>
+          <span class="defense-quote-source">101 topsporters in de hitte (de Korte et al., Front Sports Act Living 2022)</span>
+        </div>
+
+        <div class="hitte-twee">
+          <div class="concept-card">
+            <h3>Vraag A: hitteacclimatisatie</h3>
+            <p>Tijdens de training een doel-kerntemperatuur van ongeveer <strong>38,5 &deg;C</strong> aanhouden.</p>
+            <p class="example">Drempel in het middengebied. Daar klopt de claim: het horloge werkt.</p>
+          </div>
+          <div class="concept-card">
+            <h3>Vraag B: hitteziekte voorkomen</h3>
+            <p>Weten wie boven de <strong>39 &deg;C</strong> komt, want daar begint het gevaar.</p>
+            <p class="example">Drempel aan de bovenkant. Daar loopt de vaste hartslag-temperatuurrelatie stuk (onder andere door dehydratie) en onderschat het algoritme juist de hoogste waarden.</p>
           </div>
         </div>
 
-        <div class="defense-calc-steps">
-          <div class="defense-calc-step">
-            <div class="defense-calc-icon success">✓</div>
-            <div>
-              <strong>Gevonden (terecht positief)</strong>
-              <p>163 van 342</p>
-            </div>
-          </div>
-          <div class="defense-calc-step">
-            <div class="defense-calc-icon warning">!</div>
-            <div>
-              <strong>Gemist (vals negatief)</strong>
-              <p><span class="text-warning">179</span> van 342: het horloge zei "rustig maar"</p>
-            </div>
-          </div>
-          <div class="defense-calc-step">
-            <div class="defense-calc-icon danger">✕</div>
-            <div>
-              <strong>Vals alarm (vals positief)</strong>
-              <p><span class="text-danger">141</span> van 4.683</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="defense-result-highlight bad">
-          <div class="defense-result-big">Sensitiviteit 48%</div>
-          <p>Meer gemist dan gevonden: 179 tegenover 163.<br>
-          <strong>Een negatieve uitslag bij iemand die er echt boven zit, is de normale uitkomst.</strong></p>
-        </div>
-
-        <div class="defense-comparison">
-          <h3>Dezelfde 5.025 metingen. Dezelfde drempel.</h3>
-          <div class="defense-compare-row">
-            <div class="defense-compare-item good">
-              <div class="defense-compare-label">NPV</div>
-              <div class="defense-compare-ppv">96%</div>
-            </div>
-            <div class="defense-compare-vs">vs</div>
-            <div class="defense-compare-item bad">
-              <div class="defense-compare-label">Echte gevallen gemist</div>
-              <div class="defense-compare-ppv">52%</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="defense-extreme-note">
-          <h4>Hoe kan dat?</h4>
-          <p>Er zijn 4.721 negatieve uitslagen, waarvan 4.542 terecht. De 179 gemiste gevallen verdwijnen in die massa, omdat bijna niemand boven de 39 &deg;C zat.<br>
-          De NPV zegt hoe vaak een negatieve uitslag klopt. Bij lage prevalentie is dat bijna altijd, wat de test ook doet. Hoeveel van de <em>echte</em> gevallen je mist, vertelt alleen de sensitiviteit. Dit is de base rate fallacy in spiegelbeeld.</p>
+        <div class="concept-card">
+          <p>De claim is niet fout. Hij beantwoordt alleen een andere vraag dan de vraag die je stelt als je hitteziekte wilt voorkomen. Net als "99% accuraat" bij de drone: het getal zegt niets zolang je niet weet wat je precies wilt detecteren.</p>
         </div>
 
         <div class="defense-nav">
-          <button class="btn-back" data-hittegoto="3">← Terug</button>
-          <button class="btn-next" data-hittegoto="5">Conclusie →</button>
+          <button class="btn-back" data-hittegoto="3">&larr; Terug</button>
+          <button class="btn-next" data-hittegoto="5">Conclusie &rarr;</button>
         </div>
       </div>
 
