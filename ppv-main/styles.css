@@ -1697,6 +1697,44 @@ body::before {
   margin: 0;
 }
 
+.hitte-bronnen {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.hitte-bronnen h4 {
+  margin: 0 0 10px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+.hitte-bronnen ol {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.hitte-bronnen li {
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.hitte-bronnen a {
+  color: var(--accent);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  word-break: break-all;
+}
+
+.hitte-bronnen .bron-noot {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
 .example-casus-link {
   margin-top: 8px;
   padding: 0;
